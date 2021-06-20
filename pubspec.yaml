@@ -1,0 +1,21 @@
+name: peaman
+description: A new Flutter package project.
+version: 0.0.1
+homepage: null
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cloud_firestore: ^2.2.2
+  firebase_auth: ^1.4.1
+  firebase_core: ^1.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+    
+flutter: null
