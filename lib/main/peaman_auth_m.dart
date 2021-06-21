@@ -22,8 +22,7 @@ class PAuthProvider {
         .signUpWithEmailAndPassword();
   }
 
-  static Future<void> logOut(
-      final PeamanUser appUser, final String password) async {
+  static Future<void> logOut() async {
     return await AuthProvider().logOut();
   }
 

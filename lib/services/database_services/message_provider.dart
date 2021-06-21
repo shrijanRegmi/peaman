@@ -7,10 +7,12 @@ class MessageProvider {
   final String? chatId;
   final DocumentReference<Map<String, dynamic>>? messageRef;
   final String? appUserId;
+  final int limit;
   MessageProvider({
     this.chatId,
     this.messageRef,
     this.appUserId,
+    this.limit = 10,
   });
 
   final _ref = FirebaseFirestore.instance;
@@ -18,7 +20,6 @@ class MessageProvider {
   // send message
   Future sendMessage({required final PeamanMessage message}) async {
     try {
-      final _message = PeamanMessage.toJson(message);
       final _messagesRef =
           _ref.collection('chats').doc(chatId).collection('messages');
       final _chatRef = _ref.collection('chats').doc(chatId);
@@ -56,6 +57,8 @@ class MessageProvider {
         );
       }
 
+      final _message = message.copyWith(id: _messagesRef.id).toJson();
+
       final _lastMsgRef = await _messagesRef.add(_message);
 
       _chatRef.update({'last_updated': DateTime.now()});
@@ -63,8 +66,8 @@ class MessageProvider {
 
       if (_messagesDocs.docs.length == 0) {
         _sendAdditionalProperties(
-          myId: message.senderId ?? '',
-          friendId: message.receiverId ?? '',
+          myId: message.senderId,
+          friendId: message.receiverId,
         );
       }
       print('Success: Sending message to ${message.receiverId}');
@@ -201,7 +204,7 @@ class MessageProvider {
         .doc(chatId)
         .collection('messages')
         .orderBy('milliseconds', descending: true)
-        .limit(50)
+        .limit(limit)
         .snapshots()
         .map(_messageFromFirebase);
   }

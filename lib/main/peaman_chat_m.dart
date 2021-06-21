@@ -9,6 +9,7 @@ class PChatProvider {
   ) async {
     await MessageProvider(
       appUserId: message.senderId,
+      chatId: chatId,
     ).sendMessage(message: message);
   }
 
@@ -21,8 +22,11 @@ class PChatProvider {
     await MessageProvider(chatId: chatId).updateChatData(data);
   }
 
-  static Stream<List<PeamanMessage>> getMessages(final String chatId) {
-    return MessageProvider(chatId: chatId).messagesList;
+  static Stream<List<PeamanMessage>> getMessages(
+    final String chatId, {
+    final int limit = 10,
+  }) {
+    return MessageProvider(chatId: chatId, limit: limit).messagesList;
   }
 
   static Stream<List<PeamanChat>> getChats(final String uid) {

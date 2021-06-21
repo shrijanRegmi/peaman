@@ -1,32 +1,54 @@
 import 'package:peaman/enums/message_type.dart';
 
 class PeamanMessage {
-  String? text;
-  final String? senderId;
-  final String? receiverId;
-  final int? milliseconds;
-  final PeamanMessageType? type;
+  final String? id;
+  final String text;
+  final String senderId;
+  final String receiverId;
+  final int milliseconds;
+  final PeamanMessageType type;
   PeamanMessage({
-    this.text,
-    this.senderId,
-    this.receiverId,
-    this.milliseconds,
-    this.type,
+    this.id,
+    required this.text,
+    required this.senderId,
+    required this.receiverId,
+    required this.milliseconds,
+    required this.type,
   });
 
-  static Map<String, dynamic> toJson(PeamanMessage message) {
+  PeamanMessage copyWith({
+    final String? id,
+    final String? text,
+    final String? senderId,
+    final String? receiverId,
+    final int? milliseconds,
+    final PeamanMessageType? type,
+  }) {
+    return PeamanMessage(
+      id: id ?? this.id,
+      text: text ?? this.text,
+      senderId: senderId ?? this.senderId,
+      receiverId: receiverId ?? this.receiverId,
+      milliseconds: milliseconds ?? this.milliseconds,
+      type: type ?? this.type,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
-      'text': message.text,
-      'senderId': message.senderId,
-      'receiverId': message.receiverId,
-      'milliseconds': message.milliseconds,
-      'type': message.type?.index,
+      'id': id,
+      'text': text,
+      'senderId': senderId,
+      'receiverId': receiverId,
+      'milliseconds': milliseconds,
+      'type': type.index,
     };
   }
 
   static PeamanMessage fromJson(Map<String, dynamic> data) {
-    if (data['type'] == PeamanMessageType?.Image.index) {
+    if (data['type'] == PeamanMessageType.Image.index) {
       return ImageMessage(
+        id: data['id'],
         text: data['text'],
         senderId: data['senderId'],
         receiverId: data['receiverId'],
@@ -35,6 +57,7 @@ class PeamanMessage {
       );
     }
     return TextMessage(
+      id: data['id'],
       text: data['text'],
       senderId: data['senderId'],
       receiverId: data['receiverId'],
@@ -45,19 +68,22 @@ class PeamanMessage {
 }
 
 class TextMessage extends PeamanMessage {
-  String? text;
-  final String? senderId;
-  final String? receiverId;
-  final int? milliseconds;
-  final PeamanMessageType? type;
+  final String? id;
+  final String text;
+  final String senderId;
+  final String receiverId;
+  final int milliseconds;
+  final PeamanMessageType type;
 
   TextMessage({
-    this.text,
-    this.senderId,
-    this.receiverId,
-    this.milliseconds,
-    this.type,
+    this.id,
+    required this.text,
+    required this.senderId,
+    required this.receiverId,
+    required this.milliseconds,
+    required this.type,
   }) : super(
+          id: id,
           text: text,
           senderId: senderId,
           receiverId: receiverId,
@@ -67,19 +93,22 @@ class TextMessage extends PeamanMessage {
 }
 
 class ImageMessage extends PeamanMessage {
-  String? text;
-  final String? senderId;
-  final String? receiverId;
-  final int? milliseconds;
-  final PeamanMessageType? type;
+  final String? id;
+  final String text;
+  final String senderId;
+  final String receiverId;
+  final int milliseconds;
+  final PeamanMessageType type;
 
   ImageMessage({
-    this.text,
-    this.senderId,
-    this.receiverId,
-    this.milliseconds,
-    this.type,
+    this.id,
+    required this.text,
+    required this.senderId,
+    required this.receiverId,
+    required this.milliseconds,
+    required this.type,
   }) : super(
+          id: id,
           text: text,
           senderId: senderId,
           receiverId: receiverId,
