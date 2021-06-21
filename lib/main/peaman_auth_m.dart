@@ -5,7 +5,7 @@ import 'package:peaman/services/auth_services/auth_provider.dart';
 class PAuthProvider {
   static final _auth = FirebaseAuth.instance;
 
-  static Future<void> loginWithEmailAndPassword(
+  static Future loginWithEmailAndPassword(
     final String email,
     final String password,
   ) async {
@@ -16,7 +16,7 @@ class PAuthProvider {
         .loginWithEmailAndPassword();
   }
 
-  static Future<void> signUpWithEmailAndPassword(
+  static Future signUpWithEmailAndPassword(
       final PeamanUser appUser, final String password) async {
     await AuthProvider(appUser: appUser, password: password)
         .signUpWithEmailAndPassword();
