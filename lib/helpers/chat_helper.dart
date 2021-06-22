@@ -13,8 +13,11 @@ class PChatHelper {
   }
 
   // get first user, second user
-  bool isAppUserFirstUser({final String? myId, final String? friendId}) {
-    final _result = myId?.compareTo(friendId ?? '');
-    return _result! > 0;
+  bool isAppUserFirstUser({
+    required final String myId,
+    required final String friendId,
+  }) {
+    final _result = myId.compareTo(friendId);
+    return _result > 0;
   }
 }

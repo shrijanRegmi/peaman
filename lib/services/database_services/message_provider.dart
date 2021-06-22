@@ -84,8 +84,10 @@ class MessageProvider {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
 
-      final bool _isAppUserFirstUser =
-          PChatHelper().isAppUserFirstUser(myId: myId, friendId: friendId);
+      final bool _isAppUserFirstUser = PChatHelper().isAppUserFirstUser(
+        myId: myId ?? '',
+        friendId: friendId ?? '',
+      );
 
       DocumentReference _firstUserRef;
       DocumentReference _secondUserRef;
@@ -121,8 +123,8 @@ class MessageProvider {
   }) async {
     try {
       final _isAppUserFirstUser = PChatHelper().isAppUserFirstUser(
-        myId: myId,
-        friendId: friendId,
+        myId: myId ?? '',
+        friendId: friendId ?? '',
       );
 
       final _chatRef = _ref.collection('chats').doc(chatId);
