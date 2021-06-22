@@ -23,3 +23,6 @@ export 'models/user_model.dart';
 export 'enums/message_type.dart';
 export 'enums/notification_type.dart';
 export 'enums/online_status.dart';
+
+// helpers
+export 'helpers/chat_helper.dart';
