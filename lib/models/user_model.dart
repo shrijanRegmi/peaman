@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/enums/online_status.dart';
 
 class PeamanUser {
-  final String? photoUrl;
   final String? uid;
+  final String? photoUrl;
   final String? name;
   final String? email;
   final String? profileStatus;
@@ -16,18 +16,18 @@ class PeamanUser {
   final bool? newFeeds;
 
   PeamanUser({
-    this.uid,
-    this.photoUrl,
-    this.name,
-    this.email,
-    this.profileStatus,
-    this.onlineStatus,
-    this.appUserRef,
-    this.photos,
-    this.followers,
-    this.following,
-    this.notifCount,
-    this.newFeeds,
+    required this.uid,
+    required this.photoUrl,
+    required this.name,
+    required this.email,
+    required this.appUserRef,
+    this.photos = 0,
+    this.profileStatus = '',
+    this.onlineStatus = PeamanOnlineStatus.away,
+    this.followers = 0,
+    this.following = 0,
+    this.notifCount = 0,
+    this.newFeeds = false,
   });
 
   PeamanUser copyWith({

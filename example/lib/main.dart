@@ -47,6 +47,7 @@ class HomeScreen extends StatelessWidget {
               MaterialButton(
                 onPressed: () async {
                   final _message = PeamanMessage(
+                    id: null,
                     text: 'new message more',
                     senderId: 'shrijan_regmi',
                     receiverId: 'ram_bahadur',

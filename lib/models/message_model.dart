@@ -8,7 +8,7 @@ class PeamanMessage {
   final int milliseconds;
   final PeamanMessageType type;
   PeamanMessage({
-    this.id,
+    required this.id,
     required this.text,
     required this.senderId,
     required this.receiverId,
@@ -76,7 +76,7 @@ class TextMessage extends PeamanMessage {
   final PeamanMessageType type;
 
   TextMessage({
-    this.id,
+    required this.id,
     required this.text,
     required this.senderId,
     required this.receiverId,
@@ -101,7 +101,7 @@ class ImageMessage extends PeamanMessage {
   final PeamanMessageType type;
 
   ImageMessage({
-    this.id,
+    required this.id,
     required this.text,
     required this.senderId,
     required this.receiverId,

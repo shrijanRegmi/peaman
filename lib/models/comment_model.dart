@@ -8,8 +8,13 @@ class PeamanComment {
   final String? comment;
   final int? updatedAt;
 
-  PeamanComment(
-      {this.id, this.user, this.userRef, this.comment, this.updatedAt});
+  PeamanComment({
+    required this.id,
+    required this.user,
+    required this.userRef,
+    required this.comment,
+    required this.updatedAt,
+  });
 
   PeamanComment copyWith({
     final String? id,

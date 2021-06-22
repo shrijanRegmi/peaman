@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/models/user_model.dart';
 
 class PeamanFeed {
-  String? id;
+  final String? id;
   final DocumentReference? feedRef;
   final String? ownerId;
   final DocumentReference? ownerRef;
@@ -18,19 +18,19 @@ class PeamanFeed {
   final bool? isSaved;
 
   PeamanFeed({
-    this.id,
-    this.feedRef,
-    this.ownerId,
-    this.ownerRef,
-    this.owner,
-    this.updatedAt,
-    this.caption,
-    this.photos,
-    this.initialReactor,
-    this.reactionCount,
+    required this.id,
+    required this.feedRef,
+    required this.ownerId,
+    required this.ownerRef,
+    required this.owner,
+    required this.updatedAt,
+    required this.caption,
+    required this.photos,
+    required this.initialReactor,
+    this.reactionCount = 0,
     this.reactorsPhoto = const [],
     this.isReacted = false,
-    this.isFeatured,
+    this.isFeatured = false,
     this.isSaved = false,
   });
 

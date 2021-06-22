@@ -13,16 +13,16 @@ class PeamanChat {
   final int? secondUserUnreadMessagesCount;
 
   PeamanChat({
-    this.firstUserRef,
-    this.secondUserRef,
-    this.firstUserTyping,
-    this.secondUserTyping,
-    this.lastMsgRef,
-    this.id,
-    this.firstUserPinnedSecondUser,
-    this.secondUserPinnedFirstUser,
-    this.firstUserUnreadMessagesCount,
-    this.secondUserUnreadMessagesCount,
+    required this.id,
+    required this.lastMsgRef,
+    required this.firstUserRef,
+    required this.secondUserRef,
+    this.firstUserTyping = false,
+    this.secondUserTyping = false,
+    this.firstUserPinnedSecondUser = false,
+    this.secondUserPinnedFirstUser = false,
+    this.firstUserUnreadMessagesCount = 0,
+    this.secondUserUnreadMessagesCount = 0,
   });
 
   Map<String, dynamic> toJson() {

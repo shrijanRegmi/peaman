@@ -7,10 +7,10 @@ class PeamanFollowRequest {
   final bool? isAccepted;
 
   PeamanFollowRequest({
-    this.id,
-    this.sender,
-    this.updatedAt,
-    this.isAccepted,
+    required this.id,
+    required this.sender,
+    required this.updatedAt,
+    required this.isAccepted,
   });
 
   static PeamanFollowRequest fromJson(

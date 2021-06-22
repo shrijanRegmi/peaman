@@ -10,14 +10,20 @@ class PAuthProvider {
     final String password,
   ) async {
     final _appUser = PeamanUser(
+      uid: null,
+      name: null,
       email: email,
+      photoUrl: null,
+      appUserRef: null,
     );
     return await AuthProvider(appUser: _appUser, password: password)
         .loginWithEmailAndPassword();
   }
 
   static Future signUpWithEmailAndPassword(
-      final PeamanUser appUser, final String password) async {
+    final PeamanUser appUser,
+    final String password,
+  ) async {
     await AuthProvider(appUser: appUser, password: password)
         .signUpWithEmailAndPassword();
   }
@@ -27,7 +33,15 @@ class PAuthProvider {
   }
 
   static PeamanUser? _userFromFirebase(User? user) {
-    return user != null ? PeamanUser(uid: user.uid) : null;
+    return user != null
+        ? PeamanUser(
+            uid: user.uid,
+            name: null,
+            email: null,
+            photoUrl: null,
+            appUserRef: null,
+          )
+        : null;
   }
 
   static Stream<PeamanUser?> get user {

@@ -13,15 +13,15 @@ class PeamanMoment {
   final int? views;
 
   PeamanMoment({
-    this.id,
-    this.photo,
-    this.owner,
-    this.ownerId,
-    this.ownerRef,
-    this.updatedAt,
-    this.expiresAt,
+    required this.id,
+    required this.photo,
+    required this.owner,
+    required this.ownerId,
+    required this.ownerRef,
+    required this.updatedAt,
+    required this.expiresAt,
     this.isSeen = false,
-    this.views,
+    this.views = 0,
   });
 
   PeamanMoment copyWith({

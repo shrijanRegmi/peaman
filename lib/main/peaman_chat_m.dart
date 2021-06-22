@@ -18,7 +18,9 @@ class PChatProvider {
   }
 
   static Future<void> updateChat(
-      final String chatId, final Map<String, dynamic> data) async {
+    final String chatId,
+    final Map<String, dynamic> data,
+  ) async {
     await MessageProvider(chatId: chatId).updateChatData(data);
   }
 

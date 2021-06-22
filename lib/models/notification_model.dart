@@ -14,15 +14,15 @@ class PeamanNotification {
   final bool? isRead;
 
   PeamanNotification({
-    this.id,
+    required this.id,
+    required this.type,
+    required this.updatedAt,
     this.sender,
-    this.type,
-    this.updatedAt,
-    this.isAccepted,
     this.reactedBy,
     this.commentedBy,
-    this.feed,
-    this.isRead,
+    required this.feed,
+    this.isRead = false,
+    this.isAccepted = false,
   });
 
   static PeamanNotification fromJson(

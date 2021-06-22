@@ -491,10 +491,9 @@ class FeedProvider {
   }
 
   // get posts by id
-  Future<List<PeamanFeed>?> getPostsById() async {
+  Future<List<PeamanFeed>> getPostsById() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _postsRef = _ref
           .collection('posts')
           .where('owner_id', isEqualTo: user?.uid)
@@ -506,19 +505,17 @@ class FeedProvider {
       _feeds = await _getFeedsList(_postSnap, isTimelinePosts: false);
 
       print('Success: Getting my posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting my posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get featured posts by id
-  Future<List<PeamanFeed>?> getFeaturedPostsById() async {
+  Future<List<PeamanFeed>> getFeaturedPostsById() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _featuredPosts = user?.appUserRef
           ?.collection('featured_posts')
           .orderBy('updated_at', descending: true)
@@ -528,21 +525,20 @@ class FeedProvider {
       _feeds = await _getFeedsList(_featuredPostsSnap);
 
       print('Success: Getting featured posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting featured posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get my timeline
-  Future<List<PeamanFeed>?> getTimeline() async {
+  Future<List<PeamanFeed>> getTimeline() async {
+    List<PeamanFeed> _feeds = [];
     try {
       AppUserProvider(uid: appUser?.uid ?? '').updateUserDetail(data: {
         'new_posts': false,
       });
-      List<PeamanFeed> _feeds = [];
 
       final _userRef = appUser?.appUserRef;
       final _timelineRef = _userRef
@@ -555,19 +551,17 @@ class FeedProvider {
       _feeds = await _getFeedsList(_timelineSnap);
 
       print('Success: Getting my posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting my posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get old featured posts by id
-  Future<List<PeamanFeed>?> getOldFeaturedPostsById() async {
+  Future<List<PeamanFeed>> getOldFeaturedPostsById() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _userRef = user?.appUserRef;
 
       final _featuredPostsRef = _userRef
@@ -579,19 +573,17 @@ class FeedProvider {
       _feeds = await _getFeedsList(_featuredPostsSnap);
 
       print('Success: Getting old featured posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting old featured posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get old posts by id
-  Future<List<PeamanFeed>?> getOldPostsById() async {
+  Future<List<PeamanFeed>> getOldPostsById() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _postsRef = _ref
           .collection('posts')
           .where('owner_id', isEqualTo: user?.uid)
@@ -603,19 +595,17 @@ class FeedProvider {
       _feeds = await _getFeedsList(_postSnap, isTimelinePosts: false);
 
       print('Success: Getting old posts by id');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting old posts by id');
-      return null;
     }
+    return _feeds;
   }
 
   // get old posts of timeline
-  Future<List<PeamanFeed>?> getOldTimelinePosts() async {
+  Future<List<PeamanFeed>> getOldTimelinePosts() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _userRef = appUser?.appUserRef;
 
       final _timelineRef = _userRef
@@ -627,19 +617,17 @@ class FeedProvider {
       _feeds = await _getFeedsList(_timelineSnap);
 
       print('Success: Getting old timeline posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting old timeline posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get new posts of timeline
-  Future<List<PeamanFeed>?> getNewTimelinePosts() async {
+  Future<List<PeamanFeed>> getNewTimelinePosts() async {
+    List<PeamanFeed> _feeds = [];
     try {
-      List<PeamanFeed> _feeds = [];
-
       final _userRef = appUser?.appUserRef;
 
       final _timelineRef = _userRef
@@ -651,12 +639,11 @@ class FeedProvider {
       _feeds = await _getFeedsList(_timelineSnap, isTimelinePosts: true);
 
       print('Success: Getting new timeline posts');
-      return _feeds;
     } catch (e) {
       print(e);
       print('Error!!!: Getting new timeline posts');
-      return null;
     }
+    return _feeds;
   }
 
   // get saved feeds
