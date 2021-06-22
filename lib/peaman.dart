@@ -7,6 +7,7 @@ export 'main/peaman_feed_m.dart';
 export 'main/peaman_friend_m.dart';
 export 'main/peaman_notif_m.dart';
 export 'main/peaman_user_m.dart';
+export 'main/peaman_initializer.dart';
 
 // models
 export 'models/chat_model.dart';
