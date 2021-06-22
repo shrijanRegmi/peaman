@@ -14,6 +14,7 @@ class PeamanUser {
   final int? following;
   final int? notifCount;
   final bool? newFeeds;
+  final List<String>? searchKeys;
 
   PeamanUser({
     required this.uid,
@@ -28,6 +29,7 @@ class PeamanUser {
     this.following = 0,
     this.notifCount = 0,
     this.newFeeds = false,
+    this.searchKeys = const [],
   });
 
   PeamanUser copyWith({
@@ -43,6 +45,7 @@ class PeamanUser {
     final int? following,
     final int? notifCount,
     final bool? newFeeds,
+    final List<String>? searchKeys,
   }) {
     return PeamanUser(
       uid: uid ?? this.uid,
@@ -57,6 +60,7 @@ class PeamanUser {
       following: following ?? this.following,
       notifCount: notifCount ?? this.notifCount,
       newFeeds: newFeeds ?? this.newFeeds,
+      searchKeys: searchKeys ?? this.searchKeys,
     );
   }
 
@@ -66,6 +70,7 @@ class PeamanUser {
       'photoUrl': photoUrl,
       'name': name,
       'email': email,
+      'search_keys': searchKeys,
     };
   }
 
@@ -96,6 +101,9 @@ class PeamanUser {
       following: data['following'] ?? 0,
       notifCount: data['notification_count'] ?? 0,
       newFeeds: data['new_posts'] ?? false,
+      searchKeys: data['search_keys'] != null
+          ? List<String>.from(data['search_keys'])
+          : [],
     );
   }
 
