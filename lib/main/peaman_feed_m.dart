@@ -5,7 +5,7 @@ import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/database_services/feed_provider.dart';
 
 class PFeedProvider {
-  static Future createFeed(
+  static Future<PeamanFeed?> createFeed(
     final PeamanUser appUser,
     final PeamanFeed feed,
   ) async {
@@ -19,7 +19,7 @@ class PFeedProvider {
     return await FeedProvider(feed: feed, appUser: appUser).deletePost();
   }
 
-  static Future createMoment(
+  static Future<PeamanMoment?> createMoment(
     final PeamanUser appUser,
     final PeamanMoment moment,
   ) async {
@@ -30,7 +30,7 @@ class PFeedProvider {
     final PeamanUser appUser,
     final PeamanMoment moment,
   ) async {
-    return await FeedProvider(moment: moment, appUser: appUser).createMoment();
+    return await FeedProvider(moment: moment, appUser: appUser).viewMoment();
   }
 
   static Future reactToFeed(
