@@ -213,12 +213,18 @@ class MessageProvider {
     }
   }
 
-  // message from firebase
-  List<PeamanMessage> _messageFromFirebase(
+  // messages from firebase
+  List<PeamanMessage> _messagesFromFirebase(
       QuerySnapshot<Map<String, dynamic>> snap) {
     return snap.docs.map((doc) {
       return PeamanMessage.fromJson(doc.data());
     }).toList();
+  }
+
+  // single message from firebase
+  PeamanMessage _messageFromFirebase(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    return PeamanMessage.fromJson(doc.data() ?? {});
   }
 
   // message from firebase
@@ -243,6 +249,17 @@ class MessageProvider {
         .collection('messages')
         .orderBy('milliseconds', descending: true)
         .limit(limit)
+        .snapshots()
+        .map(_messagesFromFirebase);
+  }
+
+  // stream of message;
+  Stream<PeamanMessage> message(final String messageId) {
+    return _ref
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .doc(messageId)
         .snapshots()
         .map(_messageFromFirebase);
   }

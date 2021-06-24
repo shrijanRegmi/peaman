@@ -47,4 +47,11 @@ class PChatProvider {
   static Stream<List<PeamanChat>> getChats(final String uid) {
     return MessageProvider(appUserId: uid).chatList;
   }
+
+  static Stream<PeamanMessage> getSingleMessageById(
+    final String chatId,
+    final String messageId,
+  ) {
+    return MessageProvider(chatId: chatId).message(messageId);
+  }
 }
