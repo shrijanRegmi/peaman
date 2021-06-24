@@ -1,0 +1,4 @@
+enum PeamanChatUser {
+  first,
+  second,
+}

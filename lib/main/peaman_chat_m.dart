@@ -1,3 +1,5 @@
+import 'package:peaman/enums/chat_user.dart';
+import 'package:peaman/enums/typing_state.dart';
 import 'package:peaman/models/chat_model.dart';
 import 'package:peaman/models/message_model.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
@@ -13,8 +15,19 @@ class PChatProvider {
     ).sendMessage(message: message);
   }
 
-  static Future<void> readMessage(final String chatId) async {
-    await MessageProvider(chatId: chatId).readChatMessage();
+  static Future<void> readMessage(
+    final String chatId,
+    final PeamanChatUser chatUser,
+  ) async {
+    await MessageProvider(chatId: chatId).readChatMessage(chatUser);
+  }
+
+  static Future<void> setTyping(
+    final String chatId,
+    final PeamanChatUser chatUser,
+    final PeamanTypingState typingState,
+  ) async {
+    await MessageProvider(chatId: chatId).setTyping(chatUser, typingState);
   }
 
   static Future<void> updateChat(

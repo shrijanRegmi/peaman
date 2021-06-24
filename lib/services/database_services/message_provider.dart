@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peaman/enums/chat_user.dart';
+import 'package:peaman/enums/typing_state.dart';
 import 'package:peaman/helpers/chat_helper.dart';
 import 'package:peaman/models/chat_model.dart';
 import 'package:peaman/models/message_model.dart';
@@ -57,9 +59,10 @@ class MessageProvider {
         );
       }
 
-      final _message = message.copyWith(id: _messagesRef.id).toJson();
+      final _lastMsgRef = _messagesRef.doc();
+      final _message = message.copyWith(id: _lastMsgRef.id).toJson();
 
-      final _lastMsgRef = await _messagesRef.add(_message);
+      _lastMsgRef.set(_message);
 
       _chatRef.update({'last_updated': DateTime.now()});
       _chatRef.update({'last_msg_ref': _lastMsgRef});
@@ -166,10 +169,43 @@ class MessageProvider {
   }
 
   // read chat message
-  Future readChatMessage() async {
+  Future readChatMessage(
+    final PeamanChatUser chatUser,
+  ) async {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
-      await _chatRef.update({});
+      var _data = <String, dynamic>{};
+
+      if (chatUser == PeamanChatUser.first) {
+        _data['first_user_unread_messages_count'] = 0;
+      } else {
+        _data['second_user_unread_messages_count'] = 0;
+      }
+
+      await _chatRef.update(_data);
+      print('Success: Reading message by user');
+    } catch (e) {
+      print(e);
+      print('Error: Reading message by user');
+    }
+  }
+
+  // read chat message
+  Future setTyping(
+    final PeamanChatUser chatUser,
+    final PeamanTypingState typingState,
+  ) async {
+    try {
+      final _chatRef = _ref.collection('chats').doc(chatId);
+      var _data = <String, dynamic>{};
+
+      if (chatUser == PeamanChatUser.first) {
+        _data['first_user_typing'] = typingState == PeamanTypingState.typing;
+      } else {
+        _data['second_user_typing'] = typingState == PeamanTypingState.typing;
+      }
+
+      await _chatRef.update(_data);
       print('Success: Reading message by user');
     } catch (e) {
       print(e);

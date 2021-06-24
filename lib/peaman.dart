@@ -23,6 +23,8 @@ export 'models/user_model.dart';
 export 'enums/message_type.dart';
 export 'enums/notification_type.dart';
 export 'enums/online_status.dart';
+export 'enums/chat_user.dart';
+export 'enums/typing_state.dart';
 
 // helpers
 export 'helpers/chat_helper.dart';
