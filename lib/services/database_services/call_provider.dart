@@ -52,7 +52,7 @@ class CallProvider {
 
   // add call to collection
   Future _addToCollection() async {
-    final _id = PChatHelper().getChatId(
+    final _id = PChatHelper.getChatId(
       myId: appUser?.uid ?? '',
       friendId: friend?.uid ?? '',
     );
@@ -75,7 +75,7 @@ class CallProvider {
   // send call to users
   Future _sendCalltoUsers(final DocumentReference? userRef) async {
     try {
-      final _id = PChatHelper().getChatId(
+      final _id = PChatHelper.getChatId(
         myId: appUser?.uid ?? '',
         friendId: friend?.uid ?? '',
       );

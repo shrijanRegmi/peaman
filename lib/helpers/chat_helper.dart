@@ -1,6 +1,6 @@
 class PChatHelper {
   // get chat id from user's and friend's id;
-  String getChatId({
+  static String getChatId({
     required final String myId,
     required final String friendId,
   }) {
@@ -13,7 +13,7 @@ class PChatHelper {
   }
 
   // get first user, second user
-  bool isAppUserFirstUser({
+  static bool isAppUserFirstUser({
     required final String myId,
     required final String friendId,
   }) {

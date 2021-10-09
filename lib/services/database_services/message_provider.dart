@@ -31,7 +31,7 @@ class MessageProvider {
       if (_messagesDocs.docs.length == 0) {
         await _chatRef.set({'id': chatId});
       }
-      final bool _isAppUserFirstUser = PChatHelper().isAppUserFirstUser(
+      final bool _isAppUserFirstUser = PChatHelper.isAppUserFirstUser(
           myId: message.senderId, friendId: message.receiverId);
 
       final _chatSnap = await _chatRef.get();
@@ -87,7 +87,7 @@ class MessageProvider {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
 
-      final bool _isAppUserFirstUser = PChatHelper().isAppUserFirstUser(
+      final bool _isAppUserFirstUser = PChatHelper.isAppUserFirstUser(
         myId: myId ?? '',
         friendId: friendId ?? '',
       );
@@ -125,7 +125,7 @@ class MessageProvider {
     final String? friendId,
   }) async {
     try {
-      final _isAppUserFirstUser = PChatHelper().isAppUserFirstUser(
+      final _isAppUserFirstUser = PChatHelper.isAppUserFirstUser(
         myId: myId ?? '',
         friendId: friendId ?? '',
       );
