@@ -110,6 +110,9 @@ class PeamanUser {
       photoUrl: data['photoUrl'],
       name: data['name'],
       email: data['email'],
+      phone: data['phone'],
+      country: data['country'],
+      bio: data['bio'],
       onlineStatus: data['active_status'] == 1
           ? PeamanOnlineStatus.active
           : PeamanOnlineStatus.away,
