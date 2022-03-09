@@ -7,16 +7,16 @@ class PUserProvider {
   static final _auth = FirebaseAuth.instance;
   static final _uid = _auth.currentUser?.uid;
 
-  static Future<void> setUserOnlineStatus(
-    final PeamanOnlineStatus onlineStatus,
-  ) async {
+  static Future<void> setUserOnlineStatus({
+    required final PeamanOnlineStatus onlineStatus,
+  }) async {
     return AppUserProvider(uid: _uid)
         .setUserActiveStatus(onlineStatus: onlineStatus);
   }
 
-  static Future<void> updateUserData(
-    final Map<String, dynamic> data,
-  ) async {
+  static Future<void> updateUserData({
+    required final Map<String, dynamic> data,
+  }) async {
     return AppUserProvider(uid: _uid).updateUserDetail(data: data);
   }
 
