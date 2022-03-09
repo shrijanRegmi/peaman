@@ -36,6 +36,8 @@ class StorageProvider {
         print('Error!!!: Uploading image to firebase storage');
       }
     }
+
+    return null;
   }
 
   // save files to firebase storage
@@ -65,5 +67,7 @@ class StorageProvider {
         }
       }
     }
+
+    return null;
   }
 }

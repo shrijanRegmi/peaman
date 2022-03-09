@@ -14,14 +14,14 @@ class PeamanUser {
   final int? following;
   final int? notifCount;
   final bool? newFeeds;
-  final List<String>? searchKeys;
+  final List<String> searchKeys;
 
   PeamanUser({
-    required this.uid,
-    required this.photoUrl,
-    required this.name,
-    required this.email,
-    required this.appUserRef,
+    this.uid,
+    this.photoUrl,
+    this.name,
+    this.email,
+    this.appUserRef,
     this.photos = 0,
     this.profileStatus = '',
     this.onlineStatus = PeamanOnlineStatus.away,
@@ -101,9 +101,7 @@ class PeamanUser {
       following: data['following'] ?? 0,
       notifCount: data['notification_count'] ?? 0,
       newFeeds: data['new_posts'] ?? false,
-      searchKeys: data['search_keys'] != null
-          ? List<String>.from(data['search_keys'])
-          : [],
+      searchKeys: List<String>.from(data['search_keys'] ?? []),
     );
   }
 
@@ -113,7 +111,8 @@ class PeamanUser {
   }
 
   Future<PeamanUser?> fromRef(
-      final DocumentReference<Map<String, dynamic>> userRef) async {
+    final DocumentReference<Map<String, dynamic>> userRef,
+  ) async {
     final _userSnap = await userRef.get();
 
     if (_userSnap.exists) {
@@ -122,5 +121,7 @@ class PeamanUser {
         return PeamanUser.fromJson(_userData);
       }
     }
+
+    return null;
   }
 }

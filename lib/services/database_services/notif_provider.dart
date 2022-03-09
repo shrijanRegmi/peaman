@@ -19,10 +19,10 @@ class NotificationProvider {
 
   Future readNotification() async {
     try {
-      final _notifRef = appUser?.appUserRef
-          ?.collection('notifications')
-          .doc(notification?.id);
-      await _notifRef?.update({
+      final _appUserRef = _ref.collection('users').doc(appUser?.uid);
+      final _notifRef =
+          _appUserRef.collection('notifications').doc(notification?.id);
+      await _notifRef.update({
         'is_read': true,
       });
       print('Success: Reading notification ${notification?.id}');

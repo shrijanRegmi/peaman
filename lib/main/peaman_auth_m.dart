@@ -9,13 +9,7 @@ class PAuthProvider {
     final String email,
     final String password,
   ) async {
-    final _appUser = PeamanUser(
-      uid: null,
-      name: null,
-      email: email,
-      photoUrl: null,
-      appUserRef: null,
-    );
+    final _appUser = PeamanUser(email: email);
     return await AuthProvider(appUser: _appUser, password: password)
         .loginWithEmailAndPassword();
   }
