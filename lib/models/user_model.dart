@@ -6,6 +6,9 @@ class PeamanUser {
   final String? photoUrl;
   final String? name;
   final String? email;
+  final String? phone;
+  final String? country;
+  final String? bio;
   final String? profileStatus;
   final PeamanOnlineStatus? onlineStatus;
   final DocumentReference? appUserRef;
@@ -21,6 +24,9 @@ class PeamanUser {
     this.photoUrl,
     this.name,
     this.email,
+    this.phone,
+    this.country,
+    this.bio,
     this.appUserRef,
     this.photos = 0,
     this.profileStatus = '',
@@ -37,6 +43,9 @@ class PeamanUser {
     final String? photoUrl,
     final String? name,
     final String? email,
+    final String? phone,
+    final String? country,
+    final String? bio,
     final String? profileStatus,
     final PeamanOnlineStatus? onlineStatus,
     final DocumentReference? appUserRef,
@@ -52,6 +61,9 @@ class PeamanUser {
       photoUrl: photoUrl ?? this.photoUrl,
       name: name ?? this.name,
       email: email ?? this.email,
+      phone: phone ?? this.phone,
+      country: phone ?? this.phone,
+      bio: bio ?? this.bio,
       profileStatus: profileStatus ?? this.profileStatus,
       onlineStatus: onlineStatus ?? this.onlineStatus,
       appUserRef: appUserRef ?? this.appUserRef,
