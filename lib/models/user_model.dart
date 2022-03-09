@@ -62,7 +62,7 @@ class PeamanUser {
       name: name ?? this.name,
       email: email ?? this.email,
       phone: phone ?? this.phone,
-      country: phone ?? this.phone,
+      country: country ?? this.country,
       bio: bio ?? this.bio,
       profileStatus: profileStatus ?? this.profileStatus,
       onlineStatus: onlineStatus ?? this.onlineStatus,
