@@ -77,13 +77,20 @@ class PeamanUser {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final _data = {
       'uid': uid,
       'photoUrl': photoUrl,
       'name': name,
       'email': email,
+      'phone': phone,
+      'country': country,
+      'bio': bio,
       'search_keys': searchKeys,
     };
+
+    _data.removeWhere((key, value) => value == null);
+
+    return _data;
   }
 
   Map<String, dynamic> toFeedUser() {
