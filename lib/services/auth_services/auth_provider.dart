@@ -23,7 +23,6 @@ class AuthProvider {
 
       final _user = appUser?.copyWith(
         uid: _result.user?.uid,
-        searchKeys: _getSearchKeys(appUser?.name ?? ''),
       );
 
       await AppUserProvider(user: _user).sendUserToFirestore();
@@ -59,16 +58,6 @@ class AuthProvider {
   Future logOut() async {
     print('Success: Logging out user');
     return await _auth.signOut();
-  }
-
-  // get search keys
-  List<String> _getSearchKeys(final String name) {
-    final _searchKeys = <String>[];
-    for (int i = 0; i < name.length; i++) {
-      final _val = name.substring(0, i + 1);
-      _searchKeys.add(_val.toUpperCase());
-    }
-    return _searchKeys;
   }
 
   // user from firebase

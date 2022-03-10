@@ -32,8 +32,9 @@ class AppUserProvider {
   }
 
   // set user active status
-  Future setUserActiveStatus(
-      {@required PeamanOnlineStatus? onlineStatus}) async {
+  Future setUserActiveStatus({
+    @required PeamanOnlineStatus? onlineStatus,
+  }) async {
     try {
       final _userRef = _ref.collection('users').doc(uid);
       final _status = {
