@@ -251,12 +251,19 @@ class FeedProvider {
           .doc(uid)
           .collection('saved_posts')
           .doc(feed?.id);
+      final _feedSavesRef =
+          _ref.collection('posts').doc(feed?.id).collection('saves').doc(uid);
 
       final _data = {
         'id': feed?.id,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
+      final _feedSaveData = {
+        'uid': uid,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
 
+      await _feedSavesRef.set(_feedSaveData);
       await _savedPostRef.set(_data);
       await _updatePostPropertiesCount(savesCount: 1);
       print('Success: Saving feed? ${feed?.id}');
@@ -276,9 +283,12 @@ class FeedProvider {
           .doc(uid)
           .collection('saved_posts')
           .doc(feed?.id);
+      final _feedSavesRef =
+          _ref.collection('posts').doc(feed?.id).collection('saves').doc(uid);
 
+      await _feedSavesRef.delete();
       await _savedPostRef.delete();
-      await _updatePostPropertiesCount(commentsCount: -1);
+      await _updatePostPropertiesCount(savesCount: -1);
       print('Success: Deleting saved feed? ${feed?.id}');
       return feed;
     } catch (e) {
@@ -753,6 +763,48 @@ class FeedProvider {
       print('Error!!!: Getting all comments');
       return null;
     }
+  }
+
+  // get reaction by id
+  Future<PeamanReaction?> getReactionById(final String reactedById) async {
+    PeamanReaction? _reaction;
+    try {
+      final _postRef = _ref.collection('posts').doc(feed?.id);
+      final _reactionRef = _postRef.collection('reactions').doc(reactedById);
+      final _reactionSnap = await _reactionRef.get();
+
+      if (_reactionSnap.exists) {
+        final _reactionData = _reactionSnap.data() ?? {};
+        _reaction = PeamanReaction.fromJson(_reactionData);
+      } else {
+        throw Future.error('No reaction for the given id found');
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: Getting reaction by id');
+    }
+    return _reaction;
+  }
+
+  // get saved by id
+  Future<PeamanFeedSaves?> getFeedSavesById(final String savedById) async {
+    PeamanFeedSaves? _postSaves;
+    try {
+      final _postRef = _ref.collection('posts').doc(feed?.id);
+      final _postSavesRef = _postRef.collection('saves').doc(savedById);
+      final _postSavesSnap = await _postSavesRef.get();
+
+      if (_postSavesSnap.exists) {
+        final _postSavesData = _postSavesSnap.data() ?? {};
+        _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
+      } else {
+        throw Future.error('No feed saves for the given id found');
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: Getting reaction by id');
+    }
+    return _postSaves;
   }
 
   // list of feeds from firestore

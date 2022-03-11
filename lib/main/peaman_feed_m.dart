@@ -146,6 +146,20 @@ class PFeedProvider {
         .getOldFeaturedPostsById();
   }
 
+  static Future<PeamanReaction?> getReactionById({
+    required final PeamanFeed feed,
+    required final String reactedById,
+  }) async {
+    return await FeedProvider(feed: feed).getReactionById(reactedById);
+  }
+
+  static Future<PeamanFeedSaves?> getFeedSavesById({
+    required final PeamanFeed feed,
+    required final String reactedById,
+  }) async {
+    return await FeedProvider(feed: feed).getFeedSavesById(reactedById);
+  }
+
   static Stream<List<PeamanFeed>> getAllFeeds({final PeamanQuery? query}) {
     return FeedProvider().allFeeds(query: query);
   }
