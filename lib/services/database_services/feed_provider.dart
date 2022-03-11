@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/models/comment_model.dart';
-import 'package:peaman/models/feed_model.dart';
-import 'package:peaman/models/moment_model.dart';
-import 'package:peaman/models/user_model.dart';
+import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
 class FeedProvider {
@@ -717,6 +714,13 @@ class FeedProvider {
     }
   }
 
+  // list of feeds from firestore
+  List<PeamanFeed> _feedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
+  }
+
   // list of app user from firebase
   List<PeamanUser> _usersFromFirebase(
     final QuerySnapshot<Map<String, dynamic>> colSnap,
@@ -726,7 +730,7 @@ class FeedProvider {
     }).toList();
   }
 
-  // stream of moment? viewers
+  // stream of moment viewers
   Stream<List<PeamanUser>> get momentViewers {
     return _ref
         .collection('moments')
@@ -734,5 +738,19 @@ class FeedProvider {
         .collection('seen_users')
         .snapshots()
         .map(_usersFromFirebase);
+  }
+
+  // stream of all feeds
+  Stream<List<PeamanFeed>> allFeeds({final PeamanQuery? query}) {
+    final _query = query ??
+        PeamanQuery(
+          orderBy: 'updated_at',
+          descending: true,
+        );
+    return _ref
+        .collection('posts')
+        .orderBy(_query.orderBy, descending: _query.descending)
+        .snapshots()
+        .map(_feedsFromFirebase);
   }
 }

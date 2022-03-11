@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:peaman/models/comment_model.dart';
-import 'package:peaman/models/feed_model.dart';
-import 'package:peaman/models/moment_model.dart';
-import 'package:peaman/models/user_model.dart';
+import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/feed_provider.dart';
 
 class PFeedProvider {
@@ -90,7 +87,8 @@ class PFeedProvider {
   }
 
   static Future<List<PeamanFeed>> getFeedsTimeline(
-      final PeamanUser appUser) async {
+    final PeamanUser appUser,
+  ) async {
     final _uid = _auth.currentUser?.uid;
     return await FeedProvider(uid: _uid).getTimeline();
   }
@@ -146,5 +144,9 @@ class PFeedProvider {
     final _uid = _auth.currentUser?.uid;
     return await FeedProvider(uid: _uid, feed: lastFeed)
         .getOldFeaturedPostsById();
+  }
+
+  static Stream<List<PeamanFeed>> getAllFeeds({final PeamanQuery? query}) {
+    return FeedProvider().allFeeds(query: query);
   }
 }

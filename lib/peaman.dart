@@ -22,6 +22,7 @@ export 'models/user_model.dart';
 export 'models/follower_model.dart';
 export 'models/following_model.dart';
 export 'models/follow_request_model.dart';
+export 'models/query_model.dart';
 
 // enums
 export 'enums/message_type.dart';
