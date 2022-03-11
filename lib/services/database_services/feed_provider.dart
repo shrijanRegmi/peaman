@@ -194,6 +194,7 @@ class FeedProvider {
       final _comment = comment.copyWith(id: _commentRef.id);
 
       await _commentRef.set(_comment.toJson());
+      await _updatePostPropertiesCount(commentsCount: 1);
       print('Success: Commenting in post ${feed?.id}');
       return 'Success';
     } catch (e) {
@@ -252,11 +253,12 @@ class FeedProvider {
           .doc(feed?.id);
 
       final _data = {
-        'post_ref': feed?.feedRef,
+        'id': feed?.id,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
       await _savedPostRef.set(_data);
+      await _updatePostPropertiesCount(savesCount: 1);
       print('Success: Saving feed? ${feed?.id}');
       return feed;
     } catch (e) {
@@ -276,6 +278,7 @@ class FeedProvider {
           .doc(feed?.id);
 
       await _savedPostRef.delete();
+      await _updatePostPropertiesCount(commentsCount: -1);
       print('Success: Deleting saved feed? ${feed?.id}');
       return feed;
     } catch (e) {
@@ -306,7 +309,45 @@ class FeedProvider {
     }
   }
 
-  // update moment? views count
+  // update post properties count
+  Future _updatePostPropertiesCount({
+    final int? reactionsCount,
+    final int? commentsCount,
+    final int? savesCount,
+    final int? sharesCount,
+    final int? viewsCount,
+  }) async {
+    try {
+      final _postsRef = _ref.collection('posts').doc(feed?.id);
+      final _data = <String, dynamic>{};
+
+      if (reactionsCount != null) {
+        _data['reactions_count'] = FieldValue.increment(reactionsCount);
+      }
+      if (commentsCount != null) {
+        _data['comments_count'] = FieldValue.increment(commentsCount);
+      }
+      if (savesCount != null) {
+        _data['saves_count'] = FieldValue.increment(savesCount);
+      }
+      if (sharesCount != null) {
+        _data['shares_count'] = FieldValue.increment(sharesCount);
+      }
+      if (viewsCount != null) {
+        _data['views_count'] = FieldValue.increment(viewsCount);
+      }
+
+      if (_data.isNotEmpty) {
+        await _postsRef.update(_data);
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: post properties count of ${feed?.id}');
+      return null;
+    }
+  }
+
+  // update moment views count
   Future _updateMomentViewsCount() async {
     try {
       final _momentRef = _ref.collection('moments').doc(moment?.id);

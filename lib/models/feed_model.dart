@@ -10,7 +10,11 @@ class PeamanFeed {
   final String? caption;
   final List<String>? photos;
   final PeamanUser? initialReactor;
-  final int? reactionCount;
+  final int reactionCount;
+  final int commentsCount;
+  final int savesCount;
+  final int sharesCount;
+  final int viewsCount;
   final List<String>? reactorsPhoto;
   final bool? isReacted;
   final bool? isFeatured;
@@ -26,6 +30,10 @@ class PeamanFeed {
     this.photos,
     this.initialReactor,
     this.reactionCount = 0,
+    this.commentsCount = 0,
+    this.savesCount = 0,
+    this.sharesCount = 0,
+    this.viewsCount = 0,
     this.reactorsPhoto = const [],
     this.isReacted = false,
     this.isFeatured = false,
@@ -42,6 +50,10 @@ class PeamanFeed {
     final List<String>? photos,
     final PeamanUser? initialReactor,
     final int? reactionCount,
+    final int? commentsCount,
+    final int? savesCount,
+    final int? sharesCount,
+    final int? viewsCount,
     final List<String>? reactorsPhoto,
     final bool? isReacted,
     final bool? isFeatured,
@@ -57,6 +69,10 @@ class PeamanFeed {
       photos: photos ?? this.photos,
       initialReactor: initialReactor ?? this.initialReactor,
       reactionCount: reactionCount ?? this.reactionCount,
+      commentsCount: commentsCount ?? this.commentsCount,
+      savesCount: savesCount ?? this.savesCount,
+      sharesCount: sharesCount ?? this.sharesCount,
+      viewsCount: viewsCount ?? this.viewsCount,
       reactorsPhoto: reactorsPhoto ?? this.reactorsPhoto,
       isReacted: isReacted ?? this.isReacted,
       isFeatured: isFeatured ?? this.isFeatured,
@@ -78,6 +94,10 @@ class PeamanFeed {
           ? null
           : PeamanUser.fromJson(data['init_reactor']),
       reactionCount: data['reaction_count'] ?? 0,
+      commentsCount: data['comments_count'] ?? 0,
+      savesCount: data['saves_count'] ?? 0,
+      sharesCount: data['shares_count'] ?? 0,
+      viewsCount: data['views_count'] ?? 0,
       reactorsPhoto: List<String>.from(data['reactors_photo'] ?? []),
       isReacted: data['is_reacted'] ?? false,
       isFeatured: data['is_featured'] ?? false,
