@@ -5,7 +5,6 @@ class PeamanFeed {
   final String? id;
   final DocumentReference? feedRef;
   final String? ownerId;
-  final DocumentReference? ownerRef;
   final PeamanUser? owner;
   final int? updatedAt;
   final String? caption;
@@ -18,15 +17,14 @@ class PeamanFeed {
   final bool? isSaved;
 
   PeamanFeed({
-    required this.id,
-    required this.feedRef,
-    required this.ownerId,
-    required this.ownerRef,
-    required this.owner,
-    required this.updatedAt,
-    required this.caption,
-    required this.photos,
-    required this.initialReactor,
+    this.id,
+    this.feedRef,
+    this.ownerId,
+    this.owner,
+    this.updatedAt,
+    this.caption,
+    this.photos,
+    this.initialReactor,
     this.reactionCount = 0,
     this.reactorsPhoto = const [],
     this.isReacted = false,
@@ -38,7 +36,6 @@ class PeamanFeed {
     String? id,
     final DocumentReference? feedRef,
     final String? ownerId,
-    final DocumentReference? ownerRef,
     final PeamanUser? owner,
     final int? updatedAt,
     final String? caption,
@@ -54,7 +51,6 @@ class PeamanFeed {
       id: id ?? this.id,
       feedRef: feedRef ?? this.feedRef,
       ownerId: ownerId ?? this.ownerId,
-      ownerRef: ownerRef ?? this.ownerRef,
       owner: owner ?? this.owner,
       updatedAt: updatedAt ?? this.updatedAt,
       caption: caption ?? this.caption,
@@ -77,7 +73,6 @@ class PeamanFeed {
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
       caption: data['caption'] ?? '',
       photos: List<String>.from(data['photos'] ?? []),
-      ownerRef: data['owner_ref'],
       owner: data['owner'] == null ? null : PeamanUser.fromJson(data['owner']),
       initialReactor: data['init_reactor'] == null
           ? null
@@ -93,7 +88,6 @@ class PeamanFeed {
     return {
       'id': id,
       'owner_id': ownerId,
-      'owner_ref': ownerRef,
       'updated_at': updatedAt,
       'caption': caption,
       'photos': photos,

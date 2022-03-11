@@ -43,9 +43,9 @@ class StorageProvider {
   // save files to firebase storage
   Future<List<String>?> uploadFiles() async {
     final _downloadUrls = <String>[];
-    if (path != null) {
-      for (final file in (files ?? [])) {
-        try {
+    try {
+      if (path != null) {
+        for (final file in (files ?? [])) {
           final _storage = FirebaseStorage.instance;
           final _ref = _storage.ref().child(path!);
           final _uploadTask = _ref.putFile(file);
@@ -59,15 +59,16 @@ class StorageProvider {
           await _uploadTask.whenComplete(() => print('Upload Complete'));
           final _downloadUrl = await _ref.getDownloadURL();
           _downloadUrls.add(_downloadUrl);
-
-          return _downloadUrls;
-        } catch (e) {
-          print(e);
-          print('Error!!!: Uploading image to firebase storage');
         }
+      } else {
+        throw Future.error('Path was not provided');
       }
-    }
 
+      return _downloadUrls;
+    } catch (e) {
+      print(e);
+      print('Error!!!: Uploading image to firebase storage');
+    }
     return null;
   }
 }
