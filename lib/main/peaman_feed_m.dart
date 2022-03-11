@@ -62,18 +62,18 @@ class PFeedProvider {
     return await FeedProvider(feed: feed, uid: _uid).commentPost(comment);
   }
 
-  static Future saveFeed(
-    final PeamanUser appUser,
-    final PeamanFeed feed,
-  ) async {
+  static Future saveFeed({
+    required final PeamanUser appUser,
+    required final PeamanFeed feed,
+  }) async {
     final _uid = _auth.currentUser?.uid;
     return await FeedProvider(feed: feed, uid: _uid).savePost();
   }
 
-  static Future deleteSavedFeed(
-    final PeamanUser appUser,
-    final PeamanFeed feed,
-  ) async {
+  static Future unsaveFeed({
+    required final PeamanUser appUser,
+    required final PeamanFeed feed,
+  }) async {
     final _uid = _auth.currentUser?.uid;
     return await FeedProvider(feed: feed, uid: _uid).removeSavedPost();
   }
