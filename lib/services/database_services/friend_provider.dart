@@ -14,10 +14,11 @@ class FriendProvider {
   Future follow() async {
     try {
       final _friendRef = _ref.collection('users').doc(friendId);
-      final _requestRef = _friendRef.collection('requests').doc(appUserId);
+      final _requestRef =
+          _friendRef.collection('follow_requests').doc(appUserId);
 
       final _data = {
-        'id': appUserId,
+        'uid': appUserId,
         'created_at': DateTime.now().millisecondsSinceEpoch,
       };
 
@@ -34,14 +35,12 @@ class FriendProvider {
   Future acceptFollow() async {
     try {
       final _userRef = _ref.collection('users').doc(appUserId);
-      final _requestRef = _userRef.collection('requests').doc(friendId);
       final _followRequestRef =
           _userRef.collection('follow_requests').doc(friendId);
 
       await _followRequestRef.update({
         'is_accepted': true,
       });
-      await _requestRef.delete();
       print('Success: Deleting request doc with id $friendId');
 
       _addFollower();
@@ -59,11 +58,8 @@ class FriendProvider {
     try {
       final _friendRef = _ref.collection('users').doc(friendId);
       final _userRef = _ref.collection('users').doc(appUserId);
-      final _followReqRef = _ref
-          .collection('users')
-          .doc(appUserId)
-          .collection('follow_requests')
-          .doc(friendId);
+      final _followReqRef =
+          _userRef.collection('follow_requests').doc(friendId);
 
       final _friendFollowersRef =
           _friendRef.collection('followers').doc(appUserId);
@@ -72,11 +68,11 @@ class FriendProvider {
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
       await _friendFollowersRef.set({
-        'id': appUserId,
+        'uid': appUserId,
         'updated_at': _milli,
       });
       await _userFollowingRef.set({
-        'id': appUserId,
+        'uid': appUserId,
         'updated_at': _milli,
       });
 
@@ -102,11 +98,9 @@ class FriendProvider {
   Future cancleFollow() async {
     try {
       final _userRef = _ref.collection('users').doc(appUserId);
-      final _requestRef = _userRef.collection('requests').doc(friendId);
       final _followReqRef =
           _userRef.collection('follow_requests').doc(friendId);
 
-      await _requestRef.delete();
       await _followReqRef.delete();
       print('Success: Deleting request doc with id $friendId');
       return 'Success';
@@ -130,11 +124,11 @@ class FriendProvider {
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
       await _userFollowersRef.set({
-        'id': friendId,
+        'uid': friendId,
         'updated_at': _milli,
       });
       await _friendFollowingRef.set({
-        'id': appUserId,
+        'uid': appUserId,
         'updated_at': _milli,
       });
 

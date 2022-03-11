@@ -14,11 +14,14 @@ export 'main/peaman_storage_m.dart';
 export 'models/chat_model.dart';
 export 'models/comment_model.dart';
 export 'models/feed_model.dart';
-export 'models/follow_request_model.dart';
+export 'models/follow_request_notification_model.dart';
 export 'models/message_model.dart';
 export 'models/moment_model.dart';
 export 'models/notification_model.dart';
 export 'models/user_model.dart';
+export 'models/follower_model.dart';
+export 'models/following_model.dart';
+export 'models/follow_request_model.dart';
 
 // enums
 export 'enums/message_type.dart';

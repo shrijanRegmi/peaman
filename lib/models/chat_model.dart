@@ -13,10 +13,10 @@ class PeamanChat {
   final int? secondUserUnreadMessagesCount;
 
   PeamanChat({
-    required this.id,
-    required this.lastMsgRef,
-    required this.firstUserRef,
-    required this.secondUserRef,
+    this.id,
+    this.lastMsgRef,
+    this.firstUserRef,
+    this.secondUserRef,
     this.firstUserTyping = false,
     this.secondUserTyping = false,
     this.firstUserPinnedSecondUser = false,

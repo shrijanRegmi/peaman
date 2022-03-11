@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:peaman/enums/online_status.dart';
-import 'package:peaman/models/user_model.dart';
+import 'package:peaman/peaman.dart';
 
 class AppUserProvider {
   final String? uid;
@@ -93,10 +92,34 @@ class AppUserProvider {
 
   // list of users;
   List<PeamanUser> _usersFromFirebase(
-      QuerySnapshot<Map<String, dynamic>> snap) {
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
     return snap.docs.map((doc) {
       return PeamanUser.fromJson(doc.data());
     }).toList();
+  }
+
+  // list of follow requests
+  List<PeamanFollowRequest> _followRequestsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map((e) => PeamanFollowRequest.fromJson(e.data()))
+        .toList();
+  }
+
+  // list of followers
+  List<PeamanFollower> _followersFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFollower.fromJson(e.data())).toList();
+  }
+
+  // list of following
+  List<PeamanFollowing> _followingFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFollowing.fromJson(e.data())).toList();
   }
 
   // get old search results
@@ -158,5 +181,38 @@ class AppUserProvider {
         .limit(10)
         .snapshots()
         .map(_usersFromFirebase);
+  }
+
+  // stream of list of follow requests
+  Stream<List<PeamanFollowRequest>> get followRequests {
+    return _ref
+        .collection('users')
+        .doc(uid)
+        .collection('follow_requests')
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .map(_followRequestsFromFirebase);
+  }
+
+  // stream of list of follower
+  Stream<List<PeamanFollower>> get followers {
+    return _ref
+        .collection('users')
+        .doc(uid)
+        .collection('followers')
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .map(_followersFromFirebase);
+  }
+
+  // stream of list of following
+  Stream<List<PeamanFollowing>> get following {
+    return _ref
+        .collection('users')
+        .doc(uid)
+        .collection('following')
+        .orderBy('created_at', descending: true)
+        .snapshots()
+        .map(_followingFromFirebase);
   }
 }

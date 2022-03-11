@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:peaman/models/follow_request_model.dart';
+import 'package:peaman/models/follow_request_notification_model.dart';
 import 'package:peaman/models/notification_model.dart';
 import 'package:peaman/models/user_model.dart';
 
@@ -43,10 +43,11 @@ class NotificationProvider {
   }
 
   // get follow requests from firebase
-  List<PeamanFollowRequest> followRequestsFromFirebase(
+  List<PeamanFollowRequestNotification> followRequestsFromFirebase(
       QuerySnapshot<Map<String, dynamic>> colSnap) {
     return colSnap.docs
-        .map((doc) => PeamanFollowRequest.fromJson(doc.data(), doc.id))
+        .map((doc) =>
+            PeamanFollowRequestNotification.fromJson(doc.data(), doc.id))
         .toList();
   }
 
@@ -62,7 +63,7 @@ class NotificationProvider {
   }
 
   // stream of follow requests
-  Stream<List<PeamanFollowRequest>> get followRequests {
+  Stream<List<PeamanFollowRequestNotification>> get followRequests {
     return _ref
         .collection('users')
         .doc(appUser?.uid)

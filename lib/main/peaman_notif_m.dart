@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:peaman/models/follow_request_model.dart';
+import 'package:peaman/models/follow_request_notification_model.dart';
 import 'package:peaman/models/notification_model.dart';
 import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/database_services/notif_provider.dart';
@@ -23,7 +23,7 @@ class PNotificationProvider {
     ).notificationsList;
   }
 
-  static Stream<List<PeamanFollowRequest>> getFollowRequests(
+  static Stream<List<PeamanFollowRequestNotification>> getFollowRequests(
     final PeamanUser appUser,
   ) {
     return NotificationProvider(appUser: appUser).followRequests;

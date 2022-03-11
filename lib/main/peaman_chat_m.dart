@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peaman/enums/chat_user.dart';
 import 'package:peaman/enums/typing_state.dart';
 import 'package:peaman/models/chat_model.dart';
@@ -5,6 +6,8 @@ import 'package:peaman/models/message_model.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
 class PChatProvider {
+  static final _auth = FirebaseAuth.instance;
+
   static Future<void> sendMessage(
     final String chatId,
     final PeamanMessage message,
@@ -44,8 +47,9 @@ class PChatProvider {
     return MessageProvider(chatId: chatId, limit: limit).messagesList;
   }
 
-  static Stream<List<PeamanChat>> getChats(final String uid) {
-    return MessageProvider(appUserId: uid).chatList;
+  static Stream<List<PeamanChat>> getChats() {
+    final _uid = _auth.currentUser?.uid;
+    return MessageProvider(appUserId: _uid).chatList;
   }
 
   static Stream<PeamanMessage> getSingleMessageById(
