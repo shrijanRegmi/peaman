@@ -45,10 +45,11 @@ class StorageProvider {
     final _downloadUrls = <String>[];
     try {
       if (path != null) {
-        for (final file in (files ?? [])) {
+        for (int i = 0; i < (files ?? []).length; i++) {
+          final _file = files![i];
           final _storage = FirebaseStorage.instance;
-          final _ref = _storage.ref().child(path!);
-          final _uploadTask = _ref.putFile(file);
+          final _ref = _storage.ref().child('$path\_$i');
+          final _uploadTask = _ref.putFile(_file);
 
           _uploadTask.snapshotEvents.listen((event) {
             var _progress =
