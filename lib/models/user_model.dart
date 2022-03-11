@@ -18,6 +18,7 @@ class PeamanUser {
   final int? notifCount;
   final bool? newFeeds;
   final List<String> searchKeys;
+  final bool admin;
 
   PeamanUser({
     this.uid,
@@ -36,6 +37,7 @@ class PeamanUser {
     this.notifCount = 0,
     this.newFeeds = false,
     this.searchKeys = const [],
+    this.admin = false,
   });
 
   PeamanUser copyWith({
@@ -55,6 +57,7 @@ class PeamanUser {
     final int? notifCount,
     final bool? newFeeds,
     final List<String>? searchKeys,
+    final bool? admin,
   }) {
     return PeamanUser(
       uid: uid ?? this.uid,
@@ -73,6 +76,7 @@ class PeamanUser {
       notifCount: notifCount ?? this.notifCount,
       newFeeds: newFeeds ?? this.newFeeds,
       searchKeys: searchKeys ?? this.searchKeys,
+      admin: admin ?? this.admin,
     );
   }
 
@@ -124,6 +128,7 @@ class PeamanUser {
       notifCount: data['notification_count'] ?? 0,
       newFeeds: data['new_posts'] ?? false,
       searchKeys: List<String>.from(data['search_keys'] ?? []),
+      admin: data['admin'] ?? false,
     );
   }
 
