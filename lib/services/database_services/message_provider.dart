@@ -78,8 +78,10 @@ class MessageProvider {
   }
 
   // send additional properties with message
-  Future _sendAdditionalProperties(
-      {final String? myId, final String? friendId}) async {
+  Future _sendAdditionalProperties({
+    final String? myId,
+    final String? friendId,
+  }) async {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
 
@@ -103,9 +105,12 @@ class MessageProvider {
         _firstUserRef = _ref.collection('users').doc(friendId);
         _secondUserRef = _ref.collection('users').doc(myId);
       }
-      await _chatRef.update(_userData);
-      await _chatRef.update({'first_user_ref': _firstUserRef});
-      await _chatRef.update({'second_user_ref': _secondUserRef});
+      await _chatRef.update({
+        ..._userData,
+        'first_user_ref': _firstUserRef,
+        'second_user_ref': _secondUserRef,
+        'chat_request_sender_id': _isAppUserFirstUser ? myId : friendId,
+      });
 
       print('Success: Sending additonal fields in chats collection');
     } catch (e) {
