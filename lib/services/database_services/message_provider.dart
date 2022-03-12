@@ -109,7 +109,8 @@ class MessageProvider {
         ..._userData,
         'first_user_ref': _firstUserRef,
         'second_user_ref': _secondUserRef,
-        'chat_request_sender_id': _isAppUserFirstUser ? myId : friendId,
+        'chat_request_status': PeamanChatRequestStatus.idle,
+        'chat_request_sender_id': myId,
       });
 
       print('Success: Sending additonal fields in chats collection');
