@@ -64,17 +64,17 @@ class PChatProvider {
     return MessageProvider(appUserId: _uid).chatList;
   }
 
-  static Stream<List<PeamanChat>> getIdleChats() {
+  static Stream<List<PeamanIdleChat>> getIdleChats() {
     final _uid = _auth.currentUser?.uid;
     return MessageProvider(appUserId: _uid).idleChatsList;
   }
 
-  static Stream<List<PeamanChat>> getAcceptedChats() {
+  static Stream<List<PeamanAcceptedChat>> getAcceptedChats() {
     final _uid = _auth.currentUser?.uid;
     return MessageProvider(appUserId: _uid).acceptedChatsList;
   }
 
-  static Stream<List<PeamanChat>> getDeclinedChats() {
+  static Stream<List<PeamanDeclinedChat>> getDeclinedChats() {
     final _uid = _auth.currentUser?.uid;
     return MessageProvider(appUserId: _uid).declinedChatsList;
   }
