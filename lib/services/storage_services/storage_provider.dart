@@ -57,8 +57,10 @@ class StorageProvider {
             if (onProgressUpdate != null) onProgressUpdate!(_progress);
           });
 
-          final _downloadUrlFuture = _ref.getDownloadURL();
-          _downloadUrlFutures.add(_downloadUrlFuture);
+          _uploadTask.whenComplete(() {
+            final _downloadUrlFuture = _ref.getDownloadURL();
+            _downloadUrlFutures.add(_downloadUrlFuture);
+          });
         }
       } else {
         throw Future.error('Path was not provided');

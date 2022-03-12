@@ -776,8 +776,6 @@ class FeedProvider {
       if (_reactionSnap.exists) {
         final _reactionData = _reactionSnap.data() ?? {};
         _reaction = PeamanReaction.fromJson(_reactionData);
-      } else {
-        throw Future.error('No reaction for the given id found');
       }
     } catch (e) {
       print(e);
@@ -797,8 +795,6 @@ class FeedProvider {
       if (_postSavesSnap.exists) {
         final _postSavesData = _postSavesSnap.data() ?? {};
         _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
-      } else {
-        throw Future.error('No feed saves for the given id found');
       }
     } catch (e) {
       print(e);
