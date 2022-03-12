@@ -40,6 +40,18 @@ class PChatProvider {
     await MessageProvider(chatId: chatId).updateChatData(data);
   }
 
+  static Future<void> acceptRequest({
+    required final String chatId,
+  }) async {
+    await MessageProvider(chatId: chatId).acceptChatRequest();
+  }
+
+  static Future<void> declineRequest({
+    required final String chatId,
+  }) async {
+    await MessageProvider(chatId: chatId).declineChatRequest();
+  }
+
   static Stream<List<PeamanMessage>> getMessages(
     final String chatId, {
     final int limit = 10,
