@@ -109,7 +109,7 @@ class MessageProvider {
         ..._userData,
         'first_user_ref': _firstUserRef,
         'second_user_ref': _secondUserRef,
-        'chat_request_status': PeamanChatRequestStatus.idle,
+        'chat_request_status': PeamanChatRequestStatus.idle.index,
         'chat_request_sender_id': myId,
       });
 
