@@ -52,6 +52,21 @@ class PChatProvider {
     return MessageProvider(appUserId: _uid).chatList;
   }
 
+  static Stream<List<PeamanChat>> getIdleChats() {
+    final _uid = _auth.currentUser?.uid;
+    return MessageProvider(appUserId: _uid).idleChatsList;
+  }
+
+  static Stream<List<PeamanChat>> getAcceptedChats() {
+    final _uid = _auth.currentUser?.uid;
+    return MessageProvider(appUserId: _uid).acceptedChatsList;
+  }
+
+  static Stream<List<PeamanChat>> getDeclinedChats() {
+    final _uid = _auth.currentUser?.uid;
+    return MessageProvider(appUserId: _uid).declinedChatsList;
+  }
+
   static Stream<PeamanMessage> getSingleMessageById(
     final String chatId,
     final String messageId,

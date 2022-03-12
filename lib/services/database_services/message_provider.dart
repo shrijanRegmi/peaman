@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/enums/chat_user.dart';
-import 'package:peaman/enums/typing_state.dart';
-import 'package:peaman/helpers/chat_helper.dart';
-import 'package:peaman/models/chat_model.dart';
-import 'package:peaman/models/message_model.dart';
+import 'package:peaman/peaman.dart';
 
 class MessageProvider {
   final String? chatId;
@@ -213,6 +209,34 @@ class MessageProvider {
     }
   }
 
+  // accept chat request
+  Future acceptChatRequest() async {
+    try {
+      final _chatRef = _ref.collection('chats').doc(chatId);
+      await _chatRef.update({
+        'chat_request_status': PeamanChatRequestStatus.accepted,
+      });
+      print('Success: Accepting chat request $chatId');
+    } catch (e) {
+      print(e);
+      print('Error: Accepting chat request $chatId');
+    }
+  }
+
+  // decline chat request
+  Future declineChatRequest() async {
+    try {
+      final _chatRef = _ref.collection('chats').doc(chatId);
+      await _chatRef.update({
+        'chat_request_status': PeamanChatRequestStatus.declined,
+      });
+      print('Success: Accepting chat request $chatId');
+    } catch (e) {
+      print(e);
+      print('Error: Accepting chat request $chatId');
+    }
+  }
+
   // messages from firebase
   List<PeamanMessage> _messagesFromFirebase(
       QuerySnapshot<Map<String, dynamic>> snap) {
@@ -235,9 +259,37 @@ class MessageProvider {
 
   // chats from firebase
   List<PeamanChat> _chatsFromFirebase(
-      QuerySnapshot<Map<String, dynamic>> snap) {
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
     return snap.docs.map((doc) {
       return PeamanChat.fromJson(doc.data());
+    }).toList();
+  }
+
+  // idle chats from firebase
+  List<PeamanIdleChat> _idleChatsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((doc) {
+      return PeamanIdleChat.fromJson(doc.data());
+    }).toList();
+  }
+
+  // accepted chats from firebase
+  List<PeamanAcceptedChat> _acceptedChatsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((doc) {
+      return PeamanAcceptedChat.fromJson(doc.data());
+    }).toList();
+  }
+
+  // declined chats from firebase
+  List<PeamanDeclinedChat> _declinedChatsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((doc) {
+      return PeamanDeclinedChat.fromJson(doc.data());
     }).toList();
   }
 
@@ -272,6 +324,48 @@ class MessageProvider {
         .orderBy('last_updated', descending: true)
         .snapshots()
         .map(_chatsFromFirebase);
+  }
+
+  // stream of idle chats
+  Stream<List<PeamanIdleChat>> get idleChatsList {
+    return _ref
+        .collection('chats')
+        .where('users', arrayContains: appUserId)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.idle.index,
+        )
+        .orderBy('last_updated', descending: true)
+        .snapshots()
+        .map(_idleChatsFromFirebase);
+  }
+
+  // stream of accepted chats
+  Stream<List<PeamanAcceptedChat>> get acceptedChatsList {
+    return _ref
+        .collection('chats')
+        .where('users', arrayContains: appUserId)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.accepted.index,
+        )
+        .orderBy('last_updated', descending: true)
+        .snapshots()
+        .map(_acceptedChatsFromFirebase);
+  }
+
+  // stream of declined chats
+  Stream<List<PeamanDeclinedChat>> get declinedChatsList {
+    return _ref
+        .collection('chats')
+        .where('users', arrayContains: appUserId)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.declined.index,
+        )
+        .orderBy('last_updated', descending: true)
+        .snapshots()
+        .map(_declinedChatsFromFirebase);
   }
 
   // stream of message from a particular reference
