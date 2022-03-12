@@ -13,6 +13,7 @@ class PeamanChat {
   final int firstUserUnreadMessagesCount;
   final int secondUserUnreadMessagesCount;
   final PeamanChatRequestStatus chatRequestStatus;
+  final String? chatRequestSenderId;
 
   PeamanChat({
     this.id,
@@ -26,6 +27,7 @@ class PeamanChat {
     this.firstUserUnreadMessagesCount = 0,
     this.secondUserUnreadMessagesCount = 0,
     this.chatRequestStatus = PeamanChatRequestStatus.idle,
+    this.chatRequestSenderId,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +41,7 @@ class PeamanChat {
       'first_user_pinned_second_user': firstUserPinnedSecondUser,
       'second_user_pinned_first_user': secondUserPinnedFirstUser,
       'chat_request_status': chatRequestStatus.index,
+      'chat_request_sender_id': chatRequestSenderId,
     };
   }
 
@@ -58,6 +61,7 @@ class PeamanChat {
           data['second_user_unread_messages_count'] ?? 0,
       chatRequestStatus:
           PeamanChatRequestStatus.values[data['chat_request_status'] ?? 0],
+      chatRequestSenderId: data['chat_request_sender_id'],
     );
   }
 }
