@@ -216,30 +216,40 @@ class MessageProvider {
   }
 
   // accept chat request
-  Future acceptChatRequest() async {
+  Future acceptChatRequest({
+    final Function(PeamanChatRequestStatus)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
       await _chatRef.update({
-        'chat_request_status': PeamanChatRequestStatus.accepted,
+        'chat_request_status': PeamanChatRequestStatus.accepted.index,
       });
       print('Success: Accepting chat request $chatId');
+      onSuccess?.call(PeamanChatRequestStatus.accepted);
     } catch (e) {
       print(e);
       print('Error: Accepting chat request $chatId');
+      onError?.call(e);
     }
   }
 
   // decline chat request
-  Future declineChatRequest() async {
+  Future declineChatRequest({
+    final Function(PeamanChatRequestStatus)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
       final _chatRef = _ref.collection('chats').doc(chatId);
       await _chatRef.update({
-        'chat_request_status': PeamanChatRequestStatus.declined,
+        'chat_request_status': PeamanChatRequestStatus.declined.index,
       });
       print('Success: Accepting chat request $chatId');
+      onSuccess?.call(PeamanChatRequestStatus.declined);
     } catch (e) {
       print(e);
       print('Error: Accepting chat request $chatId');
+      onError?.call(e);
     }
   }
 

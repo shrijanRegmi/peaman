@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:peaman/enums/chat_user.dart';
-import 'package:peaman/enums/typing_state.dart';
-import 'package:peaman/models/chat_model.dart';
-import 'package:peaman/models/message_model.dart';
+import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
 class PChatProvider {
@@ -42,14 +39,28 @@ class PChatProvider {
 
   static Future<void> acceptRequest({
     required final String chatId,
+    final Function(PeamanChatRequestStatus)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
-    await MessageProvider(chatId: chatId).acceptChatRequest();
+    await MessageProvider(
+      chatId: chatId,
+    ).acceptChatRequest(
+      onSuccess: onSuccess,
+      onError: onError,
+    );
   }
 
   static Future<void> declineRequest({
     required final String chatId,
+    final Function(PeamanChatRequestStatus)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
-    await MessageProvider(chatId: chatId).declineChatRequest();
+    await MessageProvider(
+      chatId: chatId,
+    ).declineChatRequest(
+      onSuccess: onSuccess,
+      onError: onError,
+    );
   }
 
   static Stream<List<PeamanMessage>> getMessages(
