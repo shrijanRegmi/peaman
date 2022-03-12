@@ -42,26 +42,35 @@ class StorageProvider {
 
   // save files to firebase storage
   Future<List<String>?> uploadFiles() async {
+    final _uploadTaskFutures = <Future>[];
     final _downloadUrlFutures = <Future<String>>[];
     try {
       if (path != null) {
+        // upload files
         for (int i = 0; i < (files ?? []).length; i++) {
           final _file = files![i];
           final _storage = FirebaseStorage.instance;
           final _ref = _storage.ref().child('$path\_$i');
           final _uploadTask = _ref.putFile(_file);
 
-          _uploadTask.snapshotEvents.listen((event) {
-            var _progress =
-                event.bytesTransferred.toDouble() / event.totalBytes.toDouble();
-            if (onProgressUpdate != null) onProgressUpdate!(_progress);
-          });
-
-          _uploadTask.whenComplete(() {
-            final _downloadUrlFuture = _ref.getDownloadURL();
-            _downloadUrlFutures.add(_downloadUrlFuture);
-          });
+          final _uploadTaskFuture = _uploadTask.whenComplete(
+            () => print('Upload complete'),
+          );
+          _uploadTaskFutures.add(_uploadTaskFuture);
         }
+        //
+
+        await Future.wait(_uploadTaskFutures);
+
+        // download files
+        for (int i = 0; i < (files ?? []).length; i++) {
+          final _storage = FirebaseStorage.instance;
+          final _ref = _storage.ref().child('$path\_$i');
+
+          final _downloadUrlFuture = _ref.getDownloadURL();
+          _downloadUrlFutures.add(_downloadUrlFuture);
+        }
+        //
       } else {
         throw Future.error('Path was not provided');
       }
