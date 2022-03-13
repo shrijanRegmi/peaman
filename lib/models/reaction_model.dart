@@ -6,7 +6,6 @@ class PeamanReaction {
   final PeamanReactionParent parent;
   final String? parentId;
   final bool unreacted;
-  final bool initialReaction;
   final int? updatedAt;
 
   PeamanReaction({
@@ -15,7 +14,6 @@ class PeamanReaction {
     this.parent = PeamanReactionParent.feed,
     this.parentId,
     this.unreacted = false,
-    this.initialReaction = false,
     this.updatedAt,
   });
 
@@ -35,7 +33,6 @@ class PeamanReaction {
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
       unreacted: unreacted ?? this.unreacted,
-      initialReaction: initialReaction ?? this.initialReaction,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
@@ -47,7 +44,6 @@ class PeamanReaction {
       parent: PeamanReactionParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
       unreacted: data['unreacted'] ?? '',
-      initialReaction: data['initial_reaction'] ?? false,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
     );
   }
@@ -58,7 +54,6 @@ class PeamanReaction {
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,
-      'initial_reaction': initialReaction,
       'updated_at': updatedAt,
     };
   }

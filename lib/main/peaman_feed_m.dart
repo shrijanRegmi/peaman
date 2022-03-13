@@ -1,42 +1,52 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/feed_provider.dart';
 
 class PFeedProvider {
-  static final _auth = FirebaseAuth.instance;
-  static Future<PeamanFeed?> createFeed({
-    required final PeamanUser appUser,
+  static Future<void> createFeed({
     required final PeamanFeed feed,
+    required final Function(PeamanFeed)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).createPost();
+    return await FeedProvider().createFeed(
+      feed: feed,
+      onSuccess: onSuccess,
+      onError: onError,
+    );
   }
 
-  static Future deleteFeed({
-    required final PeamanUser appUser,
-    required final PeamanFeed feed,
+  static Future<void> deleteFeed({
+    required final String feedId,
+    required final String ownerId,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).deletePost();
+    return await FeedProvider().deleteFeed(
+      feedId: feedId,
+      ownerId: ownerId,
+    );
   }
 
-  static Future<PeamanMoment?> createMoment(
-    final PeamanUser appUser,
-    final PeamanMoment moment,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(moment: moment, uid: _uid).createMoment();
-  }
-
-  static Future viewMoment({
-    required final PeamanUser appUser,
+  static Future<void> createMoment({
     required final PeamanMoment moment,
+    required final Function(PeamanMoment)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(moment: moment, uid: _uid).viewMoment(appUser);
+    return await FeedProvider().createMoment(
+      moment: moment,
+      onSuccess: onSuccess,
+      onError: onError,
+    );
   }
 
-  static Future addReaction({
+  static Future<void> viewMoment({
+    required final String momentId,
+    required final String uid,
+  }) async {
+    return await FeedProvider().viewMoment(
+      uid: uid,
+      momentId: momentId,
+    );
+  }
+
+  static Future<void> addReaction({
     required final String feedId,
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
@@ -50,7 +60,7 @@ class PFeedProvider {
     );
   }
 
-  static Future removeReaction({
+  static Future<void> removeReaction({
     required final String feedId,
     required final String parentId,
     required final String reactionId,
@@ -66,7 +76,7 @@ class PFeedProvider {
     );
   }
 
-  static Future addComment({
+  static Future<void> addComment({
     required final String feedId,
     required final PeamanComment comment,
     final Function(PeamanComment)? onSuccess,
@@ -80,7 +90,7 @@ class PFeedProvider {
     );
   }
 
-  static Future removeComment({
+  static Future<void> removeComment({
     required final String feedId,
     required final String parentId,
     required final String commentId,
@@ -96,109 +106,50 @@ class PFeedProvider {
     );
   }
 
-  static Future saveFeed({
-    required final PeamanUser appUser,
-    required final PeamanFeed feed,
-  }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).savePost();
-  }
-
-  static Future unsaveFeed({
-    required final PeamanUser appUser,
-    required final PeamanFeed feed,
-  }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).removeSavedPost();
-  }
-
-  static Future<PeamanFeed?> getSingleFeedByUser(
-    final PeamanUser appUser,
-    final String feedId,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getSinglePostById(feedId);
-  }
-
-  static Future<List<PeamanFeed>> getFeedsTimeline(
-    final PeamanUser appUser,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getTimeline();
-  }
-
-  static Future<List<PeamanFeed>> getFeedsByUser(
-    final PeamanUser appUser,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getPostsById();
-  }
-
-  static Future<List<PeamanFeed>> getFeaturedFeedsByUser(
-    final PeamanUser appUser,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getFeaturedPostsById();
-  }
-
-  static Future<List<PeamanMoment>> getMomentsTimeline(
-    final PeamanUser appUser,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getMoments();
-  }
-
-  static Future<List<PeamanMoment>> getMomentsByUser(
-    final PeamanUser appUser,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid).getMyMoments();
-  }
-
-  static Future<List<PeamanFeed>> getOldFeedsTimeline(
-    final PeamanUser appUser,
-    final PeamanFeed lastFeed,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid, feed: lastFeed).getOldTimelinePosts();
-  }
-
-  static Future<List<PeamanFeed>> getOldFeedsByUser(
-    final PeamanUser appUser,
-    final PeamanFeed lastFeed,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid, feed: lastFeed).getOldPostsById();
-  }
-
-  static Future<List<PeamanFeed>> getOldFeaturedFeedsByUser(
-    final PeamanUser appUser,
-    final PeamanFeed lastFeed,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(uid: _uid, feed: lastFeed)
-        .getOldFeaturedPostsById();
-  }
-
-  static Future<PeamanReaction?> getReactionByOwnerId({
+  static Future<void> saveFeed({
     required final String feedId,
     required final String ownerId,
   }) async {
-    return await FeedProvider().getReactionByOwnerId(
+    return await FeedProvider().saveFeed(
       feedId: feedId,
       ownerId: ownerId,
     );
   }
 
-  static Future<PeamanFeedSaves?> getFeedSavesById({
-    required final PeamanFeed feed,
-    required final String reactedById,
+  static Future<void> unSaveFeed({
+    required final String feedId,
+    required final String ownerId,
   }) async {
-    return await FeedProvider(feed: feed).getFeedSavesById(reactedById);
+    return await FeedProvider().unSaveFeed(
+      feedId: feedId,
+      ownerId: ownerId,
+    );
   }
 
-  static Stream<List<PeamanFeed>> getAllFeeds({final PeamanQuery? query}) {
-    return FeedProvider().allFeeds(query: query);
+  static Future<PeamanReaction?> getReactionByOwnerId({
+    required final String feedId,
+    required final String ownerId,
+    required final PeamanReactionParent parent,
+  }) async {
+    return await FeedProvider().getReactionByOwnerId(
+      feedId: feedId,
+      ownerId: ownerId,
+      parent: parent,
+    );
+  }
+
+  static Future<PeamanFeedSaves?> getFeedSavesByOwnerId({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
+    return await FeedProvider().getFeedSavesByOwnerId(
+      feedId: feedId,
+      ownerId: ownerId,
+    );
+  }
+
+  static Stream<List<PeamanFeed>> getFeeds() {
+    return FeedProvider().allFeeds();
   }
 
   static Stream<List<PeamanComment>> getComments({
@@ -206,7 +157,7 @@ class PFeedProvider {
     required final PeamanCommentParent parent,
     required final String parentId,
   }) {
-    return FeedProvider().comments(
+    return FeedProvider().getComments(
       feedId: feedId,
       parent: parent,
       parentId: parentId,

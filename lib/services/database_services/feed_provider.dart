@@ -1,65 +1,63 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
-import 'package:peaman/services/database_services/user_provider.dart';
 
 class FeedProvider {
-  final String? uid;
-  final PeamanUser? user;
-  final PeamanFeed? feed;
-  final PeamanMoment? moment;
-  FeedProvider({
-    this.uid,
-    this.feed,
-    this.moment,
-    this.user,
-  });
-
   final _ref = FirebaseFirestore.instance;
 
-  // create post
-  Future<PeamanFeed?> createPost() async {
+  // create feed
+  Future<void> createFeed({
+    required final PeamanFeed feed,
+    required final Function(PeamanFeed)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
-      final _postref = _ref.collection('posts').doc();
-      var _feed = feed;
-      _feed = _feed?.copyWith(id: _postref.id, feedRef: _postref);
-      await _postref.set(_feed?.toJson() ?? {});
-      print('Success: Creating post');
+      final _postref = _ref.collection('posts').doc(feed.id);
+      final _feed = feed.copyWith(id: _postref.id);
+      await _postref.set(_feed.toJson());
+      print('Success: Creating post ${_feed.id}');
 
-      await _updatePhotosCount((feed?.photos ?? []).length);
+      await _updatePhotosCount(
+        uid: feed.ownerId ?? '',
+        count: feed.photos.length,
+      );
 
-      if (feed?.isFeatured ?? false) {
-        await _saveFeatured(_feed);
+      if (feed.featured) {
+        await _saveFeatured(feed: _feed);
       }
-
-      return _feed;
+      onSuccess?.call(_feed);
     } catch (e) {
       print(e);
       print('Error!!!: Creating post');
-      return null;
+      onError?.call(e);
     }
   }
 
   // create moments
-  Future<PeamanMoment?> createMoment() async {
+  Future<void> createMoment({
+    required final PeamanMoment moment,
+    required final Function(PeamanMoment)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc();
-      final _moment = moment?.copyWith(
-        id: _momentRef.id,
-      );
+      final _momentRef = _ref.collection('moments').doc(moment.id);
+      final _moment = moment.copyWith(id: _momentRef.id);
 
-      await _momentRef.set(_moment?.toJson() ?? {});
+      await _momentRef.set(_moment.toJson());
 
-      print('Success: Creating moment? ${_moment?.id}');
-      return _moment;
+      print('Success: Creating moment ${_moment.id}');
+      onSuccess?.call(_moment);
     } catch (e) {
       print(e);
-      print('Error!!!: Creating moment?');
-      return null;
+      print('Error!!!: Creating moment');
+      onError?.call(e);
     }
   }
 
-  // send feed? to friends timeline
-  Future sendToTimelines() async {
+  // send feed to friends timeline
+  Future<void> sendToTimelines({
+    required final String uid,
+    required final String feedId,
+  }) async {
     try {
       final _userRef = _ref.collection('users').doc(uid);
       final _followersRef = _userRef.collection('followers');
@@ -73,49 +71,46 @@ class FeedProvider {
                 .collection('users')
                 .doc(_uid)
                 .collection('timeline')
-                .doc(feed?.id);
+                .doc(feedId);
 
             await _timelineRef.set({
-              'id': feed?.id,
-              'post_ref': feed?.feedRef,
+              'id': feedId,
               'updated_at': DateTime.now().millisecondsSinceEpoch,
             });
-            print('Success: Posting to $_uid timeline');
+            print("Success: Posting to $_uid's timeline");
           }
         }
       }
       print('Success: Saving to followers timeline');
-      return 'Success';
     } catch (e) {
       print(e);
       print('Error!!!: Saving to followers timeline');
-      return null;
     }
   }
 
   // save featured post to users collection too
-  Future _saveFeatured(final PeamanFeed? _feed) async {
+  Future<void> _saveFeatured({
+    required final PeamanFeed feed,
+  }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
+      final _userRef = _ref.collection('users').doc(feed.ownerId);
       final _featuredPostsRef =
-          _userRef.collection('featured_posts').doc(_feed?.id);
+          _userRef.collection('featured_posts').doc(feed.id);
 
       await _featuredPostsRef.set({
-        'post_ref': _feed?.feedRef,
-        'updated_at': _feed?.updatedAt,
+        'id': feed.id,
+        'updated_at': feed.updatedAt,
       });
 
-      print('Success: Saving featured post ${feed?.id}');
-      return 'Success';
+      print('Success: Saving featured post ${feed.id}');
     } catch (e) {
       print(e);
-      print('Success: Saving featured post ${feed?.id}');
-      return null;
+      print('Success: Saving featured post ${feed.id}');
     }
   }
 
   // add reaction to post or comment
-  Future addReaction({
+  Future<void> addReaction({
     required final String feedId,
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
@@ -149,7 +144,7 @@ class FeedProvider {
   }
 
   // remove reaction from post or comment
-  Future removeReaction({
+  Future<void> removeReaction({
     required final String feedId,
     required final String parentId,
     required final String reactionId,
@@ -185,7 +180,7 @@ class FeedProvider {
   }
 
   // add comment in a post or comment
-  Future addComment({
+  Future<void> addComment({
     required final String feedId,
     required final PeamanComment comment,
     final Function(PeamanComment)? onSuccess,
@@ -221,7 +216,7 @@ class FeedProvider {
   }
 
   // remove comment from post or comment
-  Future removeComment({
+  Future<void> removeComment({
     required final String feedId,
     required final String parentId,
     required final String commentId,
@@ -257,7 +252,7 @@ class FeedProvider {
   }
 
   // update post properties count
-  Future _updatePostPropertiesCount({
+  Future<void> _updatePostPropertiesCount({
     required final String feedId,
     final int? reactionsCount,
     final int? commentsCount,
@@ -297,7 +292,7 @@ class FeedProvider {
   }
 
   // update comment properties count
-  Future _updateCommentPropertiesCount({
+  Future<void> _updateCommentPropertiesCount({
     required final String feedId,
     required final String commentId,
     final int? reactionsCount,
@@ -327,7 +322,10 @@ class FeedProvider {
   }
 
   // update photos count
-  Future _updatePhotosCount(final int count) async {
+  Future<void> _updatePhotosCount({
+    required final String uid,
+    required final int count,
+  }) async {
     try {
       final _userRef = _ref.collection('users').doc(uid);
 
@@ -335,516 +333,128 @@ class FeedProvider {
         'photos': FieldValue.increment(count),
       });
 
-      print('Success: Updating photos count');
-      return 'Success';
+      print('Success: Updating photos count of $uid');
     } catch (e) {
       print(e);
-      print('Error!!!: Updating photos count');
+      print('Error!!!: Updating photos count $uid');
     }
   }
 
-  // delete my post
-  Future deletePost() async {
+  // delete feed
+  Future<void> deleteFeed({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
     try {
-      final _postRef = feed?.feedRef;
+      final _postRef = _ref.collection('feeds').doc(feedId);
       final _featuredPostsRef = _ref
           .collection('users')
-          .doc(uid)
+          .doc(ownerId)
           .collection('featured_posts')
-          .doc(feed?.id);
+          .doc(feedId);
 
-      await _postRef?.delete();
+      await _postRef.delete();
       await _featuredPostsRef.delete();
-      print("Success: Deleting my post ${feed?.id}");
-
-      return _updatePhotosCount(-(feed?.photos ?? []).length);
+      print("Success: Deleting post $feedId");
     } catch (e) {
       print(e);
-      print('Error!!!: Deleting my post ${feed?.id}');
-      return null;
+      print('Error!!!: Deleting post $feedId');
     }
   }
 
-  // save post
-  Future savePost() async {
+  // save feed
+  Future<void> saveFeed({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
     try {
       final _savedPostRef = _ref
           .collection('users')
-          .doc(uid)
+          .doc(ownerId)
           .collection('saved_posts')
-          .doc(feed?.id);
+          .doc(feedId);
       final _feedSavesRef =
-          _ref.collection('posts').doc(feed?.id).collection('saves').doc(uid);
+          _ref.collection('posts').doc(feedId).collection('saves').doc(ownerId);
 
       final _data = {
-        'id': feed?.id,
+        'id': feedId,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
       final _feedSaveData = {
-        'uid': uid,
+        'owner_id': ownerId,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
-      await _feedSavesRef.set(_feedSaveData);
-      await _savedPostRef.set(_data);
-      await _updatePostPropertiesCount(feedId: feed?.id ?? '', savesCount: 1);
-      print('Success: Saving feed? ${feed?.id}');
-      return feed;
+      await Future.wait([
+        _feedSavesRef.set(_feedSaveData),
+        _savedPostRef.set(_data),
+      ]);
+      await _updatePostPropertiesCount(feedId: feedId, savesCount: 1);
+      print('Success: Saving feed $feedId');
     } catch (e) {
       print(e);
-      print('Error!!!: Saving feed? ${feed?.id}');
-      return null;
+      print('Error!!!: Saving feed');
     }
   }
 
-  // remove saved post
-  Future removeSavedPost() async {
+  // unsave feed
+  Future<void> unSaveFeed({
+    required final String ownerId,
+    required final String feedId,
+  }) async {
     try {
       final _savedPostRef = _ref
           .collection('users')
-          .doc(uid)
+          .doc(ownerId)
           .collection('saved_posts')
-          .doc(feed?.id);
+          .doc(feedId);
       final _feedSavesRef =
-          _ref.collection('posts').doc(feed?.id).collection('saves').doc(uid);
+          _ref.collection('posts').doc(feedId).collection('saves').doc(ownerId);
 
-      await _feedSavesRef.delete();
-      await _savedPostRef.delete();
-      await _updatePostPropertiesCount(feedId: feed?.id ?? '', savesCount: -1);
-      print('Success: Deleting saved feed? ${feed?.id}');
-      return feed;
+      await Future.wait([_feedSavesRef.delete(), _savedPostRef.delete()]);
+      await _updatePostPropertiesCount(feedId: feedId, savesCount: -1);
+      print('Success: Unsaving feed $feedId');
     } catch (e) {
       print(e);
-      print('Error!!!: Deleting saved feed? ${feed?.id}');
+      print('Error!!!: Unsaving feed');
       return null;
     }
   }
 
   // see moment?
-  Future viewMoment(final PeamanUser appUser) async {
+  Future<void> viewMoment({
+    required final String uid,
+    required final String momentId,
+  }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(moment?.id);
-      final _seenUsersRef =
-          _momentRef.collection('seen_users').doc(appUser.uid);
+      final _momentRef = _ref.collection('moments').doc(momentId);
+      final _seenUsersRef = _momentRef.collection('seen_users').doc(uid);
 
       await _seenUsersRef.set({
-        'user_data': appUser.toFeedUser(),
+        'uid': uid,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       });
-      await _updateMomentViewsCount();
-      print('Success: Viewing moment? ${moment?.id}');
-      return 'Success';
+      await _updateMomentViewsCount(momentId: momentId);
+      print('Success: Viewing moment $momentId');
     } catch (e) {
       print(e);
-      print('Error!!!: Viewing moment? ${moment?.id}');
-      return null;
+      print('Error!!!: Viewing moment');
     }
   }
 
   // update moment views count
-  Future _updateMomentViewsCount() async {
+  Future<void> _updateMomentViewsCount({
+    required final String momentId,
+  }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(moment?.id);
+      final _momentRef = _ref.collection('moments').doc(momentId);
       await _momentRef.update({
         'views': FieldValue.increment(1),
       });
+      print('Success: Updating moment view count $momentId');
     } catch (e) {
       print(e);
-      print('Error!!!: Updating moment? view count of ${moment?.id}');
-      return null;
-    }
-  }
-
-  // get list of feeds
-  Future<List<PeamanFeed>> _getFeedsList(
-    final QuerySnapshot<Map<String, dynamic>>? postsSnap, {
-    bool isTimelinePosts = true,
-  }) async {
-    final _feeds = <PeamanFeed>[];
-
-    try {
-      if ((postsSnap?.docs ?? []).isNotEmpty) {
-        for (final doc in (postsSnap?.docs ?? [])) {
-          if (doc.exists) {
-            final _data = doc.data();
-            DocumentReference<Map<String, dynamic>> _postRef;
-            DocumentSnapshot<Map<String, dynamic>> _postSnap;
-            Map<String, dynamic>? _postData;
-
-            if (isTimelinePosts) {
-              _postRef = _data['post_ref'];
-              _postSnap = await _postRef.get();
-              _postData = _postSnap.data();
-            } else {
-              _postData = _data;
-            }
-
-            PeamanFeed _feed = PeamanFeed.fromJson(_postData ?? {});
-
-            final _reactionsRef = _ref
-                .collection('posts')
-                .doc(_feed.id)
-                .collection('reactions')
-                .doc(uid);
-
-            final _savedPostRef = _ref
-                .collection('users')
-                .doc(uid)
-                .collection('saved_posts')
-                .doc(_feed.id);
-
-            final _reactionSnap = await _reactionsRef.get();
-            final _savedPostSnap = await _savedPostRef.get();
-
-            if (_reactionSnap.exists) {
-              final _reactionData = _reactionSnap.data();
-              final _isUnreacted = _reactionData?['unreacted'] ?? false;
-
-              _feed = _feed.copyWith(isReacted: !_isUnreacted);
-            } else {
-              _feed = _feed.copyWith(isReacted: false);
-            }
-
-            _feed = _feed.copyWith(isSaved: _savedPostSnap.exists);
-
-            // if (_feed.initialReactor != null &&
-            //     _feed.initialReactor?.uid == uid &&
-            //     (_feed.reactorsPhoto ?? []).contains(appUser?.photoUrl)) {
-            //   _feed = _feed.copyWith(initialReactor: appUser);
-            // }
-
-            _feeds.add(_feed);
-          }
-        }
-      }
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting feeds list');
-    }
-    return _feeds;
-  }
-
-  // get my moments
-  Future<List<PeamanMoment>> getMyMoments() async {
-    final _moments = <PeamanMoment>[];
-    try {
-      final _momentsRef =
-          _ref.collection('moments').where('owner_id', isEqualTo: uid);
-      final _momentsSnap = await _momentsRef.get();
-      if (_momentsSnap.docs.isNotEmpty) {
-        for (var doc in _momentsSnap.docs) {
-          if (doc.exists) {
-            final _moment = PeamanMoment.fromJson(doc.data());
-            _moments.add(_moment);
-          }
-        }
-      }
-      print('Success: Getting my moments');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting my moments');
-    }
-
-    return _moments;
-  }
-
-  // get moments
-  Future<List<PeamanMoment>> getMoments() async {
-    final _moments = <PeamanMoment>[];
-    try {
-      final _momentsRef =
-          _ref.collection('users').doc(uid).collection('moments');
-      final _momentsSnap = await _momentsRef.get();
-      if (_momentsSnap.docs.isNotEmpty) {
-        for (var doc in (_momentsSnap.docs)) {
-          if (doc.exists) {
-            final DocumentReference<Map<String, dynamic>> _momentRef =
-                doc['moment_ref'];
-            final _momentSnap = await _momentRef.get();
-            if (_momentSnap.exists) {
-              final _momentData = _momentSnap.data();
-              PeamanMoment _moment = PeamanMoment.fromJson(_momentData ?? {});
-
-              final _seenRef = _momentRef.collection('seen_users').doc(uid);
-              final _seenSnap = await _seenRef.get();
-
-              _moment = _moment.copyWith(
-                isSeen: _seenSnap.exists,
-              );
-              _moments.add(_moment);
-            }
-          }
-        }
-      }
-      print('Success: Getting moments');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting moments');
-    }
-
-    return _moments;
-  }
-
-  // get single post by id
-  Future<PeamanFeed?> getSinglePostById(final String id) async {
-    PeamanFeed? _feed;
-    try {
-      final _feedRef = _ref.collection('posts').doc(id);
-      final _feedSnap = await _feedRef.get();
-
-      if (_feedSnap.exists) {
-        final _feedData = _feedSnap.data();
-
-        _feed = PeamanFeed.fromJson(_feedData ?? {});
-
-        final _reactionsRef = _ref
-            .collection('posts')
-            .doc(_feed.id)
-            .collection('reactions')
-            .doc(uid);
-
-        final _savedPostRef = _ref
-            .collection('users')
-            .doc(uid)
-            .collection('saved_posts')
-            .doc(_feed.id);
-
-        final _reactionSnap = await _reactionsRef.get();
-        final _savedPostSnap = await _savedPostRef.get();
-
-        if (_reactionSnap.exists) {
-          final _reactionData = _reactionSnap.data();
-          final _isUnreacted = _reactionData?['unreacted'] ?? false;
-
-          _feed = _feed.copyWith(isReacted: !_isUnreacted);
-        } else {
-          _feed = _feed.copyWith(isReacted: false);
-        }
-
-        _feed = _feed.copyWith(isSaved: _savedPostSnap.exists);
-
-        // if (_feed.initialReactor != null &&
-        //     _feed.initialReactor?.uid == uid &&
-        //     (_feed.reactorsPhoto ?? []).contains(appUser?.photoUrl)) {
-        //   _feed = _feed.copyWith(initialReactor: appUser);
-        // }
-        print('Success: Getting single post by id $id');
-      }
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting single post by id $id');
-    }
-
-    return _feed;
-  }
-
-  // get posts by id
-  Future<List<PeamanFeed>> getPostsById() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _postsRef = _ref
-          .collection('posts')
-          .where('owner_id', isEqualTo: user?.uid)
-          .orderBy('updated_at', descending: true)
-          .limit(6);
-
-      final _postSnap = await _postsRef.get();
-
-      _feeds = await _getFeedsList(_postSnap, isTimelinePosts: false);
-
-      print('Success: Getting my posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting my posts');
-    }
-    return _feeds;
-  }
-
-  // get featured posts by id
-  Future<List<PeamanFeed>> getFeaturedPostsById() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _featuredPosts = user?.appUserRef
-          ?.collection('featured_posts')
-          .orderBy('updated_at', descending: true)
-          .limit(6);
-      final _featuredPostsSnap = await _featuredPosts?.get();
-
-      _feeds = await _getFeedsList(_featuredPostsSnap);
-
-      print('Success: Getting featured posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting featured posts');
-    }
-    return _feeds;
-  }
-
-  // get my timeline
-  Future<List<PeamanFeed>> getTimeline() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      AppUserProvider(uid: uid).updateUserDetail(data: {
-        'new_posts': false,
-      });
-
-      final _userRef = _ref.collection('users').doc(uid);
-      final _timelineRef = _userRef
-          .collection('timeline')
-          .orderBy('updated_at', descending: true)
-          .limit(6);
-
-      final _timelineSnap = await _timelineRef.get();
-
-      _feeds = await _getFeedsList(_timelineSnap);
-
-      print('Success: Getting my posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting my posts');
-    }
-    return _feeds;
-  }
-
-  // get old featured posts by id
-  Future<List<PeamanFeed>> getOldFeaturedPostsById() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _userRef = user?.appUserRef;
-
-      final _featuredPostsRef = _userRef
-          ?.collection('featured_posts')
-          .orderBy('updated_at', descending: true)
-          .startAfter([feed?.updatedAt]).limit(5);
-      final _featuredPostsSnap = await _featuredPostsRef?.get();
-
-      _feeds = await _getFeedsList(_featuredPostsSnap);
-
-      print('Success: Getting old featured posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting old featured posts');
-    }
-    return _feeds;
-  }
-
-  // get old posts by id
-  Future<List<PeamanFeed>> getOldPostsById() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _postsRef = _ref
-          .collection('posts')
-          .where('owner_id', isEqualTo: user?.uid)
-          .orderBy('updated_at', descending: true)
-          .startAfter([feed?.updatedAt]).limit(5);
-
-      final _postSnap = await _postsRef.get();
-
-      _feeds = await _getFeedsList(_postSnap, isTimelinePosts: false);
-
-      print('Success: Getting old posts by id');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting old posts by id');
-    }
-    return _feeds;
-  }
-
-  // get old posts of timeline
-  Future<List<PeamanFeed>> getOldTimelinePosts() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _userRef = _ref.collection('users').doc(uid);
-
-      final _timelineRef = _userRef
-          .collection('timeline')
-          .orderBy('updated_at', descending: true)
-          .startAfter([feed?.updatedAt]).limit(5);
-      final _timelineSnap = await _timelineRef.get();
-
-      _feeds = await _getFeedsList(_timelineSnap);
-
-      print('Success: Getting old timeline posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting old timeline posts');
-    }
-    return _feeds;
-  }
-
-  // get new posts of timeline
-  Future<List<PeamanFeed>> getNewTimelinePosts() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _userRef = _ref.collection('users').doc(uid);
-
-      final _timelineRef = _userRef
-          .collection('timeline')
-          .orderBy('updated_at', descending: true)
-          .endBefore([feed?.updatedAt]).limit(5);
-      final _timelineSnap = await _timelineRef.get();
-
-      _feeds = await _getFeedsList(_timelineSnap, isTimelinePosts: true);
-
-      print('Success: Getting new timeline posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting new timeline posts');
-    }
-    return _feeds;
-  }
-
-  // get saved feeds
-  Future<List<PeamanFeed>> getSavedPosts() async {
-    List<PeamanFeed> _feeds = [];
-    try {
-      final _savedPostsRef =
-          _ref.collection('users').doc(uid).collection('saved_posts');
-      final _savedPostsSnap = await _savedPostsRef.get();
-
-      _feeds = await _getFeedsList(_savedPostsSnap);
-
-      print('Success: Getting saved posts');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting saved posts');
-    }
-
-    return _feeds;
-  }
-
-  // get comment
-  Future<List<PeamanComment>?> getComments() async {
-    try {
-      List<PeamanComment> _comments = [];
-
-      final _commentRef = feed?.feedRef
-          ?.collection('comments')
-          .orderBy('updated_at', descending: true)
-          .limit(10);
-      final _commentSnap = await _commentRef?.get();
-
-      if ((_commentSnap?.docs ?? []).isNotEmpty) {
-        for (final commentDoc in (_commentSnap?.docs ?? [])) {
-          final _commentData = commentDoc.data();
-          final DocumentReference<Map<String, dynamic>> _userRef =
-              _commentData['user_ref'];
-          final _userSnap = await _userRef.get();
-          if (_userSnap.exists) {
-            final _userData = _userSnap.data();
-            final _user = PeamanUser.fromJson(_userData ?? {});
-            final _comment = PeamanComment.fromJson(_commentData, _user);
-
-            _comments.add(_comment);
-          }
-        }
-      }
-
-      print('Success: Getting all comments');
-      return _comments;
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting all comments');
+      print('Error!!!: Updating moment view count');
       return null;
     }
   }
@@ -853,13 +463,15 @@ class FeedProvider {
   Future<PeamanReaction?> getReactionByOwnerId({
     required final String feedId,
     required final String ownerId,
+    required final PeamanReactionParent parent,
   }) async {
     PeamanReaction? _reaction;
     try {
-      final _postRef = _ref.collection('posts').doc(feed?.id);
+      final _postRef = _ref.collection('posts').doc(feedId);
       final _reactionRef = _postRef
           .collection('reactions')
-          .where('owner_id', isEqualTo: ownerId);
+          .where('owner_id', isEqualTo: ownerId)
+          .where('parent', isEqualTo: parent.index);
       final _reactionsSnap = await _reactionRef.get();
 
       if (_reactionsSnap.docs.isNotEmpty) {
@@ -869,28 +481,33 @@ class FeedProvider {
           _reaction = PeamanReaction.fromJson(_reactionData);
         }
       }
+      print('Success: Getting reaction by owner_id');
     } catch (e) {
       print(e);
-      print('Error!!!: Getting reaction by id');
+      print('Error!!!: Getting reaction by owner_id');
     }
     return _reaction;
   }
 
   // get saved by id
-  Future<PeamanFeedSaves?> getFeedSavesById(final String savedById) async {
+  Future<PeamanFeedSaves?> getFeedSavesByOwnerId({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
     PeamanFeedSaves? _postSaves;
     try {
-      final _postRef = _ref.collection('posts').doc(feed?.id);
-      final _postSavesRef = _postRef.collection('saves').doc(savedById);
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _postSavesRef = _postRef.collection('saves').doc(ownerId);
       final _postSavesSnap = await _postSavesRef.get();
 
       if (_postSavesSnap.exists) {
         final _postSavesData = _postSavesSnap.data() ?? {};
         _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
       }
+      print('Success: Getting post saves by owner_id $ownerId');
     } catch (e) {
       print(e);
-      print('Error!!!: Getting reaction by id');
+      print('Error!!!: Getting post saves by owner_id');
     }
     return _postSaves;
   }
@@ -923,31 +540,28 @@ class FeedProvider {
   }
 
   // stream of moment viewers
-  Stream<List<PeamanUser>> get momentViewers {
+  Stream<List<PeamanUser>> momentViewers({
+    required final String momentId,
+  }) {
     return _ref
         .collection('moments')
-        .doc(moment?.id)
+        .doc(momentId)
         .collection('seen_users')
         .snapshots()
         .map(_usersFromFirebase);
   }
 
   // stream of all feeds
-  Stream<List<PeamanFeed>> allFeeds({final PeamanQuery? query}) {
-    final _query = query ??
-        PeamanQuery(
-          orderBy: 'updated_at',
-          descending: true,
-        );
+  Stream<List<PeamanFeed>> allFeeds() {
     return _ref
         .collection('posts')
-        .orderBy(_query.orderBy, descending: _query.descending)
+        .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_feedsFromFirebase);
   }
 
   // stream of comments
-  Stream<List<PeamanComment>> comments({
+  Stream<List<PeamanComment>> getComments({
     required final String feedId,
     required final PeamanCommentParent parent,
     required final String parentId,
