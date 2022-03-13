@@ -114,36 +114,27 @@ class FeedProvider {
     }
   }
 
-  // react to post
-  Future reactPost(final PeamanUser appUser) async {
+  // add reaction to post or comment
+  Future addReaction({
+    required final String feedId,
+    required final PeamanReaction reaction,
+  }) async {
     try {
-      final _postRef = _ref.collection('posts').doc(feed?.id);
-      final _reactionsRef = _postRef.collection('reactions').doc(appUser.uid);
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _reactionsRef = _postRef.collection('reactions').doc();
 
-      final _reactionData = {
-        'uid': appUser.uid,
-        'unreacted': false,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      };
+      final _reaction = reaction.copyWith(id: _reactionsRef.id);
+      await _reactionsRef.set(_reaction.toJson());
 
-      await _reactionsRef.set(_reactionData);
-
-      final _data = {
-        'reaction_count': FieldValue.increment(1),
-        'init_reactor': appUser.toFeedUser(),
-        'reactors_photo': FieldValue.arrayUnion([appUser.photoUrl]),
-      };
-
-      if (feed?.initialReactor != null &&
-          feed?.initialReactor?.uid != appUser.uid) {
-        _data.removeWhere((key, value) => key == 'init_reactor');
+      if (_reaction.parent == PeamanReactionParent.feed) {
+        await _updatePostPropertiesCount(feedId: feedId, reactionsCount: 1);
+      } else if (_reaction.parentId != null) {
+        await _updateCommentPropertiesCount(
+          feedId: feedId,
+          commentId: _reaction.parentId!,
+          reactionsCount: 1,
+        );
       }
-
-      if ((feed?.reactorsPhoto ?? []).length >= 3) {
-        _data.removeWhere((key, value) => key == 'reactors_photo');
-      }
-
-      await _postRef.update(_data);
 
       print('Success: Reacting to post ${feed?.id}');
       return 'Success';
@@ -154,29 +145,29 @@ class FeedProvider {
     }
   }
 
-  // unreact to post
-  Future unReactPost(final PeamanUser appUser) async {
+  // remove reaction from post or comment
+  Future removeReaction({
+    required final String feedId,
+    required final String parentId,
+    required final String reactionId,
+  }) async {
     try {
-      final _postRef = _ref.collection('posts').doc(feed?.id);
-      final _reactionsRef = _postRef.collection('reactions').doc(appUser.uid);
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _reactionsRef = _postRef.collection('reactions').doc(reactionId);
 
       await _reactionsRef.update({
         'unreacted': true,
       });
 
-      Map<String, dynamic> _data = {
-        'reaction_count': FieldValue.increment(-1),
-        'init_reactor': appUser.toFeedUser(),
-        'reactors_photo': FieldValue.arrayRemove([appUser.photoUrl]),
-      };
-
-      if (feed?.initialReactor?.uid == appUser.uid) {
-        _data['init_reactor'] = null;
+      if (feedId == parentId) {
+        await _updatePostPropertiesCount(feedId: feedId, reactionsCount: -1);
       } else {
-        _data.removeWhere((key, value) => key == 'init_reactor');
+        await _updateCommentPropertiesCount(
+          feedId: feedId,
+          commentId: parentId,
+          reactionsCount: -1,
+        );
       }
-
-      await _postRef.update(_data);
       print('Success: Unreacting to post ${feed?.id}');
       return 'Success';
     } catch (e) {
@@ -186,8 +177,8 @@ class FeedProvider {
     }
   }
 
-  // comment in a post
-  Future commentPost({
+  // add comment in a post or comment
+  Future addComment({
     required final String feedId,
     required final PeamanComment comment,
   }) async {
@@ -197,23 +188,124 @@ class FeedProvider {
       final _comment = comment.copyWith(id: _commentRef.id);
 
       await _commentRef.set(_comment.toJson());
+
       if (_comment.parent == PeamanCommentParent.feed) {
         await _updatePostPropertiesCount(
           feedId: feedId,
           commentsCount: 1,
         );
-      } else {
-        await _updateRepliesCount(
+      } else if (_comment.parentId != null) {
+        await _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
       }
-      print('Success: Commenting in post $feedId');
+      print('Success: Adding comment in post $feedId');
       return 'Success';
     } catch (e) {
       print(e);
-      print('Error!!!: Commenting in post $feedId');
+      print('Error!!!: Adding comment in post $feedId');
+      return null;
+    }
+  }
+
+  // remove comment from post or comment
+  Future removeComment({
+    required final String feedId,
+    required final String parentId,
+    required final String commentId,
+  }) async {
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _commentsRef = _postRef.collection('comments').doc(commentId);
+
+      await _commentsRef.delete();
+
+      if (feedId == parentId) {
+        await _updatePostPropertiesCount(feedId: feedId, commentsCount: -1);
+      } else {
+        await _updateCommentPropertiesCount(
+          feedId: feedId,
+          commentId: parentId,
+          repliesCount: -1,
+        );
+      }
+      print('Success: Unreacting to post ${feed?.id}');
+      return 'Success';
+    } catch (e) {
+      print(e);
+      print('Error!!!: Unreacting to post ${feed?.id}');
+      return null;
+    }
+  }
+
+  // update post properties count
+  Future _updatePostPropertiesCount({
+    required final String feedId,
+    final int? reactionsCount,
+    final int? commentsCount,
+    final int? savesCount,
+    final int? sharesCount,
+    final int? viewsCount,
+  }) async {
+    try {
+      final _postsRef = _ref.collection('posts').doc(feedId);
+      final _data = <String, dynamic>{};
+
+      if (reactionsCount != null) {
+        _data['reactions_count'] = FieldValue.increment(reactionsCount);
+      }
+      if (commentsCount != null) {
+        _data['comments_count'] = FieldValue.increment(commentsCount);
+      }
+      if (savesCount != null) {
+        _data['saves_count'] = FieldValue.increment(savesCount);
+      }
+      if (sharesCount != null) {
+        _data['shares_count'] = FieldValue.increment(sharesCount);
+      }
+      if (viewsCount != null) {
+        _data['views_count'] = FieldValue.increment(viewsCount);
+      }
+
+      if (_data.isNotEmpty) {
+        await _postsRef.update(_data);
+      }
+      print('Success: Updating post properties count of $feedId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Updating post properties count of $feedId');
+      return null;
+    }
+  }
+
+  // update comment properties count
+  Future _updateCommentPropertiesCount({
+    required final String feedId,
+    required final String commentId,
+    final int? reactionsCount,
+    final int? repliesCount,
+  }) async {
+    try {
+      final _postsRef = _ref.collection('posts').doc(feedId);
+      final _parentCommentRef = _postsRef.collection('comments').doc(commentId);
+      final _data = <String, dynamic>{};
+
+      if (reactionsCount != null) {
+        _data['reactions_count'] = FieldValue.increment(reactionsCount);
+      }
+      if (repliesCount != null) {
+        _data['replies_count'] = FieldValue.increment(repliesCount);
+      }
+
+      if (_data.isNotEmpty) {
+        await _parentCommentRef.update(_data);
+      }
+      print('Success: Updating post properties count of $feedId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Updating post properties count of $feedId');
       return null;
     }
   }
@@ -329,77 +421,6 @@ class FeedProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Viewing moment? ${moment?.id}');
-      return null;
-    }
-  }
-
-  // update post properties count
-  Future _updatePostPropertiesCount({
-    required final String feedId,
-    final int? reactionsCount,
-    final int? commentsCount,
-    final int? savesCount,
-    final int? sharesCount,
-    final int? viewsCount,
-  }) async {
-    try {
-      final _postsRef = _ref.collection('posts').doc(feedId);
-      final _data = <String, dynamic>{};
-
-      if (reactionsCount != null) {
-        _data['reactions_count'] = FieldValue.increment(reactionsCount);
-      }
-      if (commentsCount != null) {
-        _data['comments_count'] = FieldValue.increment(commentsCount);
-      }
-      if (savesCount != null) {
-        _data['saves_count'] = FieldValue.increment(savesCount);
-      }
-      if (sharesCount != null) {
-        _data['shares_count'] = FieldValue.increment(sharesCount);
-      }
-      if (viewsCount != null) {
-        _data['views_count'] = FieldValue.increment(viewsCount);
-      }
-
-      if (_data.isNotEmpty) {
-        await _postsRef.update(_data);
-      }
-      print('Success: Updating post properties count of $feedId');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Updating post properties count of $feedId');
-      return null;
-    }
-  }
-
-  // update repliesCount of a comment
-  Future _updateRepliesCount({
-    required final String feedId,
-    required final String commentId,
-    required final int repliesCount,
-  }) async {
-    try {
-      final _commentRef = _ref
-          .collection('posts')
-          .doc(feedId)
-          .collection('comments')
-          .doc(commentId);
-      final _data = <String, dynamic>{
-        'replies_count': FieldValue.increment(repliesCount),
-      };
-
-      if (_data.isNotEmpty) {
-        await _commentRef.update(_data);
-      }
-      print(
-        'Success: Updating replies count of Feed - $feedId, Comment - $commentId',
-      );
-    } catch (e) {
-      print(e);
-      print(
-        'Error!!!: Updating replies count of Feed - $feedId, Comment - $commentId',
-      );
       return null;
     }
   }

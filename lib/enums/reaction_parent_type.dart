@@ -1,0 +1,4 @@
+enum PeamanReactionParent {
+  feed,
+  comment,
+}

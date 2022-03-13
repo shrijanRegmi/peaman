@@ -4,9 +4,10 @@ class PeamanComment {
   final String? id;
   final PeamanUser? owner;
   final String? ownerId;
-  final PeamanCommentParent? parent;
+  final PeamanCommentParent parent;
   final String? parentId;
   final String? comment;
+  final int reactionsCount;
   final int repliesCount;
   final int? updatedAt;
 
@@ -14,9 +15,10 @@ class PeamanComment {
     this.id,
     this.owner,
     this.ownerId,
-    this.parent,
+    this.parent = PeamanCommentParent.feed,
     this.parentId,
     this.comment,
+    this.reactionsCount = 0,
     this.repliesCount = 0,
     this.updatedAt,
   });
@@ -28,6 +30,7 @@ class PeamanComment {
     final PeamanCommentParent? parent,
     final String? parentId,
     final String? comment,
+    final int? reactionsCount,
     final int? repliesCount,
     final int? updatedAt,
   }) {
@@ -38,6 +41,7 @@ class PeamanComment {
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
       comment: comment ?? this.comment,
+      reactionsCount: reactionsCount ?? this.reactionsCount,
       repliesCount: repliesCount ?? this.repliesCount,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -54,6 +58,7 @@ class PeamanComment {
       parent: PeamanCommentParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
       comment: data['comment'] ?? '',
+      reactionsCount: data['reactions_count'] ?? 0,
       repliesCount: data['replies_count'] ?? 0,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
     );
@@ -63,7 +68,7 @@ class PeamanComment {
     return {
       'id': id,
       'owner_id': ownerId,
-      'parent': parent?.index ?? 0,
+      'parent': parent.index,
       'parent_id': parentId,
       'comment': comment,
       'updated_at': updatedAt,

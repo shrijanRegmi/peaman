@@ -93,7 +93,7 @@ class PeamanFeed {
       initialReactor: data['init_reactor'] == null
           ? null
           : PeamanUser.fromJson(data['init_reactor']),
-      reactionCount: data['reaction_count'] ?? 0,
+      reactionCount: data['reactions_count'] ?? 0,
       commentsCount: data['comments_count'] ?? 0,
       savesCount: data['saves_count'] ?? 0,
       sharesCount: data['shares_count'] ?? 0,

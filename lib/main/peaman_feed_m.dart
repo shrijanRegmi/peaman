@@ -36,30 +36,47 @@ class PFeedProvider {
     return await FeedProvider(moment: moment, uid: _uid).viewMoment(appUser);
   }
 
-  static Future reactToFeed({
-    required final PeamanUser appUser,
-    required final PeamanFeed feed,
+  static Future addReaction({
+    required final String feedId,
+    required final PeamanReaction reaction,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-
-    return await FeedProvider(feed: feed, uid: _uid).reactPost(appUser);
+    return await FeedProvider().addReaction(
+      feedId: feedId,
+      reaction: reaction,
+    );
   }
 
-  static Future unreactToFeed({
-    required final PeamanUser appUser,
-    required final PeamanFeed feed,
+  static Future removeReaction({
+    required final String feedId,
+    required final String parentId,
+    required final String reactionId,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).unReactPost(appUser);
+    return await FeedProvider().removeReaction(
+      feedId: feedId,
+      parentId: parentId,
+      reactionId: reactionId,
+    );
   }
 
-  static Future commentToFeed({
+  static Future addComment({
     required final String feedId,
     required final PeamanComment comment,
   }) async {
-    return await FeedProvider().commentPost(
+    return await FeedProvider().addComment(
       feedId: feedId,
       comment: comment,
+    );
+  }
+
+  static Future removeComment({
+    required final String feedId,
+    required final String parentId,
+    required final String commentId,
+  }) async {
+    return await FeedProvider().removeComment(
+      feedId: feedId,
+      parentId: parentId,
+      commentId: commentId,
     );
   }
 
