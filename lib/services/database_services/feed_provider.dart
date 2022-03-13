@@ -194,7 +194,18 @@ class FeedProvider {
       final _comment = comment.copyWith(id: _commentRef.id);
 
       await _commentRef.set(_comment.toJson());
-      await _updatePostPropertiesCount(commentsCount: 1);
+      if (_comment.parent == PeamanCommentParent.feed) {
+        await _updatePostPropertiesCount(
+          feedId: feed?.id ?? '',
+          commentsCount: 1,
+        );
+      } else {
+        await _updateRepliesCount(
+          feedId: feed?.id ?? '',
+          commentId: _comment.id!,
+          repliesCount: 1,
+        );
+      }
       print('Success: Commenting in post ${feed?.id}');
       return 'Success';
     } catch (e) {
@@ -265,7 +276,7 @@ class FeedProvider {
 
       await _feedSavesRef.set(_feedSaveData);
       await _savedPostRef.set(_data);
-      await _updatePostPropertiesCount(savesCount: 1);
+      await _updatePostPropertiesCount(feedId: feed?.id ?? '', savesCount: 1);
       print('Success: Saving feed? ${feed?.id}');
       return feed;
     } catch (e) {
@@ -288,7 +299,7 @@ class FeedProvider {
 
       await _feedSavesRef.delete();
       await _savedPostRef.delete();
-      await _updatePostPropertiesCount(savesCount: -1);
+      await _updatePostPropertiesCount(feedId: feed?.id ?? '', savesCount: -1);
       print('Success: Deleting saved feed? ${feed?.id}');
       return feed;
     } catch (e) {
@@ -321,6 +332,7 @@ class FeedProvider {
 
   // update post properties count
   Future _updatePostPropertiesCount({
+    required final String feedId,
     final int? reactionsCount,
     final int? commentsCount,
     final int? savesCount,
@@ -328,7 +340,7 @@ class FeedProvider {
     final int? viewsCount,
   }) async {
     try {
-      final _postsRef = _ref.collection('posts').doc(feed?.id);
+      final _postsRef = _ref.collection('posts').doc(feedId);
       final _data = <String, dynamic>{};
 
       if (reactionsCount != null) {
@@ -349,6 +361,32 @@ class FeedProvider {
 
       if (_data.isNotEmpty) {
         await _postsRef.update(_data);
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: post properties count of ${feed?.id}');
+      return null;
+    }
+  }
+
+  // update repliesCount of a comment
+  Future _updateRepliesCount({
+    required final String feedId,
+    required final String commentId,
+    required final int repliesCount,
+  }) async {
+    try {
+      final _commentRef = _ref
+          .collection('posts')
+          .doc(feedId)
+          .collection('comments')
+          .doc(commentId);
+      final _data = <String, dynamic>{
+        'replies_count': FieldValue.increment(repliesCount),
+      };
+
+      if (_data.isNotEmpty) {
+        await _commentRef.update(_data);
       }
     } catch (e) {
       print(e);
@@ -810,6 +848,17 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
   }
 
+  // list of comments from firestore
+  List<PeamanComment> _commentsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map(
+          (e) => PeamanComment.fromJson(e.data(), PeamanUser()),
+        )
+        .toList();
+  }
+
   // list of app user from firebase
   List<PeamanUser> _usersFromFirebase(
     final QuerySnapshot<Map<String, dynamic>> colSnap,
@@ -841,5 +890,22 @@ class FeedProvider {
         .orderBy(_query.orderBy, descending: _query.descending)
         .snapshots()
         .map(_feedsFromFirebase);
+  }
+
+  // stream of comments
+  Stream<List<PeamanComment>> comments({
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
+  }) {
+    return _ref
+        .collection('posts')
+        .doc(feedId)
+        .collection('comments')
+        .where('parent', isEqualTo: parent.index)
+        .where('parent_id', isEqualTo: parentId)
+        .orderBy('updated_at', descending: true)
+        .snapshots()
+        .map(_commentsFromFirebase);
   }
 }

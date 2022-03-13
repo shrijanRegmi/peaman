@@ -163,4 +163,16 @@ class PFeedProvider {
   static Stream<List<PeamanFeed>> getAllFeeds({final PeamanQuery? query}) {
     return FeedProvider().allFeeds(query: query);
   }
+
+  static Stream<List<PeamanComment>> getComments({
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
+  }) {
+    return FeedProvider().comments(
+      feedId: feedId,
+      parent: parent,
+      parentId: parentId,
+    );
+  }
 }

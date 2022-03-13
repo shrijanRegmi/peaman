@@ -33,6 +33,7 @@ export 'enums/online_status.dart';
 export 'enums/chat_user.dart';
 export 'enums/typing_state.dart';
 export 'enums/chat_request_status.dart';
+export 'enums/comment_parent_type.dart';
 
 // helpers
 export 'helpers/chat_helper.dart';
