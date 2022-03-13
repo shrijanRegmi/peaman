@@ -1,39 +1,36 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
 class PChatProvider {
-  static final _auth = FirebaseAuth.instance;
-
-  static Future<void> sendMessage(
-    final String chatId,
-    final PeamanMessage message,
-  ) async {
+  static Future<void> sendMessage({
+    required final String chatId,
+    required final PeamanMessage message,
+  }) async {
     await MessageProvider(
       appUserId: message.senderId,
       chatId: chatId,
     ).sendMessage(message: message);
   }
 
-  static Future<void> readMessage(
-    final String chatId,
-    final PeamanChatUser chatUser,
-  ) async {
+  static Future<void> readMessage({
+    required final String chatId,
+    required final PeamanChatUser chatUser,
+  }) async {
     await MessageProvider(chatId: chatId).readChatMessage(chatUser);
   }
 
-  static Future<void> setTyping(
-    final String chatId,
-    final PeamanChatUser chatUser,
-    final PeamanTypingState typingState,
-  ) async {
+  static Future<void> setTyping({
+    required final String chatId,
+    required final PeamanChatUser chatUser,
+    required final PeamanTypingState typingState,
+  }) async {
     await MessageProvider(chatId: chatId).setTyping(chatUser, typingState);
   }
 
-  static Future<void> updateChat(
-    final String chatId,
-    final Map<String, dynamic> data,
-  ) async {
+  static Future<void> updateChat({
+    required final String chatId,
+    required final Map<String, dynamic> data,
+  }) async {
     await MessageProvider(chatId: chatId).updateChatData(data);
   }
 
@@ -63,37 +60,41 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanMessage>> getMessages(
-    final String chatId, {
+  static Stream<List<PeamanMessage>> getMessages({
+    required final String chatId,
     final int limit = 10,
   }) {
     return MessageProvider(chatId: chatId, limit: limit).messagesList;
   }
 
-  static Stream<List<PeamanChat>> getChats() {
-    final _uid = _auth.currentUser?.uid;
-    return MessageProvider(appUserId: _uid).chatList;
+  static Stream<List<PeamanChat>> getChats({
+    required final String uid,
+  }) {
+    return MessageProvider(appUserId: uid).chatList;
   }
 
-  static Stream<List<PeamanIdleChat>> getIdleChats() {
-    final _uid = _auth.currentUser?.uid;
-    return MessageProvider(appUserId: _uid).idleChatsList;
+  static Stream<List<PeamanIdleChat>> getIdleChats({
+    required final String uid,
+  }) {
+    return MessageProvider(appUserId: uid).idleChatsList;
   }
 
-  static Stream<List<PeamanAcceptedChat>> getAcceptedChats() {
-    final _uid = _auth.currentUser?.uid;
-    return MessageProvider(appUserId: _uid).acceptedChatsList;
+  static Stream<List<PeamanAcceptedChat>> getAcceptedChats({
+    required final String uid,
+  }) {
+    return MessageProvider(appUserId: uid).acceptedChatsList;
   }
 
-  static Stream<List<PeamanDeclinedChat>> getDeclinedChats() {
-    final _uid = _auth.currentUser?.uid;
-    return MessageProvider(appUserId: _uid).declinedChatsList;
+  static Stream<List<PeamanDeclinedChat>> getDeclinedChats({
+    required final String uid,
+  }) {
+    return MessageProvider(appUserId: uid).declinedChatsList;
   }
 
-  static Stream<PeamanMessage> getSingleMessageById(
-    final String chatId,
-    final String messageId,
-  ) {
+  static Stream<PeamanMessage> getSingleMessageById({
+    required final String chatId,
+    required final String messageId,
+  }) {
     return MessageProvider(chatId: chatId).message(messageId);
   }
 }
