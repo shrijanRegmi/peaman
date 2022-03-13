@@ -118,6 +118,8 @@ class FeedProvider {
   Future addReaction({
     required final String feedId,
     required final PeamanReaction reaction,
+    final Function(PeamanReaction)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
@@ -128,20 +130,21 @@ class FeedProvider {
 
       if (_reaction.parent == PeamanReactionParent.feed) {
         await _updatePostPropertiesCount(feedId: feedId, reactionsCount: 1);
+        print('Success: Adding reaction to post $feedId');
       } else if (_reaction.parentId != null) {
         await _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: _reaction.parentId!,
           reactionsCount: 1,
         );
+        print('Success: Adding reaction to comment ${_reaction.parentId}');
       }
 
-      print('Success: Reacting to post ${feed?.id}');
-      return 'Success';
+      onSuccess?.call(_reaction);
     } catch (e) {
       print(e);
-      print('Error!!!: Reacting to post ${feed?.id}');
-      return null;
+      print('Error!!!: Adding reaction');
+      onError?.call(e);
     }
   }
 
@@ -150,6 +153,8 @@ class FeedProvider {
     required final String feedId,
     required final String parentId,
     required final String reactionId,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
@@ -161,19 +166,21 @@ class FeedProvider {
 
       if (feedId == parentId) {
         await _updatePostPropertiesCount(feedId: feedId, reactionsCount: -1);
+        print('Success: Removing reaction from post $feedId');
       } else {
         await _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           reactionsCount: -1,
         );
+        print('Success: Removing reaction from comment $parentId');
       }
-      print('Success: Unreacting to post ${feed?.id}');
-      return 'Success';
+
+      onSuccess?.call(_reactionsRef.id);
     } catch (e) {
       print(e);
-      print('Error!!!: Unreacting to post ${feed?.id}');
-      return null;
+      print('Error!!!: Removing reaction');
+      onError?.call(e);
     }
   }
 
@@ -181,6 +188,8 @@ class FeedProvider {
   Future addComment({
     required final String feedId,
     required final PeamanComment comment,
+    final Function(PeamanComment)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     try {
       final _feedRef = _ref.collection('posts').doc(feedId);
@@ -194,19 +203,20 @@ class FeedProvider {
           feedId: feedId,
           commentsCount: 1,
         );
+        print('Success: Adding comment to post $feedId');
       } else if (_comment.parentId != null) {
         await _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
+        print('Success: Adding comment to comment ${_comment.parentId}');
       }
-      print('Success: Adding comment in post $feedId');
-      return 'Success';
+      onSuccess?.call(_comment);
     } catch (e) {
       print(e);
-      print('Error!!!: Adding comment in post $feedId');
-      return null;
+      print('Error!!!: Adding comment');
+      onError?.call(e);
     }
   }
 
@@ -215,6 +225,8 @@ class FeedProvider {
     required final String feedId,
     required final String parentId,
     required final String commentId,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
@@ -223,20 +235,24 @@ class FeedProvider {
       await _commentsRef.delete();
 
       if (feedId == parentId) {
-        await _updatePostPropertiesCount(feedId: feedId, commentsCount: -1);
+        await _updatePostPropertiesCount(
+          feedId: feedId,
+          commentsCount: -1,
+        );
+        print('Success: Removing comment from post $feedId');
       } else {
         await _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           repliesCount: -1,
         );
+        print('Success: Removing comment from comment $parentId');
       }
-      print('Success: Unreacting to post ${feed?.id}');
-      return 'Success';
+      onSuccess?.call(commentId);
     } catch (e) {
       print(e);
-      print('Error!!!: Unreacting to post ${feed?.id}');
-      return null;
+      print('Error!!!: Removing comment');
+      onError?.call(e);
     }
   }
 

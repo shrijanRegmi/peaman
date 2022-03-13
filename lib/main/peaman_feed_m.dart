@@ -39,10 +39,14 @@ class PFeedProvider {
   static Future addReaction({
     required final String feedId,
     required final PeamanReaction reaction,
+    final Function(PeamanReaction)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().addReaction(
       feedId: feedId,
       reaction: reaction,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
@@ -50,21 +54,29 @@ class PFeedProvider {
     required final String feedId,
     required final String parentId,
     required final String reactionId,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().removeReaction(
       feedId: feedId,
       parentId: parentId,
       reactionId: reactionId,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
   static Future addComment({
     required final String feedId,
     required final PeamanComment comment,
+    final Function(PeamanComment)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().addComment(
       feedId: feedId,
       comment: comment,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
@@ -72,11 +84,15 @@ class PFeedProvider {
     required final String feedId,
     required final String parentId,
     required final String commentId,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().removeComment(
       feedId: feedId,
       parentId: parentId,
       commentId: commentId,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
