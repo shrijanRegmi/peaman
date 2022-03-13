@@ -9,11 +9,11 @@ class PeamanComment {
   final int? updatedAt;
 
   PeamanComment({
-    required this.id,
-    required this.user,
-    required this.userRef,
-    required this.comment,
-    required this.updatedAt,
+    this.id,
+    this.user,
+    this.userRef,
+    this.comment,
+    this.updatedAt,
   });
 
   PeamanComment copyWith({
