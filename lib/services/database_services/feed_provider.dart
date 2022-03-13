@@ -205,7 +205,7 @@ class FeedProvider {
       } else {
         await _updateRepliesCount(
           feedId: feedId,
-          commentId: _comment.id!,
+          commentId: _comment.parentId!,
           repliesCount: 1,
         );
       }
