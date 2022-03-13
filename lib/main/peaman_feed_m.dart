@@ -53,13 +53,14 @@ class PFeedProvider {
     return await FeedProvider(feed: feed, uid: _uid).unReactPost(appUser);
   }
 
-  static Future commentToFeed(
-    final PeamanUser appUser,
-    final PeamanFeed feed,
-    final PeamanComment comment,
-  ) async {
-    final _uid = _auth.currentUser?.uid;
-    return await FeedProvider(feed: feed, uid: _uid).commentPost(comment);
+  static Future commentToFeed({
+    required final String feedId,
+    required final PeamanComment comment,
+  }) async {
+    return await FeedProvider().commentPost(
+      feedId: feedId,
+      comment: comment,
+    );
   }
 
   static Future saveFeed({

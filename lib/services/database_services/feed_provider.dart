@@ -187,30 +187,33 @@ class FeedProvider {
   }
 
   // comment in a post
-  Future commentPost(final PeamanComment comment) async {
+  Future commentPost({
+    required final String feedId,
+    required final PeamanComment comment,
+  }) async {
     try {
-      final _feedRef = _ref.collection('posts').doc(feed?.id);
+      final _feedRef = _ref.collection('posts').doc(feedId);
       final _commentRef = _feedRef.collection('comments').doc();
       final _comment = comment.copyWith(id: _commentRef.id);
 
       await _commentRef.set(_comment.toJson());
       if (_comment.parent == PeamanCommentParent.feed) {
         await _updatePostPropertiesCount(
-          feedId: feed?.id ?? '',
+          feedId: feedId,
           commentsCount: 1,
         );
       } else {
         await _updateRepliesCount(
-          feedId: feed?.id ?? '',
+          feedId: feedId,
           commentId: _comment.id!,
           repliesCount: 1,
         );
       }
-      print('Success: Commenting in post ${feed?.id}');
+      print('Success: Commenting in post $feedId');
       return 'Success';
     } catch (e) {
       print(e);
-      print('Error!!!: Commenting in post ${feed?.id}');
+      print('Error!!!: Commenting in post $feedId');
       return null;
     }
   }
@@ -362,9 +365,10 @@ class FeedProvider {
       if (_data.isNotEmpty) {
         await _postsRef.update(_data);
       }
+      print('Success: Updating post properties count of $feedId');
     } catch (e) {
       print(e);
-      print('Error!!!: post properties count of ${feed?.id}');
+      print('Error!!!: Updating post properties count of $feedId');
       return null;
     }
   }
@@ -388,9 +392,14 @@ class FeedProvider {
       if (_data.isNotEmpty) {
         await _commentRef.update(_data);
       }
+      print(
+        'Success: Updating replies count of Feed - $feedId, Comment - $commentId',
+      );
     } catch (e) {
       print(e);
-      print('Error!!!: post properties count of ${feed?.id}');
+      print(
+        'Error!!!: Updating replies count of Feed - $feedId, Comment - $commentId',
+      );
       return null;
     }
   }
