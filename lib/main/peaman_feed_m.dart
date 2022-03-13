@@ -180,11 +180,14 @@ class PFeedProvider {
         .getOldFeaturedPostsById();
   }
 
-  static Future<PeamanReaction?> getReactionById({
-    required final PeamanFeed feed,
-    required final String reactedById,
+  static Future<PeamanReaction?> getReactionByOwnerId({
+    required final String feedId,
+    required final String ownerId,
   }) async {
-    return await FeedProvider(feed: feed).getReactionById(reactedById);
+    return await FeedProvider().getReactionByOwnerId(
+      feedId: feedId,
+      ownerId: ownerId,
+    );
   }
 
   static Future<PeamanFeedSaves?> getFeedSavesById({

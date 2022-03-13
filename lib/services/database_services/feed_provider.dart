@@ -850,16 +850,24 @@ class FeedProvider {
   }
 
   // get reaction by id
-  Future<PeamanReaction?> getReactionById(final String reactedById) async {
+  Future<PeamanReaction?> getReactionByOwnerId({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
     PeamanReaction? _reaction;
     try {
       final _postRef = _ref.collection('posts').doc(feed?.id);
-      final _reactionRef = _postRef.collection('reactions').doc(reactedById);
-      final _reactionSnap = await _reactionRef.get();
+      final _reactionRef = _postRef
+          .collection('reactions')
+          .where('owner_id', isEqualTo: ownerId);
+      final _reactionsSnap = await _reactionRef.get();
 
-      if (_reactionSnap.exists) {
-        final _reactionData = _reactionSnap.data() ?? {};
-        _reaction = PeamanReaction.fromJson(_reactionData);
+      if (_reactionsSnap.docs.isNotEmpty) {
+        final _reactionSnap = _reactionsSnap.docs.first;
+        if (_reactionSnap.exists) {
+          final _reactionData = _reactionSnap.data();
+          _reaction = PeamanReaction.fromJson(_reactionData);
+        }
       }
     } catch (e) {
       print(e);
