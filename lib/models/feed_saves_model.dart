@@ -1,14 +1,14 @@
 class PeamanFeedSaves {
-  final String? uid;
+  final String? ownerId;
   final int? createdAt;
   PeamanFeedSaves({
-    this.uid,
+    this.ownerId,
     this.createdAt,
   });
 
   static PeamanFeedSaves fromJson(final Map<String, dynamic> data) {
     return PeamanFeedSaves(
-      uid: data['uid'],
+      ownerId: data['owner_id'],
       createdAt: data['updated_at'],
     );
   }

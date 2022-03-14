@@ -55,7 +55,10 @@ class HomeScreen extends StatelessWidget {
                     type: PeamanMessageType.Text,
                   );
 
-                  await PChatProvider.sendMessage('test_chat_id', _message);
+                  await PChatProvider.sendMessage(
+                    chatId: 'test_chat_id',
+                    message: _message,
+                  );
                 },
                 color: Colors.deepPurple,
                 child: Text("Send Message"),
@@ -75,7 +78,7 @@ class HomeScreen extends StatelessWidget {
   Widget _messagesDisplay() {
     return Expanded(
       child: StreamBuilder<List<PeamanMessage>>(
-        stream: PChatProvider.getMessages('test_chat_id', limit: 5),
+        stream: PChatProvider.getMessages(chatId: 'test_chat_id', limit: 5),
         builder: (context, snap) {
           if (snap.hasData) {
             final _messages = snap.data;

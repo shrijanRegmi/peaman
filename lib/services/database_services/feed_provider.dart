@@ -118,7 +118,7 @@ class FeedProvider {
   }) async {
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
-      final _reactionsRef = _postRef.collection('reactions').doc();
+      final _reactionsRef = _postRef.collection('reactions').doc(reaction.id);
 
       final _reaction = reaction.copyWith(id: _reactionsRef.id);
       await _reactionsRef.set(_reaction.toJson());
@@ -188,7 +188,7 @@ class FeedProvider {
   }) async {
     try {
       final _feedRef = _ref.collection('posts').doc(feedId);
-      final _commentRef = _feedRef.collection('comments').doc();
+      final _commentRef = _feedRef.collection('comments').doc(comment.id);
       final _comment = comment.copyWith(id: _commentRef.id);
 
       await _commentRef.set(_comment.toJson());
@@ -365,23 +365,23 @@ class FeedProvider {
   // save feed
   Future<void> saveFeed({
     required final String feedId,
-    required final String ownerId,
+    required final String uid,
   }) async {
     try {
       final _savedPostRef = _ref
           .collection('users')
-          .doc(ownerId)
+          .doc(uid)
           .collection('saved_posts')
           .doc(feedId);
       final _feedSavesRef =
-          _ref.collection('posts').doc(feedId).collection('saves').doc(ownerId);
+          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
 
       final _data = {
         'id': feedId,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
       final _feedSaveData = {
-        'owner_id': ownerId,
+        'owner_id': uid,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
@@ -399,17 +399,17 @@ class FeedProvider {
 
   // unsave feed
   Future<void> unSaveFeed({
-    required final String ownerId,
     required final String feedId,
+    required final String uid,
   }) async {
     try {
       final _savedPostRef = _ref
           .collection('users')
-          .doc(ownerId)
+          .doc(uid)
           .collection('saved_posts')
           .doc(feedId);
       final _feedSavesRef =
-          _ref.collection('posts').doc(feedId).collection('saves').doc(ownerId);
+          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
 
       await Future.wait([_feedSavesRef.delete(), _savedPostRef.delete()]);
       await _updatePostPropertiesCount(feedId: feedId, savesCount: -1);
@@ -481,7 +481,6 @@ class FeedProvider {
           _reaction = PeamanReaction.fromJson(_reactionData);
         }
       }
-      print('Success: Getting reaction by owner_id');
     } catch (e) {
       print(e);
       print('Error!!!: Getting reaction by owner_id');
@@ -504,10 +503,9 @@ class FeedProvider {
         final _postSavesData = _postSavesSnap.data() ?? {};
         _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
       }
-      print('Success: Getting post saves by owner_id $ownerId');
     } catch (e) {
       print(e);
-      print('Error!!!: Getting post saves by owner_id');
+      print('Error!!!: Getting post saves by uid');
     }
     return _postSaves;
   }

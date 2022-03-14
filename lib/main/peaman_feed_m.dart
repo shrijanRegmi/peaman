@@ -4,7 +4,7 @@ import 'package:peaman/services/database_services/feed_provider.dart';
 class PFeedProvider {
   static Future<void> createFeed({
     required final PeamanFeed feed,
-    required final Function(PeamanFeed)? onSuccess,
+    final Function(PeamanFeed)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().createFeed(
@@ -108,21 +108,21 @@ class PFeedProvider {
 
   static Future<void> saveFeed({
     required final String feedId,
-    required final String ownerId,
+    required final String uid,
   }) async {
     return await FeedProvider().saveFeed(
       feedId: feedId,
-      ownerId: ownerId,
+      uid: uid,
     );
   }
 
   static Future<void> unSaveFeed({
     required final String feedId,
-    required final String ownerId,
+    required final String uid,
   }) async {
     return await FeedProvider().unSaveFeed(
       feedId: feedId,
-      ownerId: ownerId,
+      uid: uid,
     );
   }
 

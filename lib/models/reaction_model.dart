@@ -43,7 +43,7 @@ class PeamanReaction {
       ownerId: data['owner_id'],
       parent: PeamanReactionParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
-      unreacted: data['unreacted'] ?? '',
+      unreacted: data['unreacted'] ?? false,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
     );
   }
