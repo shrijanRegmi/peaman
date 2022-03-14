@@ -111,24 +111,26 @@ class FeedProvider {
 
   // add reaction to post or comment
   Future<void> addReaction({
-    required final String feedId,
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _postRef = _ref.collection('posts').doc(feedId);
+      final _postRef = _ref.collection('posts').doc(reaction.feedId);
       final _reactionsRef = _postRef.collection('reactions').doc(reaction.id);
 
       final _reaction = reaction.copyWith(id: _reactionsRef.id);
       await _reactionsRef.set(_reaction.toJson());
 
       if (_reaction.parent == PeamanReactionParent.feed) {
-        await _updatePostPropertiesCount(feedId: feedId, reactionsCount: 1);
-        print('Success: Adding reaction to post $feedId');
+        await _updatePostPropertiesCount(
+          feedId: reaction.feedId!,
+          reactionsCount: 1,
+        );
+        print('Success: Adding reaction to post ${reaction.feedId}');
       } else if (_reaction.parentId != null) {
         await _updateCommentPropertiesCount(
-          feedId: feedId,
+          feedId: reaction.feedId!,
           commentId: _reaction.parentId!,
           reactionsCount: 1,
         );
@@ -181,13 +183,12 @@ class FeedProvider {
 
   // add comment in a post or comment
   Future<void> addComment({
-    required final String feedId,
     required final PeamanComment comment,
     final Function(PeamanComment)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('posts').doc(feedId);
+      final _feedRef = _ref.collection('posts').doc(comment.feedId);
       final _commentRef = _feedRef.collection('comments').doc(comment.id);
       final _comment = comment.copyWith(id: _commentRef.id);
 
@@ -195,13 +196,13 @@ class FeedProvider {
 
       if (_comment.parent == PeamanCommentParent.feed) {
         await _updatePostPropertiesCount(
-          feedId: feedId,
+          feedId: comment.feedId!,
           commentsCount: 1,
         );
-        print('Success: Adding comment to post $feedId');
+        print('Success: Adding comment to post ${comment.feedId}');
       } else if (_comment.parentId != null) {
         await _updateCommentPropertiesCount(
-          feedId: feedId,
+          feedId: comment.feedId!,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
@@ -521,11 +522,7 @@ class FeedProvider {
   List<PeamanComment> _commentsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
-    return snap.docs
-        .map(
-          (e) => PeamanComment.fromJson(e.data(), PeamanUser()),
-        )
-        .toList();
+    return snap.docs.map((e) => PeamanComment.fromJson(e.data())).toList();
   }
 
   // list of app user from firebase

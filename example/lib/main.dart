@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                 final _message = _messages![index];
                 return ListTile(
                   leading: Icon(Icons.message),
-                  title: Text(_message.text),
+                  title: Text(_message.text ?? ''),
                 );
               },
             );

@@ -2,6 +2,7 @@ import '../peaman.dart';
 
 class PeamanReaction {
   final String? id;
+  final String? feedId;
   final String? ownerId;
   final PeamanReactionParent parent;
   final String? parentId;
@@ -10,6 +11,7 @@ class PeamanReaction {
 
   PeamanReaction({
     this.id,
+    this.feedId,
     this.ownerId,
     this.parent = PeamanReactionParent.feed,
     this.parentId,
@@ -19,6 +21,7 @@ class PeamanReaction {
 
   PeamanReaction copyWith({
     final String? id,
+    final String? feedId,
     final PeamanUser? owner,
     final String? ownerId,
     final PeamanReactionParent? parent,
@@ -29,6 +32,7 @@ class PeamanReaction {
   }) {
     return PeamanReaction(
       id: id ?? this.id,
+      feedId: feedId ?? this.feedId,
       ownerId: ownerId ?? this.ownerId,
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
@@ -40,6 +44,7 @@ class PeamanReaction {
   static PeamanReaction fromJson(final Map<String, dynamic> data) {
     return PeamanReaction(
       id: data['id'],
+      feedId: data['feed_id'],
       ownerId: data['owner_id'],
       parent: PeamanReactionParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
@@ -51,6 +56,7 @@ class PeamanReaction {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'feed_id': feedId,
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,

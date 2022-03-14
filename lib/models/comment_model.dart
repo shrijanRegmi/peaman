@@ -2,7 +2,7 @@ import '../peaman.dart';
 
 class PeamanComment {
   final String? id;
-  final PeamanUser? owner;
+  final String? feedId;
   final String? ownerId;
   final PeamanCommentParent parent;
   final String? parentId;
@@ -13,7 +13,7 @@ class PeamanComment {
 
   PeamanComment({
     this.id,
-    this.owner,
+    this.feedId,
     this.ownerId,
     this.parent = PeamanCommentParent.feed,
     this.parentId,
@@ -25,7 +25,7 @@ class PeamanComment {
 
   PeamanComment copyWith({
     final String? id,
-    final PeamanUser? owner,
+    final String? feedId,
     final String? ownerId,
     final PeamanCommentParent? parent,
     final String? parentId,
@@ -36,7 +36,7 @@ class PeamanComment {
   }) {
     return PeamanComment(
       id: id ?? this.id,
-      owner: owner ?? this.owner,
+      feedId: feedId ?? this.feedId,
       ownerId: ownerId ?? this.ownerId,
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
@@ -47,13 +47,10 @@ class PeamanComment {
     );
   }
 
-  static PeamanComment fromJson(
-    final Map<String, dynamic> data,
-    final PeamanUser owner,
-  ) {
+  static PeamanComment fromJson(final Map<String, dynamic> data) {
     return PeamanComment(
       id: data['id'],
-      owner: owner,
+      feedId: data['feed_id'],
       ownerId: data['owner_id'],
       parent: PeamanCommentParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
@@ -67,6 +64,7 @@ class PeamanComment {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'feed_id': feedId,
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,

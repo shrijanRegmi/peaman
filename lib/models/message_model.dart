@@ -2,22 +2,25 @@ import 'package:peaman/enums/message_type.dart';
 
 class PeamanMessage {
   final String? id;
-  final String text;
-  final String senderId;
-  final String receiverId;
-  final int milliseconds;
+  final String? chatId;
+  final String? text;
+  final String? senderId;
+  final String? receiverId;
+  final int? milliseconds;
   final PeamanMessageType type;
   PeamanMessage({
-    required this.id,
-    required this.text,
-    required this.senderId,
-    required this.receiverId,
-    required this.milliseconds,
-    required this.type,
+    this.id,
+    this.chatId,
+    this.text,
+    this.senderId,
+    this.receiverId,
+    this.milliseconds,
+    this.type = PeamanMessageType.Text,
   });
 
   PeamanMessage copyWith({
     final String? id,
+    final String? chatId,
     final String? text,
     final String? senderId,
     final String? receiverId,
@@ -26,6 +29,7 @@ class PeamanMessage {
   }) {
     return PeamanMessage(
       id: id ?? this.id,
+      chatId: chatId ?? this.chatId,
       text: text ?? this.text,
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
@@ -37,6 +41,7 @@ class PeamanMessage {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'chat_id': chatId,
       'text': text,
       'senderId': senderId,
       'receiverId': receiverId,
@@ -69,19 +74,21 @@ class PeamanMessage {
 
 class TextMessage extends PeamanMessage {
   final String? id;
-  final String text;
-  final String senderId;
-  final String receiverId;
-  final int milliseconds;
+  final String? chatId;
+  final String? text;
+  final String? senderId;
+  final String? receiverId;
+  final int? milliseconds;
   final PeamanMessageType type;
 
   TextMessage({
-    required this.id,
-    required this.text,
-    required this.senderId,
-    required this.receiverId,
-    required this.milliseconds,
-    required this.type,
+    this.id,
+    this.chatId,
+    this.text,
+    this.senderId,
+    this.receiverId,
+    this.milliseconds,
+    this.type = PeamanMessageType.Text,
   }) : super(
           id: id,
           text: text,
@@ -94,21 +101,24 @@ class TextMessage extends PeamanMessage {
 
 class ImageMessage extends PeamanMessage {
   final String? id;
-  final String text;
-  final String senderId;
-  final String receiverId;
-  final int milliseconds;
+  final String? chatId;
+  final String? text;
+  final String? senderId;
+  final String? receiverId;
+  final int? milliseconds;
   final PeamanMessageType type;
 
   ImageMessage({
-    required this.id,
-    required this.text,
-    required this.senderId,
-    required this.receiverId,
-    required this.milliseconds,
-    required this.type,
+    this.id,
+    this.chatId,
+    this.text,
+    this.senderId,
+    this.receiverId,
+    this.milliseconds,
+    this.type = PeamanMessageType.Image,
   }) : super(
           id: id,
+          chatId: chatId,
           text: text,
           senderId: senderId,
           receiverId: receiverId,

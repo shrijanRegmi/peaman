@@ -47,13 +47,11 @@ class PFeedProvider {
   }
 
   static Future<void> addReaction({
-    required final String feedId,
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().addReaction(
-      feedId: feedId,
       reaction: reaction,
       onSuccess: onSuccess,
       onError: onError,
@@ -77,13 +75,11 @@ class PFeedProvider {
   }
 
   static Future<void> addComment({
-    required final String feedId,
     required final PeamanComment comment,
     final Function(PeamanComment)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().addComment(
-      feedId: feedId,
       comment: comment,
       onSuccess: onSuccess,
       onError: onError,
