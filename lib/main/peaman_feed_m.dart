@@ -126,11 +126,13 @@ class PFeedProvider {
     required final String feedId,
     required final String ownerId,
     required final PeamanReactionParent parent,
+    required final String parentId,
   }) async {
     return await FeedProvider().getReactionByOwnerId(
       feedId: feedId,
       ownerId: ownerId,
       parent: parent,
+      parentId: parentId,
     );
   }
 

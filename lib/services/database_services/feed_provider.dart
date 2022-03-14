@@ -465,6 +465,7 @@ class FeedProvider {
     required final String feedId,
     required final String ownerId,
     required final PeamanReactionParent parent,
+    required final String parentId,
   }) async {
     PeamanReaction? _reaction;
     try {
@@ -472,7 +473,8 @@ class FeedProvider {
       final _reactionRef = _postRef
           .collection('reactions')
           .where('owner_id', isEqualTo: ownerId)
-          .where('parent', isEqualTo: parent.index);
+          .where('parent', isEqualTo: parent.index)
+          .where('parent_id', isEqualTo: parentId);
       final _reactionsSnap = await _reactionRef.get();
 
       if (_reactionsSnap.docs.isNotEmpty) {
