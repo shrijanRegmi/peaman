@@ -66,6 +66,43 @@ class AppUserProvider {
     }
   }
 
+  // update user properties count
+  Future<void> updateUserPropertiesCount({
+    required final String uid,
+    final int followers = 0,
+    final int following = 0,
+    final int notifCount = 0,
+    final int likeableFeeds = 0,
+    final int likeableComments = 0,
+    final int likeableReplies = 0,
+    final int reactionsReceived = 0,
+    final int commentsReceived = 0,
+    final int repliesReceived = 0,
+  }) async {
+    try {
+      final _usersRef = _ref.collection('users').doc(uid);
+      final _data = <String, dynamic>{
+        'followers': FieldValue.increment(followers),
+        'following': FieldValue.increment(following),
+        'notif_count': FieldValue.increment(notifCount),
+        'likeable_feeds': FieldValue.increment(likeableFeeds),
+        'likeable_comments': FieldValue.increment(likeableComments),
+        'likeable_replies': FieldValue.increment(likeableReplies),
+        'reactions_received': FieldValue.increment(reactionsReceived),
+        'comments_received': FieldValue.increment(commentsReceived),
+        'replies_received': FieldValue.increment(repliesReceived),
+      };
+
+      _data.removeWhere((key, value) => value == 0);
+
+      await _usersRef.update(_data);
+      print('Success: Updating user properties count $uid');
+    } catch (e) {
+      print(e);
+      print('Error: Updating user properties count');
+    }
+  }
+
   // appuser from firebase;
   PeamanUser _appUserFromFirebase(DocumentSnapshot<Map<String, dynamic>> snap) {
     return PeamanUser.fromJson(snap.data()!);
