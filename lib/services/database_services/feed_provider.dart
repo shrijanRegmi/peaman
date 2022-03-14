@@ -13,17 +13,24 @@ class FeedProvider {
     try {
       final _postref = _ref.collection('posts').doc(feed.id);
       final _feed = feed.copyWith(id: _postref.id);
-      await _postref.set(_feed.toJson());
-      print('Success: Creating post ${_feed.id}');
+      final _futures = <Future>[];
 
-      await _updatePhotosCount(
-        uid: feed.ownerId ?? '',
+      final _createPostFuture = _postref.set(_feed.toJson());
+      _futures.add(_createPostFuture);
+
+      final _updatePhotosFuture = _updatePhotosCount(
+        uid: feed.ownerId!,
         count: feed.photos.length,
       );
+      _futures.add(_updatePhotosFuture);
 
       if (feed.featured) {
-        await _saveFeatured(feed: _feed);
+        final _saveFeedAsFeaturedFuture = _saveFeatured(feed: _feed);
+        _futures.add(_saveFeedAsFeaturedFuture);
       }
+
+      await Future.wait(_futures);
+      print('Success: Creating post ${_feed.id}');
       onSuccess?.call(_feed);
     } catch (e) {
       print(e);
@@ -63,6 +70,7 @@ class FeedProvider {
       final _followersRef = _userRef.collection('followers');
       final _followersSnap = await _followersRef.get();
       if (_followersSnap.docs.isNotEmpty) {
+        final _futures = <Future>[];
         for (final _docSnap in (_followersSnap.docs)) {
           if (_docSnap.exists) {
             final _data = _docSnap.data();
@@ -73,13 +81,15 @@ class FeedProvider {
                 .collection('timeline')
                 .doc(feedId);
 
-            await _timelineRef.set({
+            final _future = _timelineRef.set({
               'id': feedId,
               'updated_at': DateTime.now().millisecondsSinceEpoch,
-            });
-            print("Success: Posting to $_uid's timeline");
+            }).then((value) => print("Success: Posting to $_uid's timeline"));
+            _futures.add(_future);
           }
         }
+
+        await Future.wait(_futures);
       }
       print('Success: Saving to followers timeline');
     } catch (e) {
@@ -120,23 +130,29 @@ class FeedProvider {
       final _reactionsRef = _postRef.collection('reactions').doc(reaction.id);
 
       final _reaction = reaction.copyWith(id: _reactionsRef.id);
-      await _reactionsRef.set(_reaction.toJson());
+
+      final _futures = <Future>[];
+
+      _futures.add(_reactionsRef.set(_reaction.toJson()));
 
       if (_reaction.parent == PeamanReactionParent.feed) {
-        await _updatePostPropertiesCount(
+        final _postPropertyFuture = _updatePostPropertiesCount(
           feedId: reaction.feedId!,
           reactionsCount: 1,
         );
+        _futures.add(_postPropertyFuture);
         print('Success: Adding reaction to post ${reaction.feedId}');
       } else if (_reaction.parentId != null) {
-        await _updateCommentPropertiesCount(
+        final _future = _updateCommentPropertiesCount(
           feedId: reaction.feedId!,
           commentId: _reaction.parentId!,
           reactionsCount: 1,
         );
+        _futures.add(_future);
         print('Success: Adding reaction to comment ${_reaction.parentId}');
       }
 
+      await Future.wait(_futures);
       onSuccess?.call(_reaction);
     } catch (e) {
       print(e);
@@ -157,22 +173,33 @@ class FeedProvider {
       final _postRef = _ref.collection('posts').doc(feedId);
       final _reactionsRef = _postRef.collection('reactions').doc(reactionId);
 
-      await _reactionsRef.update({
+      final _futures = <Future>[];
+
+      final _future = _reactionsRef.update({
         'unreacted': true,
       });
+      _futures.add(_future);
 
       if (feedId == parentId) {
-        await _updatePostPropertiesCount(feedId: feedId, reactionsCount: -1);
+        final _future = _updatePostPropertiesCount(
+          feedId: feedId,
+          reactionsCount: -1,
+        );
+        _futures.add(_future);
+
         print('Success: Removing reaction from post $feedId');
       } else {
-        await _updateCommentPropertiesCount(
+        final _future = _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           reactionsCount: -1,
         );
+        _futures.add(_future);
+
         print('Success: Removing reaction from comment $parentId');
       }
 
+      await Future.wait(_futures);
       onSuccess?.call(_reactionsRef.id);
     } catch (e) {
       print(e);
@@ -192,22 +219,31 @@ class FeedProvider {
       final _commentRef = _feedRef.collection('comments').doc(comment.id);
       final _comment = comment.copyWith(id: _commentRef.id);
 
-      await _commentRef.set(_comment.toJson());
+      final _futures = <Future>[];
+
+      final _future = _commentRef.set(_comment.toJson());
+      _futures.add(_future);
 
       if (_comment.parent == PeamanCommentParent.feed) {
-        await _updatePostPropertiesCount(
+        final _future = _updatePostPropertiesCount(
           feedId: comment.feedId!,
           commentsCount: 1,
         );
+        _futures.add(_future);
+
         print('Success: Adding comment to post ${comment.feedId}');
       } else if (_comment.parentId != null) {
-        await _updateCommentPropertiesCount(
+        final _future = _updateCommentPropertiesCount(
           feedId: comment.feedId!,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
+        _futures.add(_future);
+
         print('Success: Adding comment to comment ${_comment.parentId}');
       }
+
+      await Future.wait(_futures);
       onSuccess?.call(_comment);
     } catch (e) {
       print(e);
@@ -228,22 +264,31 @@ class FeedProvider {
       final _postRef = _ref.collection('posts').doc(feedId);
       final _commentsRef = _postRef.collection('comments').doc(commentId);
 
-      await _commentsRef.delete();
+      final _futures = <Future>[];
+
+      final _future = _commentsRef.delete();
+      _futures.add(_future);
 
       if (feedId == parentId) {
-        await _updatePostPropertiesCount(
+        final _future = _updatePostPropertiesCount(
           feedId: feedId,
           commentsCount: -1,
         );
+        _futures.add(_future);
+
         print('Success: Removing comment from post $feedId');
       } else {
-        await _updateCommentPropertiesCount(
+        final _future = _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           repliesCount: -1,
         );
+        _futures.add(_future);
+
         print('Success: Removing comment from comment $parentId');
       }
+
+      await Future.wait(_futures);
       onSuccess?.call(commentId);
     } catch (e) {
       print(e);
@@ -354,8 +399,13 @@ class FeedProvider {
           .collection('featured_posts')
           .doc(feedId);
 
-      await _postRef.delete();
-      await _featuredPostsRef.delete();
+      final _futures = <Future>[
+        _postRef.delete(),
+        _featuredPostsRef.delete(),
+      ];
+
+      await Future.wait(_futures);
+
       print("Success: Deleting post $feedId");
     } catch (e) {
       print(e);
@@ -386,11 +436,16 @@ class FeedProvider {
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
-      await Future.wait([
+      final _futures = <Future>[
         _feedSavesRef.set(_feedSaveData),
         _savedPostRef.set(_data),
-      ]);
-      await _updatePostPropertiesCount(feedId: feedId, savesCount: 1);
+        _updatePostPropertiesCount(
+          feedId: feedId,
+          savesCount: 1,
+        ),
+      ];
+
+      await Future.wait(_futures);
       print('Success: Saving feed $feedId');
     } catch (e) {
       print(e);
@@ -412,8 +467,13 @@ class FeedProvider {
       final _feedSavesRef =
           _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
 
-      await Future.wait([_feedSavesRef.delete(), _savedPostRef.delete()]);
-      await _updatePostPropertiesCount(feedId: feedId, savesCount: -1);
+      final _futures = <Future>[
+        _feedSavesRef.delete(),
+        _savedPostRef.delete(),
+        _updatePostPropertiesCount(feedId: feedId, savesCount: -1),
+      ];
+
+      await Future.wait(_futures);
       print('Success: Unsaving feed $feedId');
     } catch (e) {
       print(e);
@@ -431,11 +491,14 @@ class FeedProvider {
       final _momentRef = _ref.collection('moments').doc(momentId);
       final _seenUsersRef = _momentRef.collection('seen_users').doc(uid);
 
-      await _seenUsersRef.set({
-        'uid': uid,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      });
-      await _updateMomentViewsCount(momentId: momentId);
+      final _futures = <Future>[
+        _seenUsersRef.set({
+          'uid': uid,
+          'updated_at': DateTime.now().millisecondsSinceEpoch,
+        }),
+        _updateMomentViewsCount(momentId: momentId)
+      ];
+      await Future.wait(_futures);
       print('Success: Viewing moment $momentId');
     } catch (e) {
       print(e);

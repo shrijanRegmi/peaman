@@ -1,48 +1,50 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
 class PUserProvider {
-  static final _auth = FirebaseAuth.instance;
-
   static Future<void> setUserOnlineStatus({
+    required final String uid,
     required final PeamanOnlineStatus onlineStatus,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return AppUserProvider(uid: _uid).setUserActiveStatus(
+    return AppUserProvider(uid: uid).setUserActiveStatus(
       onlineStatus: onlineStatus,
     );
   }
 
   static Future<void> updateUserData({
+    required final String uid,
     required final Map<String, dynamic> data,
   }) async {
-    final _uid = _auth.currentUser?.uid;
-    return AppUserProvider(uid: _uid).updateUserDetail(data: data);
+    return AppUserProvider(uid: uid).updateUserDetail(data: data);
   }
 
-  static Stream<PeamanUser> getUserById(final String uid) {
+  static Stream<PeamanUser> getUserById({
+    required final String uid,
+  }) {
     return AppUserProvider(uid: uid).appUser;
   }
 
-  static Stream<List<PeamanUser>> getUsersBySearchKeyword(
-    final String searchKeyword,
-  ) {
+  static Stream<List<PeamanUser>> getUsersBySearchKeyword({
+    required final String searchKeyword,
+  }) {
     return AppUserProvider(searchKey: searchKeyword).appUserFromKey;
   }
 
-  static Stream<List<PeamanFollowRequest>> getUserFollowRequests() {
-    final _uid = _auth.currentUser?.uid;
-    return AppUserProvider(uid: _uid).followRequests;
+  static Stream<List<PeamanFollowRequest>> getUserFollowRequests({
+    required final String uid,
+  }) {
+    return AppUserProvider(uid: uid).followRequests;
   }
 
-  static Stream<List<PeamanFollower>> getUserFollowers() {
-    final _uid = _auth.currentUser?.uid;
-    return AppUserProvider(uid: _uid).followers;
+  static Stream<List<PeamanFollower>> getUserFollowers({
+    required final String uid,
+  }) {
+    return AppUserProvider(uid: uid).followers;
   }
 
-  static Stream<List<PeamanFollowing>> getUserFollowing() {
-    final _uid = _auth.currentUser?.uid;
-    return AppUserProvider(uid: _uid).following;
+  static Stream<List<PeamanFollowing>> getUserFollowing({
+    required final String uid,
+  }) {
+    return AppUserProvider(uid: uid).following;
   }
 }

@@ -62,15 +62,7 @@ class AuthProvider {
 
   // user from firebase
   PeamanUser? _userFromFirebase(User? user) {
-    return user != null
-        ? PeamanUser(
-            uid: user.uid,
-            name: null,
-            email: null,
-            photoUrl: null,
-            appUserRef: null,
-          )
-        : null;
+    return user != null ? PeamanUser(uid: user.uid) : null;
   }
 
   // stream of user

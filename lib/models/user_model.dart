@@ -9,16 +9,20 @@ class PeamanUser {
   final String? phone;
   final String? country;
   final String? bio;
-  final String? profileStatus;
-  final PeamanOnlineStatus? onlineStatus;
-  final DocumentReference? appUserRef;
-  final int? photos;
-  final int? followers;
-  final int? following;
-  final int? notifCount;
-  final bool? newFeeds;
+  final bool newFeeds;
   final List<String> searchKeys;
   final bool admin;
+  final PeamanOnlineStatus onlineStatus;
+  final int photos;
+  final int followers;
+  final int following;
+  final int notifCount;
+  final int likeableFeeds;
+  final int likeableComments;
+  final int likeableReplies;
+  final int reactionsReceived;
+  final int commentsReceived;
+  final int repliesReceived;
 
   PeamanUser({
     this.uid,
@@ -28,16 +32,20 @@ class PeamanUser {
     this.phone,
     this.country,
     this.bio,
-    this.appUserRef,
     this.photos = 0,
-    this.profileStatus = '',
     this.onlineStatus = PeamanOnlineStatus.away,
-    this.followers = 0,
-    this.following = 0,
-    this.notifCount = 0,
     this.newFeeds = false,
     this.searchKeys = const [],
     this.admin = false,
+    this.followers = 0,
+    this.following = 0,
+    this.notifCount = 0,
+    this.likeableFeeds = 0,
+    this.likeableComments = 0,
+    this.likeableReplies = 0,
+    this.reactionsReceived = 0,
+    this.commentsReceived = 0,
+    this.repliesReceived = 0,
   });
 
   PeamanUser copyWith({
@@ -58,6 +66,12 @@ class PeamanUser {
     final bool? newFeeds,
     final List<String>? searchKeys,
     final bool? admin,
+    final int? likeableFeeds,
+    final int? likeableComments,
+    final int? likeableReplies,
+    final int? reactionsReceived,
+    final int? commentsReceived,
+    final int? repliesReceived,
   }) {
     return PeamanUser(
       uid: uid ?? this.uid,
@@ -67,9 +81,7 @@ class PeamanUser {
       phone: phone ?? this.phone,
       country: country ?? this.country,
       bio: bio ?? this.bio,
-      profileStatus: profileStatus ?? this.profileStatus,
       onlineStatus: onlineStatus ?? this.onlineStatus,
-      appUserRef: appUserRef ?? this.appUserRef,
       photos: photos ?? this.photos,
       followers: followers ?? this.followers,
       following: following ?? this.following,
@@ -77,6 +89,12 @@ class PeamanUser {
       newFeeds: newFeeds ?? this.newFeeds,
       searchKeys: searchKeys ?? this.searchKeys,
       admin: admin ?? this.admin,
+      likeableFeeds: likeableFeeds ?? this.likeableFeeds,
+      likeableComments: likeableComments ?? this.likeableComments,
+      likeableReplies: likeableReplies ?? this.likeableReplies,
+      reactionsReceived: reactionsReceived ?? this.reactionsReceived,
+      commentsReceived: commentsReceived ?? this.commentsReceived,
+      repliesReceived: repliesReceived ?? this.repliesReceived,
     );
   }
 
@@ -97,18 +115,7 @@ class PeamanUser {
     return _data;
   }
 
-  Map<String, dynamic> toFeedUser() {
-    return {
-      'uid': uid,
-      'photoUrl': photoUrl,
-      'name': name,
-      'email': email,
-    };
-  }
-
   static PeamanUser fromJson(Map<String, dynamic> data) {
-    final _ref = FirebaseFirestore.instance;
-
     return PeamanUser(
       uid: data['uid'],
       photoUrl: data['photoUrl'],
@@ -117,11 +124,7 @@ class PeamanUser {
       phone: data['phone'],
       country: data['country'],
       bio: data['bio'],
-      onlineStatus: data['active_status'] == 1
-          ? PeamanOnlineStatus.active
-          : PeamanOnlineStatus.away,
-      profileStatus: data['profile_status'] ?? 'I am a person with good heart',
-      appUserRef: _ref.collection('users').doc(data['uid']),
+      onlineStatus: PeamanOnlineStatus.values[data['active_status'] ?? 0],
       photos: data['photos'] ?? 0,
       followers: data['followers'] ?? 0,
       following: data['following'] ?? 0,
@@ -129,26 +132,12 @@ class PeamanUser {
       newFeeds: data['new_posts'] ?? false,
       searchKeys: List<String>.from(data['search_keys'] ?? []),
       admin: data['admin'] ?? false,
+      likeableFeeds: data['likeable_feeds'] ?? 0,
+      likeableComments: data['likeable_comments'] ?? 0,
+      likeableReplies: data['likeable_replies'] ?? 0,
+      reactionsReceived: data['reactions_received'] ?? 0,
+      commentsReceived: data['comments_received'] ?? 0,
+      repliesReceived: data['replies_received'] ?? 0,
     );
-  }
-
-  DocumentReference getUserRef(final String uid) {
-    final _ref = FirebaseFirestore.instance;
-    return _ref.collection('users').doc(uid);
-  }
-
-  Future<PeamanUser?> fromRef(
-    final DocumentReference<Map<String, dynamic>> userRef,
-  ) async {
-    final _userSnap = await userRef.get();
-
-    if (_userSnap.exists) {
-      final _userData = _userSnap.data();
-      if (_userData != null) {
-        return PeamanUser.fromJson(_userData);
-      }
-    }
-
-    return null;
   }
 }

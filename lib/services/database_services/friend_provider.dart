@@ -1,150 +1,174 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FriendProvider {
-  final String appUserId;
-  final String friendId;
-  FriendProvider({
-    required this.appUserId,
-    required this.friendId,
-  });
-
   final _ref = FirebaseFirestore.instance;
 
   // follow friend
-  Future follow() async {
+  Future<void> follow({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
       final _friendRef = _ref.collection('users').doc(friendId);
-      final _requestRef =
-          _friendRef.collection('follow_requests').doc(appUserId);
+      final _requestRef = _friendRef.collection('follow_requests').doc(uid);
 
       final _data = {
-        'uid': appUserId,
+        'uid': uid,
         'created_at': DateTime.now().millisecondsSinceEpoch,
       };
 
       await _requestRef.set(_data);
-      print('Success: Following $friendId');
-      return 'Success';
+      print('Success: Following friend $friendId');
     } catch (e) {
       print(e);
-      print('Error!!!: Following $friendId');
+      print('Error!!!: Following friend');
     }
   }
 
   // accept follow request
-  Future acceptFollow() async {
+  Future<void> acceptFollow({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
-      final _userRef = _ref.collection('users').doc(appUserId);
+      final _userRef = _ref.collection('users').doc(uid);
       final _followRequestRef =
           _userRef.collection('follow_requests').doc(friendId);
 
-      await _followRequestRef.update({
+      final _futures = <Future>[];
+
+      final _followRequestFuture = _followRequestRef.update({
         'is_accepted': true,
       });
-      print('Success: Deleting request doc with id $friendId');
+      _futures.add(_followRequestFuture);
 
-      _addFollower();
+      final _addFollowFuture = _addFollower(
+        uid: uid,
+        friendId: friendId,
+      );
+      _futures.add(_addFollowFuture);
 
-      return 'Success';
+      await Future.wait(_futures);
+      print('Error!!!: Accepting follow request $friendId');
     } catch (e) {
       print(e);
-      print('Error!!!: Deleting request doc with id $friendId');
+      print('Error!!!: Accepting follow request');
       return null;
     }
   }
 
   // follow back
-  Future followBack() async {
+  Future<void> followBack({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
       final _friendRef = _ref.collection('users').doc(friendId);
-      final _userRef = _ref.collection('users').doc(appUserId);
+      final _userRef = _ref.collection('users').doc(uid);
       final _followReqRef =
           _userRef.collection('follow_requests').doc(friendId);
 
-      final _friendFollowersRef =
-          _friendRef.collection('followers').doc(appUserId);
+      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
       final _userFollowingRef = _userRef.collection('following').doc(friendId);
 
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
-      await _friendFollowersRef.set({
-        'uid': appUserId,
-        'updated_at': _milli,
-      });
-      await _userFollowingRef.set({
-        'uid': appUserId,
-        'updated_at': _milli,
-      });
+      final _futures = <Future>[];
 
-      await _friendRef.update({
+      final _friendFollowersFuture = _friendFollowersRef.set({
+        'uid': uid,
+        'updated_at': _milli,
+      });
+      _futures.add(_friendFollowersFuture);
+
+      final _userFollowingFuture = _userFollowingRef.set({
+        'uid': uid,
+        'updated_at': _milli,
+      });
+      _futures.add(_userFollowingFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
         'followers': FieldValue.increment(1),
       });
-      await _userRef.update({
+      _futures.add(_friendUpdateFuture);
+
+      final _userUpdateFuture = _userRef.update({
         'following': FieldValue.increment(1),
       });
+      _futures.add(_userUpdateFuture);
 
-      await _followReqRef.delete();
+      final _followRequestDeleteFuture = _followReqRef.delete();
+      _futures.add(_followRequestDeleteFuture);
 
+      await Future.wait(_futures);
       print('Success: Following back $friendId');
-      return 'Success';
     } catch (e) {
       print(e);
-      print('Error!!!: Following back $friendId');
-      return null;
+      print('Error!!!: Following back');
     }
   }
 
   // cancle follow
-  Future cancleFollow() async {
+  Future<void> cancleFollow({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
-      final _userRef = _ref.collection('users').doc(appUserId);
+      final _userRef = _ref.collection('users').doc(uid);
       final _followReqRef =
           _userRef.collection('follow_requests').doc(friendId);
 
       await _followReqRef.delete();
-      print('Success: Deleting request doc with id $friendId');
-      return 'Success';
+      print('Success: Canceling follow $friendId');
     } catch (e) {
       print(e);
-      print('Error!!!: Deleting request doc with id $friendId');
-      return null;
+      print('Error!!!: Canceling follow');
     }
   }
 
   // add follower
-  Future _addFollower() async {
+  Future<void> _addFollower({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
-      final _userRef = _ref.collection('users').doc(appUserId);
+      final _userRef = _ref.collection('users').doc(uid);
       final _friendRef = _ref.collection('users').doc(friendId);
 
       final _userFollowersRef = _userRef.collection('followers').doc(friendId);
-      final _friendFollowingRef =
-          _friendRef.collection('following').doc(appUserId);
+      final _friendFollowingRef = _friendRef.collection('following').doc(uid);
 
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
-      await _userFollowersRef.set({
+      final _futures = <Future>[];
+
+      final _userFollowersFuture = _userFollowersRef.set({
         'uid': friendId,
         'updated_at': _milli,
       });
-      await _friendFollowingRef.set({
-        'uid': appUserId,
+      _futures.add(_userFollowersFuture);
+
+      final _friendFollowingFuture = _friendFollowingRef.set({
+        'uid': uid,
         'updated_at': _milli,
       });
+      _futures.add(_friendFollowingFuture);
 
-      await _userRef.update({
+      final _userUpdateFuture = _userRef.update({
         'followers': FieldValue.increment(1),
       });
-      await _friendRef.update({
+      _futures.add(_userUpdateFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
         'following': FieldValue.increment(1),
       });
+      _futures.add(_friendUpdateFuture);
 
+      await Future.wait(_futures);
       print('Success: Adding follower $friendId');
-      return 'Success';
     } catch (e) {
       print(e);
-      print('Error!!!: Adding follower $friendId');
-      return null;
+      print('Error!!!: Adding follower');
     }
   }
 }

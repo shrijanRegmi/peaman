@@ -31,47 +31,47 @@ class MessageProvider {
             ? _chatSnap.data()!['second_user_unread_messages_count'] ?? 0
             : 0;
 
-        _chatRef.update(
-          {
-            'second_user_unread_messages_count':
-                _secondUserUnreadMessagesCount + 1
-          },
-        );
+        _chatRef.update({
+          'second_user_unread_messages_count':
+              _secondUserUnreadMessagesCount + 1
+        });
       } else {
         final _firstUserUnreadMessagesCount = _chatSnap.data() != null
             ? _chatSnap.data()!['first_user_unread_messages_count'] ?? 0
             : 0;
 
-        _chatRef.update(
-          {
-            'first_user_unread_messages_count':
-                _firstUserUnreadMessagesCount + 1
-          },
-        );
+        _chatRef.update({
+          'first_user_unread_messages_count': _firstUserUnreadMessagesCount + 1
+        });
       }
 
       final _lastMsgRef = _messagesRef.doc();
       final _message = message.copyWith(id: _lastMsgRef.id);
 
-      await Future.wait([
-        _lastMsgRef.set(_message.toJson()),
-        _chatRef.update({
-          'last_updated': DateTime.now(),
-          'last_msg_ref': _lastMsgRef,
-        })
-      ]);
+      final _futures = <Future>[];
 
-      onSuccess?.call(_message);
+      final _lastMsgFuture = _lastMsgRef.set(_message.toJson());
+      _futures.add(_lastMsgFuture);
+
+      final _chatUpdateFuture = _chatRef.update({
+        'last_updated': DateTime.now(),
+        'last_msg_ref': _lastMsgRef,
+      });
+      _futures.add(_chatUpdateFuture);
 
       if (_messagesDocs.docs.length == 0 &&
           message.senderId != null &&
           message.receiverId != null) {
-        _sendAdditionalProperties(
+        final _additionalPropertiesFuture = _sendAdditionalProperties(
           chatId: message.chatId!,
           myId: message.senderId!,
           friendId: message.receiverId!,
         );
+        _futures.add(_additionalPropertiesFuture);
       }
+
+      await Future.wait(_futures);
+      onSuccess?.call(_message);
       print('Success: Sending message to ${message.receiverId}');
     } catch (e) {
       print(e);
@@ -134,13 +134,9 @@ class MessageProvider {
       Map<String, dynamic> _data;
 
       if (chatUser == PeamanChatUser.first) {
-        _data = {
-          'first_user_pinned_second_user': pinned,
-        };
+        _data = {'first_user_pinned_second_user': pinned};
       } else {
-        _data = {
-          'second_user_pinned_first_user': pinned,
-        };
+        _data = {'second_user_pinned_first_user': pinned};
       }
 
       await _chatRef.update(_data);
