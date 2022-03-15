@@ -14,7 +14,7 @@ class FriendProvider {
 
       final _data = {
         'uid': uid,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
       await _requestRef.set(_data);

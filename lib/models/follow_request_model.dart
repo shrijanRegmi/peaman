@@ -1,10 +1,10 @@
 class PeamanFollowRequest {
   final String? uid;
-  final int? createdAt;
+  final int? updatedAt;
   final bool isAccepted;
 
   PeamanFollowRequest({
-    this.createdAt,
+    this.updatedAt,
     this.uid,
     this.isAccepted = false,
   });
@@ -12,7 +12,7 @@ class PeamanFollowRequest {
   static PeamanFollowRequest fromJson(final Map<String, dynamic> data) {
     return PeamanFollowRequest(
       uid: data['uid'],
-      createdAt: data['created_at'],
+      updatedAt: data['updated_at'],
       isAccepted: data['is_accepted'] ?? false,
     );
   }

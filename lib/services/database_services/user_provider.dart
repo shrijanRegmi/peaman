@@ -237,7 +237,7 @@ class AppUserProvider {
         .collection('users')
         .doc(uid)
         .collection('followers')
-        .orderBy('created_at', descending: true)
+        .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_followersFromFirebase);
   }
@@ -248,7 +248,7 @@ class AppUserProvider {
         .collection('users')
         .doc(uid)
         .collection('following')
-        .orderBy('created_at', descending: true)
+        .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_followingFromFirebase);
   }
