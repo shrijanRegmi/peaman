@@ -634,6 +634,17 @@ class FeedProvider {
         .map(_feedsFromFirebase);
   }
 
+  // stream of all feeds
+  Stream<List<PeamanFeed>> feedsBySearchKeyword({
+    required final String searchKeyword,
+  }) {
+    return _ref
+        .collection('posts')
+        .where('search_keys', arrayContains: searchKeyword)
+        .snapshots()
+        .map(_feedsFromFirebase);
+  }
+
   // stream of single feed
   Stream<PeamanFeed> singleFeedById({
     required final String feedId,

@@ -206,7 +206,6 @@ class AppUserProvider {
     return _ref
         .collection('users')
         .where('search_keys', arrayContains: searchKey)
-        .limit(10)
         .snapshots()
         .map(_usersFromFirebase);
   }

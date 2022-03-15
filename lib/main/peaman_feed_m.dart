@@ -150,6 +150,14 @@ class PFeedProvider {
     return FeedProvider().allFeeds();
   }
 
+  static Stream<List<PeamanFeed>> getFeedsBySearchKeyword({
+    required final String searchKeyword,
+  }) {
+    return FeedProvider().feedsBySearchKeyword(
+      searchKeyword: searchKeyword,
+    );
+  }
+
   static Stream<PeamanFeed> getSingleFeedById({
     required final String feedId,
   }) {

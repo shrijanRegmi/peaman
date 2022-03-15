@@ -11,6 +11,7 @@ class PeamanFeed {
   final bool featured;
   final int? updatedAt;
   final Map<String, dynamic> extraData;
+  final List<String> searchKeys;
 
   PeamanFeed({
     this.id,
@@ -25,6 +26,7 @@ class PeamanFeed {
     this.featured = false,
     this.extraData = const <String, dynamic>{},
     this.updatedAt,
+    this.searchKeys = const [],
   });
 
   PeamanFeed copyWith({
@@ -40,6 +42,7 @@ class PeamanFeed {
     final bool? featured,
     final int? updatedAt,
     final Map<String, dynamic>? extraData,
+    final List<String>? searchKeys,
   }) {
     return PeamanFeed(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class PeamanFeed {
       featured: featured ?? this.featured,
       updatedAt: updatedAt ?? this.updatedAt,
       extraData: extraData ?? this.extraData,
+      searchKeys: searchKeys ?? this.searchKeys,
     );
   }
 
@@ -71,6 +75,7 @@ class PeamanFeed {
       viewsCount: data['views_count'] ?? 0,
       featured: data['featured'] ?? false,
       extraData: data['extra_data'] ?? <String, dynamic>{},
+      searchKeys: List<String>.from(data['search_keys'] ?? []),
     );
   }
 
@@ -82,6 +87,7 @@ class PeamanFeed {
       'caption': caption,
       'photos': photos,
       'extra_data': extraData,
+      'search_keys': searchKeys,
     };
   }
 }
