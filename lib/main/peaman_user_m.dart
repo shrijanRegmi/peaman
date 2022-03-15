@@ -56,19 +56,19 @@ class PUserProvider {
     return AppUserProvider(searchKey: searchKeyword).appUserFromKey;
   }
 
-  static Stream<List<PeamanFollowRequest>> getUserFollowRequests({
+  static Stream<List<PeamanFollowRequest>> getFollowRequests({
     required final String uid,
   }) {
     return AppUserProvider(uid: uid).followRequests;
   }
 
-  static Stream<List<PeamanFollower>> getUserFollowers({
+  static Stream<List<PeamanFollower>> getFollowers({
     required final String uid,
   }) {
     return AppUserProvider(uid: uid).followers;
   }
 
-  static Stream<List<PeamanFollowing>> getUserFollowing({
+  static Stream<List<PeamanFollowing>> getFollowing({
     required final String uid,
   }) {
     return AppUserProvider(uid: uid).following;
