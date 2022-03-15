@@ -583,6 +583,13 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
   }
 
+  // feed from firestore
+  PeamanFeed _feedFromFirebase(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanFeed.fromJson(snap.data() ?? {});
+  }
+
   // list of saved feeds from firestore
   List<PeamanSavedFeed> _savedFeedsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
@@ -625,6 +632,17 @@ class FeedProvider {
         .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_feedsFromFirebase);
+  }
+
+  // stream of single feed
+  Stream<PeamanFeed> singleFeedById({
+    required final String feedId,
+  }) {
+    return _ref
+        .collection('posts')
+        .doc(feedId)
+        .snapshots()
+        .map(_feedFromFirebase);
   }
 
   // stream of saved feeds

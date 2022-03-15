@@ -150,6 +150,12 @@ class PFeedProvider {
     return FeedProvider().allFeeds();
   }
 
+  static Stream<PeamanFeed> getSingleFeedById({
+    required final String feedId,
+  }) {
+    return FeedProvider().singleFeedById(feedId: feedId);
+  }
+
   static Stream<List<PeamanSavedFeed>> getSavedFeeds({
     required final String uid,
   }) {
