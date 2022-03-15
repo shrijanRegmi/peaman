@@ -146,8 +146,14 @@ class PFeedProvider {
     );
   }
 
-  static Stream<List<PeamanFeed>> getFeeds() {
+  static Stream<List<PeamanFeed>> getAllFeeds() {
     return FeedProvider().allFeeds();
+  }
+
+  static Stream<List<PeamanSavedFeed>> getSavedFeeds({
+    required final String uid,
+  }) {
+    return FeedProvider().savedFeeds(uid: uid);
   }
 
   static Stream<List<PeamanComment>> getComments({

@@ -49,7 +49,7 @@ class FriendProvider {
       _futures.add(_addFollowFuture);
 
       await Future.wait(_futures);
-      print('Error!!!: Accepting follow request $friendId');
+      print('Success: Accepting follow request $friendId');
     } catch (e) {
       print(e);
       print('Error!!!: Accepting follow request');
