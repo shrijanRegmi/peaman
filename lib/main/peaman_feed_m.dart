@@ -181,4 +181,14 @@ class PFeedProvider {
       parentId: parentId,
     );
   }
+
+  static Stream<PeamanComment> getSingleCommentById({
+    required final String feedId,
+    required final String commentId,
+  }) {
+    return FeedProvider().getSingleCommentById(
+      feedId: feedId,
+      commentId: commentId,
+    );
+  }
 }

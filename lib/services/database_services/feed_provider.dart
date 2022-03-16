@@ -604,6 +604,13 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanComment.fromJson(e.data())).toList();
   }
 
+  // comment from firestore
+  PeamanComment _commentFromFirebase(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanComment.fromJson(snap.data() ?? {});
+  }
+
   // list of app user from firebase
   List<PeamanUser> _usersFromFirebase(
     final QuerySnapshot<Map<String, dynamic>> colSnap,
@@ -684,5 +691,19 @@ class FeedProvider {
         .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_commentsFromFirebase);
+  }
+
+  // stream of comment
+  Stream<PeamanComment> getSingleCommentById({
+    required final String feedId,
+    required final String commentId,
+  }) {
+    return _ref
+        .collection('posts')
+        .doc(feedId)
+        .collection('comments')
+        .doc(commentId)
+        .snapshots()
+        .map(_commentFromFirebase);
   }
 }
