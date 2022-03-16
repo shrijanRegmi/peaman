@@ -1,8 +1,12 @@
 class PeamanQuery {
-  final String orderBy;
+  final String? orderBy;
   final bool descending;
+  final String? whereKey;
+  final String? whereValue;
   PeamanQuery({
-    required this.orderBy,
-    required this.descending,
+    this.orderBy,
+    this.descending = false,
+    this.whereKey,
+    this.whereValue,
   });
 }

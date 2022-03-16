@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:peaman/peaman.dart';
 
 class Peaman {
   static final _ref = FirebaseFirestore.instance;
@@ -24,8 +25,14 @@ class Peaman {
 
   static Stream<List<dynamic>> getDatasFromDatabase({
     required final String colPath,
+    final PeamanQuery? query,
   }) {
-    return _ref.collection(colPath).snapshots().map(
+    return _ref
+        .collection(colPath)
+        .where('${query?.whereKey}', isEqualTo: query?.whereValue)
+        .orderBy('${query?.orderBy}', descending: query?.descending ?? false)
+        .snapshots()
+        .map(
           (event) => event.docs.map((e) => e.data()).toList(),
         );
   }
