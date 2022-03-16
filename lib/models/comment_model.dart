@@ -4,6 +4,8 @@ class PeamanComment {
   final String? id;
   final String? feedId;
   final String? ownerId;
+  final String? secondUserId;
+  final String? secondUserName;
   final PeamanCommentParent parent;
   final String? parentId;
   final String? comment;
@@ -15,6 +17,8 @@ class PeamanComment {
     this.id,
     this.feedId,
     this.ownerId,
+    this.secondUserId,
+    this.secondUserName,
     this.parent = PeamanCommentParent.feed,
     this.parentId,
     this.comment,
@@ -27,6 +31,8 @@ class PeamanComment {
     final String? id,
     final String? feedId,
     final String? ownerId,
+    final String? secondUserId,
+    final String? secondUserName,
     final PeamanCommentParent? parent,
     final String? parentId,
     final String? comment,
@@ -38,6 +44,8 @@ class PeamanComment {
       id: id ?? this.id,
       feedId: feedId ?? this.feedId,
       ownerId: ownerId ?? this.ownerId,
+      secondUserId: secondUserId ?? this.secondUserId,
+      secondUserName: secondUserName ?? this.secondUserName,
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
       comment: comment ?? this.comment,
@@ -52,6 +60,8 @@ class PeamanComment {
       id: data['id'],
       feedId: data['feed_id'],
       ownerId: data['owner_id'],
+      secondUserId: data['second_user_id'],
+      secondUserName: data['second_user_name'],
       parent: PeamanCommentParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
       comment: data['comment'] ?? '',
@@ -66,6 +76,8 @@ class PeamanComment {
       'id': id,
       'feed_id': feedId,
       'owner_id': ownerId,
+      'second_user_id': secondUserId,
+      'second_user_name': secondUserName,
       'parent': parent.index,
       'parent_id': parentId,
       'comment': comment,
