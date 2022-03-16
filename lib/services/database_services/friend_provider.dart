@@ -126,6 +126,44 @@ class FriendProvider {
     }
   }
 
+  // unfollow friend
+  Future<void> unfollowFriend({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _friendRef = _ref.collection('users').doc(friendId);
+
+      final _userFollowingRef = _userRef.collection('following').doc(friendId);
+      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
+
+      final _futures = <Future>[];
+
+      final _userFollowingFuture = _userFollowingRef.delete();
+      _futures.add(_userFollowingFuture);
+
+      final _friendFollowersFuture = _friendFollowersRef.delete();
+      _futures.add(_friendFollowersFuture);
+
+      final _userUpdateFuture = _userRef.update({
+        'following': FieldValue.increment(-1),
+      });
+      _futures.add(_userUpdateFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
+        'followers': FieldValue.increment(-1),
+      });
+      _futures.add(_friendUpdateFuture);
+
+      await Future.wait(_futures);
+      print('Success: Unfollowing friend $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Unfollowing friend');
+    }
+  }
+
   // add follower
   Future<void> _addFollower({
     required final String uid,

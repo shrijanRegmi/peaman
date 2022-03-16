@@ -40,4 +40,14 @@ class PFriendProvider {
       friendId: friendId,
     );
   }
+
+  static Future<void> unfollowFriend({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    return await FriendProvider().unfollowFriend(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
 }
