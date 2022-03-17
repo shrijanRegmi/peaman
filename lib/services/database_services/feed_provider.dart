@@ -46,10 +46,30 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(moment.id);
-      final _moment = moment.copyWith(id: _momentRef.id);
+      late PeamanMoment _moment;
 
-      await _momentRef.set(_moment.toJson());
+      final _ownerMomentsRef = _ref
+          .collection('moments')
+          .where('owner_id', isEqualTo: moment.ownerId)
+          .limit(1);
+      final _ownerMomentsSnap = await _ownerMomentsRef.get();
+
+      if (_ownerMomentsSnap.docs.isNotEmpty) {
+        final _ownerMomentSnap = _ownerMomentsSnap.docs.first;
+
+        if (_ownerMomentSnap.exists) {
+          await _ownerMomentSnap.reference.update({
+            'photos': FieldValue.arrayUnion(moment.photos),
+          });
+
+          final _ownerMomentData = _ownerMomentSnap.data();
+          _moment = PeamanMoment.fromJson(_ownerMomentData);
+        }
+      } else {
+        final _momentRef = _ref.collection('moments').doc(moment.id);
+        _moment = moment.copyWith(id: _momentRef.id);
+        await _momentRef.set(_moment.toJson());
+      }
 
       print('Success: Creating moment ${_moment.id}');
       onSuccess?.call(_moment);

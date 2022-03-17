@@ -1,7 +1,7 @@
 class PeamanMoment {
   final String? id;
   final String? ownerId;
-  final String? photo;
+  final List<String> photos;
   final int? updatedAt;
   final int? expiresAt;
   final int views;
@@ -9,7 +9,7 @@ class PeamanMoment {
   PeamanMoment({
     this.id,
     this.ownerId,
-    this.photo,
+    this.photos = const [],
     this.views = 0,
     this.updatedAt,
     this.expiresAt,
@@ -18,14 +18,14 @@ class PeamanMoment {
   PeamanMoment copyWith({
     final String? id,
     final String? ownerId,
-    final String? photo,
+    final List<String>? photos,
     final int? updatedAt,
     final int? views,
   }) {
     return PeamanMoment(
       id: id ?? this.id,
       ownerId: ownerId ?? this.ownerId,
-      photo: photo ?? this.photo,
+      photos: photos ?? this.photos,
       views: views ?? this.views,
       updatedAt: updatedAt ?? this.updatedAt,
       expiresAt: expiresAt ?? this.expiresAt,
@@ -36,7 +36,7 @@ class PeamanMoment {
     return PeamanMoment(
       id: data['id'],
       ownerId: data['owner_id'],
-      photo: data['photo'],
+      photos: List<String>.from(data['photos'] ?? []),
       views: data['views'] ?? 0,
       updatedAt: data['updated_at'],
       expiresAt: data['expires_at'],
@@ -46,7 +46,7 @@ class PeamanMoment {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'photo': photo,
+      'photos': photos,
       'owner_id': ownerId,
       'updated_at': updatedAt,
       'expires_at': expiresAt,
