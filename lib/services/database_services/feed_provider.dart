@@ -59,6 +59,7 @@ class FeedProvider {
 
         if (_ownerMomentSnap.exists) {
           await _ownerMomentSnap.reference.update({
+            ...moment.toJson(),
             'photos': FieldValue.arrayUnion(moment.photos),
           });
 

@@ -44,12 +44,15 @@ class PeamanMoment {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final _data = {
       'id': id,
       'photos': photos,
       'owner_id': ownerId,
       'updated_at': updatedAt,
       'expires_at': expiresAt,
     };
+
+    _data.removeWhere((key, value) => value == null);
+    return _data;
   }
 }
