@@ -154,6 +154,12 @@ class PFeedProvider {
     return FeedProvider().allMoments();
   }
 
+  static Stream<List<PeamanMomentViewer>> getMomentViewers({
+    required final String momentId,
+  }) {
+    return FeedProvider().getMomentViewers(momentId: momentId);
+  }
+
   static Stream<List<PeamanFeed>> getFeedsBySearchKeyword({
     required final String searchKeyword,
   }) {

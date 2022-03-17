@@ -26,6 +26,7 @@ export 'models/query_model.dart';
 export 'models/reaction_model.dart';
 export 'models/feed_saves_model.dart';
 export 'models/saved_feed_model.dart';
+export 'models/moment_viewer_model.dart';
 
 // enums
 export 'enums/message_type.dart';
