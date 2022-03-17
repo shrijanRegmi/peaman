@@ -150,6 +150,10 @@ class PFeedProvider {
     return FeedProvider().allFeeds();
   }
 
+  static Stream<List<PeamanMoment>> getAllMoments() {
+    return FeedProvider().allMoments();
+  }
+
   static Stream<List<PeamanFeed>> getFeedsBySearchKeyword({
     required final String searchKeyword,
   }) {
