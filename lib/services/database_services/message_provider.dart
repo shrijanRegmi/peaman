@@ -308,7 +308,7 @@ class MessageProvider {
         .collection('chats')
         .doc(chatId)
         .collection('messages')
-        .orderBy('milliseconds', descending: true)
+        .orderBy('updated_at', descending: true)
         .limit(limit)
         .snapshots()
         .map(_messagesFromFirebase);

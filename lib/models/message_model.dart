@@ -6,16 +6,19 @@ class PeamanMessage {
   final String? text;
   final String? senderId;
   final String? receiverId;
-  final int? milliseconds;
+  final int? updatedAt;
+  final String? momentId;
   final PeamanMessageType type;
+
   PeamanMessage({
     this.id,
     this.chatId,
     this.text,
     this.senderId,
     this.receiverId,
-    this.milliseconds,
-    this.type = PeamanMessageType.Text,
+    this.updatedAt,
+    this.momentId,
+    this.type = PeamanMessageType.text,
   });
 
   PeamanMessage copyWith({
@@ -24,7 +27,8 @@ class PeamanMessage {
     final String? text,
     final String? senderId,
     final String? receiverId,
-    final int? milliseconds,
+    final int? updatedAt,
+    final String? momentId,
     final PeamanMessageType? type,
   }) {
     return PeamanMessage(
@@ -33,7 +37,8 @@ class PeamanMessage {
       text: text ?? this.text,
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
-      milliseconds: milliseconds ?? this.milliseconds,
+      updatedAt: updatedAt ?? this.updatedAt,
+      momentId: momentId ?? this.momentId,
       type: type ?? this.type,
     );
   }
@@ -45,84 +50,21 @@ class PeamanMessage {
       'text': text,
       'senderId': senderId,
       'receiverId': receiverId,
-      'milliseconds': milliseconds,
+      'updated_at': updatedAt,
+      'moment_id': momentId,
       'type': type.index,
     };
   }
 
   static PeamanMessage fromJson(Map<String, dynamic> data) {
-    if (data['type'] == PeamanMessageType.Image.index) {
-      return ImageMessage(
-        id: data['id'],
-        text: data['text'],
-        senderId: data['senderId'],
-        receiverId: data['receiverId'],
-        milliseconds: data['milliseconds'],
-        type: PeamanMessageType.Image,
-      );
-    }
-    return TextMessage(
+    return PeamanMessage(
       id: data['id'],
       text: data['text'],
       senderId: data['senderId'],
       receiverId: data['receiverId'],
-      milliseconds: data['milliseconds'],
-      type: PeamanMessageType.Text,
+      updatedAt: data['updated_at'],
+      momentId: data['moment_id'],
+      type: PeamanMessageType.values[data['type'] ?? 0],
     );
   }
-}
-
-class TextMessage extends PeamanMessage {
-  final String? id;
-  final String? chatId;
-  final String? text;
-  final String? senderId;
-  final String? receiverId;
-  final int? milliseconds;
-  final PeamanMessageType type;
-
-  TextMessage({
-    this.id,
-    this.chatId,
-    this.text,
-    this.senderId,
-    this.receiverId,
-    this.milliseconds,
-    this.type = PeamanMessageType.Text,
-  }) : super(
-          id: id,
-          text: text,
-          senderId: senderId,
-          receiverId: receiverId,
-          milliseconds: milliseconds,
-          type: PeamanMessageType.Text,
-        );
-}
-
-class ImageMessage extends PeamanMessage {
-  final String? id;
-  final String? chatId;
-  final String? text;
-  final String? senderId;
-  final String? receiverId;
-  final int? milliseconds;
-  final PeamanMessageType type;
-
-  ImageMessage({
-    this.id,
-    this.chatId,
-    this.text,
-    this.senderId,
-    this.receiverId,
-    this.milliseconds,
-    this.type = PeamanMessageType.Image,
-  }) : super(
-          id: id,
-          chatId: chatId,
-          text: text,
-          senderId: senderId,
-          receiverId: receiverId,
-          milliseconds: milliseconds,
-          type: PeamanMessageType.Image,
-        );
 }

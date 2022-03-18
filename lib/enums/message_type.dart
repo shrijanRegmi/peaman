@@ -1,4 +1,5 @@
 enum PeamanMessageType {
-  Text,
-  Image,
+  text,
+  image,
+  momentReply,
 }

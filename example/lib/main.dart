@@ -48,15 +48,15 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () async {
                   final _message = PeamanMessage(
                     id: null,
+                    chatId: 'test_chat_id',
                     text: 'new message more',
                     senderId: 'shrijan_regmi',
                     receiverId: 'ram_bahadur',
-                    milliseconds: DateTime.now().millisecondsSinceEpoch,
-                    type: PeamanMessageType.Text,
+                    updatedAt: DateTime.now().millisecondsSinceEpoch,
+                    type: PeamanMessageType.text,
                   );
 
                   await PChatProvider.sendMessage(
-                    chatId: 'test_chat_id',
                     message: _message,
                   );
                 },

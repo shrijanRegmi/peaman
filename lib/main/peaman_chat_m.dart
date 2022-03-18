@@ -3,7 +3,6 @@ import 'package:peaman/services/database_services/message_provider.dart';
 
 class PChatProvider {
   static Future<void> sendMessage({
-    required final String chatId,
     required final PeamanMessage message,
     final Function(PeamanMessage)? onSuccess,
     final Function(dynamic)? onError,
