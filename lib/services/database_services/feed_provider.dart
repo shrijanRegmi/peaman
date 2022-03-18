@@ -61,22 +61,11 @@ class FeedProvider {
   // delete feed
   Future<void> deleteFeed({
     required final String feedId,
-    required final String ownerId,
   }) async {
     try {
       final _postRef = _ref.collection('feeds').doc(feedId);
-      final _featuredPostsRef = _ref
-          .collection('users')
-          .doc(ownerId)
-          .collection('featured_posts')
-          .doc(feedId);
 
-      final _futures = <Future>[
-        _postRef.delete(),
-        _featuredPostsRef.delete(),
-      ];
-
-      await Future.wait(_futures);
+      await _postRef.delete();
 
       print("Success: Deleting post $feedId");
     } catch (e) {

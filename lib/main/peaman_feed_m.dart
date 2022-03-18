@@ -30,11 +30,9 @@ class PFeedProvider {
 
   static Future<void> deleteFeed({
     required final String feedId,
-    required final String ownerId,
   }) async {
     return await FeedProvider().deleteFeed(
       feedId: feedId,
-      ownerId: ownerId,
     );
   }
 
