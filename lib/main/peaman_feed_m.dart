@@ -14,6 +14,20 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> updateFeed({
+    required final String feedId,
+    required final Map<String, dynamic> data,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
+    return await FeedProvider().updateFeed(
+      feedId: feedId,
+      data: data,
+      onSuccess: onSuccess,
+      onError: onError,
+    );
+  }
+
   static Future<void> deleteFeed({
     required final String feedId,
     required final String ownerId,
@@ -21,6 +35,26 @@ class PFeedProvider {
     return await FeedProvider().deleteFeed(
       feedId: feedId,
       ownerId: ownerId,
+    );
+  }
+
+  static Future<void> saveFeed({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    return await FeedProvider().saveFeed(
+      feedId: feedId,
+      uid: uid,
+    );
+  }
+
+  static Future<void> unSaveFeed({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    return await FeedProvider().unSaveFeed(
+      feedId: feedId,
+      uid: uid,
     );
   }
 
@@ -86,6 +120,22 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> updateComment({
+    required final String feedId,
+    required final String commentId,
+    required final Map<String, dynamic> data,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
+    return await FeedProvider().updateComment(
+      feedId: feedId,
+      commentId: commentId,
+      data: data,
+      onSuccess: onSuccess,
+      onError: onError,
+    );
+  }
+
   static Future<void> removeComment({
     required final String feedId,
     required final String parentId,
@@ -99,26 +149,6 @@ class PFeedProvider {
       commentId: commentId,
       onSuccess: onSuccess,
       onError: onError,
-    );
-  }
-
-  static Future<void> saveFeed({
-    required final String feedId,
-    required final String uid,
-  }) async {
-    return await FeedProvider().saveFeed(
-      feedId: feedId,
-      uid: uid,
-    );
-  }
-
-  static Future<void> unSaveFeed({
-    required final String feedId,
-    required final String uid,
-  }) async {
-    return await FeedProvider().unSaveFeed(
-      feedId: feedId,
-      uid: uid,
     );
   }
 
