@@ -10,8 +10,8 @@ class PeamanFeed {
   final int viewsCount;
   final bool featured;
   final int? updatedAt;
-  final Map<String, dynamic> extraData;
   final List<String> searchKeys;
+  final Map<String, dynamic> extraData;
 
   PeamanFeed({
     this.id,
@@ -80,7 +80,7 @@ class PeamanFeed {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final _data = {
       'id': id,
       'owner_id': ownerId,
       'updated_at': updatedAt,
@@ -89,5 +89,9 @@ class PeamanFeed {
       'extra_data': extraData,
       'search_keys': searchKeys,
     };
+
+    _data.removeWhere((key, value) => value == null);
+
+    return _data;
   }
 }

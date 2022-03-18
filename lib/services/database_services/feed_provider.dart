@@ -7,7 +7,7 @@ class FeedProvider {
   // create feed
   Future<void> createFeed({
     required final PeamanFeed feed,
-    required final Function(PeamanFeed)? onSuccess,
+    final Function(PeamanFeed)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
@@ -36,6 +36,121 @@ class FeedProvider {
       print(e);
       print('Error!!!: Creating post');
       onError?.call(e);
+    }
+  }
+
+  // update feed
+  Future<void> updateFeed({
+    required final String feedId,
+    required final Map<String, dynamic> data,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      await _postRef.update(data);
+      print('Success: Updating feed $feedId');
+      onSuccess?.call(feedId);
+    } catch (e) {
+      print(e);
+      print('Error!!!: Updating feed');
+      onError?.call(e);
+    }
+  }
+
+  // delete feed
+  Future<void> deleteFeed({
+    required final String feedId,
+    required final String ownerId,
+  }) async {
+    try {
+      final _postRef = _ref.collection('feeds').doc(feedId);
+      final _featuredPostsRef = _ref
+          .collection('users')
+          .doc(ownerId)
+          .collection('featured_posts')
+          .doc(feedId);
+
+      final _futures = <Future>[
+        _postRef.delete(),
+        _featuredPostsRef.delete(),
+      ];
+
+      await Future.wait(_futures);
+
+      print("Success: Deleting post $feedId");
+    } catch (e) {
+      print(e);
+      print('Error!!!: Deleting post $feedId');
+    }
+  }
+
+  // save feed
+  Future<void> saveFeed({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    try {
+      final _savedPostRef = _ref
+          .collection('users')
+          .doc(uid)
+          .collection('saved_posts')
+          .doc(feedId);
+      final _feedSavesRef =
+          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
+
+      final _data = {
+        'id': feedId,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
+      final _feedSaveData = {
+        'owner_id': uid,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
+
+      final _futures = <Future>[
+        _feedSavesRef.set(_feedSaveData),
+        _savedPostRef.set(_data),
+        _updatePostPropertiesCount(
+          feedId: feedId,
+          savesCount: 1,
+        ),
+      ];
+
+      await Future.wait(_futures);
+      print('Success: Saving feed $feedId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Saving feed');
+    }
+  }
+
+  // unsave feed
+  Future<void> unSaveFeed({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    try {
+      final _savedPostRef = _ref
+          .collection('users')
+          .doc(uid)
+          .collection('saved_posts')
+          .doc(feedId);
+      final _feedSavesRef =
+          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
+
+      final _futures = <Future>[
+        _feedSavesRef.delete(),
+        _savedPostRef.delete(),
+        _updatePostPropertiesCount(feedId: feedId, savesCount: -1),
+      ];
+
+      await Future.wait(_futures);
+      print('Success: Unsaving feed $feedId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Unsaving feed');
+      return null;
     }
   }
 
@@ -81,62 +196,27 @@ class FeedProvider {
     }
   }
 
-  // send feed to friends timeline
-  Future<void> sendToTimelines({
+  // see moment
+  Future<void> viewMoment({
     required final String uid,
-    required final String feedId,
+    required final String momentId,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
-      final _followersRef = _userRef.collection('followers');
-      final _followersSnap = await _followersRef.get();
-      if (_followersSnap.docs.isNotEmpty) {
-        final _futures = <Future>[];
-        for (final _docSnap in (_followersSnap.docs)) {
-          if (_docSnap.exists) {
-            final _data = _docSnap.data();
-            final _uid = _data['id'];
-            final _timelineRef = _ref
-                .collection('users')
-                .doc(_uid)
-                .collection('timeline')
-                .doc(feedId);
+      final _momentRef = _ref.collection('moments').doc(momentId);
+      final _seenUsersRef = _momentRef.collection('seen_users').doc(uid);
 
-            final _future = _timelineRef.set({
-              'id': feedId,
-              'updated_at': DateTime.now().millisecondsSinceEpoch,
-            }).then((value) => print("Success: Posting to $_uid's timeline"));
-            _futures.add(_future);
-          }
-        }
-
-        await Future.wait(_futures);
-      }
-      print('Success: Saving to followers timeline');
+      final _futures = <Future>[
+        _seenUsersRef.set({
+          'uid': uid,
+          'updated_at': DateTime.now().millisecondsSinceEpoch,
+        }),
+        _updateMomentViewsCount(momentId: momentId)
+      ];
+      await Future.wait(_futures);
+      print('Success: Viewing moment $momentId');
     } catch (e) {
       print(e);
-      print('Error!!!: Saving to followers timeline');
-    }
-  }
-
-  // save featured post to users collection too
-  Future<void> _saveFeatured({
-    required final PeamanFeed feed,
-  }) async {
-    try {
-      final _userRef = _ref.collection('users').doc(feed.ownerId);
-      final _featuredPostsRef =
-          _userRef.collection('featured_posts').doc(feed.id);
-
-      await _featuredPostsRef.set({
-        'id': feed.id,
-        'updated_at': feed.updatedAt,
-      });
-
-      print('Success: Saving featured post ${feed.id}');
-    } catch (e) {
-      print(e);
-      print('Success: Saving featured post ${feed.id}');
+      print('Error!!!: Viewing moment');
     }
   }
 
@@ -273,6 +353,27 @@ class FeedProvider {
     }
   }
 
+  // update comment
+  Future<void> updateComment({
+    required final String feedId,
+    required final String commentId,
+    required final Map<String, dynamic> data,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _commentRef = _postRef.collection('comments').doc(commentId);
+      await _commentRef.update(data);
+      print('Success: Updating feed $feedId');
+      onSuccess?.call(feedId);
+    } catch (e) {
+      print(e);
+      print('Error!!!: Updating feed');
+      onError?.call(e);
+    }
+  }
+
   // remove comment from post or comment
   Future<void> removeComment({
     required final String feedId,
@@ -315,6 +416,65 @@ class FeedProvider {
       print(e);
       print('Error!!!: Removing comment');
       onError?.call(e);
+    }
+  }
+
+  // send feed to friends timeline
+  Future<void> sendToTimelines({
+    required final String uid,
+    required final String feedId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _followersRef = _userRef.collection('followers');
+      final _followersSnap = await _followersRef.get();
+      if (_followersSnap.docs.isNotEmpty) {
+        final _futures = <Future>[];
+        for (final _docSnap in (_followersSnap.docs)) {
+          if (_docSnap.exists) {
+            final _data = _docSnap.data();
+            final _uid = _data['id'];
+            final _timelineRef = _ref
+                .collection('users')
+                .doc(_uid)
+                .collection('timeline')
+                .doc(feedId);
+
+            final _future = _timelineRef.set({
+              'id': feedId,
+              'updated_at': DateTime.now().millisecondsSinceEpoch,
+            }).then((value) => print("Success: Posting to $_uid's timeline"));
+            _futures.add(_future);
+          }
+        }
+
+        await Future.wait(_futures);
+      }
+      print('Success: Saving to followers timeline');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Saving to followers timeline');
+    }
+  }
+
+  // save featured post to users collection too
+  Future<void> _saveFeatured({
+    required final PeamanFeed feed,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(feed.ownerId);
+      final _featuredPostsRef =
+          _userRef.collection('featured_posts').doc(feed.id);
+
+      await _featuredPostsRef.set({
+        'id': feed.id,
+        'updated_at': feed.updatedAt,
+      });
+
+      print('Success: Saving featured post ${feed.id}');
+    } catch (e) {
+      print(e);
+      print('Success: Saving featured post ${feed.id}');
     }
   }
 
@@ -404,126 +564,6 @@ class FeedProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Updating photos count $uid');
-    }
-  }
-
-  // delete feed
-  Future<void> deleteFeed({
-    required final String feedId,
-    required final String ownerId,
-  }) async {
-    try {
-      final _postRef = _ref.collection('feeds').doc(feedId);
-      final _featuredPostsRef = _ref
-          .collection('users')
-          .doc(ownerId)
-          .collection('featured_posts')
-          .doc(feedId);
-
-      final _futures = <Future>[
-        _postRef.delete(),
-        _featuredPostsRef.delete(),
-      ];
-
-      await Future.wait(_futures);
-
-      print("Success: Deleting post $feedId");
-    } catch (e) {
-      print(e);
-      print('Error!!!: Deleting post $feedId');
-    }
-  }
-
-  // save feed
-  Future<void> saveFeed({
-    required final String feedId,
-    required final String uid,
-  }) async {
-    try {
-      final _savedPostRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('saved_posts')
-          .doc(feedId);
-      final _feedSavesRef =
-          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
-
-      final _data = {
-        'id': feedId,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      };
-      final _feedSaveData = {
-        'owner_id': uid,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      };
-
-      final _futures = <Future>[
-        _feedSavesRef.set(_feedSaveData),
-        _savedPostRef.set(_data),
-        _updatePostPropertiesCount(
-          feedId: feedId,
-          savesCount: 1,
-        ),
-      ];
-
-      await Future.wait(_futures);
-      print('Success: Saving feed $feedId');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Saving feed');
-    }
-  }
-
-  // unsave feed
-  Future<void> unSaveFeed({
-    required final String feedId,
-    required final String uid,
-  }) async {
-    try {
-      final _savedPostRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('saved_posts')
-          .doc(feedId);
-      final _feedSavesRef =
-          _ref.collection('posts').doc(feedId).collection('saves').doc(uid);
-
-      final _futures = <Future>[
-        _feedSavesRef.delete(),
-        _savedPostRef.delete(),
-        _updatePostPropertiesCount(feedId: feedId, savesCount: -1),
-      ];
-
-      await Future.wait(_futures);
-      print('Success: Unsaving feed $feedId');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Unsaving feed');
-      return null;
-    }
-  }
-
-  // see moment?
-  Future<void> viewMoment({
-    required final String uid,
-    required final String momentId,
-  }) async {
-    try {
-      final _momentRef = _ref.collection('moments').doc(momentId);
-      final _seenUsersRef = _momentRef.collection('seen_users').doc(uid);
-
-      final _futures = <Future>[
-        _seenUsersRef.set({
-          'uid': uid,
-          'updated_at': DateTime.now().millisecondsSinceEpoch,
-        }),
-        _updateMomentViewsCount(momentId: momentId)
-      ];
-      await Future.wait(_futures);
-      print('Success: Viewing moment $momentId');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Viewing moment');
     }
   }
 

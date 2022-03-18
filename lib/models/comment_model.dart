@@ -72,7 +72,7 @@ class PeamanComment {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final _data = {
       'id': id,
       'feed_id': feedId,
       'owner_id': ownerId,
@@ -83,5 +83,9 @@ class PeamanComment {
       'comment': comment,
       'updated_at': updatedAt,
     };
+
+    _data.removeWhere((key, value) => value == null);
+
+    return _data;
   }
 }
