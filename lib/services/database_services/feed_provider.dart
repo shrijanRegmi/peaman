@@ -618,6 +618,13 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanMoment.fromJson(e.data())).toList();
   }
 
+  // moment from firestore
+  PeamanMoment _momentFromFirebase(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanMoment.fromJson(snap.data() ?? {});
+  }
+
   // list of moment viewers
   List<PeamanMomentViewer> _momentViewersFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
@@ -683,6 +690,15 @@ class FeedProvider {
         .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_momentsFromFirebase);
+  }
+
+  // stream of moment by id
+  Stream<PeamanMoment> getSingleMomentById({required final String momentId}) {
+    return _ref
+        .collection('moments')
+        .doc(momentId)
+        .snapshots()
+        .map(_momentFromFirebase);
   }
 
   // stream of all feeds

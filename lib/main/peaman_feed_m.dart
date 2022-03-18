@@ -201,4 +201,12 @@ class PFeedProvider {
       commentId: commentId,
     );
   }
+
+  static Stream<PeamanMoment> getSingleMomentById({
+    required final String momentId,
+  }) {
+    return FeedProvider().getSingleMomentById(
+      momentId: momentId,
+    );
+  }
 }
