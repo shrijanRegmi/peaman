@@ -63,7 +63,7 @@ class FeedProvider {
     required final String feedId,
   }) async {
     try {
-      final _postRef = _ref.collection('feeds').doc(feedId);
+      final _postRef = _ref.collection('posts').doc(feedId);
 
       await _postRef.delete();
 
