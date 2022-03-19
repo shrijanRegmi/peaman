@@ -55,6 +55,7 @@ class PeamanFeed {
     return PeamanFeed(
       id: id ?? this.id,
       ownerId: ownerId ?? this.ownerId,
+      feedType: feedType ?? this.feedType,
       caption: caption ?? this.caption,
       photos: photos ?? this.photos,
       videos: videos ?? this.videos,
