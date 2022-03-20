@@ -23,6 +23,7 @@ class PeamanUser {
   final int reactionsReceived;
   final int commentsReceived;
   final int repliesReceived;
+  final Map<String, dynamic> extraData;
 
   PeamanUser({
     this.uid,
@@ -46,6 +47,7 @@ class PeamanUser {
     this.reactionsReceived = 0,
     this.commentsReceived = 0,
     this.repliesReceived = 0,
+    this.extraData = const {},
   });
 
   PeamanUser copyWith({
@@ -72,6 +74,7 @@ class PeamanUser {
     final int? reactionsReceived,
     final int? commentsReceived,
     final int? repliesReceived,
+    final Map<String, dynamic>? extraData,
   }) {
     return PeamanUser(
       uid: uid ?? this.uid,
@@ -95,6 +98,7 @@ class PeamanUser {
       reactionsReceived: reactionsReceived ?? this.reactionsReceived,
       commentsReceived: commentsReceived ?? this.commentsReceived,
       repliesReceived: repliesReceived ?? this.repliesReceived,
+      extraData: extraData ?? this.extraData,
     );
   }
 
@@ -108,6 +112,7 @@ class PeamanUser {
       'country': country,
       'bio': bio,
       'search_keys': searchKeys,
+      ...extraData,
     };
 
     _data.removeWhere((key, value) => value == null);
@@ -138,6 +143,7 @@ class PeamanUser {
       reactionsReceived: data['reactions_received'] ?? 0,
       commentsReceived: data['comments_received'] ?? 0,
       repliesReceived: data['replies_received'] ?? 0,
+      extraData: data,
     );
   }
 }
