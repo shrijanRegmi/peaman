@@ -34,7 +34,7 @@ class FirebaseMessagingProvider {
     required final Future<void> Function(RemoteMessage) onMessage,
   }) async {
     try {
-      FirebaseMessaging.onBackgroundMessage(onMessage);
+      FirebaseMessaging.onMessage;
     } catch (e) {}
   }
 
