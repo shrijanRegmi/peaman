@@ -30,11 +30,11 @@ class FeedProvider {
       }
 
       await Future.wait(_futures);
-      print('Success: Creating post ${_feed.id}');
+      print('Success: Creating feed ${_feed.id}');
       onSuccess?.call(_feed);
     } catch (e) {
       print(e);
-      print('Error!!!: Creating post');
+      print('Error!!!: Creating feed');
       onError?.call(e);
     }
   }
@@ -67,10 +67,49 @@ class FeedProvider {
 
       await _postRef.delete();
 
-      print("Success: Deleting post $feedId");
+      print("Success: Deleting feed $feedId");
     } catch (e) {
       print(e);
-      print('Error!!!: Deleting post $feedId');
+      print('Error!!!: Deleting feed');
+    }
+  }
+
+  // follow feed
+  Future<void> followFeed({
+    required final String uid,
+    required final String feedId,
+  }) async {
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _postFollowerRef = _postRef.collection('followers').doc(uid);
+
+      await _postFollowerRef.set({
+        'uid': uid,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      });
+
+      print("Success: Following feed $feedId");
+    } catch (e) {
+      print(e);
+      print('Error!!!: Following feed');
+    }
+  }
+
+  // unfollow feed
+  Future<void> unfollowFeed({
+    required final String uid,
+    required final String feedId,
+  }) async {
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _postFollowerRef = _postRef.collection('followers').doc(uid);
+
+      await _postFollowerRef.delete();
+
+      print("Success: Unfollowing feed $feedId");
+    } catch (e) {
+      print(e);
+      print('Error!!!: Unfollowing feed');
     }
   }
 
@@ -573,7 +612,7 @@ class FeedProvider {
     }
   }
 
-  // get reaction by id
+  // get reaction by ownerId
   Future<PeamanReaction?> getReactionByOwnerId({
     required final String feedId,
     required final String ownerId,
@@ -604,15 +643,15 @@ class FeedProvider {
     return _reaction;
   }
 
-  // get saved by id
-  Future<PeamanFeedSaves?> getFeedSavesByOwnerId({
+  // get feed saves by ownerId
+  Future<PeamanFeedSaves?> getFeedSavesByUid({
     required final String feedId,
-    required final String ownerId,
+    required final String uid,
   }) async {
     PeamanFeedSaves? _postSaves;
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
-      final _postSavesRef = _postRef.collection('saves').doc(ownerId);
+      final _postSavesRef = _postRef.collection('saves').doc(uid);
       final _postSavesSnap = await _postSavesRef.get();
 
       if (_postSavesSnap.exists) {
@@ -624,6 +663,28 @@ class FeedProvider {
       print('Error!!!: Getting post saves by uid');
     }
     return _postSaves;
+  }
+
+  // get feed followers by id
+  Future<PeamanFeedFollower?> getFeedFollowerByUid({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    PeamanFeedFollower? _feedFollower;
+    try {
+      final _feedRef = _ref.collection('posts').doc(feedId);
+      final _feedFollowerRef = _feedRef.collection('followers').doc(uid);
+      final _feedFollowerSnap = await _feedFollowerRef.get();
+
+      if (_feedFollowerSnap.exists) {
+        final _feedFollowerData = _feedFollowerSnap.data() ?? {};
+        _feedFollower = PeamanFeedFollower.fromJson(_feedFollowerData);
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: Getting feed follower by uid');
+    }
+    return _feedFollower;
   }
 
   // list of feeds from firestore

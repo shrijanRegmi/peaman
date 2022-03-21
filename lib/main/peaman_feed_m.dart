@@ -36,6 +36,20 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> followFeed({
+    required final String uid,
+    required final String feedId,
+  }) {
+    return FeedProvider().followFeed(uid: uid, feedId: feedId);
+  }
+
+  static Future<void> unFollowFeed({
+    required final String uid,
+    required final String feedId,
+  }) {
+    return FeedProvider().unfollowFeed(uid: uid, feedId: feedId);
+  }
+
   static Future<void> saveFeed({
     required final String feedId,
     required final String uid,
@@ -46,7 +60,7 @@ class PFeedProvider {
     );
   }
 
-  static Future<void> unSaveFeed({
+  static Future<void> unsaveFeed({
     required final String feedId,
     required final String uid,
   }) async {
@@ -164,13 +178,23 @@ class PFeedProvider {
     );
   }
 
-  static Future<PeamanFeedSaves?> getFeedSavesByOwnerId({
+  static Future<PeamanFeedSaves?> getFeedSavesByUid({
     required final String feedId,
-    required final String ownerId,
+    required final String uid,
   }) async {
-    return await FeedProvider().getFeedSavesByOwnerId(
+    return await FeedProvider().getFeedSavesByUid(
       feedId: feedId,
-      ownerId: ownerId,
+      uid: uid,
+    );
+  }
+
+  static Future<PeamanFeedFollower?> getFeedFollowerByUid({
+    required final String feedId,
+    required final String uid,
+  }) {
+    return FeedProvider().getFeedFollowerByUid(
+      feedId: feedId,
+      uid: uid,
     );
   }
 
