@@ -34,8 +34,18 @@ class FirebaseMessagingProvider {
     required final Future<void> Function(RemoteMessage) onMessage,
   }) async {
     try {
-      FirebaseMessaging.onMessage;
-    } catch (e) {}
+      final _initialMessage =
+          await FirebaseMessaging.instance.getInitialMessage();
+
+      if (_initialMessage != null) {
+        onMessage(_initialMessage);
+      }
+
+      FirebaseMessaging.onMessageOpenedApp.listen(onMessage);
+    } catch (e) {
+      print(e);
+      print('Error!!!: Receiving message from notification');
+    }
   }
 
   // reset and delete device info of user from firestore
