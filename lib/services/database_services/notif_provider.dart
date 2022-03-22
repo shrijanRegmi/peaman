@@ -1,76 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:peaman/models/follow_request_notification_model.dart';
 import 'package:peaman/models/notification_model.dart';
-import 'package:peaman/models/user_model.dart';
 
 class NotificationProvider {
-  final BuildContext? context;
-  final PeamanUser? appUser;
-  final PeamanNotification? notification;
-  NotificationProvider({
-    this.context,
-    this.appUser,
-    this.notification,
-  });
-
   final _ref = FirebaseFirestore.instance;
 
-  Future readNotification() async {
+  Future<void> readNotification({
+    required final String uid,
+    required final String notificationId,
+  }) async {
     try {
-      final _appUserRef = _ref.collection('users').doc(appUser?.uid);
+      final _appUserRef = _ref.collection('users').doc(uid);
       final _notifRef =
-          _appUserRef.collection('notifications').doc(notification?.id);
+          _appUserRef.collection('notifications').doc(notificationId);
       await _notifRef.update({
-        'is_read': true,
+        'read': true,
       });
-      print('Success: Reading notification ${notification?.id}');
-      return 'Success';
+      print('Success: Reading notification $notificationId');
     } catch (e) {
       print(e);
-      print('Error!!!: Reading notification ${notification?.id}');
-      return null;
+      print('Error!!!: Reading notification');
     }
   }
 
   // get notification from firebase
   List<PeamanNotification> notificationFromFirebase(
-      QuerySnapshot<Map<String, dynamic>> colSnap) {
+    QuerySnapshot<Map<String, dynamic>> colSnap,
+  ) {
     return colSnap.docs
-        .map((doc) => PeamanNotification.fromJson(doc.data(), doc.id))
-        .toList();
-  }
-
-  // get follow requests from firebase
-  List<PeamanFollowRequestNotification> followRequestsFromFirebase(
-      QuerySnapshot<Map<String, dynamic>> colSnap) {
-    return colSnap.docs
-        .map((doc) =>
-            PeamanFollowRequestNotification.fromJson(doc.data(), doc.id))
+        .map((doc) => PeamanNotification.fromJson(doc.data()))
         .toList();
   }
 
   // stream of notifications
-  Stream<List<PeamanNotification>> get notificationsList {
+  Stream<List<PeamanNotification>> notificationsList({
+    required final String uid,
+  }) {
     return _ref
         .collection('users')
-        .doc(appUser?.uid)
+        .doc(uid)
         .collection('notifications')
         .orderBy('updated_at', descending: true)
         .snapshots()
         .map(notificationFromFirebase);
-  }
-
-  // stream of follow requests
-  Stream<List<PeamanFollowRequestNotification>> get followRequests {
-    return _ref
-        .collection('users')
-        .doc(appUser?.uid)
-        .collection('follow_requests')
-        .limit(10)
-        .orderBy('updated_at', descending: true)
-        .snapshots()
-        .map(followRequestsFromFirebase);
   }
 }
