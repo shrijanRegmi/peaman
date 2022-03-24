@@ -1,5 +1,5 @@
 enum PeamanFeedType {
   image,
   video,
-  article,
+  other,
 }

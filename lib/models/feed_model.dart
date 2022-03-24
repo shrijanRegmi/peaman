@@ -30,9 +30,9 @@ class PeamanFeed {
     this.sharesCount = 0,
     this.viewsCount = 0,
     this.featured = false,
-    this.extraData = const <String, dynamic>{},
     this.updatedAt,
     this.searchKeys = const [],
+    this.extraData = const <String, dynamic>{},
   });
 
   PeamanFeed copyWith({
@@ -49,8 +49,8 @@ class PeamanFeed {
     final int? viewsCount,
     final bool? featured,
     final int? updatedAt,
-    final Map<String, dynamic>? extraData,
     final List<String>? searchKeys,
+    final Map<String, dynamic>? extraData,
   }) {
     return PeamanFeed(
       id: id ?? this.id,
@@ -66,8 +66,8 @@ class PeamanFeed {
       viewsCount: viewsCount ?? this.viewsCount,
       featured: featured ?? this.featured,
       updatedAt: updatedAt ?? this.updatedAt,
-      extraData: extraData ?? this.extraData,
       searchKeys: searchKeys ?? this.searchKeys,
+      extraData: extraData ?? this.extraData,
     );
   }
 
@@ -86,8 +86,8 @@ class PeamanFeed {
       sharesCount: data['shares_count'] ?? 0,
       viewsCount: data['views_count'] ?? 0,
       featured: data['featured'] ?? false,
-      extraData: data['extra_data'] ?? <String, dynamic>{},
       searchKeys: List<String>.from(data['search_keys'] ?? []),
+      extraData: data,
     );
   }
 
@@ -99,9 +99,9 @@ class PeamanFeed {
       'caption': caption,
       'photos': photos,
       'videos': videos,
-      'extra_data': extraData,
       'search_keys': searchKeys,
       'updated_at': updatedAt,
+      ...extraData,
     };
 
     _data.removeWhere((key, value) => value == null);
