@@ -16,7 +16,7 @@ class PeamanUser {
   final int photos;
   final int followers;
   final int following;
-  final int notifCount;
+  final int newNotifications;
   final int likeableFeeds;
   final int likeableComments;
   final int likeableReplies;
@@ -40,7 +40,7 @@ class PeamanUser {
     this.admin = false,
     this.followers = 0,
     this.following = 0,
-    this.notifCount = 0,
+    this.newNotifications = 0,
     this.likeableFeeds = 0,
     this.likeableComments = 0,
     this.likeableReplies = 0,
@@ -64,7 +64,7 @@ class PeamanUser {
     final int? photos,
     final int? followers,
     final int? following,
-    final int? notifCount,
+    final int? newNotifications,
     final bool? newFeeds,
     final List<String>? searchKeys,
     final bool? admin,
@@ -88,7 +88,7 @@ class PeamanUser {
       photos: photos ?? this.photos,
       followers: followers ?? this.followers,
       following: following ?? this.following,
-      notifCount: notifCount ?? this.notifCount,
+      newNotifications: newNotifications ?? this.newNotifications,
       newFeeds: newFeeds ?? this.newFeeds,
       searchKeys: searchKeys ?? this.searchKeys,
       admin: admin ?? this.admin,
@@ -133,7 +133,7 @@ class PeamanUser {
       photos: data['photos'] ?? 0,
       followers: data['followers'] ?? 0,
       following: data['following'] ?? 0,
-      notifCount: data['notification_count'] ?? 0,
+      newNotifications: data['new_notifications'] ?? 0,
       newFeeds: data['new_posts'] ?? false,
       searchKeys: List<String>.from(data['search_keys'] ?? []),
       admin: data['admin'] ?? false,
