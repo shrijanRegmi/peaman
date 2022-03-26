@@ -1,3 +1,4 @@
+import 'package:peaman/helpers/common_helper.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
@@ -47,30 +48,35 @@ class PUserProvider {
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'userById');
     return AppUserProvider(uid: uid).appUser;
   }
 
   static Stream<List<PeamanUser>> getUsersBySearchKeyword({
     required final String searchKeyword,
   }) {
+    CommonHelper.printListening(text: 'userBySearchKeyword');
     return AppUserProvider(searchKey: searchKeyword).appUserFromKey;
   }
 
   static Stream<List<PeamanFollowRequest>> getFollowRequests({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'followRequests');
     return AppUserProvider(uid: uid).followRequests;
   }
 
   static Stream<List<PeamanFollower>> getFollowers({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'followers');
     return AppUserProvider(uid: uid).followers;
   }
 
   static Stream<List<PeamanFollowing>> getFollowing({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'followings');
     return AppUserProvider(uid: uid).following;
   }
 }

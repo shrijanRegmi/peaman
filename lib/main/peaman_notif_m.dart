@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:peaman/models/notification_model.dart';
 import 'package:peaman/services/database_services/notif_provider.dart';
+import '../helpers/common_helper.dart';
 import '../services/messaging_services/firebase_messaging_provider.dart';
 
 class PNotificationProvider {
@@ -37,6 +38,7 @@ class PNotificationProvider {
   static Stream<List<PeamanNotification>> getNotifications({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'notifications');
     return NotificationProvider().notificationsList(uid: uid);
   }
 }

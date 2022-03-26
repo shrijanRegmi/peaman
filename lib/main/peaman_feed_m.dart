@@ -1,6 +1,8 @@
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/feed_provider.dart';
 
+import '../helpers/common_helper.dart';
+
 class PFeedProvider {
   static Future<void> createFeed({
     required final PeamanFeed feed,
@@ -170,6 +172,7 @@ class PFeedProvider {
     required final PeamanReactionParent parent,
     required final String parentId,
   }) async {
+    CommonHelper.printListening(text: 'reactionByOwnerId');
     return await FeedProvider().getReactionByOwnerId(
       feedId: feedId,
       ownerId: ownerId,
@@ -182,6 +185,7 @@ class PFeedProvider {
     required final String feedId,
     required final String uid,
   }) async {
+    CommonHelper.printListening(text: 'feedSavesByUid');
     return await FeedProvider().getFeedSavesByUid(
       feedId: feedId,
       uid: uid,
@@ -192,6 +196,7 @@ class PFeedProvider {
     required final String feedId,
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'feedFollowerByUid');
     return FeedProvider().getFeedFollowerByUid(
       feedId: feedId,
       uid: uid,
@@ -199,22 +204,26 @@ class PFeedProvider {
   }
 
   static Stream<List<PeamanFeed>> getAllFeeds() {
+    CommonHelper.printListening(text: 'allFeeds');
     return FeedProvider().allFeeds();
   }
 
   static Stream<List<PeamanMoment>> getAllMoments() {
+    CommonHelper.printListening(text: 'allMoments');
     return FeedProvider().allMoments();
   }
 
   static Stream<List<PeamanMomentViewer>> getMomentViewers({
     required final String momentId,
   }) {
+    CommonHelper.printListening(text: 'momentViewers');
     return FeedProvider().getMomentViewers(momentId: momentId);
   }
 
   static Stream<List<PeamanFeed>> getFeedsBySearchKeyword({
     required final String searchKeyword,
   }) {
+    CommonHelper.printListening(text: 'feedsBySearchKeyword');
     return FeedProvider().feedsBySearchKeyword(
       searchKeyword: searchKeyword,
     );
@@ -223,12 +232,14 @@ class PFeedProvider {
   static Stream<PeamanFeed> getSingleFeedById({
     required final String feedId,
   }) {
+    CommonHelper.printListening(text: 'feedById');
     return FeedProvider().singleFeedById(feedId: feedId);
   }
 
   static Stream<List<PeamanSavedFeed>> getSavedFeeds({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'savedFeeds');
     return FeedProvider().savedFeeds(uid: uid);
   }
 
@@ -237,6 +248,7 @@ class PFeedProvider {
     required final PeamanCommentParent parent,
     required final String parentId,
   }) {
+    CommonHelper.printListening(text: 'comments');
     return FeedProvider().getComments(
       feedId: feedId,
       parent: parent,
@@ -248,6 +260,7 @@ class PFeedProvider {
     required final String feedId,
     required final String commentId,
   }) {
+    CommonHelper.printListening(text: 'commentById');
     return FeedProvider().getSingleCommentById(
       feedId: feedId,
       commentId: commentId,
@@ -257,6 +270,7 @@ class PFeedProvider {
   static Stream<PeamanMoment> getSingleMomentById({
     required final String momentId,
   }) {
+    CommonHelper.printListening(text: 'momentById');
     return FeedProvider().getSingleMomentById(
       momentId: momentId,
     );

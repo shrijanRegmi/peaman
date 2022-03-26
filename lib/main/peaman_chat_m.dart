@@ -1,6 +1,8 @@
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
+import '../helpers/common_helper.dart';
+
 class PChatProvider {
   static Future<void> sendMessage({
     required final PeamanMessage message,
@@ -71,6 +73,7 @@ class PChatProvider {
     required final String chatId,
     final int limit = 10,
   }) {
+    CommonHelper.printListening(text: 'messages');
     return MessageProvider().messagesList(
       chatId: chatId,
       limit: limit,
@@ -80,24 +83,28 @@ class PChatProvider {
   static Stream<List<PeamanChat>> getChats({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'chats');
     return MessageProvider().chatList(uid: uid);
   }
 
   static Stream<List<PeamanIdleChat>> getIdleChats({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'idleChats');
     return MessageProvider().idleChatsList(uid: uid);
   }
 
   static Stream<List<PeamanAcceptedChat>> getAcceptedChats({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'acceptedChats');
     return MessageProvider().acceptedChatsList(uid: uid);
   }
 
   static Stream<List<PeamanDeclinedChat>> getDeclinedChats({
     required final String uid,
   }) {
+    CommonHelper.printListening(text: 'declinedChats');
     return MessageProvider().declinedChatsList(uid: uid);
   }
 
@@ -105,6 +112,7 @@ class PChatProvider {
     required final String chatId,
     required final String messageId,
   }) {
+    CommonHelper.printListening(text: 'messageById');
     return MessageProvider().message(chatId: chatId, messageId: messageId);
   }
 }

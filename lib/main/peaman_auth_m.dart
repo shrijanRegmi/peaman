@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/auth_services/auth_provider.dart';
 
+import '../helpers/common_helper.dart';
+
 class PAuthProvider {
   static final _auth = FirebaseAuth.instance;
 
@@ -35,6 +37,7 @@ class PAuthProvider {
   }
 
   static Stream<PeamanUser?> get user {
+    CommonHelper.printListening(text: 'authUser');
     return _auth.authStateChanges().map(_userFromFirebase);
   }
 }
