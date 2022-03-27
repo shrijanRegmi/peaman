@@ -7,7 +7,7 @@ class PeamanMessage {
   final String? senderId;
   final String? receiverId;
   final int? updatedAt;
-  final String? momentId;
+  final String? extraId;
   final PeamanMessageType type;
 
   PeamanMessage({
@@ -17,7 +17,7 @@ class PeamanMessage {
     this.senderId,
     this.receiverId,
     this.updatedAt,
-    this.momentId,
+    this.extraId,
     this.type = PeamanMessageType.text,
   });
 
@@ -28,7 +28,7 @@ class PeamanMessage {
     final String? senderId,
     final String? receiverId,
     final int? updatedAt,
-    final String? momentId,
+    final String? extraId,
     final PeamanMessageType? type,
   }) {
     return PeamanMessage(
@@ -38,7 +38,7 @@ class PeamanMessage {
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
       updatedAt: updatedAt ?? this.updatedAt,
-      momentId: momentId ?? this.momentId,
+      extraId: extraId ?? this.extraId,
       type: type ?? this.type,
     );
   }
@@ -51,7 +51,7 @@ class PeamanMessage {
       'sender_id': senderId,
       'receiver_id': receiverId,
       'updated_at': updatedAt,
-      'moment_id': momentId,
+      'extra_id': extraId,
       'type': type.index,
     };
   }
@@ -63,7 +63,7 @@ class PeamanMessage {
       senderId: data['sender_id'],
       receiverId: data['receiver_id'],
       updatedAt: data['updated_at'],
-      momentId: data['moment_id'],
+      extraId: data['extra_id'],
       type: PeamanMessageType.values[data['type'] ?? 0],
     );
   }
