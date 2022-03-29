@@ -15,8 +15,12 @@ class PUserProvider {
   static Future<void> updateUserData({
     required final String uid,
     required final Map<String, dynamic> data,
+    final bool partial = false,
   }) async {
-    return AppUserProvider(uid: uid).updateUserDetail(data: data);
+    return AppUserProvider(uid: uid).updateUserDetail(
+      data: data,
+      partial: partial,
+    );
   }
 
   static Future<void> updateUserPropertiesCount({

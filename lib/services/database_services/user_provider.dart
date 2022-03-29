@@ -7,12 +7,14 @@ class AppUserProvider {
   final String? searchKey;
   final DocumentReference<Map<String, dynamic>>? userRef;
   final PeamanUser? user;
+
   AppUserProvider({
     this.uid,
     this.userRef,
     this.searchKey,
     this.user,
   });
+
   final _ref = FirebaseFirestore.instance;
 
   // send user to firestore
@@ -52,10 +54,25 @@ class AppUserProvider {
   }
 
   // update user details
-  Future updateUserDetail({@required final Map<String, dynamic>? data}) async {
+  Future updateUserDetail({
+    required final Map<String, dynamic> data,
+    final bool partial = false,
+  }) async {
     try {
+      var _data = data;
+
+      if (partial) {
+        data.forEach((key, value) {
+          if (value is int || value is double) {
+            _data[key] = FieldValue.increment(value);
+          } else if (value is List) {
+            _data[key] = FieldValue.arrayUnion(value);
+          }
+        });
+      }
+
       final _userRef = _ref.collection('users').doc(uid);
-      await _userRef.update(data!);
+      await _userRef.update(_data);
 
       print('Success: Updating personal info of user $uid');
       return 'Success';
