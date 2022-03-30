@@ -242,7 +242,7 @@ class FeedProvider {
   // delete moment
   Future<void> deletMomentPicture({
     required final String momentId,
-    required final String momentPictureId,
+    required final String pictureId,
   }) async {
     try {
       final _momentRef = _ref.collection('moments').doc(momentId);
@@ -258,7 +258,7 @@ class FeedProvider {
       final _moment = PeamanMoment.fromJson(_momentData);
 
       final _newPictures =
-          _moment.pictures.where((element) => element.id != momentId).toList();
+          _moment.pictures.where((element) => element.id != pictureId).toList();
 
       if (_newPictures.isEmpty) {
         await _momentRef.delete();
@@ -267,7 +267,7 @@ class FeedProvider {
           'pictures': _newPictures,
         });
       }
-      print("Success: Deleting moment picture $momentPictureId");
+      print("Success: Deleting moment picture $pictureId");
     } catch (e) {
       print(e);
       print('Error!!!: Deleting moment picture');

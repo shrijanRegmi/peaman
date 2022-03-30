@@ -88,13 +88,13 @@ class PFeedProvider {
 
   static Future<void> deletMomentPicture({
     required final String momentId,
-    required final String momentPictureId,
+    required final String pictureId,
     final Function(PeamanMoment)? onSuccess,
     final Function(dynamic)? onError,
   }) {
     return FeedProvider().deletMomentPicture(
       momentId: momentId,
-      momentPictureId: momentPictureId,
+      pictureId: pictureId,
     );
   }
 
