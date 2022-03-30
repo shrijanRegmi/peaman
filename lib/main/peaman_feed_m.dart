@@ -76,13 +76,25 @@ class PFeedProvider {
 
   static Future<void> createMoment({
     required final PeamanMoment moment,
-    required final Function(PeamanMoment)? onSuccess,
+    final Function(PeamanMoment)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().createMoment(
+  }) {
+    return FeedProvider().createMoment(
       moment: moment,
       onSuccess: onSuccess,
       onError: onError,
+    );
+  }
+
+  static Future<void> deletMomentPicture({
+    required final String momentId,
+    required final String momentPictureId,
+    final Function(PeamanMoment)? onSuccess,
+    final Function(dynamic)? onError,
+  }) {
+    return FeedProvider().deletMomentPicture(
+      momentId: momentId,
+      momentPictureId: momentPictureId,
     );
   }
 

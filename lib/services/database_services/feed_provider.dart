@@ -209,9 +209,18 @@ class FeedProvider {
         final _ownerMomentSnap = _ownerMomentsSnap.docs.first;
 
         if (_ownerMomentSnap.exists) {
+          final _pictures = moment.pictures.map((e) {
+            final _randomDocument = _ref.collection('random').doc();
+            final _momentPicture = {
+              'id': _randomDocument.id,
+              ...e.toJson(),
+            };
+            return _momentPicture;
+          }).toList();
+
           await _ownerMomentSnap.reference.update({
             ...moment.toJson(),
-            'photos': FieldValue.arrayUnion(moment.photos),
+            'pictures': FieldValue.arrayUnion(_pictures),
           });
 
           final _ownerMomentData = _ownerMomentSnap.data();
@@ -229,6 +238,41 @@ class FeedProvider {
       print(e);
       print('Error!!!: Creating moment');
       onError?.call(e);
+    }
+  }
+
+  // delete moment
+  Future<void> deletMomentPicture({
+    required final String momentId,
+    required final String momentPictureId,
+  }) async {
+    try {
+      final _momentRef = _ref.collection('moments').doc(momentId);
+
+      final _momentSnap = await _momentRef.get();
+      if (!_momentSnap.exists)
+        throw Future.error('Moment with id $momentId not found');
+
+      final _momentData = _momentSnap.data();
+      if (_momentData == null)
+        throw Future.error('Moment with id $momentId not found');
+
+      final _moment = PeamanMoment.fromJson(_momentData);
+
+      final _newPictures =
+          _moment.pictures.where((element) => element.id != momentId).toList();
+
+      if (_newPictures.isEmpty) {
+        await _momentRef.delete();
+      } else {
+        await _momentRef.update({
+          'pictures': _newPictures,
+        });
+      }
+      print("Success: Deleting moment picture $momentPictureId");
+    } catch (e) {
+      print(e);
+      print('Error!!!: Deleting moment picture');
     }
   }
 
