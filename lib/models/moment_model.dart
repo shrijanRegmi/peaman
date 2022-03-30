@@ -43,7 +43,7 @@ class PeamanMoment {
     return PeamanMoment(
       id: data['id'],
       ownerId: data['owner_id'],
-      pictures: (data['pictures'] ?? [])
+      pictures: List<Map<String, dynamic>>.from((data['pictures'] ?? []))
           .map((e) => PeamanMomentPicture.fromJson(e))
           .toList(),
       views: data['views'] ?? 0,

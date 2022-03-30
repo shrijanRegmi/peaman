@@ -193,7 +193,7 @@ class FeedProvider {
   // create moments
   Future<void> createMoment({
     required final PeamanMoment moment,
-    required final Function(PeamanMoment)? onSuccess,
+    final Function(PeamanMoment)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
@@ -211,10 +211,8 @@ class FeedProvider {
         if (_ownerMomentSnap.exists) {
           final _pictures = moment.pictures.map((e) {
             final _randomDocument = _ref.collection('random').doc();
-            final _momentPicture = {
-              'id': _randomDocument.id,
-              ...e.toJson(),
-            };
+            final _momentPicture = e.toJson();
+            _momentPicture['id'] = e.id ?? _randomDocument.id;
             return _momentPicture;
           }).toList();
 
