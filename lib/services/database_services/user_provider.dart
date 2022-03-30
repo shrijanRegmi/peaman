@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:peaman/helpers/common_helper.dart';
 import 'package:peaman/peaman.dart';
 
 class AppUserProvider {
@@ -59,17 +60,10 @@ class AppUserProvider {
     final bool partial = false,
   }) async {
     try {
-      var _data = data;
-
-      if (partial) {
-        data.forEach((key, value) {
-          if (value is int || value is double) {
-            _data[key] = FieldValue.increment(value);
-          } else if (value is List) {
-            _data[key] = FieldValue.arrayUnion(value);
-          }
-        });
-      }
+      final _data = CommonHelper.prepareDataToUpdate(
+        data: data,
+        partial: partial,
+      );
 
       final _userRef = _ref.collection('users').doc(uid);
       await _userRef.update(_data);

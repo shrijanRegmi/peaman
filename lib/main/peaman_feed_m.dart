@@ -19,12 +19,14 @@ class PFeedProvider {
   static Future<void> updateFeed({
     required final String feedId,
     required final Map<String, dynamic> data,
+    final bool partial = false,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().updateFeed(
       feedId: feedId,
       data: data,
+      partial: partial,
       onSuccess: onSuccess,
       onError: onError,
     );

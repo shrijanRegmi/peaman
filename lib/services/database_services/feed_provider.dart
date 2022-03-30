@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
+import '../../helpers/common_helper.dart';
+
 class FeedProvider {
   final _ref = FirebaseFirestore.instance;
 
@@ -43,12 +45,18 @@ class FeedProvider {
   Future<void> updateFeed({
     required final String feedId,
     required final Map<String, dynamic> data,
+    final bool partial = false,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _data = CommonHelper.prepareDataToUpdate(
+        data: data,
+        partial: partial,
+      );
+
       final _postRef = _ref.collection('posts').doc(feedId);
-      await _postRef.update(data);
+      await _postRef.update(_data);
       print('Success: Updating feed $feedId');
       onSuccess?.call(feedId);
     } catch (e) {
