@@ -30,6 +30,7 @@ export 'models/feed_follower_model.dart';
 export 'models/saved_feed_model.dart';
 export 'models/moment_viewer_model.dart';
 export 'models/moment_picture_model.dart';
+export 'models/feed_view_model.dart';
 
 // enums
 export 'enums/message_type.dart';

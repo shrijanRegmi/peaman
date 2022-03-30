@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
-
 import '../../helpers/common_helper.dart';
 
 class FeedProvider {
@@ -756,11 +755,11 @@ class FeedProvider {
   }
 
   // get feed view by uid
-  Future<PeamanFeedSaves?> getFeedViewByUid({
+  Future<PeamanFeedView?> getFeedViewByUid({
     required final String feedId,
     required final String uid,
   }) async {
-    PeamanFeedSaves? _postSaves;
+    PeamanFeedView? _postSaves;
     try {
       final _postRef = _ref.collection('posts').doc(feedId);
       final _postViewRef = _postRef.collection('views').doc(uid);
@@ -768,7 +767,7 @@ class FeedProvider {
 
       if (_postViewSnap.exists) {
         final _postSavesData = _postViewSnap.data() ?? {};
-        _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
+        _postSaves = PeamanFeedView.fromJson(_postSavesData);
       }
     } catch (e) {
       print(e);

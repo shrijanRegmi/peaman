@@ -218,12 +218,12 @@ class PFeedProvider {
     );
   }
 
-  static Future<PeamanFeedSaves?> getFeedViewByUid({
+  static Future<PeamanFeedView?> getFeedViewByUid({
     required final String feedId,
     required final String uid,
   }) async {
     CommonHelper.printListening(text: 'feedViewByUid');
-    return await FeedProvider().getFeedViewByUid(
+    return FeedProvider().getFeedViewByUid(
       feedId: feedId,
       uid: uid,
     );
