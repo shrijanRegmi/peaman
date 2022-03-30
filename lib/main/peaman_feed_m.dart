@@ -74,6 +74,18 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> viewFeed({
+    required final String feedId,
+    required final String uid,
+    final Function(PeamanMoment)? onSuccess,
+    final Function(dynamic)? onError,
+  }) {
+    return FeedProvider().viewFeed(
+      feedId: feedId,
+      uid: uid,
+    );
+  }
+
   static Future<void> createMoment({
     required final PeamanMoment moment,
     final Function(PeamanMoment)? onSuccess,
@@ -201,6 +213,17 @@ class PFeedProvider {
   }) async {
     CommonHelper.printListening(text: 'feedSavesByUid');
     return await FeedProvider().getFeedSavesByUid(
+      feedId: feedId,
+      uid: uid,
+    );
+  }
+
+  static Future<PeamanFeedSaves?> getFeedViewByUid({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    CommonHelper.printListening(text: 'feedViewByUid');
+    return await FeedProvider().getFeedViewByUid(
       feedId: feedId,
       uid: uid,
     );

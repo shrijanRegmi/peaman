@@ -274,6 +274,46 @@ class FeedProvider {
     }
   }
 
+  // view feed
+  Future<void> viewFeed({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    try {
+      final _viewedPostRef = _ref
+          .collection('users')
+          .doc(uid)
+          .collection('viewed_posts')
+          .doc(feedId);
+      final _feedViewsRef =
+          _ref.collection('posts').doc(feedId).collection('views').doc(uid);
+
+      final _data = {
+        'id': feedId,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
+      final _feedViewData = {
+        'owner_id': uid,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
+
+      final _futures = <Future>[
+        _feedViewsRef.set(_feedViewData),
+        _viewedPostRef.set(_data),
+        _updatePostPropertiesCount(
+          feedId: feedId,
+          viewsCount: 1,
+        ),
+      ];
+
+      await Future.wait(_futures);
+      print('Success: Saving feed $feedId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Saving feed');
+    }
+  }
+
   // see moment
   Future<void> viewMoment({
     required final String uid,
@@ -711,6 +751,28 @@ class FeedProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Getting post saves by uid');
+    }
+    return _postSaves;
+  }
+
+  // get feed view by uid
+  Future<PeamanFeedSaves?> getFeedViewByUid({
+    required final String feedId,
+    required final String uid,
+  }) async {
+    PeamanFeedSaves? _postSaves;
+    try {
+      final _postRef = _ref.collection('posts').doc(feedId);
+      final _postViewRef = _postRef.collection('views').doc(uid);
+      final _postViewSnap = await _postViewRef.get();
+
+      if (_postViewSnap.exists) {
+        final _postSavesData = _postViewSnap.data() ?? {};
+        _postSaves = PeamanFeedSaves.fromJson(_postSavesData);
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: Getting post view by uid');
     }
     return _postSaves;
   }
