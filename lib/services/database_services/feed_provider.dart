@@ -264,7 +264,7 @@ class FeedProvider {
         await _momentRef.delete();
       } else {
         await _momentRef.update({
-          'pictures': _newPictures,
+          'pictures': _newPictures.map((e) => e.toJson()).toList(),
         });
       }
       print("Success: Deleting moment picture $pictureId");
