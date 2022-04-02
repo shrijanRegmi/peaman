@@ -7,29 +7,39 @@ import '../helpers/common_helper.dart';
 class PAuthProvider {
   static final _auth = FirebaseAuth.instance;
 
-  static Future loginWithEmailAndPassword({
+  static Future<void> loginWithEmailAndPassword({
     required final String email,
     required final String password,
-  }) async {
+  }) {
     final _appUser = PeamanUser(email: email);
-    return await AuthProvider(
+    return AuthProvider(
       appUser: _appUser,
       password: password,
     ).loginWithEmailAndPassword();
   }
 
-  static Future signUpWithEmailAndPassword({
+  static Future<void> signUpWithEmailAndPassword({
     required final PeamanUser appUser,
     required final String password,
-  }) async {
-    await AuthProvider(
+  }) {
+    return AuthProvider(
       appUser: appUser,
       password: password,
     ).signUpWithEmailAndPassword();
   }
 
-  static Future<void> logOut() async {
-    return await AuthProvider().logOut();
+  static Future<void> signInWithGoogle({
+    final Function()? onSuccess,
+    final Function()? onError,
+  }) {
+    return AuthProvider().signUpWithGoogle(
+      onSuccess: onSuccess,
+      onError: onError,
+    );
+  }
+
+  static Future<void> logOut() {
+    return AuthProvider().logOut();
   }
 
   static PeamanUser? _userFromFirebase(User? user) {
