@@ -100,9 +100,12 @@ class AuthProvider {
   }
 
   // log out user
-  Future logOut() async {
+  Future<void> logOut() async {
+    await Future.wait([
+      _auth.signOut(),
+      _googleSignIn.signOut(),
+    ]);
     print('Success: Logging out user');
-    return await _auth.signOut();
   }
 
   // user from firebase
