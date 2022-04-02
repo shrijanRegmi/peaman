@@ -60,8 +60,8 @@ class AuthProvider {
 
   // sign up with google
   Future<void> signUpWithGoogle({
-    final Function()? onSuccess,
-    final Function()? onError,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) async {
     try {
       final _account = await _googleSignIn.signIn();
@@ -90,12 +90,15 @@ class AuthProvider {
             );
             await AppUserProvider(user: _appUser).sendUserToFirestore();
           }
+
           print('Success: Signing up with google');
+          onSuccess?.call(_user.uid);
         }
       }
     } catch (e) {
       print(e);
       print('Error!!!: Signing up with google');
+      onError?.call(e);
     }
   }
 

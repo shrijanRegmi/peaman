@@ -29,8 +29,8 @@ class PAuthProvider {
   }
 
   static Future<void> signInWithGoogle({
-    final Function()? onSuccess,
-    final Function()? onError,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) {
     return AuthProvider().signUpWithGoogle(
       onSuccess: onSuccess,
