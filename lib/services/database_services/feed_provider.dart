@@ -227,7 +227,7 @@ class FeedProvider {
         final _momentRef = _ref.collection('moments').doc(moment.id);
         final _pictures = moment.pictures.map((e) {
           final _randomDocument = _ref.collection('random').doc();
-          final _momentPicture = e.copyWith(id: _randomDocument.id);
+          final _momentPicture = e.copyWith(id: e.id ?? _randomDocument.id);
           return _momentPicture;
         }).toList();
 
