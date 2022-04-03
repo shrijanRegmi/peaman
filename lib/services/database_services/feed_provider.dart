@@ -235,6 +235,7 @@ class FeedProvider {
           id: _momentRef.id,
           pictures: _pictures,
         );
+
         await _momentRef.set(_moment.toJson());
       }
 

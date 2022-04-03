@@ -5,56 +5,63 @@ import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
 class AuthProvider {
-  final PeamanUser? appUser;
-  final String? password;
-
-  AuthProvider({
-    this.appUser,
-    this.password,
-  });
-
   final _ref = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
 
   // create account with email and password
-  Future signUpWithEmailAndPassword() async {
+  Future<void> signUpWithEmailAndPassword({
+    required final String email,
+    required final String password,
+    required final PeamanUser appUser,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
       final _result = await _auth.createUserWithEmailAndPassword(
-        email: appUser?.email ?? '',
-        password: password ?? '',
+        email: email,
+        password: password,
       );
 
-      final _user = appUser?.copyWith(
+      final _user = appUser.copyWith(
         uid: _result.user?.uid,
       );
 
       await AppUserProvider(user: _user).sendUserToFirestore();
-
       _userFromFirebase(_result.user);
-      print('Success: Creating user with name ${_user?.name}');
-      return _result;
+
+      print('Success: Creating user with name ${_user.name}');
+      if (_result.user != null) {
+        onSuccess?.call(_result.user!.uid);
+      }
     } catch (e) {
       print(e);
-      print('Error!!!: Creating user with name ${appUser?.name}');
-      return null;
+      print('Error!!!: Creating user');
+      onError?.call(e);
     }
   }
 
   // login with email and password
-  Future loginWithEmailAndPassword() async {
+  Future<void> loginWithEmailAndPassword({
+    required final String email,
+    required final String password,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
     try {
       final _result = await _auth.signInWithEmailAndPassword(
-        email: appUser?.email ?? '',
-        password: password ?? '',
+        email: email,
+        password: password,
       );
       _userFromFirebase(_result.user);
-      print('Success: Logging in user with email ${appUser?.email}');
-      return _result;
+      print('Success: Logging in user with email $email');
+      if (_result.user != null) {
+        onSuccess?.call(_result.user!.uid);
+      }
     } catch (e) {
       print(e);
-      print('Error!!!: Logging in user with email ${appUser?.email}');
-      return null;
+      print('Error!!!: Logging in user with email');
+      onError?.call(e);
     }
   }
 

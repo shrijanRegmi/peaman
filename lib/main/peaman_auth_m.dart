@@ -10,22 +10,25 @@ class PAuthProvider {
   static Future<void> loginWithEmailAndPassword({
     required final String email,
     required final String password,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) {
-    final _appUser = PeamanUser(email: email);
-    return AuthProvider(
-      appUser: _appUser,
+    return AuthProvider().loginWithEmailAndPassword(
+      email: email,
       password: password,
-    ).loginWithEmailAndPassword();
+    );
   }
 
   static Future<void> signUpWithEmailAndPassword({
-    required final PeamanUser appUser,
+    required final String email,
     required final String password,
+    required final PeamanUser appUser,
   }) {
-    return AuthProvider(
-      appUser: appUser,
+    return AuthProvider().signUpWithEmailAndPassword(
+      email: email,
       password: password,
-    ).signUpWithEmailAndPassword();
+      appUser: appUser,
+    );
   }
 
   static Future<void> signInWithGoogle({
