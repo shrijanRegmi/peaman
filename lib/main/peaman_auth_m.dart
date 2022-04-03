@@ -16,6 +16,8 @@ class PAuthProvider {
     return AuthProvider().loginWithEmailAndPassword(
       email: email,
       password: password,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
@@ -23,11 +25,15 @@ class PAuthProvider {
     required final String email,
     required final String password,
     required final PeamanUser appUser,
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
   }) {
     return AuthProvider().signUpWithEmailAndPassword(
       email: email,
       password: password,
       appUser: appUser,
+      onSuccess: onSuccess,
+      onError: onError,
     );
   }
 
