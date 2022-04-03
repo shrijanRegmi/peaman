@@ -225,7 +225,16 @@ class FeedProvider {
         }
       } else {
         final _momentRef = _ref.collection('moments').doc(moment.id);
-        _moment = moment.copyWith(id: _momentRef.id);
+        final _pictures = moment.pictures.map((e) {
+          final _randomDocument = _ref.collection('random').doc();
+          final _momentPicture = e.copyWith(id: _randomDocument.id);
+          return _momentPicture;
+        }).toList();
+
+        _moment = moment.copyWith(
+          id: _momentRef.id,
+          pictures: _pictures,
+        );
         await _momentRef.set(_moment.toJson());
       }
 

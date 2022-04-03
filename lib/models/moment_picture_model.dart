@@ -13,6 +13,22 @@ class PeamanMomentPicture {
     this.extraData = const {},
   });
 
+  PeamanMomentPicture copyWith({
+    final String? id,
+    final String? url,
+    final int? updatedAt,
+    final int? expiresAt,
+    final Map<String, dynamic>? extraData,
+  }) {
+    return PeamanMomentPicture(
+      id: id ?? this.id,
+      url: url ?? this.url,
+      updatedAt: updatedAt ?? this.updatedAt,
+      expiresAt: expiresAt ?? this.expiresAt,
+      extraData: extraData ?? this.extraData,
+    );
+  }
+
   static PeamanMomentPicture fromJson(final Map<String, dynamic> data) {
     return PeamanMomentPicture(
       id: data['id'],
