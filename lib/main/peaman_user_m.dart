@@ -6,8 +6,9 @@ class PUserProvider {
   static Future<void> setUserOnlineStatus({
     required final String uid,
     required final PeamanOnlineStatus onlineStatus,
-  }) async {
-    return AppUserProvider(uid: uid).setUserActiveStatus(
+  }) {
+    return AppUserProvider().setUserActiveStatus(
+      uid: uid,
       onlineStatus: onlineStatus,
     );
   }
@@ -16,8 +17,9 @@ class PUserProvider {
     required final String uid,
     required final Map<String, dynamic> data,
     final bool partial = false,
-  }) async {
-    return AppUserProvider(uid: uid).updateUserDetail(
+  }) {
+    return AppUserProvider().updateUserDetail(
+      uid: uid,
       data: data,
       partial: partial,
     );
@@ -49,38 +51,97 @@ class PUserProvider {
     );
   }
 
+  static Future<void> followUser({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().followUser(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
+  static Future<void> acceptFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().acceptFollowRequest(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
+  static Future<void> followBackUser({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().followBackUser(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
+  static Future<void> cancleFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().cancleFollowRequest(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
+  static Future<void> unfollowUser({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().unfollowUser(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
     CommonHelper.printListening(text: 'userById');
-    return AppUserProvider(uid: uid).appUser;
+    return AppUserProvider().getUserById(uid: uid);
   }
 
   static Stream<List<PeamanUser>> getUsersBySearchKeyword({
     required final String searchKeyword,
   }) {
     CommonHelper.printListening(text: 'userBySearchKeyword');
-    return AppUserProvider(searchKey: searchKeyword).appUserFromKey;
+    return AppUserProvider().getUserBySearchKey(
+      searchKey: searchKeyword,
+    );
   }
 
   static Stream<List<PeamanFollowRequest>> getFollowRequests({
     required final String uid,
   }) {
     CommonHelper.printListening(text: 'followRequests');
-    return AppUserProvider(uid: uid).followRequests;
+    return AppUserProvider().getFollowRequests(uid: uid);
   }
 
   static Stream<List<PeamanFollower>> getFollowers({
     required final String uid,
   }) {
     CommonHelper.printListening(text: 'followers');
-    return AppUserProvider(uid: uid).followers;
+    return AppUserProvider().getFollowers(uid: uid);
   }
 
-  static Stream<List<PeamanFollowing>> getFollowing({
+  static Stream<List<PeamanFollowing>> getFollowings({
     required final String uid,
   }) {
     CommonHelper.printListening(text: 'followings');
-    return AppUserProvider(uid: uid).following;
+    return AppUserProvider().getFollowings(uid: uid);
+  }
+
+  static Stream<List<PeamanBlockedUser>> getBlockedUsers({
+    required final String uid,
+  }) {
+    CommonHelper.printListening(text: 'blockedUsers');
+    return AppUserProvider().getBlockedUsers(uid: uid);
   }
 }

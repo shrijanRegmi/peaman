@@ -4,7 +4,6 @@ library peaman;
 export 'main/peaman_auth_m.dart';
 export 'main/peaman_chat_m.dart';
 export 'main/peaman_feed_m.dart';
-export 'main/peaman_friend_m.dart';
 export 'main/peaman_notif_m.dart';
 export 'main/peaman_user_m.dart';
 export 'main/peaman_initializer.dart';
@@ -31,6 +30,7 @@ export 'models/saved_feed_model.dart';
 export 'models/moment_viewer_model.dart';
 export 'models/moment_picture_model.dart';
 export 'models/feed_view_model.dart';
+export 'models/blocked_user_model.dart';
 
 // enums
 export 'enums/message_type.dart';

@@ -1,41 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:peaman/helpers/common_helper.dart';
 import 'package:peaman/peaman.dart';
 
 class AppUserProvider {
-  final String? uid;
-  final String? searchKey;
-  final DocumentReference<Map<String, dynamic>>? userRef;
-  final PeamanUser? user;
-
-  AppUserProvider({
-    this.uid,
-    this.userRef,
-    this.searchKey,
-    this.user,
-  });
-
   final _ref = FirebaseFirestore.instance;
 
   // send user to firestore
-  Future sendUserToFirestore() async {
+  Future<void> sendUserToFirestore({
+    required final PeamanUser user,
+  }) async {
     try {
-      final _appUserRef = _ref.collection('users').doc(user?.uid);
-      await _appUserRef.set(user!.toJson());
+      final _appUserRef = _ref.collection('users').doc(user.uid);
+      await _appUserRef.set(user.toJson());
 
-      print('Success: Sending user ${user?.uid} to firestore');
-      return "Success";
+      print('Success: Sending user ${user.uid} to firestore');
     } catch (e) {
       print(e);
-      print("Error!!!: Sending user ${user?.uid} to firestore");
-      return null;
+      print("Error!!!: Sending user to firestore");
     }
   }
 
   // set user active status
-  Future setUserActiveStatus({
-    @required PeamanOnlineStatus? onlineStatus,
+  Future<void> setUserActiveStatus({
+    required final String uid,
+    required PeamanOnlineStatus? onlineStatus,
   }) async {
     try {
       final _userRef = _ref.collection('users').doc(uid);
@@ -44,18 +32,19 @@ class AppUserProvider {
       };
       await _userRef.update(_status);
       print(
-          'Success: Setting activity status of user $uid to ${onlineStatus?.index}');
-      return 'Success';
+        'Success: Setting activity status of user $uid to ${onlineStatus?.index}',
+      );
     } catch (e) {
       print(
-          'Error!!!: Setting activity status of user $uid to ${onlineStatus?.index}');
+        'Error!!!: Setting activity status of user $uid to ${onlineStatus?.index}',
+      );
       print(e);
-      return null;
     }
   }
 
   // update user details
-  Future updateUserDetail({
+  Future<void> updateUserDetail({
+    required final String uid,
     required final Map<String, dynamic> data,
     final bool partial = false,
   }) async {
@@ -69,11 +58,9 @@ class AppUserProvider {
       await _userRef.update(_data);
 
       print('Success: Updating personal info of user $uid');
-      return 'Success';
     } catch (e) {
       print(e);
       print('Error!!!: Updating personal info of user $uid');
-      return null;
     }
   }
 
@@ -114,28 +101,263 @@ class AppUserProvider {
     }
   }
 
-  // appuser from firebase;
-  PeamanUser _appUserFromFirebase(DocumentSnapshot<Map<String, dynamic>> snap) {
-    return PeamanUser.fromJson(snap.data()!);
-  }
-
-  // get appuser by id
-  Future<PeamanUser?> getUserById() async {
-    PeamanUser? _appUser;
-
+  // follow user
+  Future<void> followUser({
+    required final String uid,
+    required final String friendId,
+  }) async {
     try {
-      final _appUserRef = _ref.collection('users').doc(uid);
-      final _appUserSnap = await _appUserRef.get();
-      if (_appUserSnap.exists) {
-        final _appUserData = _appUserSnap.data();
-        _appUser = PeamanUser.fromJson(_appUserData!);
-      }
+      final _friendRef = _ref.collection('users').doc(friendId);
+      final _requestRef = _friendRef.collection('follow_requests').doc(uid);
+
+      final _data = {
+        'uid': uid,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      };
+
+      await _requestRef.set(_data);
+      print('Success: Following friend $friendId');
     } catch (e) {
       print(e);
-      print('Error!!!: Getting user from id $uid');
+      print('Error!!!: Following friend');
     }
+  }
 
-    return _appUser;
+  // accept follow request
+  Future<void> acceptFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _followRequestRef =
+          _userRef.collection('follow_requests').doc(friendId);
+
+      final _futures = <Future>[];
+
+      final _followRequestFuture = _followRequestRef.update({
+        'is_accepted': true,
+      });
+      _futures.add(_followRequestFuture);
+
+      final _addFollowFuture = _addFollower(
+        uid: uid,
+        friendId: friendId,
+      );
+      _futures.add(_addFollowFuture);
+
+      await Future.wait(_futures);
+      print('Success: Accepting follow request $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Accepting follow request');
+      return null;
+    }
+  }
+
+  // follow back
+  Future<void> followBackUser({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _friendRef = _ref.collection('users').doc(friendId);
+      final _userRef = _ref.collection('users').doc(uid);
+      final _followReqRef =
+          _userRef.collection('follow_requests').doc(friendId);
+
+      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
+      final _userFollowingRef = _userRef.collection('following').doc(friendId);
+
+      final _milli = DateTime.now().millisecondsSinceEpoch;
+
+      final _futures = <Future>[];
+
+      final _friendFollowersFuture = _friendFollowersRef.set({
+        'uid': uid,
+        'updated_at': _milli,
+      });
+      _futures.add(_friendFollowersFuture);
+
+      final _userFollowingFuture = _userFollowingRef.set({
+        'uid': uid,
+        'updated_at': _milli,
+      });
+      _futures.add(_userFollowingFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
+        'followers': FieldValue.increment(1),
+      });
+      _futures.add(_friendUpdateFuture);
+
+      final _userUpdateFuture = _userRef.update({
+        'following': FieldValue.increment(1),
+      });
+      _futures.add(_userUpdateFuture);
+
+      final _followRequestDeleteFuture = _followReqRef.delete();
+      _futures.add(_followRequestDeleteFuture);
+
+      await Future.wait(_futures);
+      print('Success: Following back $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Following back');
+    }
+  }
+
+  // cancle follow
+  Future<void> cancleFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _followReqRef =
+          _userRef.collection('follow_requests').doc(friendId);
+
+      await _followReqRef.delete();
+      print('Success: Canceling follow $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Canceling follow');
+    }
+  }
+
+  // unfollow user
+  Future<void> unfollowUser({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _friendRef = _ref.collection('users').doc(friendId);
+
+      final _userFollowingRef = _userRef.collection('following').doc(friendId);
+      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
+
+      final _futures = <Future>[];
+
+      final _userFollowingFuture = _userFollowingRef.delete();
+      _futures.add(_userFollowingFuture);
+
+      final _friendFollowersFuture = _friendFollowersRef.delete();
+      _futures.add(_friendFollowersFuture);
+
+      final _userUpdateFuture = _userRef.update({
+        'following': FieldValue.increment(-1),
+      });
+      _futures.add(_userUpdateFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
+        'followers': FieldValue.increment(-1),
+      });
+      _futures.add(_friendUpdateFuture);
+
+      await Future.wait(_futures);
+      print('Success: Unfollowing friend $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Unfollowing friend');
+    }
+  }
+
+  // block user
+  Future<void> blockUser({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _blockedUsersRef = _ref
+          .collection('users')
+          .doc(uid)
+          .collection('blocked_users')
+          .doc(friendId);
+
+      await _blockedUsersRef.set({
+        'uid': friendId,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      });
+
+      print('Success: Blocking user');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Blocking user');
+    }
+  }
+
+  // un block user
+  Future<void> unblockUser({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _blockedUsersRef = _ref
+          .collection('users')
+          .doc(uid)
+          .collection('blocked_users')
+          .doc(friendId);
+
+      await _blockedUsersRef.delete();
+
+      print('Success: Blocking user');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Blocking user');
+    }
+  }
+
+  // add follower
+  Future<void> _addFollower({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _userRef = _ref.collection('users').doc(uid);
+      final _friendRef = _ref.collection('users').doc(friendId);
+
+      final _userFollowersRef = _userRef.collection('followers').doc(friendId);
+      final _friendFollowingRef = _friendRef.collection('following').doc(uid);
+
+      final _milli = DateTime.now().millisecondsSinceEpoch;
+
+      final _futures = <Future>[];
+
+      final _userFollowersFuture = _userFollowersRef.set({
+        'uid': friendId,
+        'updated_at': _milli,
+      });
+      _futures.add(_userFollowersFuture);
+
+      final _friendFollowingFuture = _friendFollowingRef.set({
+        'uid': uid,
+        'updated_at': _milli,
+      });
+      _futures.add(_friendFollowingFuture);
+
+      final _userUpdateFuture = _userRef.update({
+        'followers': FieldValue.increment(1),
+      });
+      _futures.add(_userUpdateFuture);
+
+      final _friendUpdateFuture = _friendRef.update({
+        'following': FieldValue.increment(1),
+      });
+      _futures.add(_friendUpdateFuture);
+
+      await Future.wait(_futures);
+      print('Success: Adding follower $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Adding follower');
+    }
+  }
+
+  // appuser from firebase;
+  PeamanUser _appUserFromFirebase(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanUser.fromJson(snap.data()!);
   }
 
   // list of users;
@@ -170,50 +392,17 @@ class AppUserProvider {
     return snap.docs.map((e) => PeamanFollowing.fromJson(e.data())).toList();
   }
 
-  // get old search results
-  Future<List<PeamanUser>> getOldSearchResults() async {
-    List<PeamanUser> _searchResults = [];
-
-    try {
-      final _searchRef = _ref
-          .collection('users')
-          .where('search_key', arrayContains: searchKey)
-          .orderBy('name')
-          .startAfter([user?.name]).limit(10);
-      final _searchSnap = await _searchRef.get();
-      if (_searchSnap.docs.isNotEmpty) {
-        for (final doc in _searchSnap.docs) {
-          final _userData = doc.data();
-          final _appUser = PeamanUser.fromJson(_userData);
-
-          _searchResults.add(_appUser);
-        }
-      }
-      print('Success: Getting old search results with key $searchKey');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Getting old search results with key $searchKey');
-    }
-
-    return _searchResults;
-  }
-
-  // stream of appuser;
-  Stream<PeamanUser> get appUser {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .snapshots()
-        .map(_appUserFromFirebase);
-  }
-
-  // stream of app user from ref
-  Stream<PeamanUser>? get appUserFromRef {
-    return userRef?.snapshots().map(_appUserFromFirebase);
+  // list of blocked users
+  List<PeamanBlockedUser> _blockedUsersFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanBlockedUser.fromJson(e.data())).toList();
   }
 
   // stream of users from search key
-  Stream<List<PeamanUser>> get appUserFromKey {
+  Stream<List<PeamanUser>> getUserBySearchKey({
+    required final String searchKey,
+  }) {
     return _ref
         .collection('users')
         .where('search_keys', arrayContains: searchKey)
@@ -223,15 +412,24 @@ class AppUserProvider {
 
   // stream of list of users;
   Stream<List<PeamanUser>> get allUsers {
+    return _ref.collection('users').snapshots().map(_usersFromFirebase);
+  }
+
+  // get appuser by id
+  Stream<PeamanUser> getUserById({
+    required final String uid,
+  }) {
     return _ref
         .collection('users')
-        .limit(10)
+        .doc(uid)
         .snapshots()
-        .map(_usersFromFirebase);
+        .map(_appUserFromFirebase);
   }
 
   // stream of list of follow requests
-  Stream<List<PeamanFollowRequest>> get followRequests {
+  Stream<List<PeamanFollowRequest>> getFollowRequests({
+    required final String uid,
+  }) {
     return _ref
         .collection('users')
         .doc(uid)
@@ -242,7 +440,9 @@ class AppUserProvider {
   }
 
   // stream of list of follower
-  Stream<List<PeamanFollower>> get followers {
+  Stream<List<PeamanFollower>> getFollowers({
+    required final String uid,
+  }) {
     return _ref
         .collection('users')
         .doc(uid)
@@ -253,7 +453,9 @@ class AppUserProvider {
   }
 
   // stream of list of following
-  Stream<List<PeamanFollowing>> get following {
+  Stream<List<PeamanFollowing>> getFollowings({
+    required final String uid,
+  }) {
     return _ref
         .collection('users')
         .doc(uid)
@@ -261,5 +463,18 @@ class AppUserProvider {
         .orderBy('updated_at', descending: true)
         .snapshots()
         .map(_followingFromFirebase);
+  }
+
+  // stream of list of blocked users
+  Stream<List<PeamanBlockedUser>> getBlockedUsers({
+    required final String uid,
+  }) {
+    return _ref
+        .collection('users')
+        .doc(uid)
+        .collection('blocked_users')
+        .orderBy('updated_at', descending: true)
+        .snapshots()
+        .map(_blockedUsersFromFirestore);
   }
 }

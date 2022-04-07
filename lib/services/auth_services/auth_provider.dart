@@ -27,7 +27,7 @@ class AuthProvider {
         uid: _result.user?.uid,
       );
 
-      await AppUserProvider(user: _user).sendUserToFirestore();
+      await AppUserProvider().sendUserToFirestore(user: _user);
       _userFromFirebase(_result.user);
 
       print('Success: Creating user with name ${_user.name}');
@@ -95,7 +95,7 @@ class AuthProvider {
               uid: _user.uid,
               email: _user.email,
             );
-            await AppUserProvider(user: _appUser).sendUserToFirestore();
+            await AppUserProvider().sendUserToFirestore(user: _appUser);
           }
 
           print('Success: Signing up with google');
