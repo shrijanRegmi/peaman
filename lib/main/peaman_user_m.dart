@@ -101,6 +101,26 @@ class PUserProvider {
     );
   }
 
+  static Future<void> blockUser({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().blockUser(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
+  static Future<void> unblockUser({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().unblockUser(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
