@@ -121,6 +121,16 @@ class PUserProvider {
     );
   }
 
+  static Future<bool> checkIfBlocked({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().checkIfBlocked(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {

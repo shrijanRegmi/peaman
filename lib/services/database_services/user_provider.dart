@@ -307,6 +307,26 @@ class AppUserProvider {
     }
   }
 
+  // check if user is blocked
+  Future<bool> checkIfBlocked({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    bool _blocked = false;
+    try {
+      final _friendRef = _ref.collection('users').doc(friendId);
+      final _blockedRef = _friendRef.collection('blocked_users').doc(uid);
+      final _blockedSnap = await _blockedRef.get();
+
+      _blocked = _blockedSnap.exists;
+      print('Success: Checking if user is blocked');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Checking if user is blocked');
+    }
+    return _blocked;
+  }
+
   // add follower
   Future<void> _addFollower({
     required final String uid,
