@@ -134,14 +134,14 @@ class PUserProvider {
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'userById');
+    PeamanCommonHelper.printListening(text: 'userById');
     return AppUserProvider().getUserById(uid: uid);
   }
 
   static Stream<List<PeamanUser>> getUsersBySearchKeyword({
     required final String searchKeyword,
   }) {
-    CommonHelper.printListening(text: 'userBySearchKeyword');
+    PeamanCommonHelper.printListening(text: 'userBySearchKeyword');
     return AppUserProvider().getUserBySearchKey(
       searchKey: searchKeyword,
     );
@@ -150,28 +150,28 @@ class PUserProvider {
   static Stream<List<PeamanFollowRequest>> getFollowRequests({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'followRequests');
+    PeamanCommonHelper.printListening(text: 'followRequests');
     return AppUserProvider().getFollowRequests(uid: uid);
   }
 
   static Stream<List<PeamanFollower>> getFollowers({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'followers');
+    PeamanCommonHelper.printListening(text: 'followers');
     return AppUserProvider().getFollowers(uid: uid);
   }
 
   static Stream<List<PeamanFollowing>> getFollowings({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'followings');
+    PeamanCommonHelper.printListening(text: 'followings');
     return AppUserProvider().getFollowings(uid: uid);
   }
 
   static Stream<List<PeamanBlockedUser>> getBlockedUsers({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'blockedUsers');
+    PeamanCommonHelper.printListening(text: 'blockedUsers');
     return AppUserProvider().getBlockedUsers(uid: uid);
   }
 }

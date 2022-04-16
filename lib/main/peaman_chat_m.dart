@@ -26,12 +26,12 @@ class PChatProvider {
     );
   }
 
-  static Future<void> setTyping({
+  static Future<void> setTypingStatus({
     required final String chatId,
     required final PeamanChatUser chatUser,
-    required final PeamanTypingState typingState,
+    required final PeamanTypingStatus typingState,
   }) async {
-    await MessageProvider().setTyping(
+    await MessageProvider().setTypingStatus(
       chatId: chatId,
       chatUser: chatUser,
       typingState: typingState,
@@ -71,48 +71,49 @@ class PChatProvider {
 
   static Stream<List<PeamanMessage>> getMessages({
     required final String chatId,
-    final int limit = 10,
   }) {
-    CommonHelper.printListening(text: 'messages');
-    return MessageProvider().messagesList(
+    PeamanCommonHelper.printListening(text: 'messages');
+    return MessageProvider().getMessages(
       chatId: chatId,
-      limit: limit,
     );
   }
 
   static Stream<List<PeamanChat>> getChats({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'chats');
-    return MessageProvider().chatList(uid: uid);
+    PeamanCommonHelper.printListening(text: 'chats');
+    return MessageProvider().getChats(uid: uid);
   }
 
   static Stream<List<PeamanIdleChat>> getIdleChats({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'idleChats');
-    return MessageProvider().idleChatsList(uid: uid);
+    PeamanCommonHelper.printListening(text: 'idleChats');
+    return MessageProvider().getIdleChats(uid: uid);
   }
 
   static Stream<List<PeamanAcceptedChat>> getAcceptedChats({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'acceptedChats');
-    return MessageProvider().acceptedChatsList(uid: uid);
+    PeamanCommonHelper.printListening(text: 'acceptedChats');
+    return MessageProvider().getAcceptedChats(uid: uid);
   }
 
   static Stream<List<PeamanDeclinedChat>> getDeclinedChats({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'declinedChats');
-    return MessageProvider().declinedChatsList(uid: uid);
+    PeamanCommonHelper.printListening(text: 'declinedChats');
+    return MessageProvider().getDeclinedChats(uid: uid);
   }
 
   static Stream<PeamanMessage> getSingleMessageById({
     required final String chatId,
     required final String messageId,
   }) {
-    CommonHelper.printListening(text: 'messageById');
-    return MessageProvider().message(chatId: chatId, messageId: messageId);
+    PeamanCommonHelper.printListening(text: 'messageById');
+    return MessageProvider().getSingleMessageById(
+      chatId: chatId,
+      messageId: messageId,
+    );
   }
 }

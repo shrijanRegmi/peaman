@@ -9,7 +9,6 @@ class PeamanUser {
   final String? phone;
   final String? country;
   final String? bio;
-  final bool newFeeds;
   final List<String> searchKeys;
   final bool admin;
   final PeamanOnlineStatus onlineStatus;
@@ -23,6 +22,7 @@ class PeamanUser {
   final int reactionsReceived;
   final int commentsReceived;
   final int repliesReceived;
+  final int? createdAt;
   final Map<String, dynamic> extraData;
 
   PeamanUser({
@@ -35,7 +35,6 @@ class PeamanUser {
     this.bio,
     this.photos = 0,
     this.onlineStatus = PeamanOnlineStatus.away,
-    this.newFeeds = false,
     this.searchKeys = const [],
     this.admin = false,
     this.followers = 0,
@@ -47,6 +46,7 @@ class PeamanUser {
     this.reactionsReceived = 0,
     this.commentsReceived = 0,
     this.repliesReceived = 0,
+    this.createdAt = 0,
     this.extraData = const {},
   });
 
@@ -65,7 +65,6 @@ class PeamanUser {
     final int? followers,
     final int? following,
     final int? newNotifications,
-    final bool? newFeeds,
     final List<String>? searchKeys,
     final bool? admin,
     final int? likeableFeeds,
@@ -74,6 +73,7 @@ class PeamanUser {
     final int? reactionsReceived,
     final int? commentsReceived,
     final int? repliesReceived,
+    final int? createdAt,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanUser(
@@ -89,7 +89,6 @@ class PeamanUser {
       followers: followers ?? this.followers,
       following: following ?? this.following,
       newNotifications: newNotifications ?? this.newNotifications,
-      newFeeds: newFeeds ?? this.newFeeds,
       searchKeys: searchKeys ?? this.searchKeys,
       admin: admin ?? this.admin,
       likeableFeeds: likeableFeeds ?? this.likeableFeeds,
@@ -98,6 +97,7 @@ class PeamanUser {
       reactionsReceived: reactionsReceived ?? this.reactionsReceived,
       commentsReceived: commentsReceived ?? this.commentsReceived,
       repliesReceived: repliesReceived ?? this.repliesReceived,
+      createdAt: createdAt ?? this.createdAt,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -105,13 +105,14 @@ class PeamanUser {
   Map<String, dynamic> toJson() {
     final _data = {
       'uid': uid,
-      'photoUrl': photoUrl,
+      'photo_url': photoUrl,
       'name': name,
       'email': email,
       'phone': phone,
       'country': country,
       'bio': bio,
       'search_keys': searchKeys,
+      'created_at': createdAt,
       ...extraData,
     };
 
@@ -123,7 +124,7 @@ class PeamanUser {
   static PeamanUser fromJson(Map<String, dynamic> data) {
     return PeamanUser(
       uid: data['uid'],
-      photoUrl: data['photoUrl'],
+      photoUrl: data['photo_url'],
       name: data['name'],
       email: data['email'],
       phone: data['phone'],
@@ -134,7 +135,6 @@ class PeamanUser {
       followers: data['followers'] ?? 0,
       following: data['following'] ?? 0,
       newNotifications: data['new_notifications'] ?? 0,
-      newFeeds: data['new_posts'] ?? false,
       searchKeys: List<String>.from(data['search_keys'] ?? []),
       admin: data['admin'] ?? false,
       likeableFeeds: data['likeable_feeds'] ?? 0,
@@ -143,6 +143,7 @@ class PeamanUser {
       reactionsReceived: data['reactions_received'] ?? 0,
       commentsReceived: data['comments_received'] ?? 0,
       repliesReceived: data['replies_received'] ?? 0,
+      createdAt: data['created_at'],
       extraData: data,
     );
   }

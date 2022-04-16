@@ -38,7 +38,7 @@ class PNotificationProvider {
   static Stream<List<PeamanNotification>> getNotifications({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'notifications');
+    PeamanCommonHelper.printListening(text: 'notifications');
     return NotificationProvider().notificationsList(uid: uid);
   }
 }

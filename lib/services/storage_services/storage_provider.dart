@@ -6,6 +6,7 @@ class StorageProvider {
   final File? file;
   final List<File>? files;
   final Function(double)? onProgressUpdate;
+
   StorageProvider({
     this.file,
     this.path,

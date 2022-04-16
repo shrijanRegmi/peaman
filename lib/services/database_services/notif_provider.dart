@@ -39,7 +39,7 @@ class NotificationProvider {
         .collection('users')
         .doc(uid)
         .collection('notifications')
-        .orderBy('updated_at', descending: true)
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map(notificationFromFirebase);
   }

@@ -4,6 +4,7 @@ class PeamanNotification {
   final String? receiverId;
   final String title;
   final String body;
+  final int? createdAt;
   final int? updatedAt;
   final Map<String, dynamic> extraData;
 
@@ -13,6 +14,7 @@ class PeamanNotification {
     this.receiverId,
     this.title = '',
     this.body = '',
+    this.createdAt,
     this.updatedAt,
     this.extraData = const {},
   });
@@ -22,8 +24,9 @@ class PeamanNotification {
       id: data['id'],
       senderId: data['sender_id'],
       receiverId: data['receiver_id'],
-      title: data['title'],
-      body: data['body'],
+      title: data['title'] ?? '',
+      body: data['body'] ?? '',
+      createdAt: data['created_at'],
       updatedAt: data['updated_at'],
       extraData: data,
     );
@@ -36,6 +39,7 @@ class PeamanNotification {
       'receiver_id': receiverId,
       'title': title,
       'body': body,
+      'created_at': createdAt,
       'updated_at': updatedAt,
       ...extraData,
     };

@@ -4,9 +4,10 @@ class PeamanMoment {
   final String? id;
   final String? ownerId;
   final List<PeamanMomentPicture> pictures;
-  final int updatedAt;
-  final int expiresAt;
-  final int views;
+  final int? expiresAt;
+  final int? views;
+  final int? createdAt;
+  final int? updatedAt;
   final Map<String, dynamic> extraData;
 
   PeamanMoment({
@@ -14,8 +15,9 @@ class PeamanMoment {
     this.ownerId,
     this.pictures = const <PeamanMomentPicture>[],
     this.views = 0,
-    this.updatedAt = -1,
-    this.expiresAt = -1,
+    this.expiresAt,
+    this.createdAt,
+    this.updatedAt,
     this.extraData = const {},
   });
 
@@ -23,18 +25,20 @@ class PeamanMoment {
     final String? id,
     final String? ownerId,
     final List<PeamanMomentPicture>? pictures,
-    final int? updatedAt,
-    final int? expiresAt,
     final int? views,
+    final int? expiresAt,
+    final int? createdAt,
+    final int? updatedAt,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanMoment(
       id: id ?? this.id,
       ownerId: ownerId ?? this.ownerId,
       pictures: pictures ?? this.pictures,
-      updatedAt: updatedAt ?? this.updatedAt,
-      expiresAt: expiresAt ?? this.expiresAt,
       views: views ?? this.views,
+      expiresAt: expiresAt ?? this.expiresAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -47,8 +51,9 @@ class PeamanMoment {
           .map((e) => PeamanMomentPicture.fromJson(e))
           .toList(),
       views: data['views'] ?? 0,
-      updatedAt: data['updated_at'] ?? -1,
-      expiresAt: data['expires_at'] ?? -1,
+      expiresAt: data['expires_at'],
+      createdAt: data['created_at'],
+      updatedAt: data['updated_at'],
       extraData: data,
     );
   }

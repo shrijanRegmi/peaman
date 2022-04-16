@@ -56,7 +56,7 @@ class PAuthProvider {
   }
 
   static Stream<PeamanUser?> get user {
-    CommonHelper.printListening(text: 'authUser');
+    PeamanCommonHelper.printListening(text: 'authUser');
     return _auth.authStateChanges().map(_userFromFirebase);
   }
 }

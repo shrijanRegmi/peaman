@@ -5,39 +5,35 @@ import 'package:peaman/peaman.dart';
 class AppUserProvider {
   final _ref = FirebaseFirestore.instance;
 
-  // send user to firestore
-  Future<void> sendUserToFirestore({
+  // create user
+  Future<void> createUser({
     required final PeamanUser user,
   }) async {
     try {
       final _appUserRef = _ref.collection('users').doc(user.uid);
       await _appUserRef.set(user.toJson());
 
-      print('Success: Sending user ${user.uid} to firestore');
+      print('Success: Creating user ${user.uid}');
     } catch (e) {
       print(e);
-      print("Error!!!: Sending user to firestore");
+      print("Error!!!: Creating user");
     }
   }
 
   // set user active status
   Future<void> setUserActiveStatus({
     required final String uid,
-    required PeamanOnlineStatus? onlineStatus,
+    required PeamanOnlineStatus onlineStatus,
   }) async {
     try {
       final _userRef = _ref.collection('users').doc(uid);
-      final _status = {
-        'active_status': onlineStatus?.index,
-      };
+      final _status = {'active_status': onlineStatus.index};
       await _userRef.update(_status);
       print(
-        'Success: Setting activity status of user $uid to ${onlineStatus?.index}',
+        'Success: Setting activity status of user $uid to ${onlineStatus.index}',
       );
     } catch (e) {
-      print(
-        'Error!!!: Setting activity status of user $uid to ${onlineStatus?.index}',
-      );
+      print('Error!!!: Setting activity status of user');
       print(e);
     }
   }
@@ -49,7 +45,7 @@ class AppUserProvider {
     final bool partial = false,
   }) async {
     try {
-      final _data = CommonHelper.prepareDataToUpdate(
+      final _data = PeamanCommonHelper.prepareDataToUpdate(
         data: data,
         partial: partial,
       );
@@ -57,10 +53,10 @@ class AppUserProvider {
       final _userRef = _ref.collection('users').doc(uid);
       await _userRef.update(_data);
 
-      print('Success: Updating personal info of user $uid');
+      print('Success: Updating details of user $uid');
     } catch (e) {
       print(e);
-      print('Error!!!: Updating personal info of user $uid');
+      print('Error!!!: Updating details of user');
     }
   }
 
@@ -112,14 +108,15 @@ class AppUserProvider {
 
       final _data = {
         'uid': uid,
+        'created_at': DateTime.now().millisecondsSinceEpoch,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       };
 
       await _requestRef.set(_data);
-      print('Success: Following friend $friendId');
+      print('Success: Following user $friendId');
     } catch (e) {
       print(e);
-      print('Error!!!: Following friend');
+      print('Error!!!: Following user');
     }
   }
 
@@ -136,7 +133,7 @@ class AppUserProvider {
       final _futures = <Future>[];
 
       final _followRequestFuture = _followRequestRef.update({
-        'is_accepted': true,
+        'accepted': true,
       });
       _futures.add(_followRequestFuture);
 
@@ -175,12 +172,14 @@ class AppUserProvider {
 
       final _friendFollowersFuture = _friendFollowersRef.set({
         'uid': uid,
+        'created_at': _milli,
         'updated_at': _milli,
       });
       _futures.add(_friendFollowersFuture);
 
       final _userFollowingFuture = _userFollowingRef.set({
         'uid': uid,
+        'created_at': _milli,
         'updated_at': _milli,
       });
       _futures.add(_userFollowingFuture);
@@ -276,6 +275,7 @@ class AppUserProvider {
 
       await _blockedUsersRef.set({
         'uid': friendId,
+        'created_at': DateTime.now().millisecondsSinceEpoch,
         'updated_at': DateTime.now().millisecondsSinceEpoch,
       });
 
@@ -345,12 +345,14 @@ class AppUserProvider {
 
       final _userFollowersFuture = _userFollowersRef.set({
         'uid': friendId,
+        'created_at': _milli,
         'updated_at': _milli,
       });
       _futures.add(_userFollowersFuture);
 
       final _friendFollowingFuture = _friendFollowingRef.set({
         'uid': uid,
+        'created_at': _milli,
         'updated_at': _milli,
       });
       _futures.add(_friendFollowingFuture);
@@ -373,14 +375,14 @@ class AppUserProvider {
     }
   }
 
-  // appuser from firebase;
+  // user from firestore
   PeamanUser _appUserFromFirebase(
     DocumentSnapshot<Map<String, dynamic>> snap,
   ) {
     return PeamanUser.fromJson(snap.data()!);
   }
 
-  // list of users;
+  // list of users from firestore
   List<PeamanUser> _usersFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
@@ -389,7 +391,7 @@ class AppUserProvider {
     }).toList();
   }
 
-  // list of follow requests
+  // list of follow requests from firestore
   List<PeamanFollowRequest> _followRequestsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
@@ -398,28 +400,28 @@ class AppUserProvider {
         .toList();
   }
 
-  // list of followers
+  // list of followers from firestore
   List<PeamanFollower> _followersFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanFollower.fromJson(e.data())).toList();
   }
 
-  // list of following
+  // list of following from firestore
   List<PeamanFollowing> _followingFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanFollowing.fromJson(e.data())).toList();
   }
 
-  // list of blocked users
+  // list of blocked users from firestore
   List<PeamanBlockedUser> _blockedUsersFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanBlockedUser.fromJson(e.data())).toList();
   }
 
-  // stream of users from search key
+  // stream of users by search key from firestore
   Stream<List<PeamanUser>> getUserBySearchKey({
     required final String searchKey,
   }) {
@@ -430,12 +432,12 @@ class AppUserProvider {
         .map(_usersFromFirebase);
   }
 
-  // stream of list of users;
+  // stream of list of users
   Stream<List<PeamanUser>> get allUsers {
     return _ref.collection('users').snapshots().map(_usersFromFirebase);
   }
 
-  // get appuser by id
+  // get user by id
   Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
@@ -467,7 +469,7 @@ class AppUserProvider {
         .collection('users')
         .doc(uid)
         .collection('followers')
-        .orderBy('updated_at', descending: true)
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map(_followersFromFirebase);
   }
@@ -480,7 +482,7 @@ class AppUserProvider {
         .collection('users')
         .doc(uid)
         .collection('following')
-        .orderBy('updated_at', descending: true)
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map(_followingFromFirebase);
   }
@@ -493,7 +495,7 @@ class AppUserProvider {
         .collection('users')
         .doc(uid)
         .collection('blocked_users')
-        .orderBy('updated_at', descending: true)
+        .orderBy('created_at', descending: true)
         .snapshots()
         .map(_blockedUsersFromFirestore);
   }

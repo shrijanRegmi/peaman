@@ -25,9 +25,10 @@ class AuthProvider {
 
       final _user = appUser.copyWith(
         uid: _result.user?.uid,
+        createdAt: _result.user?.metadata.creationTime?.millisecondsSinceEpoch,
       );
 
-      await AppUserProvider().sendUserToFirestore(user: _user);
+      await AppUserProvider().createUser(user: _user);
       _userFromFirebase(_result.user);
 
       print('Success: Creating user with name ${_user.name}');
@@ -55,9 +56,11 @@ class AuthProvider {
       );
       _userFromFirebase(_result.user);
       print('Success: Logging in user with email $email');
-      if (_result.user != null) {
-        onSuccess?.call(_result.user!.uid);
+      if (_result.user == null) {
+        throw Future.error('User from firestore was null');
       }
+
+      onSuccess?.call(_result.user!.uid);
     } catch (e) {
       print(e);
       print('Error!!!: Logging in user with email');
@@ -94,8 +97,9 @@ class AuthProvider {
             final _appUser = PeamanUser(
               uid: _user.uid,
               email: _user.email,
+              createdAt: _user.metadata.creationTime?.millisecondsSinceEpoch,
             );
-            await AppUserProvider().sendUserToFirestore(user: _appUser);
+            await AppUserProvider().createUser(user: _appUser);
           }
 
           print('Success: Signing up with google');
@@ -118,7 +122,7 @@ class AuthProvider {
     print('Success: Logging out user');
   }
 
-  // user from firebase
+  // single user from firebase
   PeamanUser? _userFromFirebase(User? user) {
     return user != null ? PeamanUser(uid: user.uid) : null;
   }
