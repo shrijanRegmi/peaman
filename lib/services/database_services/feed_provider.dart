@@ -892,7 +892,7 @@ class FeedProvider {
     )?
         query,
   }) {
-    final _feedsRef = _ref.collection('feeds');
+    final _feedsRef = _ref.collection('posts');
     final _query = query?.call(_feedsRef) ??
         _feedsRef.orderBy('created_at', descending: true);
 
