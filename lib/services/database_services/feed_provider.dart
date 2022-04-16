@@ -3,8 +3,6 @@ import 'package:peaman/peaman.dart';
 import '../../helpers/common_helper.dart';
 
 class FeedProvider {
-  final _ref = FirebaseFirestore.instance;
-
   // create feed
   Future<void> createFeed({
     required final PeamanFeed feed,
@@ -12,7 +10,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feed.id);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feed.id);
       final _feed = feed.copyWith(id: _feedRef.id);
       final _futures = <Future>[];
 
@@ -49,7 +47,7 @@ class FeedProvider {
         partial: partial,
       );
 
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       await _feedRef.update(_data);
       print('Success: Updating feed $feedId');
       onSuccess?.call(feedId);
@@ -65,7 +63,7 @@ class FeedProvider {
     required final String feedId,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
 
       await _feedRef.delete();
 
@@ -82,8 +80,8 @@ class FeedProvider {
     required final String feedId,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _feedFollowerRef = _feedRef.collection('followers').doc(uid);
+      final _feedFollowerRef =
+          PeamanReferenceHelper.feedFollowersCol(feedId: feedId).doc(uid);
 
       await _feedFollowerRef.set({
         'uid': uid,
@@ -104,8 +102,8 @@ class FeedProvider {
     required final String feedId,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _feedFollowerRef = _feedRef.collection('followers').doc(uid);
+      final _feedFollowerRef =
+          PeamanReferenceHelper.feedFollowersCol(feedId: feedId).doc(uid);
 
       await _feedFollowerRef.delete();
 
@@ -122,16 +120,10 @@ class FeedProvider {
     required final String uid,
   }) async {
     try {
-      final _savedFeedRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('saved_feeds')
-          .doc(feedId);
-      final _feedSaverRef = _ref
-          .collection('feeds')
-          .doc(feedId)
-          .collection('feed_savers')
-          .doc(uid);
+      final _savedFeedRef =
+          PeamanReferenceHelper.savedFeedsCol(uid: uid).doc(feedId);
+      final _feedSaverRef =
+          PeamanReferenceHelper.feedSaversCol(feedId: feedId).doc(uid);
 
       final _savedFeedData = {
         'id': feedId,
@@ -167,16 +159,10 @@ class FeedProvider {
     required final String uid,
   }) async {
     try {
-      final _savedFeedRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('saved_feeds')
-          .doc(feedId);
-      final _feedSaverRef = _ref
-          .collection('feeds')
-          .doc(feedId)
-          .collection('feed_savers')
-          .doc(uid);
+      final _savedFeedRef =
+          PeamanReferenceHelper.savedFeedsCol(uid: uid).doc(feedId);
+      final _feedSaverRef =
+          PeamanReferenceHelper.feedSaversCol(feedId: feedId).doc(uid);
 
       final _futures = <Future>[
         _feedSaverRef.delete(),
@@ -205,8 +191,7 @@ class FeedProvider {
     try {
       late PeamanMoment _moment;
 
-      final _ownerMomentsRef = _ref
-          .collection('moments')
+      final _ownerMomentsRef = PeamanReferenceHelper.momentsCol
           .where('owner_id', isEqualTo: moment.ownerId)
           .limit(1);
       final _ownerMomentsSnap = await _ownerMomentsRef.get();
@@ -216,7 +201,8 @@ class FeedProvider {
 
         if (_ownerMomentSnap.exists) {
           final _pictures = moment.pictures.map((e) {
-            final _randomDocument = _ref.collection('random').doc();
+            final _randomDocument =
+                FirebaseFirestore.instance.collection('random').doc();
             final _momentPicture = e.toJson();
             _momentPicture['id'] = e.id ?? _randomDocument.id;
             return _momentPicture;
@@ -231,9 +217,10 @@ class FeedProvider {
           _moment = PeamanMoment.fromJson(_ownerMomentData);
         }
       } else {
-        final _momentRef = _ref.collection('moments').doc(moment.id);
+        final _momentRef = PeamanReferenceHelper.momentsCol.doc(moment.id);
         final _pictures = moment.pictures.map((e) {
-          final _randomDocument = _ref.collection('random').doc();
+          final _randomDocument =
+              FirebaseFirestore.instance.collection('random').doc();
           final _momentPicture = e.copyWith(id: e.id ?? _randomDocument.id);
           return _momentPicture;
         }).toList();
@@ -261,7 +248,7 @@ class FeedProvider {
     required final String pictureId,
   }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(momentId);
+      final _momentRef = PeamanReferenceHelper.momentsCol.doc(momentId);
 
       final _momentSnap = await _momentRef.get();
       if (!_momentSnap.exists)
@@ -296,16 +283,10 @@ class FeedProvider {
     required final String uid,
   }) async {
     try {
-      final _viewedFeedRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('viewed_feeds')
-          .doc(feedId);
-      final _feedViewerRef = _ref
-          .collection('feeds')
-          .doc(feedId)
-          .collection('feed_viewers')
-          .doc(uid);
+      final _viewedFeedRef =
+          PeamanReferenceHelper.viewedFeedsCol(uid: uid).doc(feedId);
+      final _feedViewerRef =
+          PeamanReferenceHelper.feedViewersCol(feedId: feedId).doc(uid);
 
       final _viewedFeedData = {
         'id': feedId,
@@ -340,8 +321,8 @@ class FeedProvider {
     required final String momentId,
   }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(momentId);
-      final _momentViewerRef = _momentRef.collection('moment_viewers').doc(uid);
+      final _momentViewerRef =
+          PeamanReferenceHelper.momentViewersCol(momentId: momentId).doc(uid);
 
       final _futures = <Future>[
         _momentViewerRef.set({
@@ -366,7 +347,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(reaction.feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(reaction.feedId);
       final _reactionsRef = _feedRef.collection('reactions').doc(reaction.id);
 
       final _reaction = reaction.copyWith(id: _reactionsRef.id);
@@ -410,7 +391,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _reactionsRef = _feedRef.collection('reactions').doc(reactionId);
 
       final _futures = <Future>[];
@@ -455,7 +436,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(comment.feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(comment.feedId);
       final _commentRef = _feedRef.collection('comments').doc(comment.id);
       final _comment = comment.copyWith(id: _commentRef.id);
 
@@ -501,7 +482,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _commentRef = _feedRef.collection('comments').doc(commentId);
       await _commentRef.update(data);
       print('Success: Updating comment $commentId');
@@ -522,7 +503,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _commentsRef = _feedRef.collection('comments').doc(commentId);
 
       final _futures = <Future>[];
@@ -568,7 +549,7 @@ class FeedProvider {
     final int? viewsCount,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _data = <String, dynamic>{};
 
       if (reactionsCount != null) {
@@ -606,7 +587,7 @@ class FeedProvider {
     final int? repliesCount,
   }) async {
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
+      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _parentCommentRef = _feedRef.collection('comments').doc(commentId);
       final _data = <String, dynamic>{};
 
@@ -634,7 +615,7 @@ class FeedProvider {
     required final int count,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
 
       await _userRef.update({
         'photos': FieldValue.increment(count),
@@ -652,7 +633,7 @@ class FeedProvider {
     required final String momentId,
   }) async {
     try {
-      final _momentRef = _ref.collection('moments').doc(momentId);
+      final _momentRef = PeamanReferenceHelper.momentsCol.doc(momentId);
       await _momentRef.update({
         'views': FieldValue.increment(1),
       });
@@ -673,9 +654,7 @@ class FeedProvider {
   }) async {
     PeamanReaction? _reaction;
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _reactionRef = _feedRef
-          .collection('reactions')
+      final _reactionRef = PeamanReferenceHelper.reactionsCol(feedId: feedId)
           .where('owner_id', isEqualTo: ownerId)
           .where('parent', isEqualTo: parent.index)
           .where('parent_id', isEqualTo: parentId);
@@ -702,8 +681,8 @@ class FeedProvider {
   }) async {
     PeamanFeedSaver? _feedSaver;
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _feedSaverRef = _feedRef.collection('feed_savers').doc(uid);
+      final _feedSaverRef =
+          PeamanReferenceHelper.feedSaversCol(feedId: feedId).doc(uid);
       final _feedSaverSnap = await _feedSaverRef.get();
 
       if (_feedSaverSnap.exists) {
@@ -724,8 +703,8 @@ class FeedProvider {
   }) async {
     PeamanFeedViewer? _feedViewer;
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _feedViewerRef = _feedRef.collection('feed_viewers').doc(uid);
+      final _feedViewerRef =
+          PeamanReferenceHelper.feedViewersCol(feedId: feedId).doc(uid);
       final _feedViewerSnap = await _feedViewerRef.get();
 
       if (_feedViewerSnap.exists) {
@@ -746,8 +725,8 @@ class FeedProvider {
   }) async {
     PeamanFeedFollower? _feedFollower;
     try {
-      final _feedRef = _ref.collection('feeds').doc(feedId);
-      final _feedFollowerRef = _feedRef.collection('followers').doc(uid);
+      final _feedFollowerRef =
+          PeamanReferenceHelper.feedFollowersCol(feedId: feedId).doc(uid);
       final _feedFollowerSnap = await _feedFollowerRef.get();
 
       if (_feedFollowerSnap.exists) {
