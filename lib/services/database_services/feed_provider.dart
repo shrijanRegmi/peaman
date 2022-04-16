@@ -886,17 +886,12 @@ class FeedProvider {
   }
 
   // stream of all feeds
-  Stream<List<PeamanFeed>> allFeeds({
-    final Query<Map<String, dynamic>> Function(
-      CollectionReference<Map<String, dynamic>>,
-    )?
-        query,
-  }) {
-    final _feedsRef = _ref.collection('posts');
-    final _query = query?.call(_feedsRef) ??
-        _feedsRef.orderBy('created_at', descending: true);
-
-    return _query.snapshots().map(_feedsFromFirebase);
+  Stream<List<PeamanFeed>> allFeeds() {
+    return _ref
+        .collection('posts')
+        .orderBy('updated_at', descending: true)
+        .snapshots()
+        .map(_feedsFromFirebase);
   }
 
   // stream of all moments

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/feed_provider.dart';
 
@@ -241,14 +240,9 @@ class PFeedProvider {
     );
   }
 
-  static Stream<List<PeamanFeed>> getAllFeeds({
-    final Query<Map<String, dynamic>> Function(
-      CollectionReference<Map<String, dynamic>>,
-    )?
-        query,
-  }) {
+  static Stream<List<PeamanFeed>> getAllFeeds() {
     CommonHelper.printListening(text: 'allFeeds');
-    return FeedProvider().allFeeds(query: query);
+    return FeedProvider().allFeeds();
   }
 
   static Stream<List<PeamanMoment>> getAllMoments() {
