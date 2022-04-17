@@ -155,7 +155,7 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollowRequest>> getFollowRequests({
+  static Stream<List<PeamanFollowRequest>> getUserFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -166,7 +166,7 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollower>> getFollowers({
+  static Stream<List<PeamanFollower>> getUserFollowers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -177,7 +177,7 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollowing>> getFollowings({
+  static Stream<List<PeamanFollowing>> getUserFollowings({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -188,7 +188,7 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanBlockedUser>> getBlockedUsers({
+  static Stream<List<PeamanBlockedUser>> getUserBlockedUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
