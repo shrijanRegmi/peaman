@@ -63,6 +63,7 @@ class PeamanMoment {
       'id': id,
       'pictures': pictures.map((e) => e.toJson()).toList(),
       'owner_id': ownerId,
+      'created_at': createdAt,
       'updated_at': updatedAt,
       'expires_at': expiresAt,
       ...extraData,

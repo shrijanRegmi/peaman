@@ -66,6 +66,7 @@ class PeamanReaction {
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,
+      'created_at': updatedAt,
       'updated_at': updatedAt,
       ...extraData,
     };

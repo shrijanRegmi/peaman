@@ -91,6 +91,7 @@ class PeamanComment {
       'parent': parent.index,
       'parent_id': parentId,
       'comment': comment,
+      'created_at': createdAt,
       'updated_at': updatedAt,
       ...extraData,
     };
