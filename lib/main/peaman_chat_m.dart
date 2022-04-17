@@ -2,6 +2,7 @@ import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
 import '../helpers/common_helper.dart';
+import '../utils/firestore_constants.dart';
 
 class PChatProvider {
   static Future<void> sendMessage({
@@ -69,41 +70,67 @@ class PChatProvider {
     );
   }
 
+  static Stream<List<PeamanChat>> getChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'chats');
+    return MessageProvider().getChats(query: query);
+  }
+
+  static Stream<List<PeamanChat>> getUserChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userChats');
+    return MessageProvider().getUserChats(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanIdleChat>> getUserIdleChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userIdleChats');
+    return MessageProvider().getUserIdleChats(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanAcceptedChat>> getUserAcceptedChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userAcceptedChats');
+    return MessageProvider().getUserAcceptedChats(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanDeclinedChat>> getUserDeclinedChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userDeclinedChats');
+    return MessageProvider().getUserDeclinedChats(
+      uid: uid,
+      query: query,
+    );
+  }
+
   static Stream<List<PeamanMessage>> getMessages({
     required final String chatId,
+    final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'messages');
     return MessageProvider().getMessages(
       chatId: chatId,
+      query: query,
     );
-  }
-
-  static Stream<List<PeamanChat>> getChats({
-    required final String uid,
-  }) {
-    PeamanCommonHelper.printListening(text: 'chats');
-    return MessageProvider().getChats(uid: uid);
-  }
-
-  static Stream<List<PeamanIdleChat>> getIdleChats({
-    required final String uid,
-  }) {
-    PeamanCommonHelper.printListening(text: 'idleChats');
-    return MessageProvider().getIdleChats(uid: uid);
-  }
-
-  static Stream<List<PeamanAcceptedChat>> getAcceptedChats({
-    required final String uid,
-  }) {
-    PeamanCommonHelper.printListening(text: 'acceptedChats');
-    return MessageProvider().getAcceptedChats(uid: uid);
-  }
-
-  static Stream<List<PeamanDeclinedChat>> getDeclinedChats({
-    required final String uid,
-  }) {
-    PeamanCommonHelper.printListening(text: 'declinedChats');
-    return MessageProvider().getDeclinedChats(uid: uid);
   }
 
   static Stream<PeamanMessage> getSingleMessageById({

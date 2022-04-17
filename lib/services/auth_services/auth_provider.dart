@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
+import '../../peaman.dart';
+
 class AuthProvider {
-  final _ref = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
 
@@ -86,8 +85,7 @@ class AuthProvider {
         final _user = _result.user;
 
         if (_user != null) {
-          final _usersRef = _ref
-              .collection('users')
+          final _usersRef = PeamanReferenceHelper.usersCol
               .where('email', isEqualTo: _user.email)
               .limit(1);
           final _usersSnap = await _usersRef.get();

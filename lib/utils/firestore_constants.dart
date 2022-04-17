@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+typedef MyQuery = Query<Map<String, dynamic>>;
+
 // main collections
 const usersColName = 'users';
 const chatsColName = 'chats';
@@ -13,7 +17,9 @@ const notificationsColName = 'notifications';
 const reactedFeedsColName = 'reacted_feeds';
 const commentedFeedsColName = 'commented_feeds';
 const savedFeedsColName = 'saved_feeds';
-const viewedFeeds = 'viewed_feeds';
+const viewedFeedsColName = 'viewed_feeds';
+const blockedUsersColName = 'blocked_users';
+const devicesColName = 'devices';
 //
 
 // feeds subcollections

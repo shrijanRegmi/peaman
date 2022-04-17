@@ -45,7 +45,15 @@ class PeamanReferenceHelper {
   static ColRef viewedFeedsCol({
     required final String uid,
   }) =>
-      _ref.collection(usersColName).doc(uid).collection(viewedFeeds);
+      _ref.collection(usersColName).doc(uid).collection(viewedFeedsColName);
+  static ColRef blockedUsersCol({
+    required final String uid,
+  }) =>
+      _ref.collection(usersColName).doc(uid).collection(blockedUsersColName);
+  static ColRef devicesCol({
+    required final String uid,
+  }) =>
+      _ref.collection(usersColName).doc(uid).collection(devicesColName);
   //
 
   // feed subcollections

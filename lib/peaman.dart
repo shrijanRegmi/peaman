@@ -43,4 +43,5 @@ export 'enums/feed_type.dart';
 
 // helpers
 export 'helpers/chat_helper.dart';
+export 'helpers/database_helper.dart';
 export 'helpers/reference_helper.dart';

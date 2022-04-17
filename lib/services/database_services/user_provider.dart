@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/helpers/common_helper.dart';
 import 'package:peaman/peaman.dart';
 
-class AppUserProvider {
-  final _ref = FirebaseFirestore.instance;
+typedef MyQuery = Query<Map<String, dynamic>>;
 
+class AppUserProvider {
   // create user
   Future<void> createUser({
     required final PeamanUser user,
   }) async {
     try {
-      final _appUserRef = _ref.collection('users').doc(user.uid);
+      final _appUserRef = PeamanReferenceHelper.usersCol.doc(user.uid);
       await _appUserRef.set(user.toJson());
 
       print('Success: Creating user ${user.uid}');
@@ -26,7 +25,7 @@ class AppUserProvider {
     required PeamanOnlineStatus onlineStatus,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
       final _status = {'active_status': onlineStatus.index};
       await _userRef.update(_status);
       print(
@@ -42,16 +41,10 @@ class AppUserProvider {
   Future<void> updateUserDetail({
     required final String uid,
     required final Map<String, dynamic> data,
-    final bool partial = false,
   }) async {
     try {
-      final _data = PeamanCommonHelper.prepareDataToUpdate(
-        data: data,
-        partial: partial,
-      );
-
-      final _userRef = _ref.collection('users').doc(uid);
-      await _userRef.update(_data);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+      await _userRef.update(data);
 
       print('Success: Updating details of user $uid');
     } catch (e) {
@@ -74,7 +67,7 @@ class AppUserProvider {
     final int repliesReceived = 0,
   }) async {
     try {
-      final _usersRef = _ref.collection('users').doc(uid);
+      final _usersRef = PeamanReferenceHelper.usersCol.doc(uid);
       final _data = <String, dynamic>{
         'followers': FieldValue.increment(followers),
         'following': FieldValue.increment(following),
@@ -103,8 +96,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _friendRef = _ref.collection('users').doc(friendId);
-      final _requestRef = _friendRef.collection('follow_requests').doc(uid);
+      final _requestRef =
+          PeamanReferenceHelper.followRequestsCol(uid: friendId).doc(uid);
 
       final _data = {
         'uid': uid,
@@ -126,9 +119,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
       final _followRequestRef =
-          _userRef.collection('follow_requests').doc(friendId);
+          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
 
       final _futures = <Future>[];
 
@@ -158,13 +150,15 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _friendRef = _ref.collection('users').doc(friendId);
-      final _userRef = _ref.collection('users').doc(uid);
+      final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
       final _followReqRef =
-          _userRef.collection('follow_requests').doc(friendId);
+          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
 
-      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
-      final _userFollowingRef = _userRef.collection('following').doc(friendId);
+      final _friendFollowersRef =
+          PeamanReferenceHelper.userFollowersCol(uid: friendId).doc(uid);
+      final _userFollowingRef =
+          PeamanReferenceHelper.userFollowingsCol(uid: uid).doc(friendId);
 
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
@@ -211,9 +205,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
       final _followReqRef =
-          _userRef.collection('follow_requests').doc(friendId);
+          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
 
       await _followReqRef.delete();
       print('Success: Canceling follow $friendId');
@@ -229,11 +222,13 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
-      final _friendRef = _ref.collection('users').doc(friendId);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+      final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
 
-      final _userFollowingRef = _userRef.collection('following').doc(friendId);
-      final _friendFollowersRef = _friendRef.collection('followers').doc(uid);
+      final _userFollowingRef =
+          PeamanReferenceHelper.userFollowingsCol(uid: uid).doc(friendId);
+      final _friendFollowersRef =
+          PeamanReferenceHelper.userFollowersCol(uid: friendId).doc(uid);
 
       final _futures = <Future>[];
 
@@ -267,11 +262,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _blockedUsersRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('blocked_users')
-          .doc(friendId);
+      final _blockedUsersRef =
+          PeamanReferenceHelper.blockedUsersCol(uid: uid).doc(friendId);
 
       await _blockedUsersRef.set({
         'uid': friendId,
@@ -292,11 +284,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _blockedUsersRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('blocked_users')
-          .doc(friendId);
+      final _blockedUsersRef =
+          PeamanReferenceHelper.blockedUsersCol(uid: uid).doc(friendId);
 
       await _blockedUsersRef.delete();
 
@@ -314,8 +303,8 @@ class AppUserProvider {
   }) async {
     bool _blocked = false;
     try {
-      final _friendRef = _ref.collection('users').doc(friendId);
-      final _blockedRef = _friendRef.collection('blocked_users').doc(uid);
+      final _blockedRef =
+          PeamanReferenceHelper.blockedUsersCol(uid: friendId).doc(uid);
       final _blockedSnap = await _blockedRef.get();
 
       _blocked = _blockedSnap.exists;
@@ -333,11 +322,13 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _userRef = _ref.collection('users').doc(uid);
-      final _friendRef = _ref.collection('users').doc(friendId);
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+      final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
 
-      final _userFollowersRef = _userRef.collection('followers').doc(friendId);
-      final _friendFollowingRef = _friendRef.collection('following').doc(uid);
+      final _userFollowersRef =
+          PeamanReferenceHelper.userFollowersCol(uid: uid).doc(friendId);
+      final _friendFollowingRef =
+          PeamanReferenceHelper.userFollowingsCol(uid: friendId).doc(uid);
 
       final _milli = DateTime.now().millisecondsSinceEpoch;
 
@@ -424,25 +415,28 @@ class AppUserProvider {
   // stream of users by search key from firestore
   Stream<List<PeamanUser>> getUserBySearchKey({
     required final String searchKey,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .where('search_keys', arrayContains: searchKey)
-        .snapshots()
-        .map(_usersFromFirebase);
+    final _ref = PeamanReferenceHelper.usersCol
+        .where('search_keys', arrayContains: searchKey);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_usersFromFirebase);
   }
 
   // stream of list of users
-  Stream<List<PeamanUser>> get allUsers {
-    return _ref.collection('users').snapshots().map(_usersFromFirebase);
+  Stream<List<PeamanUser>> getUsers({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.usersCol;
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_usersFromFirebase);
   }
 
   // get user by id
   Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
-    return _ref
-        .collection('users')
+    return PeamanReferenceHelper.usersCol
         .doc(uid)
         .snapshots()
         .map(_appUserFromFirebase);
@@ -451,52 +445,47 @@ class AppUserProvider {
   // stream of list of follow requests
   Stream<List<PeamanFollowRequest>> getFollowRequests({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('follow_requests')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_followRequestsFromFirebase);
+    final _ref = PeamanReferenceHelper.followRequestsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.snapshots().map(_followRequestsFromFirebase);
   }
 
   // stream of list of follower
   Stream<List<PeamanFollower>> getFollowers({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('followers')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_followersFromFirebase);
+    final _ref = PeamanReferenceHelper.userFollowersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.snapshots().map(_followersFromFirebase);
   }
 
   // stream of list of following
   Stream<List<PeamanFollowing>> getFollowings({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('following')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_followingFromFirebase);
+    final _ref = PeamanReferenceHelper.userFollowingsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_followingFromFirebase);
   }
 
   // stream of list of blocked users
   Stream<List<PeamanBlockedUser>> getBlockedUsers({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('blocked_users')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_blockedUsersFromFirestore);
+    final _ref = PeamanReferenceHelper.blockedUsersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.snapshots().map(_blockedUsersFromFirestore);
   }
 }

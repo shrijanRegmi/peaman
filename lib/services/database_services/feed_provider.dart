@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 import '../../helpers/common_helper.dart';
+import '../../utils/firestore_constants.dart';
 
 class FeedProvider {
   // create feed
@@ -797,29 +798,54 @@ class FeedProvider {
   }
 
   // stream of all feeds
-  Stream<List<PeamanFeed>> allFeeds() {
-    return _ref
-        .collection('feeds')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_feedsFromFirebase);
+  Stream<List<PeamanFeed>> getFeeds({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref =
+        PeamanReferenceHelper.feedsCol.orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // stream of all feeds
+  Stream<List<PeamanFeed>> getUserFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('owner_id', isEqualTo: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedsFromFirebase);
   }
 
   // stream of all moments
-  Stream<List<PeamanMoment>> allMoments() {
-    return _ref
-        .collection('moments')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_momentsFromFirebase);
+  Stream<List<PeamanMoment>> getMoments({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.momentsCol
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_momentsFromFirebase);
+  }
+
+  // stream of all moments
+  Stream<List<PeamanMoment>> getUserMoments({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.momentsCol
+        .where('owner_id', isEqualTo: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_momentsFromFirebase);
   }
 
   // stream of single feed by id
   Stream<PeamanFeed> getSingleFeedById({
     required final String feedId,
   }) {
-    return _ref
-        .collection('feeds')
+    return PeamanReferenceHelper.feedsCol
         .doc(feedId)
         .snapshots()
         .map(_feedFromFirebase);
@@ -829,8 +855,7 @@ class FeedProvider {
   Stream<PeamanMoment> getSingleMomentById({
     required final String momentId,
   }) {
-    return _ref
-        .collection('moments')
+    return PeamanReferenceHelper.momentsCol
         .doc(momentId)
         .snapshots()
         .map(_momentFromFirebase);
@@ -839,37 +864,36 @@ class FeedProvider {
   // stream of list of feeds by search keyword
   Stream<List<PeamanFeed>> getFeedsBySearchKeyword({
     required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('feeds')
-        .where('search_keys', arrayContains: searchKeyword)
-        .snapshots()
-        .map(_feedsFromFirebase);
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('search_keys', arrayContains: searchKeyword);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedsFromFirebase);
   }
 
   // stream of list of moment viewers
   Stream<List<PeamanMomentViewer>> getMomentViewers({
     required final String momentId,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('moments')
+    final _ref = PeamanReferenceHelper.momentsCol
         .doc(momentId)
         .collection('moment_viewers')
-        .snapshots()
-        .map(_momentViewersFromFirebase);
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_momentViewersFromFirebase);
   }
 
   // stream of list of saved feeds
-  Stream<List<PeamanSavedFeed>> getSavedFeeds({
+  Stream<List<PeamanSavedFeed>> getUserSavedFeeds({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('saved_feeds')
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_savedFeedsFromFirebase);
+    final _ref = PeamanReferenceHelper.savedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_savedFeedsFromFirebase);
   }
 
   // stream of list of comments
@@ -877,16 +901,14 @@ class FeedProvider {
     required final String feedId,
     required final PeamanCommentParent parent,
     required final String parentId,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('feeds')
-        .doc(feedId)
-        .collection('comments')
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
         .where('parent', isEqualTo: parent.index)
         .where('parent_id', isEqualTo: parentId)
-        .orderBy('created_at', descending: true)
-        .snapshots()
-        .map(_commentsFromFirebase);
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirebase);
   }
 
   // stream of single comment by id
@@ -894,10 +916,7 @@ class FeedProvider {
     required final String feedId,
     required final String commentId,
   }) {
-    return _ref
-        .collection('feeds')
-        .doc(feedId)
-        .collection('comments')
+    return PeamanReferenceHelper.commentsCol(feedId: feedId)
         .doc(commentId)
         .snapshots()
         .map(_commentFromFirebase);
