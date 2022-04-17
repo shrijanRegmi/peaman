@@ -11,6 +11,8 @@ class MessageProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _messagesRef =
           PeamanReferenceHelper.messagesCol(chatId: message.chatId!);
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
@@ -20,7 +22,7 @@ class MessageProvider {
       if (_messagesDocs.docs.length == 0) {
         await _chatRef.set({
           'id': message.chatId,
-          'created_at': DateTime.now().millisecondsSinceEpoch,
+          'created_at': _currentMillis,
         });
       }
 
@@ -40,7 +42,11 @@ class MessageProvider {
       }
 
       final _lastMsgRef = _messagesRef.doc();
-      final _message = message.copyWith(id: _lastMsgRef.id);
+      final _message = message.copyWith(
+        id: _lastMsgRef.id,
+        createdAt: message.createdAt ?? _currentMillis,
+        updatedAt: message.updatedAt ?? _currentMillis,
+      );
 
       final _futures = <Future>[];
 

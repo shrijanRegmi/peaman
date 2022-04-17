@@ -11,8 +11,14 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feed.id);
-      final _feed = feed.copyWith(id: _feedRef.id);
+      final _feed = feed.copyWith(
+        id: _feedRef.id,
+        createdAt: feed.createdAt ?? _currentMillis,
+        updatedAt: feed.updatedAt ?? _currentMillis,
+      );
       final _futures = <Future>[];
 
       final _createFeedFuture = _feedRef.set(_feed.toJson());
@@ -190,6 +196,8 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       late PeamanMoment _moment;
 
       final _ownerMomentsRef = PeamanReferenceHelper.momentsCol
@@ -229,6 +237,8 @@ class FeedProvider {
         _moment = moment.copyWith(
           id: _momentRef.id,
           pictures: _pictures,
+          createdAt: moment.createdAt ?? _currentMillis,
+          updatedAt: moment.updatedAt ?? _currentMillis,
         );
 
         await _momentRef.set(_moment.toJson());
@@ -348,10 +358,16 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(reaction.feedId);
       final _reactionsRef = _feedRef.collection('reactions').doc(reaction.id);
 
-      final _reaction = reaction.copyWith(id: _reactionsRef.id);
+      final _reaction = reaction.copyWith(
+        id: _reactionsRef.id,
+        createdAt: reaction.createdAt ?? _currentMillis,
+        updatedAt: reaction.updatedAt ?? _currentMillis,
+      );
 
       final _futures = <Future>[];
 
@@ -437,9 +453,15 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(comment.feedId);
       final _commentRef = _feedRef.collection('comments').doc(comment.id);
-      final _comment = comment.copyWith(id: _commentRef.id);
+      final _comment = comment.copyWith(
+        id: _commentRef.id,
+        createdAt: comment.createdAt ?? _currentMillis,
+        updatedAt: comment.updatedAt ?? _currentMillis,
+      );
 
       final _futures = <Future>[];
 
