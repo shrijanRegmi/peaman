@@ -7,7 +7,9 @@ class PeamanReaction {
   final PeamanReactionParent parent;
   final String? parentId;
   final bool unreacted;
+  final int? createdAt;
   final int? updatedAt;
+  final Map<String, dynamic> extraData;
 
   PeamanReaction({
     this.id,
@@ -16,19 +18,21 @@ class PeamanReaction {
     this.parent = PeamanReactionParent.feed,
     this.parentId,
     this.unreacted = false,
+    this.createdAt,
     this.updatedAt,
+    this.extraData = const {},
   });
 
   PeamanReaction copyWith({
     final String? id,
     final String? feedId,
-    final PeamanUser? owner,
     final String? ownerId,
     final PeamanReactionParent? parent,
     final String? parentId,
     final bool? unreacted,
-    final bool? initialReaction,
+    final int? createdAt,
     final int? updatedAt,
+    final Map<String, dynamic>? extraData,
   }) {
     return PeamanReaction(
       id: id ?? this.id,
@@ -38,6 +42,7 @@ class PeamanReaction {
       parentId: parentId ?? this.parentId,
       unreacted: unreacted ?? this.unreacted,
       updatedAt: updatedAt ?? this.updatedAt,
+      extraData: extraData ?? this.extraData,
     );
   }
 
@@ -50,6 +55,7 @@ class PeamanReaction {
       parentId: data['parent_id'],
       unreacted: data['unreacted'] ?? false,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
+      extraData: data,
     );
   }
 
@@ -60,7 +66,9 @@ class PeamanReaction {
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,
+      'created_at': updatedAt,
       'updated_at': updatedAt,
+      ...extraData,
     };
   }
 }

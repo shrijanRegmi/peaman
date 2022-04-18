@@ -47,6 +47,14 @@ class PAuthProvider {
     );
   }
 
+  static Future<void> sendPasswordResetEmail({
+    required final String email,
+  }) {
+    return AuthProvider().sendPasswordResetEmail(
+      email: email,
+    );
+  }
+
   static Future<void> logOut() {
     return AuthProvider().logOut();
   }
@@ -56,7 +64,7 @@ class PAuthProvider {
   }
 
   static Stream<PeamanUser?> get user {
-    CommonHelper.printListening(text: 'authUser');
+    PeamanCommonHelper.printListening(text: 'authUser');
     return _auth.authStateChanges().map(_userFromFirebase);
   }
 }

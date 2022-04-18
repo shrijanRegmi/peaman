@@ -16,12 +16,10 @@ class PUserProvider {
   static Future<void> updateUserData({
     required final String uid,
     required final Map<String, dynamic> data,
-    final bool partial = false,
   }) {
     return AppUserProvider().updateUserDetail(
       uid: uid,
       data: data,
-      partial: partial,
     );
   }
 
@@ -131,47 +129,73 @@ class PUserProvider {
     );
   }
 
+  static Stream<List<PeamanUser>> getUsers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'users');
+    return AppUserProvider().getUsers(query: query);
+  }
+
   static Stream<PeamanUser> getUserById({
     required final String uid,
   }) {
-    CommonHelper.printListening(text: 'userById');
+    PeamanCommonHelper.printListening(text: 'userById');
     return AppUserProvider().getUserById(uid: uid);
   }
 
   static Stream<List<PeamanUser>> getUsersBySearchKeyword({
     required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    CommonHelper.printListening(text: 'userBySearchKeyword');
+    PeamanCommonHelper.printListening(text: 'userBySearchKeyword');
     return AppUserProvider().getUserBySearchKey(
       searchKey: searchKeyword,
+      query: query,
     );
   }
 
-  static Stream<List<PeamanFollowRequest>> getFollowRequests({
+  static Stream<List<PeamanFollowRequest>> getUserFollowRequests({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    CommonHelper.printListening(text: 'followRequests');
-    return AppUserProvider().getFollowRequests(uid: uid);
+    PeamanCommonHelper.printListening(text: 'followRequests');
+    return AppUserProvider().getFollowRequests(
+      uid: uid,
+      query: query,
+    );
   }
 
-  static Stream<List<PeamanFollower>> getFollowers({
+  static Stream<List<PeamanFollower>> getUserFollowers({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    CommonHelper.printListening(text: 'followers');
-    return AppUserProvider().getFollowers(uid: uid);
+    PeamanCommonHelper.printListening(text: 'followers');
+    return AppUserProvider().getFollowers(
+      uid: uid,
+      query: query,
+    );
   }
 
-  static Stream<List<PeamanFollowing>> getFollowings({
+  static Stream<List<PeamanFollowing>> getUserFollowings({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    CommonHelper.printListening(text: 'followings');
-    return AppUserProvider().getFollowings(uid: uid);
+    PeamanCommonHelper.printListening(text: 'followings');
+    return AppUserProvider().getFollowings(
+      uid: uid,
+      query: query,
+    );
   }
 
-  static Stream<List<PeamanBlockedUser>> getBlockedUsers({
+  static Stream<List<PeamanBlockedUser>> getUserBlockedUsers({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    CommonHelper.printListening(text: 'blockedUsers');
-    return AppUserProvider().getBlockedUsers(uid: uid);
+    PeamanCommonHelper.printListening(text: 'blockedUsers');
+    return AppUserProvider().getBlockedUsers(
+      uid: uid,
+      query: query,
+    );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
-class MessageProvider {
-  final _ref = FirebaseFirestore.instance;
+import '../../utils/firestore_constants.dart';
 
+class MessageProvider {
   // send message
   Future<void> sendMessage({
     required final PeamanMessage message,
@@ -11,42 +11,42 @@ class MessageProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _messagesRef =
-          _ref.collection('chats').doc(message.chatId).collection('messages');
-      final _chatRef = _ref.collection('chats').doc(message.chatId);
+          PeamanReferenceHelper.messagesCol(chatId: message.chatId!);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
 
       final _messagesDocs = await _messagesRef.limit(2).get();
 
       if (_messagesDocs.docs.length == 0) {
-        await _chatRef.set({'id': message.chatId});
+        await _chatRef.set({
+          'id': message.chatId,
+          'created_at': _currentMillis,
+        });
       }
-      final bool _isAppUserFirstUser = PChatHelper.isAppUserFirstUser(
+
+      final bool _isAppUserFirstUser = PeamanChatHelper.isAppUserFirstUser(
         myId: message.senderId!,
         friendId: message.receiverId!,
       );
 
-      final _chatSnap = await _chatRef.get();
       if (_isAppUserFirstUser) {
-        final _secondUserUnreadMessagesCount = _chatSnap.data() != null
-            ? _chatSnap.data()!['second_user_unread_messages_count'] ?? 0
-            : 0;
-
         _chatRef.update({
-          'second_user_unread_messages_count':
-              _secondUserUnreadMessagesCount + 1
+          'second_user_unread_messages_count': FieldValue.increment(1),
         });
       } else {
-        final _firstUserUnreadMessagesCount = _chatSnap.data() != null
-            ? _chatSnap.data()!['first_user_unread_messages_count'] ?? 0
-            : 0;
-
         _chatRef.update({
-          'first_user_unread_messages_count': _firstUserUnreadMessagesCount + 1
+          'first_user_unread_messages_count': FieldValue.increment(1),
         });
       }
 
       final _lastMsgRef = _messagesRef.doc();
-      final _message = message.copyWith(id: _lastMsgRef.id);
+      final _message = message.copyWith(
+        id: _lastMsgRef.id,
+        createdAt: message.createdAt ?? _currentMillis,
+        updatedAt: message.updatedAt ?? _currentMillis,
+      );
 
       final _futures = <Future>[];
 
@@ -54,8 +54,8 @@ class MessageProvider {
       _futures.add(_lastMsgFuture);
 
       final _chatUpdateFuture = _chatRef.update({
-        'last_updated': DateTime.now(),
-        'last_msg_ref': _lastMsgRef,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'last_message_id': _lastMsgRef.id,
       });
       _futures.add(_chatUpdateFuture);
 
@@ -87,32 +87,29 @@ class MessageProvider {
     required final String friendId,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
 
-      final bool _isAppUserFirstUser = PChatHelper.isAppUserFirstUser(
+      final _isAppUserFirstUser = PeamanChatHelper.isAppUserFirstUser(
         myId: myId,
         friendId: friendId,
       );
 
-      DocumentReference _firstUserRef;
-      DocumentReference _secondUserRef;
+      String _firstUserId;
+      String _secondUserId;
 
-      final _users = [myId, friendId];
-      Map<String, dynamic> _userData = {
-        'users': _users,
-      };
+      final _userIds = [myId, friendId];
 
       if (_isAppUserFirstUser) {
-        _firstUserRef = _ref.collection('users').doc(myId);
-        _secondUserRef = _ref.collection('users').doc(friendId);
+        _firstUserId = myId;
+        _secondUserId = friendId;
       } else {
-        _firstUserRef = _ref.collection('users').doc(friendId);
-        _secondUserRef = _ref.collection('users').doc(myId);
+        _firstUserId = friendId;
+        _secondUserId = myId;
       }
       await _chatRef.update({
-        ..._userData,
-        'first_user_ref': _firstUserRef,
-        'second_user_ref': _secondUserRef,
+        'first_user_id': _firstUserId,
+        'second_user_id': _secondUserId,
+        'user_ids': _userIds,
         'chat_request_status': PeamanChatRequestStatus.idle.index,
         'chat_request_sender_id': myId,
       });
@@ -129,7 +126,7 @@ class MessageProvider {
     required final bool pinned,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
 
       Map<String, dynamic> _data;
 
@@ -153,7 +150,7 @@ class MessageProvider {
     required final Map<String, dynamic> data,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
       await _chatRef.update(data);
       print('Success: Updating chat data $chatId');
     } catch (e) {
@@ -163,12 +160,12 @@ class MessageProvider {
   }
 
   // read chat message
-  Future readChatMessage({
+  Future<void> readChatMessage({
     required final String chatId,
     required final PeamanChatUser chatUser,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
       var _data = <String, dynamic>{};
 
       if (chatUser == PeamanChatUser.first) {
@@ -181,42 +178,42 @@ class MessageProvider {
       print('Success: Reading message by user');
     } catch (e) {
       print(e);
-      print('Error: Reading message by user');
+      print('Error!!!: Reading message by user');
     }
   }
 
-  // read chat message
-  Future setTyping({
+  // set typing status
+  Future<void> setTypingStatus({
     required final String chatId,
     required final PeamanChatUser chatUser,
-    required final PeamanTypingState typingState,
+    required final PeamanTypingStatus typingState,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
       var _data = <String, dynamic>{};
 
       if (chatUser == PeamanChatUser.first) {
-        _data['first_user_typing'] = typingState == PeamanTypingState.typing;
+        _data['first_user_typing'] = typingState == PeamanTypingStatus.typing;
       } else {
-        _data['second_user_typing'] = typingState == PeamanTypingState.typing;
+        _data['second_user_typing'] = typingState == PeamanTypingStatus.typing;
       }
 
       await _chatRef.update(_data);
-      print('Success: Reading message by user');
+      print('Success: Setting typing status');
     } catch (e) {
       print(e);
-      print('Error: Reading message by user');
+      print('Error!!!: Setting typing status');
     }
   }
 
   // accept chat request
-  Future acceptChatRequest({
+  Future<void> acceptChatRequest({
     required final String chatId,
     final Function(PeamanChatRequestStatus)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
       await _chatRef.update({
         'chat_request_status': PeamanChatRequestStatus.accepted.index,
       });
@@ -224,47 +221,49 @@ class MessageProvider {
       onSuccess?.call(PeamanChatRequestStatus.accepted);
     } catch (e) {
       print(e);
-      print('Error: Accepting chat request $chatId');
+      print('Error!!!: Accepting chat request $chatId');
       onError?.call(e);
     }
   }
 
   // decline chat request
-  Future declineChatRequest({
+  Future<void> declineChatRequest({
     required final String chatId,
     final Function(PeamanChatRequestStatus)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _chatRef = _ref.collection('chats').doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
       await _chatRef.update({
         'chat_request_status': PeamanChatRequestStatus.declined.index,
       });
-      print('Success: Accepting chat request $chatId');
+      print('Success: Declining chat request $chatId');
       onSuccess?.call(PeamanChatRequestStatus.declined);
     } catch (e) {
       print(e);
-      print('Error: Accepting chat request $chatId');
+      print('Error: Declining chat request');
       onError?.call(e);
     }
   }
 
-  // messages from firebase
-  List<PeamanMessage> _messagesFromFirebase(
-      QuerySnapshot<Map<String, dynamic>> snap) {
+  // list of messages from firestore
+  List<PeamanMessage> _messagesFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
     return snap.docs.map((doc) {
       return PeamanMessage.fromJson(doc.data());
     }).toList();
   }
 
-  // single message from firebase
-  PeamanMessage _messageFromFirebase(
-      DocumentSnapshot<Map<String, dynamic>> doc) {
+  // single message from firestore
+  PeamanMessage _messageFromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) {
     return PeamanMessage.fromJson(doc.data() ?? {});
   }
 
-  // chats from firebase
-  List<PeamanChat> _chatsFromFirebase(
+  // chats from firestore
+  List<PeamanChat> _chatsFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((doc) {
@@ -272,8 +271,8 @@ class MessageProvider {
     }).toList();
   }
 
-  // idle chats from firebase
-  List<PeamanIdleChat> _idleChatsFromFirebase(
+  // idle chats from firestore
+  List<PeamanIdleChat> _idleChatsFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((doc) {
@@ -281,8 +280,8 @@ class MessageProvider {
     }).toList();
   }
 
-  // accepted chats from firebase
-  List<PeamanAcceptedChat> _acceptedChatsFromFirebase(
+  // accepted chats from firestore
+  List<PeamanAcceptedChat> _acceptedChatsFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((doc) {
@@ -290,8 +289,8 @@ class MessageProvider {
     }).toList();
   }
 
-  // declined chats from firebase
-  List<PeamanDeclinedChat> _declinedChatsFromFirebase(
+  // declined chats from firestore
+  List<PeamanDeclinedChat> _declinedChatsFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((doc) {
@@ -299,92 +298,95 @@ class MessageProvider {
     }).toList();
   }
 
-  // stream of messages;
-  Stream<List<PeamanMessage>> messagesList({
+  // stream of list of messages
+  Stream<List<PeamanMessage>> getMessages({
     required final String chatId,
-    required final int limit,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('chats')
-        .doc(chatId)
-        .collection('messages')
-        .orderBy('updated_at', descending: true)
-        .limit(limit)
-        .snapshots()
-        .map(_messagesFromFirebase);
+    final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_messagesFromFirestore);
   }
 
-  // stream of message;
-  Stream<PeamanMessage> message({
+  // stream of single message by id
+  Stream<PeamanMessage> getSingleMessageById({
     required final String chatId,
     required final String messageId,
   }) {
-    return _ref
-        .collection('chats')
-        .doc(chatId)
-        .collection('messages')
+    return PeamanReferenceHelper.messagesCol(chatId: chatId)
         .doc(messageId)
         .snapshots()
-        .map(_messageFromFirebase);
+        .map(_messageFromFirestore);
   }
 
-  // stream of chats
-  Stream<List<PeamanChat>> chatList({
-    required final String uid,
+  // stream of list of chats
+  Stream<List<PeamanChat>> getChats({
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('chats')
-        .where('users', arrayContains: uid)
-        .orderBy('last_updated', descending: true)
-        .snapshots()
-        .map(_chatsFromFirebase);
+    final _ref =
+        PeamanReferenceHelper.chatsCol.orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_chatsFromFirestore);
   }
 
-  // stream of idle chats
-  Stream<List<PeamanIdleChat>> idleChatsList({
+  // stream of list of user chats
+  Stream<List<PeamanChat>> getUserChats({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('chats')
-        .where('users', arrayContains: uid)
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('user_ids', arrayContains: uid)
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_chatsFromFirestore);
+  }
+
+  // stream of list of idle chats
+  Stream<List<PeamanIdleChat>> getUserIdleChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',
           isEqualTo: PeamanChatRequestStatus.idle.index,
         )
-        .orderBy('last_updated', descending: true)
-        .snapshots()
-        .map(_idleChatsFromFirebase);
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_idleChatsFromFirestore);
   }
 
-  // stream of accepted chats
-  Stream<List<PeamanAcceptedChat>> acceptedChatsList({
+  // stream of list of accepted chats
+  Stream<List<PeamanAcceptedChat>> getUserAcceptedChats({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('chats')
-        .where('users', arrayContains: uid)
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',
           isEqualTo: PeamanChatRequestStatus.accepted.index,
         )
-        .orderBy('last_updated', descending: true)
-        .snapshots()
-        .map(_acceptedChatsFromFirebase);
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_acceptedChatsFromFirestore);
   }
 
-  // stream of declined chats
-  Stream<List<PeamanDeclinedChat>> declinedChatsList({
+  // stream of list of declined chats
+  Stream<List<PeamanDeclinedChat>> getUserDeclinedChats({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('chats')
-        .where('users', arrayContains: uid)
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',
           isEqualTo: PeamanChatRequestStatus.declined.index,
         )
-        .orderBy('last_updated', descending: true)
-        .snapshots()
-        .map(_declinedChatsFromFirebase);
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_declinedChatsFromFirestore);
   }
 }

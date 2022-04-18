@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/models/notification_model.dart';
+
+import '../../peaman.dart';
+import '../../utils/firestore_constants.dart';
 
 class NotificationProvider {
-  final _ref = FirebaseFirestore.instance;
-
   Future<void> readNotification({
     required final String uid,
     required final String notificationId,
   }) async {
     try {
-      final _appUserRef = _ref.collection('users').doc(uid);
-      final _notifRef =
-          _appUserRef.collection('notifications').doc(notificationId);
+      final _notifRef = PeamanReferenceHelper.notificationsCol(
+        uid: uid,
+      ).doc(notificationId);
+
       await _notifRef.update({
         'read': true,
       });
@@ -32,15 +33,13 @@ class NotificationProvider {
   }
 
   // stream of notifications
-  Stream<List<PeamanNotification>> notificationsList({
+  Stream<List<PeamanNotification>> getUserNotifications({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
-    return _ref
-        .collection('users')
-        .doc(uid)
-        .collection('notifications')
-        .orderBy('updated_at', descending: true)
-        .snapshots()
-        .map(notificationFromFirebase);
+    final _ref = PeamanReferenceHelper.notificationsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(notificationFromFirebase);
   }
 }

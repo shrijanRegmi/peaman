@@ -9,20 +9,21 @@ class PeamanUser {
   final String? phone;
   final String? country;
   final String? bio;
-  final bool newFeeds;
   final List<String> searchKeys;
-  final bool admin;
   final PeamanOnlineStatus onlineStatus;
   final int photos;
   final int followers;
   final int following;
-  final int newNotifications;
   final int likeableFeeds;
   final int likeableComments;
   final int likeableReplies;
   final int reactionsReceived;
   final int commentsReceived;
   final int repliesReceived;
+  final bool admin;
+  final bool editor;
+  final bool tester;
+  final int? createdAt;
   final Map<String, dynamic> extraData;
 
   PeamanUser({
@@ -35,18 +36,19 @@ class PeamanUser {
     this.bio,
     this.photos = 0,
     this.onlineStatus = PeamanOnlineStatus.away,
-    this.newFeeds = false,
     this.searchKeys = const [],
-    this.admin = false,
     this.followers = 0,
     this.following = 0,
-    this.newNotifications = 0,
     this.likeableFeeds = 0,
     this.likeableComments = 0,
     this.likeableReplies = 0,
     this.reactionsReceived = 0,
     this.commentsReceived = 0,
     this.repliesReceived = 0,
+    this.admin = false,
+    this.editor = false,
+    this.tester = false,
+    this.createdAt = 0,
     this.extraData = const {},
   });
 
@@ -64,16 +66,17 @@ class PeamanUser {
     final int? photos,
     final int? followers,
     final int? following,
-    final int? newNotifications,
-    final bool? newFeeds,
     final List<String>? searchKeys,
-    final bool? admin,
     final int? likeableFeeds,
     final int? likeableComments,
     final int? likeableReplies,
     final int? reactionsReceived,
     final int? commentsReceived,
     final int? repliesReceived,
+    final bool? admin,
+    final bool? editor,
+    final bool? tester,
+    final int? createdAt,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanUser(
@@ -88,16 +91,17 @@ class PeamanUser {
       photos: photos ?? this.photos,
       followers: followers ?? this.followers,
       following: following ?? this.following,
-      newNotifications: newNotifications ?? this.newNotifications,
-      newFeeds: newFeeds ?? this.newFeeds,
       searchKeys: searchKeys ?? this.searchKeys,
-      admin: admin ?? this.admin,
       likeableFeeds: likeableFeeds ?? this.likeableFeeds,
       likeableComments: likeableComments ?? this.likeableComments,
       likeableReplies: likeableReplies ?? this.likeableReplies,
       reactionsReceived: reactionsReceived ?? this.reactionsReceived,
       commentsReceived: commentsReceived ?? this.commentsReceived,
       repliesReceived: repliesReceived ?? this.repliesReceived,
+      createdAt: createdAt ?? this.createdAt,
+      admin: admin ?? this.admin,
+      editor: editor ?? this.editor,
+      tester: tester ?? this.tester,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -105,13 +109,14 @@ class PeamanUser {
   Map<String, dynamic> toJson() {
     final _data = {
       'uid': uid,
-      'photoUrl': photoUrl,
+      'photo_url': photoUrl,
       'name': name,
       'email': email,
       'phone': phone,
       'country': country,
       'bio': bio,
       'search_keys': searchKeys,
+      'created_at': createdAt,
       ...extraData,
     };
 
@@ -123,7 +128,7 @@ class PeamanUser {
   static PeamanUser fromJson(Map<String, dynamic> data) {
     return PeamanUser(
       uid: data['uid'],
-      photoUrl: data['photoUrl'],
+      photoUrl: data['photo_url'],
       name: data['name'],
       email: data['email'],
       phone: data['phone'],
@@ -133,16 +138,17 @@ class PeamanUser {
       photos: data['photos'] ?? 0,
       followers: data['followers'] ?? 0,
       following: data['following'] ?? 0,
-      newNotifications: data['new_notifications'] ?? 0,
-      newFeeds: data['new_posts'] ?? false,
       searchKeys: List<String>.from(data['search_keys'] ?? []),
-      admin: data['admin'] ?? false,
       likeableFeeds: data['likeable_feeds'] ?? 0,
       likeableComments: data['likeable_comments'] ?? 0,
       likeableReplies: data['likeable_replies'] ?? 0,
       reactionsReceived: data['reactions_received'] ?? 0,
       commentsReceived: data['comments_received'] ?? 0,
       repliesReceived: data['replies_received'] ?? 0,
+      admin: data['admin'] ?? false,
+      editor: data['editor'] ?? false,
+      tester: data['tester'] ?? false,
+      createdAt: data['created_at'],
       extraData: data,
     );
   }

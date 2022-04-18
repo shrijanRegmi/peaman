@@ -1,16 +1,16 @@
-class PeamanFollower {
+class PeamanFeedSaver {
   final String? uid;
   final int? createdAt;
   final int? updatedAt;
 
-  PeamanFollower({
+  PeamanFeedSaver({
     this.uid,
-    this.createdAt,
     this.updatedAt,
+    this.createdAt,
   });
 
-  static PeamanFollower fromJson(final Map<String, dynamic> data) {
-    return PeamanFollower(
+  static PeamanFeedSaver fromJson(final Map<String, dynamic> data) {
+    return PeamanFeedSaver(
       uid: data['uid'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],

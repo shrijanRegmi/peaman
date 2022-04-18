@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:peaman/peaman.dart';
 
 class FirebaseMessagingProvider {
-  static final _ref = FirebaseFirestore.instance;
   static final _firebaseMessaging = FirebaseMessaging.instance;
 
   // initialize and save device info of user to firestore
@@ -14,10 +13,7 @@ class FirebaseMessagingProvider {
       final _deviceInfo = DeviceInfoPlugin();
       final _androidInfo = await _deviceInfo.androidInfo;
 
-      final _deviceRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('devices')
+      final _deviceRef = PeamanReferenceHelper.devicesCol(uid: uid)
           .doc(_androidInfo.androidId);
 
       final _token = await _firebaseMessaging.getToken();
@@ -56,10 +52,7 @@ class FirebaseMessagingProvider {
       final _deviceInfo = DeviceInfoPlugin();
       final _androidInfo = await _deviceInfo.androidInfo;
 
-      final _deviceRef = _ref
-          .collection('users')
-          .doc(uid)
-          .collection('devices')
+      final _deviceRef = PeamanReferenceHelper.devicesCol(uid: uid)
           .doc(_androidInfo.androidId);
 
       await _deviceRef.delete();

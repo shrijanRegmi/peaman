@@ -1,4 +1,4 @@
-class PChatHelper {
+class PeamanChatHelper {
   // get chat id from user's and friend's id;
   static String getChatId({
     required final String myId,

@@ -6,9 +6,11 @@ class PeamanMessage {
   final String? text;
   final String? senderId;
   final String? receiverId;
-  final int? updatedAt;
   final String? extraId;
   final PeamanMessageType type;
+  final int? createdAt;
+  final int? updatedAt;
+  final Map<String, dynamic> extraData;
 
   PeamanMessage({
     this.id,
@@ -16,9 +18,11 @@ class PeamanMessage {
     this.text,
     this.senderId,
     this.receiverId,
-    this.updatedAt,
     this.extraId,
     this.type = PeamanMessageType.text,
+    this.createdAt,
+    this.updatedAt,
+    this.extraData = const {},
   });
 
   PeamanMessage copyWith({
@@ -27,9 +31,11 @@ class PeamanMessage {
     final String? text,
     final String? senderId,
     final String? receiverId,
-    final int? updatedAt,
     final String? extraId,
     final PeamanMessageType? type,
+    final int? createdAt,
+    final int? updatedAt,
+    final Map<String, dynamic>? extraData,
   }) {
     return PeamanMessage(
       id: id ?? this.id,
@@ -37,9 +43,25 @@ class PeamanMessage {
       text: text ?? this.text,
       senderId: senderId ?? this.senderId,
       receiverId: receiverId ?? this.receiverId,
-      updatedAt: updatedAt ?? this.updatedAt,
       extraId: extraId ?? this.extraId,
       type: type ?? this.type,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      extraData: extraData ?? this.extraData,
+    );
+  }
+
+  static PeamanMessage fromJson(Map<String, dynamic> data) {
+    return PeamanMessage(
+      id: data['id'],
+      text: data['text'],
+      senderId: data['sender_id'],
+      receiverId: data['receiver_id'],
+      extraId: data['extra_id'],
+      type: PeamanMessageType.values[data['type'] ?? 0],
+      createdAt: data['created_at'],
+      updatedAt: data['updated_at'],
+      extraData: data,
     );
   }
 
@@ -50,21 +72,11 @@ class PeamanMessage {
       'text': text,
       'sender_id': senderId,
       'receiver_id': receiverId,
-      'updated_at': updatedAt,
       'extra_id': extraId,
       'type': type.index,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      ...extraData,
     };
-  }
-
-  static PeamanMessage fromJson(Map<String, dynamic> data) {
-    return PeamanMessage(
-      id: data['id'],
-      text: data['text'],
-      senderId: data['sender_id'],
-      receiverId: data['receiver_id'],
-      updatedAt: data['updated_at'],
-      extraId: data['extra_id'],
-      type: PeamanMessageType.values[data['type'] ?? 0],
-    );
   }
 }

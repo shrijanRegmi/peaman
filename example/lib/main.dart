@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
   Widget _messagesDisplay() {
     return Expanded(
       child: StreamBuilder<List<PeamanMessage>>(
-        stream: PChatProvider.getMessages(chatId: 'test_chat_id', limit: 5),
+        stream: PChatProvider.getMessages(chatId: 'test_chat_id'),
         builder: (context, snap) {
           if (snap.hasData) {
             final _messages = snap.data;

@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:peaman/models/user_model.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
+import '../../peaman.dart';
+
 class AuthProvider {
-  final _ref = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
 
@@ -25,9 +24,10 @@ class AuthProvider {
 
       final _user = appUser.copyWith(
         uid: _result.user?.uid,
+        createdAt: _result.user?.metadata.creationTime?.millisecondsSinceEpoch,
       );
 
-      await AppUserProvider().sendUserToFirestore(user: _user);
+      await AppUserProvider().createUser(user: _user);
       _userFromFirebase(_result.user);
 
       print('Success: Creating user with name ${_user.name}');
@@ -55,9 +55,11 @@ class AuthProvider {
       );
       _userFromFirebase(_result.user);
       print('Success: Logging in user with email $email');
-      if (_result.user != null) {
-        onSuccess?.call(_result.user!.uid);
+      if (_result.user == null) {
+        throw Future.error('User from firestore was null');
       }
+
+      onSuccess?.call(_result.user!.uid);
     } catch (e) {
       print(e);
       print('Error!!!: Logging in user with email');
@@ -83,8 +85,7 @@ class AuthProvider {
         final _user = _result.user;
 
         if (_user != null) {
-          final _usersRef = _ref
-              .collection('users')
+          final _usersRef = PeamanReferenceHelper.usersCol
               .where('email', isEqualTo: _user.email)
               .limit(1);
           final _usersSnap = await _usersRef.get();
@@ -94,8 +95,9 @@ class AuthProvider {
             final _appUser = PeamanUser(
               uid: _user.uid,
               email: _user.email,
+              createdAt: _user.metadata.creationTime?.millisecondsSinceEpoch,
             );
-            await AppUserProvider().sendUserToFirestore(user: _appUser);
+            await AppUserProvider().createUser(user: _appUser);
           }
 
           print('Success: Signing up with google');
@@ -109,6 +111,19 @@ class AuthProvider {
     }
   }
 
+  // send password reset email
+  Future<void> sendPasswordResetEmail({
+    required final String email,
+  }) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      print('Success: Sending password reset email');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Sending password reset email');
+    }
+  }
+
   // log out user
   Future<void> logOut() async {
     await Future.wait([
@@ -118,7 +133,7 @@ class AuthProvider {
     print('Success: Logging out user');
   }
 
-  // user from firebase
+  // single user from firebase
   PeamanUser? _userFromFirebase(User? user) {
     return user != null ? PeamanUser(uid: user.uid) : null;
   }
