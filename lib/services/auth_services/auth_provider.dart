@@ -111,6 +111,19 @@ class AuthProvider {
     }
   }
 
+  // send password reset email
+  Future<void> sendPasswordResetEmail({
+    required final String email,
+  }) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      print('Success: Sending password reset email');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Sending password reset email');
+    }
+  }
+
   // log out user
   Future<void> logOut() async {
     await Future.wait([
