@@ -79,7 +79,7 @@ class PeamanFeed {
     return PeamanFeed(
       id: data['id'],
       ownerId: data['owner_id'],
-      type: PeamanFeedType.values[data['feed_type'] ?? 0],
+      type: PeamanFeedType.values[data['type'] ?? 0],
       photos: List<String>.from(data['photos'] ?? []),
       videos: List<String>.from(data['videos'] ?? []),
       reactionsCount: data['reactions_count'] ?? 0,
