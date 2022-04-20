@@ -318,11 +318,24 @@ class PFeedProvider {
   static Stream<List<PeamanComment>> getComments({
     required final String feedId,
     required final PeamanCommentParent parent,
-    required final String parentId,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'comments');
     return FeedProvider().getComments(
+      feedId: feedId,
+      parent: parent,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanComment>> getCommentsByParentId({
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'comments');
+    return FeedProvider().getCommentsByParentId(
       feedId: feedId,
       parent: parent,
       parentId: parentId,
@@ -334,7 +347,6 @@ class PFeedProvider {
     required final String ownerId,
     required final String feedId,
     required final PeamanCommentParent parent,
-    required final String parentId,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'commentsByOwnerId');
@@ -342,7 +354,6 @@ class PFeedProvider {
       ownerId: ownerId,
       feedId: feedId,
       parent: parent,
-      parentId: parentId,
       query: query,
     );
   }

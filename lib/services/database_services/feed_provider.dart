@@ -613,7 +613,6 @@ class FeedProvider {
           ownerId: ownerId,
           feedId: feedId,
           parent: PeamanCommentParent.feed,
-          parentId: parentId,
           query: (ref) => ref.limit(1),
         ).first;
 
@@ -635,7 +634,6 @@ class FeedProvider {
           ownerId: ownerId,
           feedId: feedId,
           parent: PeamanCommentParent.comment,
-          parentId: parentId,
           query: (ref) => ref.limit(1),
         ).first;
 
@@ -1012,8 +1010,21 @@ class FeedProvider {
     return _query.snapshots().map(_savedFeedsFromFirebase);
   }
 
-  // stream of list of comments
+  // stream of list of replies
   Stream<List<PeamanComment>> getComments({
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('parent', isEqualTo: parent.index)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirebase);
+  }
+
+  // stream of list of comments
+  Stream<List<PeamanComment>> getCommentsByParentId({
     required final String feedId,
     required final PeamanCommentParent parent,
     required final String parentId,
@@ -1032,13 +1043,11 @@ class FeedProvider {
     required final String ownerId,
     required final String feedId,
     required final PeamanCommentParent parent,
-    required final String parentId,
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
         .where('owner_id', isEqualTo: ownerId)
         .where('parent', isEqualTo: parent.index)
-        .where('parent_id', isEqualTo: parentId)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_commentsFromFirebase);
