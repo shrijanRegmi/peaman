@@ -615,10 +615,10 @@ class FeedProvider {
           feedId: feedId,
           parent: PeamanCommentParent.feed,
           parentId: parentId,
-          query: (ref) => ref.limit(1),
+          query: (ref) => ref.limit(2),
         ).first;
 
-        if (_commentsSnap.length <= 1) {
+        if (_commentsSnap.length == 1) {
           final _commentedFeedFuture = _commentedFeedRef.delete();
           _futures.add(_commentedFeedFuture);
         }
@@ -637,10 +637,10 @@ class FeedProvider {
           feedId: feedId,
           parent: PeamanCommentParent.comment,
           parentId: parentId,
-          query: (ref) => ref.limit(1),
+          query: (ref) => ref.limit(2),
         ).first;
 
-        if (_repliesSnap.length <= 1) {
+        if (_repliesSnap.length == 1) {
           final _repliedFeedFuture = _repliedFeedRef.delete();
           _futures.add(_repliedFeedFuture);
         }
