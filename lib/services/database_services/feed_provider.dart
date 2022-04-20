@@ -618,7 +618,7 @@ class FeedProvider {
           query: (ref) => ref.limit(1),
         ).first;
 
-        if (_commentsSnap.isEmpty) {
+        if (_commentsSnap.length <= 1) {
           final _commentedFeedFuture = _commentedFeedRef.delete();
           _futures.add(_commentedFeedFuture);
         }
@@ -640,7 +640,7 @@ class FeedProvider {
           query: (ref) => ref.limit(1),
         ).first;
 
-        if (_repliesSnap.isEmpty) {
+        if (_repliesSnap.length <= 1) {
           final _repliedFeedFuture = _repliedFeedRef.delete();
           _futures.add(_repliedFeedFuture);
         }
