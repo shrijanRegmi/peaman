@@ -18,38 +18,52 @@ class PeamanReferenceHelper {
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(followRequestsColName);
+
   static ColRef userFollowersCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(userFollowersColName);
+
   static ColRef userFollowingsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(userFollowingsColName);
+
   static ColRef notificationsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(notificationsColName);
+
   static ColRef reactedFeedsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(reactedFeedsColName);
+
   static ColRef commentedFeedsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(commentedFeedsColName);
+
   static ColRef savedFeedsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(savedFeedsColName);
+
   static ColRef viewedFeedsCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(viewedFeedsColName);
+
   static ColRef blockedUsersCol({
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(blockedUsersColName);
+
+  static ColRef blockedByUsersCol({
+    required final String uid,
+  }) =>
+      _ref.collection(usersColName).doc(uid).collection(blockedByUsersColName);
+
   static ColRef devicesCol({
     required final String uid,
   }) =>

@@ -19,6 +19,7 @@ const commentedFeedsColName = 'commented_feeds';
 const savedFeedsColName = 'saved_feeds';
 const viewedFeedsColName = 'viewed_feeds';
 const blockedUsersColName = 'blocked_users';
+const blockedByUsersColName = 'blocked_by_users';
 const devicesColName = 'devices';
 //
 

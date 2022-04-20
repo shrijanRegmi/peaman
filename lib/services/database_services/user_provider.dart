@@ -96,13 +96,15 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _requestRef =
           PeamanReferenceHelper.followRequestsCol(uid: friendId).doc(uid);
 
       final _data = {
         'uid': uid,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       };
 
       await _requestRef.set(_data);
@@ -150,6 +152,8 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
       final _followReqRef =
@@ -160,21 +164,19 @@ class AppUserProvider {
       final _userFollowingRef =
           PeamanReferenceHelper.userFollowingsCol(uid: uid).doc(friendId);
 
-      final _milli = DateTime.now().millisecondsSinceEpoch;
-
       final _futures = <Future>[];
 
       final _friendFollowersFuture = _friendFollowersRef.set({
         'uid': uid,
-        'created_at': _milli,
-        'updated_at': _milli,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       });
       _futures.add(_friendFollowersFuture);
 
       final _userFollowingFuture = _userFollowingRef.set({
         'uid': uid,
-        'created_at': _milli,
-        'updated_at': _milli,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       });
       _futures.add(_userFollowingFuture);
 
@@ -262,14 +264,29 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _blockedUsersRef =
-          PeamanReferenceHelper.blockedUsersCol(uid: uid).doc(friendId);
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
-      await _blockedUsersRef.set({
+      final _blockedUserRef =
+          PeamanReferenceHelper.blockedUsersCol(uid: uid).doc(friendId);
+      final _blockedByUserRef =
+          PeamanReferenceHelper.blockedByUsersCol(uid: friendId).doc(uid);
+
+      final _blockedUserFuture = _blockedUserRef.set({
         'uid': friendId,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       });
+
+      final _blockedByUserFuture = _blockedByUserRef.set({
+        'uid': uid,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
+      });
+
+      await Future.wait([
+        _blockedUserFuture,
+        _blockedByUserFuture,
+      ]);
 
       print('Success: Blocking user');
     } catch (e) {
@@ -284,10 +301,15 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _blockedUsersRef =
+      final _blockedUserRef =
           PeamanReferenceHelper.blockedUsersCol(uid: uid).doc(friendId);
+      final _blockedByUserRef =
+          PeamanReferenceHelper.blockedByUsersCol(uid: friendId).doc(uid);
 
-      await _blockedUsersRef.delete();
+      await Future.wait([
+        _blockedUserRef.delete(),
+        _blockedByUserRef.delete(),
+      ]);
 
       print('Success: Blocking user');
     } catch (e) {
