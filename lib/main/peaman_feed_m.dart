@@ -134,6 +134,7 @@ class PFeedProvider {
   }
 
   static Future<void> removeReaction({
+    required final String ownerId,
     required final String feedId,
     required final String parentId,
     required final String reactionId,
@@ -141,6 +142,7 @@ class PFeedProvider {
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().removeReaction(
+      ownerId: ownerId,
       feedId: feedId,
       parentId: parentId,
       reactionId: reactionId,
@@ -178,6 +180,7 @@ class PFeedProvider {
   }
 
   static Future<void> removeComment({
+    required final String ownerId,
     required final String feedId,
     required final String parentId,
     required final String commentId,
@@ -185,6 +188,7 @@ class PFeedProvider {
     final Function(dynamic)? onError,
   }) async {
     return await FeedProvider().removeComment(
+      ownerId: ownerId,
       feedId: feedId,
       parentId: parentId,
       commentId: commentId,
@@ -319,6 +323,23 @@ class PFeedProvider {
   }) {
     PeamanCommonHelper.printListening(text: 'comments');
     return FeedProvider().getComments(
+      feedId: feedId,
+      parent: parent,
+      parentId: parentId,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanComment>> getCommentsByOwnerId({
+    required final String ownerId,
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'commentsByOwnerId');
+    return FeedProvider().getCommentsByOwnerId(
+      ownerId: ownerId,
       feedId: feedId,
       parent: parent,
       parentId: parentId,

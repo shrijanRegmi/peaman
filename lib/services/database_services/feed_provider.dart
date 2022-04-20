@@ -87,14 +87,29 @@ class FeedProvider {
     required final String feedId,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _feedFollowerRef =
           PeamanReferenceHelper.feedFollowersCol(feedId: feedId).doc(uid);
+      final _followedFeedRef =
+          PeamanReferenceHelper.followedFeedsCol(uid: uid).doc(feedId);
 
-      await _feedFollowerRef.set({
+      final _feedFollowerFuture = _feedFollowerRef.set({
         'uid': uid,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       });
+
+      final _followedFeedFuture = _followedFeedRef.set({
+        'id': feedId,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
+      });
+
+      await Future.wait([
+        _feedFollowerFuture,
+        _followedFeedFuture,
+      ]);
 
       print("Success: Following feed $feedId");
     } catch (e) {
@@ -111,8 +126,13 @@ class FeedProvider {
     try {
       final _feedFollowerRef =
           PeamanReferenceHelper.feedFollowersCol(feedId: feedId).doc(uid);
+      final _followedFeedRef =
+          PeamanReferenceHelper.followedFeedsCol(uid: uid).doc(feedId);
 
-      await _feedFollowerRef.delete();
+      await Future.wait([
+        _feedFollowerRef.delete(),
+        _followedFeedRef.delete(),
+      ]);
 
       print("Success: Unfollowing feed $feedId");
     } catch (e) {
@@ -127,20 +147,23 @@ class FeedProvider {
     required final String uid,
   }) async {
     try {
-      final _savedFeedRef =
-          PeamanReferenceHelper.savedFeedsCol(uid: uid).doc(feedId);
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _feedSaverRef =
           PeamanReferenceHelper.feedSaversCol(feedId: feedId).doc(uid);
+      final _savedFeedRef =
+          PeamanReferenceHelper.savedFeedsCol(uid: uid).doc(feedId);
+
+      final _feedSaverData = {
+        'uid': uid,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
+      };
 
       final _savedFeedData = {
         'id': feedId,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      };
-      final _feedSaverData = {
-        'uid': uid,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       };
 
       final _futures = <Future>[
@@ -294,6 +317,8 @@ class FeedProvider {
     required final String uid,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _viewedFeedRef =
           PeamanReferenceHelper.viewedFeedsCol(uid: uid).doc(feedId);
       final _feedViewerRef =
@@ -301,12 +326,13 @@ class FeedProvider {
 
       final _viewedFeedData = {
         'id': feedId,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       };
       final _feedViewerData = {
         'uid': uid,
-        'created_at': DateTime.now().millisecondsSinceEpoch,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
       };
 
       final _futures = <Future>[
@@ -332,18 +358,20 @@ class FeedProvider {
     required final String momentId,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _momentViewerRef =
           PeamanReferenceHelper.momentViewersCol(momentId: momentId).doc(uid);
+      final _momentViewerFuture = _momentViewerRef.set({
+        'uid': uid,
+        'created_at': _currentMillis,
+        'updated_at': _currentMillis,
+      });
 
-      final _futures = <Future>[
-        _momentViewerRef.set({
-          'uid': uid,
-          'created_at': DateTime.now().millisecondsSinceEpoch,
-          'updated_at': DateTime.now().millisecondsSinceEpoch,
-        }),
-        _updateMomentViewsCount(momentId: momentId)
-      ];
-      await Future.wait(_futures);
+      await Future.wait([
+        _momentViewerFuture,
+        _updateMomentViewsCount(momentId: momentId),
+      ]);
       print('Success: Viewing moment $momentId');
     } catch (e) {
       print(e);
@@ -360,8 +388,12 @@ class FeedProvider {
     try {
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
-      final _feedRef = PeamanReferenceHelper.feedsCol.doc(reaction.feedId);
-      final _reactionsRef = _feedRef.collection('reactions').doc(reaction.id);
+      final _reactionsRef =
+          PeamanReferenceHelper.reactionsCol(feedId: reaction.feedId!)
+              .doc(reaction.id);
+      final _reactedFeedRef =
+          PeamanReferenceHelper.reactedFeedsCol(uid: reaction.ownerId!)
+              .doc(reaction.feedId);
 
       final _reaction = reaction.copyWith(
         id: _reactionsRef.id,
@@ -378,7 +410,15 @@ class FeedProvider {
           feedId: reaction.feedId!,
           reactionsCount: 1,
         );
+
+        final _reactedFeedFuture = _reactedFeedRef.set({
+          'id': _reaction.feedId,
+          'created_at': _currentMillis,
+          'updated_at': _currentMillis,
+        });
+
         _futures.add(_feedPropertyFuture);
+        _futures.add(_reactedFeedFuture);
         print('Success: Adding reaction to feed ${reaction.feedId}');
       } else if (_reaction.parentId != null) {
         final _future = _updateCommentPropertiesCount(
@@ -401,6 +441,7 @@ class FeedProvider {
 
   // remove reaction from post or comment
   Future<void> removeReaction({
+    required final String ownerId,
     required final String feedId,
     required final String parentId,
     required final String reactionId,
@@ -408,8 +449,10 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
-      final _reactionsRef = _feedRef.collection('reactions').doc(reactionId);
+      final _reactionsRef =
+          PeamanReferenceHelper.reactionsCol(feedId: feedId).doc(reactionId);
+      final _reactedFeedRef =
+          PeamanReferenceHelper.reactedFeedsCol(uid: ownerId).doc(feedId);
 
       final _futures = <Future>[];
 
@@ -419,12 +462,14 @@ class FeedProvider {
       _futures.add(_future);
 
       if (feedId == parentId) {
-        final _future = _updateFeedPropertiesCount(
+        final _feedPropertiesFuture = _updateFeedPropertiesCount(
           feedId: feedId,
           reactionsCount: -1,
         );
-        _futures.add(_future);
+        final _reactedFeedFuture = _reactedFeedRef.delete();
 
+        _futures.add(_feedPropertiesFuture);
+        _futures.add(_reactedFeedFuture);
         print('Success: Removing reaction from feed $feedId');
       } else {
         final _future = _updateCommentPropertiesCount(
@@ -433,7 +478,6 @@ class FeedProvider {
           reactionsCount: -1,
         );
         _futures.add(_future);
-
         print('Success: Removing reaction from comment $parentId');
       }
 
@@ -455,8 +499,16 @@ class FeedProvider {
     try {
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
-      final _feedRef = PeamanReferenceHelper.feedsCol.doc(comment.feedId);
-      final _commentRef = _feedRef.collection('comments').doc(comment.id);
+      final _commentRef =
+          PeamanReferenceHelper.commentsCol(feedId: comment.feedId!)
+              .doc(comment.id);
+      final _commentedFeedRef =
+          PeamanReferenceHelper.commentedFeedsCol(uid: comment.ownerId!)
+              .doc(comment.feedId);
+      final _repliedFeedRef =
+          PeamanReferenceHelper.repliedFeedsCol(uid: comment.ownerId!)
+              .doc(comment.feedId);
+
       final _comment = comment.copyWith(
         id: _commentRef.id,
         createdAt: comment.createdAt ?? _currentMillis,
@@ -469,21 +521,33 @@ class FeedProvider {
       _futures.add(_future);
 
       if (_comment.parent == PeamanCommentParent.feed) {
-        final _future = _updateFeedPropertiesCount(
+        final _feedPropertiesFuture = _updateFeedPropertiesCount(
           feedId: comment.feedId!,
           commentsCount: 1,
         );
-        _futures.add(_future);
+        final _commentedFeedFuture = _commentedFeedRef.set({
+          'id': _comment.feedId,
+          'created_at': _currentMillis,
+          'updated_at': _currentMillis,
+        });
 
+        _futures.add(_feedPropertiesFuture);
+        _futures.add(_commentedFeedFuture);
         print('Success: Adding comment to feed ${comment.feedId}');
       } else if (_comment.parentId != null) {
-        final _future = _updateCommentPropertiesCount(
+        final _feedPropertiesFuture = _updateCommentPropertiesCount(
           feedId: comment.feedId!,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
-        _futures.add(_future);
+        final _repliedFeedFuture = _repliedFeedRef.set({
+          'id': _comment.feedId,
+          'created_at': _currentMillis,
+          'updated_at': _currentMillis,
+        });
 
+        _futures.add(_feedPropertiesFuture);
+        _futures.add(_repliedFeedFuture);
         print('Success: Adding comment to comment ${_comment.parentId}');
       }
 
@@ -505,8 +569,8 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
-      final _commentRef = _feedRef.collection('comments').doc(commentId);
+      final _commentRef =
+          PeamanReferenceHelper.commentsCol(feedId: feedId).doc(commentId);
       await _commentRef.update(data);
       print('Success: Updating comment $commentId');
       onSuccess?.call(feedId);
@@ -519,6 +583,7 @@ class FeedProvider {
 
   // remove comment from post or comment
   Future<void> removeComment({
+    required final String ownerId,
     required final String feedId,
     required final String parentId,
     required final String commentId,
@@ -526,29 +591,59 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
-      final _commentsRef = _feedRef.collection('comments').doc(commentId);
+      final _commentRef =
+          PeamanReferenceHelper.commentsCol(feedId: feedId).doc(commentId);
+      final _commentedFeedRef =
+          PeamanReferenceHelper.commentedFeedsCol(uid: ownerId).doc(feedId);
+      final _repliedFeedRef =
+          PeamanReferenceHelper.repliedFeedsCol(uid: ownerId).doc(feedId);
 
       final _futures = <Future>[];
 
-      final _future = _commentsRef.delete();
+      final _future = _commentRef.delete();
       _futures.add(_future);
 
       if (feedId == parentId) {
-        final _future = _updateFeedPropertiesCount(
+        final _feedPropertiesFuture = _updateFeedPropertiesCount(
           feedId: feedId,
           commentsCount: -1,
         );
-        _futures.add(_future);
+        _futures.add(_feedPropertiesFuture);
+
+        final _commentsSnap = await getCommentsByOwnerId(
+          ownerId: ownerId,
+          feedId: feedId,
+          parent: PeamanCommentParent.feed,
+          parentId: parentId,
+          query: (ref) => ref.limit(1),
+        ).first;
+
+        if (_commentsSnap.isEmpty) {
+          final _commentedFeedFuture = _commentedFeedRef.delete();
+          _futures.add(_commentedFeedFuture);
+        }
 
         print('Success: Removing comment from feed $feedId');
       } else {
-        final _future = _updateCommentPropertiesCount(
+        final _feedPropertiesFuture = _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           repliesCount: -1,
         );
-        _futures.add(_future);
+        _futures.add(_feedPropertiesFuture);
+
+        final _repliesSnap = await getCommentsByOwnerId(
+          ownerId: ownerId,
+          feedId: feedId,
+          parent: PeamanCommentParent.comment,
+          parentId: parentId,
+          query: (ref) => ref.limit(1),
+        ).first;
+
+        if (_repliesSnap.isEmpty) {
+          final _repliedFeedFuture = _repliedFeedRef.delete();
+          _futures.add(_repliedFeedFuture);
+        }
 
         print('Success: Removing comment from comment $parentId');
       }
@@ -926,6 +1021,23 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('parent', isEqualTo: parent.index)
+        .where('parent_id', isEqualTo: parentId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirebase);
+  }
+
+  // stream of list of comments by ownerId
+  Stream<List<PeamanComment>> getCommentsByOwnerId({
+    required final String ownerId,
+    required final String feedId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('owner_id', isEqualTo: ownerId)
         .where('parent', isEqualTo: parent.index)
         .where('parent_id', isEqualTo: parentId)
         .orderBy('created_at', descending: true);

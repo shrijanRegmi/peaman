@@ -44,6 +44,11 @@ class PeamanReferenceHelper {
   }) =>
       _ref.collection(usersColName).doc(uid).collection(commentedFeedsColName);
 
+  static ColRef repliedFeedsCol({
+    required final String uid,
+  }) =>
+      _ref.collection(usersColName).doc(uid).collection(repliedFeedsColName);
+
   static ColRef savedFeedsCol({
     required final String uid,
   }) =>
@@ -53,6 +58,11 @@ class PeamanReferenceHelper {
     required final String uid,
   }) =>
       _ref.collection(usersColName).doc(uid).collection(viewedFeedsColName);
+
+  static ColRef followedFeedsCol({
+    required final String uid,
+  }) =>
+      _ref.collection(usersColName).doc(uid).collection(followedFeedsColName);
 
   static ColRef blockedUsersCol({
     required final String uid,
