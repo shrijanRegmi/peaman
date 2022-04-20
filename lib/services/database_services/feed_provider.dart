@@ -600,8 +600,7 @@ class FeedProvider {
 
       final _futures = <Future>[];
 
-      final _future = _commentRef.delete();
-      _futures.add(_future);
+      await _commentRef.delete();
 
       if (feedId == parentId) {
         final _feedPropertiesFuture = _updateFeedPropertiesCount(
@@ -615,10 +614,10 @@ class FeedProvider {
           feedId: feedId,
           parent: PeamanCommentParent.feed,
           parentId: parentId,
-          query: (ref) => ref.limit(2),
+          query: (ref) => ref.limit(1),
         ).first;
 
-        if (_commentsSnap.length == 1) {
+        if (_commentsSnap.isEmpty) {
           final _commentedFeedFuture = _commentedFeedRef.delete();
           _futures.add(_commentedFeedFuture);
         }
@@ -637,10 +636,10 @@ class FeedProvider {
           feedId: feedId,
           parent: PeamanCommentParent.comment,
           parentId: parentId,
-          query: (ref) => ref.limit(2),
+          query: (ref) => ref.limit(1),
         ).first;
 
-        if (_repliesSnap.length == 1) {
+        if (_repliesSnap.isEmpty) {
           final _repliedFeedFuture = _repliedFeedRef.delete();
           _futures.add(_repliedFeedFuture);
         }
