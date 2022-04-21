@@ -11,7 +11,7 @@ class PeamanMomentViewer {
 
   static PeamanMomentViewer fromJson(final Map<String, dynamic> data) {
     return PeamanMomentViewer(
-      uid: data['owner_id'],
+      uid: data['uid'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
     );
