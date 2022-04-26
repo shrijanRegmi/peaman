@@ -535,10 +535,14 @@ class FeedProvider {
         _futures.add(_commentedFeedFuture);
         print('Success: Adding comment to feed ${comment.feedId}');
       } else if (_comment.parentId != null) {
-        final _feedPropertiesFuture = _updateCommentPropertiesCount(
+        final _commentPropertiesFuture = _updateCommentPropertiesCount(
           feedId: comment.feedId!,
           commentId: _comment.parentId!,
           repliesCount: 1,
+        );
+        final _feedPropertiesFuture = _updateFeedPropertiesCount(
+          feedId: comment.feedId!,
+          commentsCount: 1,
         );
         final _repliedFeedFuture = _repliedFeedRef.set({
           'id': _comment.feedId,
@@ -547,6 +551,7 @@ class FeedProvider {
         });
 
         _futures.add(_feedPropertiesFuture);
+        _futures.add(_commentPropertiesFuture);
         _futures.add(_repliedFeedFuture);
         print('Success: Adding comment to comment ${_comment.parentId}');
       }

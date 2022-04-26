@@ -71,7 +71,6 @@ class PChatProvider {
   }
 
   static Stream<List<PeamanChat>> getChats({
-    required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'chats');
