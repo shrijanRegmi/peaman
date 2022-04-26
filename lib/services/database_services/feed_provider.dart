@@ -628,11 +628,16 @@ class FeedProvider {
 
         print('Success: Removing comment from feed $feedId');
       } else {
-        final _feedPropertiesFuture = _updateCommentPropertiesCount(
+        final _commentPropertiesFuture = _updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           repliesCount: -1,
         );
+        final _feedPropertiesFuture = _updateFeedPropertiesCount(
+          feedId: feedId,
+          commentsCount: -1,
+        );
+        _futures.add(_commentPropertiesFuture);
         _futures.add(_feedPropertiesFuture);
 
         final _repliesSnap = await getCommentsByOwnerId(
