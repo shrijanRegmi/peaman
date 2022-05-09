@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:peaman/peaman.dart';
@@ -11,13 +13,33 @@ class FirebaseMessagingProvider {
   }) async {
     try {
       final _deviceInfo = DeviceInfoPlugin();
-      final _androidInfo = await _deviceInfo.androidInfo;
+      String? _docId;
+      String? _platForm;
 
-      final _deviceRef = PeamanReferenceHelper.devicesCol(uid: uid)
-          .doc(_androidInfo.androidId);
+      if (Platform.isAndroid) {
+        final _androidInfo = await _deviceInfo.androidInfo;
+
+        if (_androidInfo.androidId.isNotEmpty) {
+          _docId = _androidInfo.androidId;
+        }
+        _platForm = 'android';
+      } else if (Platform.isIOS) {
+        final _iosInfo = await _deviceInfo.iosInfo;
+
+        if (_iosInfo.identifierForVendor.isNotEmpty) {
+          _docId = _iosInfo.identifierForVendor;
+        }
+        _platForm = 'ios';
+      }
 
       final _token = await _firebaseMessaging.getToken();
-      await _deviceRef.set({'token': _token});
+      final _deviceRef = PeamanReferenceHelper.devicesCol(uid: uid).doc(_docId);
+      await _deviceRef.set({
+        'token': _token,
+        'platform': _platForm,
+        'created_at': DateTime.now().millisecondsSinceEpoch,
+      });
+
       print('Success: Initializing firebase messaging');
     } catch (e) {
       print(e);
