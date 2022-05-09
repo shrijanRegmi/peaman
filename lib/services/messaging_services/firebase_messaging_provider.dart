@@ -35,6 +35,7 @@ class FirebaseMessagingProvider {
       final _token = await _firebaseMessaging.getToken();
       final _deviceRef = PeamanReferenceHelper.devicesCol(uid: uid).doc(_docId);
       await _deviceRef.set({
+        'id': _deviceRef.id,
         'token': _token,
         'platform': _platForm,
         'created_at': DateTime.now().millisecondsSinceEpoch,
