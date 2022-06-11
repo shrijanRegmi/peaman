@@ -3,6 +3,7 @@ import 'package:peaman/models/notification_model.dart';
 import 'package:peaman/services/database_services/notif_provider.dart';
 import '../helpers/common_helper.dart';
 import '../services/messaging_services/firebase_messaging_provider.dart';
+import '../utils/firestore_constants.dart';
 
 class PNotificationProvider {
   static Future<void> initializePushNotification({
@@ -37,8 +38,12 @@ class PNotificationProvider {
 
   static Stream<List<PeamanNotification>> getUserNotifications({
     required final String uid,
+    final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'userNotifications');
-    return NotificationProvider().getUserNotifications(uid: uid);
+    return NotificationProvider().getUserNotifications(
+      uid: uid,
+      query: query,
+    );
   }
 }
