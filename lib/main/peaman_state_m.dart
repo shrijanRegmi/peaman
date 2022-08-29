@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 class PStateProvider<T> {
-  static MultiProvider multi<T>({
+  static MultiProvider multi({
     Key? key,
     required List<SingleChildWidget> providers,
     TransitionBuilder? builder,
@@ -24,7 +24,7 @@ class PStateProvider<T> {
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<ChangeNotifier>(
       key: key,
       create: create,
       lazy: lazy,
@@ -52,12 +52,12 @@ class PStateProvider<T> {
     required Create<Stream<T>?> create,
     required T initialData,
     ErrorBuilder<T>? catchError,
-    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    UpdateShouldNotify<T>? updateShouldNotify,
     bool? lazy,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return StreamProvider(
+    return StreamProvider<T>(
       key: key,
       create: create,
       initialData: initialData,
@@ -74,12 +74,12 @@ class PStateProvider<T> {
     required Stream<T>? value,
     required T initialData,
     ErrorBuilder<T>? catchError,
-    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    UpdateShouldNotify<T>? updateShouldNotify,
     bool? lazy,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return StreamProvider.value(
+    return StreamProvider<T>.value(
       key: key,
       value: value,
       initialData: initialData,
@@ -96,12 +96,12 @@ class PStateProvider<T> {
     required Create<Future<T>?> create,
     required T initialData,
     ErrorBuilder<T>? catchError,
-    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    UpdateShouldNotify<T>? updateShouldNotify,
     bool? lazy,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return FutureProvider(
+    return FutureProvider<T>(
       key: key,
       create: create,
       initialData: initialData,
@@ -118,17 +118,34 @@ class PStateProvider<T> {
     required Future<T>? value,
     required T initialData,
     ErrorBuilder<T>? catchError,
-    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    UpdateShouldNotify<T>? updateShouldNotify,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return FutureProvider.value(
+    return FutureProvider<T>.value(
       key: key,
       value: value,
       initialData: initialData,
       catchError: catchError,
       updateShouldNotify: updateShouldNotify,
       builder: builder,
+    );
+  }
+
+  static Consumer consumer<T>({
+    Key? key,
+    required Widget Function(
+      BuildContext context,
+      T value,
+      Widget? child,
+    )
+        builder,
+    Widget? child,
+  }) {
+    return Consumer<T>(
+      key: key,
+      builder: builder,
+      child: child,
     );
   }
 }
