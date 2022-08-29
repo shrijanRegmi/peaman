@@ -434,6 +434,15 @@ class AppUserProvider {
     return snap.docs.map((e) => PeamanBlockedUser.fromJson(e.data())).toList();
   }
 
+  // list of blocked by users from firestore
+  List<PeamanBlockedByUser> _blockedByUsersFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map((e) => PeamanBlockedByUser.fromJson(e.data()))
+        .toList();
+  }
+
   // stream of users by search key from firestore
   Stream<List<PeamanUser>> getUserBySearchKey({
     required final String searchKey,
@@ -509,5 +518,17 @@ class AppUserProvider {
     final _query = query?.call(_ref) ?? _ref;
 
     return _query.snapshots().map(_blockedUsersFromFirestore);
+  }
+
+  // stream of list of blocked users
+  Stream<List<PeamanBlockedByUser>> getBlockedByUsers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.blockedByUsersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.snapshots().map(_blockedByUsersFromFirestore);
   }
 }

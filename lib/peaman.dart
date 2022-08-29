@@ -1,6 +1,10 @@
 library peaman;
 
+// wrapper
+export './peaman_wrapper.dart';
+
 // main classes
+export 'main/peaman_state_m.dart';
 export 'main/peaman_auth_m.dart';
 export 'main/peaman_chat_m.dart';
 export 'main/peaman_feed_m.dart';
@@ -29,6 +33,7 @@ export 'models/moment_viewer_model.dart';
 export 'models/moment_picture_model.dart';
 export 'models/feed_viewer_model.dart';
 export 'models/blocked_user_model.dart';
+export 'models/blocked_by_user_model.dart';
 
 // enums
 export 'enums/message_type.dart';
@@ -45,3 +50,6 @@ export 'enums/feed_type.dart';
 export 'helpers/chat_helper.dart';
 export 'helpers/database_helper.dart';
 export 'helpers/reference_helper.dart';
+
+// configs
+export 'configs/peaman_lazy_load_config.dart';

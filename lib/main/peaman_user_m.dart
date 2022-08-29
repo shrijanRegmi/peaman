@@ -198,4 +198,15 @@ class PUserProvider {
       query: query,
     );
   }
+
+  static Stream<List<PeamanBlockedByUser>> getUserBlockedByUsers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'blockedByUsers');
+    return AppUserProvider().getBlockedByUsers(
+      uid: uid,
+      query: query,
+    );
+  }
 }

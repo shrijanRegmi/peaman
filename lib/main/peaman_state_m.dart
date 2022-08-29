@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+
+class PStateProvider<T> {
+  static MultiProvider multi<T>({
+    Key? key,
+    required List<SingleChildWidget> providers,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return MultiProvider(
+      key: key,
+      providers: providers,
+      builder: builder,
+      child: child,
+    );
+  }
+
+  static ChangeNotifierProvider changeNotifier<T>({
+    Key? key,
+    required Create<ChangeNotifier> create,
+    bool? lazy,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return ChangeNotifierProvider(
+      key: key,
+      create: create,
+      lazy: lazy,
+      builder: builder,
+      child: child,
+    );
+  }
+
+  static ChangeNotifierProvider valueChangeNotifier<T>({
+    Key? key,
+    required ChangeNotifier value,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return ChangeNotifierProvider.value(
+      key: key,
+      builder: builder,
+      value: value,
+      child: child,
+    );
+  }
+
+  static StreamProvider stream<T>({
+    Key? key,
+    required Create<Stream<T>?> create,
+    required T initialData,
+    ErrorBuilder<T>? catchError,
+    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    bool? lazy,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return StreamProvider(
+      key: key,
+      create: create,
+      initialData: initialData,
+      catchError: catchError,
+      updateShouldNotify: updateShouldNotify,
+      lazy: lazy,
+      builder: builder,
+      child: child,
+    );
+  }
+
+  static StreamProvider valueStream<T>({
+    Key? key,
+    required Stream<T>? value,
+    required T initialData,
+    ErrorBuilder<T>? catchError,
+    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    bool? lazy,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return StreamProvider.value(
+      key: key,
+      value: value,
+      initialData: initialData,
+      catchError: catchError,
+      updateShouldNotify: updateShouldNotify,
+      lazy: lazy,
+      builder: builder,
+      child: child,
+    );
+  }
+
+  static FutureProvider future<T>({
+    Key? key,
+    required Create<Future<T>?> create,
+    required T initialData,
+    ErrorBuilder<T>? catchError,
+    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    bool? lazy,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return FutureProvider(
+      key: key,
+      create: create,
+      initialData: initialData,
+      catchError: catchError,
+      updateShouldNotify: updateShouldNotify,
+      lazy: lazy,
+      builder: builder,
+      child: child,
+    );
+  }
+
+  static FutureProvider valueFuture<T>({
+    Key? key,
+    required Future<T>? value,
+    required T initialData,
+    ErrorBuilder<T>? catchError,
+    UpdateShouldNotify<dynamic>? updateShouldNotify,
+    TransitionBuilder? builder,
+    Widget? child,
+  }) {
+    return FutureProvider.value(
+      key: key,
+      value: value,
+      initialData: initialData,
+      catchError: catchError,
+      updateShouldNotify: updateShouldNotify,
+      builder: builder,
+    );
+  }
+}
+
+extension WatchContext on BuildContext {
+  T pwatch<T>() {
+    return Provider.of<T>(this);
+  }
+}
+
+extension ReadContext on BuildContext {
+  T pread<T>() {
+    return Provider.of<T>(this, listen: false);
+  }
+}
