@@ -16,8 +16,8 @@ class PeamanWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _lazyLoadConfig = lazyLoadConfig ?? PeamanLazyLoadConfig();
-    return PStateProvider.valueStream<PeamanUser?>(
-      value: PAuthProvider.user,
+    return PStateProvider.stream<PeamanUser?>(
+      create: (context) => PAuthProvider.user,
       initialData: null,
       builder: (context, child) {
         final _appUser = context.pwatch<PeamanUser?>();

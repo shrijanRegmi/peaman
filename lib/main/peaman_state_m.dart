@@ -17,14 +17,14 @@ class PStateProvider<T> {
     );
   }
 
-  static ChangeNotifierProvider changeNotifier<T>({
+  static ChangeNotifierProvider changeNotifier<T extends ChangeNotifier>({
     Key? key,
-    required Create<ChangeNotifier> create,
+    required Create<T> create,
     bool? lazy,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return ChangeNotifierProvider<ChangeNotifier>(
+    return ChangeNotifierProvider<T>(
       key: key,
       create: create,
       lazy: lazy,
@@ -33,13 +33,13 @@ class PStateProvider<T> {
     );
   }
 
-  static ChangeNotifierProvider valueChangeNotifier<T>({
+  static ChangeNotifierProvider valueChangeNotifier<T extends ChangeNotifier>({
     Key? key,
-    required ChangeNotifier value,
+    required T value,
     TransitionBuilder? builder,
     Widget? child,
   }) {
-    return ChangeNotifierProvider.value(
+    return ChangeNotifierProvider<T>.value(
       key: key,
       builder: builder,
       value: value,
