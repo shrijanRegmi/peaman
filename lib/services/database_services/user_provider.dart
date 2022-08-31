@@ -37,6 +37,28 @@ class AppUserProvider {
     }
   }
 
+  // set completed signup
+  Future<void> setUserOnboardingCompleted({
+    required final String uid,
+    required final bool onboardingCompleted,
+  }) async {
+    try {
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+      await _userRef.update({
+        'onboarding_completed': onboardingCompleted,
+      });
+
+      print(
+        'Success: Setting onboarding completed status of user $uid to $onboardingCompleted',
+      );
+    } catch (e) {
+      print(e);
+      print(
+        'Error!!!: Setting onboarding completed status of user $uid to $onboardingCompleted',
+      );
+    }
+  }
+
   // update user details
   Future<void> updateUserDetail({
     required final String uid,
@@ -56,6 +78,7 @@ class AppUserProvider {
   // update user properties count
   Future<void> updateUserPropertiesCount({
     required final String uid,
+    final int onboardingStep = 0,
     final int followers = 0,
     final int following = 0,
     final int notifCount = 0,
@@ -69,6 +92,7 @@ class AppUserProvider {
     try {
       final _usersRef = PeamanReferenceHelper.usersCol.doc(uid);
       final _data = <String, dynamic>{
+        'onboarding_step': FieldValue.increment(onboardingStep),
         'followers': FieldValue.increment(followers),
         'following': FieldValue.increment(following),
         'notif_count': FieldValue.increment(notifCount),

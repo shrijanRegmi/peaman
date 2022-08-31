@@ -23,6 +23,8 @@ class PeamanUser {
   final bool admin;
   final bool editor;
   final bool tester;
+  final int onboardingStep;
+  final bool onboardingCompleted;
   final int? createdAt;
   final Map<String, dynamic> extraData;
 
@@ -48,6 +50,8 @@ class PeamanUser {
     this.admin = false,
     this.editor = false,
     this.tester = false,
+    this.onboardingStep = 0,
+    this.onboardingCompleted = false,
     this.createdAt = 0,
     this.extraData = const {},
   });
@@ -76,6 +80,8 @@ class PeamanUser {
     final bool? admin,
     final bool? editor,
     final bool? tester,
+    final int? onboardingStep,
+    final bool? onboardingCompleted,
     final int? createdAt,
     final Map<String, dynamic>? extraData,
   }) {
@@ -102,6 +108,8 @@ class PeamanUser {
       admin: admin ?? this.admin,
       editor: editor ?? this.editor,
       tester: tester ?? this.tester,
+      onboardingStep: onboardingStep ?? this.onboardingStep,
+      onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -115,6 +123,8 @@ class PeamanUser {
       'phone': phone,
       'country': country,
       'bio': bio,
+      'onboarding_step': onboardingStep,
+      'onboarding_completed': onboardingCompleted,
       'search_keys': searchKeys,
       'created_at': createdAt,
       ...extraData,
@@ -148,6 +158,8 @@ class PeamanUser {
       admin: data['admin'] ?? false,
       editor: data['editor'] ?? false,
       tester: data['tester'] ?? false,
+      onboardingStep: data['onboarding_step'] ?? 0,
+      onboardingCompleted: data['onboarding_completed'] ?? false,
       createdAt: data['created_at'],
       extraData: data,
     );

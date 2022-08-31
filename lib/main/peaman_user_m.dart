@@ -13,6 +13,16 @@ class PUserProvider {
     );
   }
 
+  static Future<void> setUserOnboardingCompleted({
+    required final String uid,
+    required final bool onboardingCompleted,
+  }) {
+    return AppUserProvider().setUserOnboardingCompleted(
+      uid: uid,
+      onboardingCompleted: onboardingCompleted,
+    );
+  }
+
   static Future<void> updateUserData({
     required final String uid,
     required final Map<String, dynamic> data,
@@ -25,6 +35,7 @@ class PUserProvider {
 
   static Future<void> updateUserPropertiesCount({
     required final String uid,
+    final int onboardingStep = 0,
     final int followers = 0,
     final int following = 0,
     final int notifCount = 0,
@@ -37,6 +48,7 @@ class PUserProvider {
   }) async {
     return AppUserProvider().updateUserPropertiesCount(
       uid: uid,
+      onboardingStep: onboardingStep,
       followers: followers,
       following: following,
       notifCount: notifCount,
