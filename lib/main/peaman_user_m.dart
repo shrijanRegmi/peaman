@@ -7,7 +7,7 @@ class PUserProvider {
     required final String uid,
     required final PeamanOnlineStatus onlineStatus,
   }) {
-    return AppUserProvider().setUserActiveStatus(
+    return AppUserProvider().setUserOnlineStatus(
       uid: uid,
       onlineStatus: onlineStatus,
     );

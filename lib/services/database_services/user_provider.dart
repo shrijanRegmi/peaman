@@ -20,19 +20,27 @@ class AppUserProvider {
   }
 
   // set user active status
-  Future<void> setUserActiveStatus({
+  Future<void> setUserOnlineStatus({
     required final String uid,
     required PeamanOnlineStatus onlineStatus,
   }) async {
     try {
+      final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
-      final _status = {'active_status': onlineStatus.index};
-      await _userRef.update(_status);
+      final _data = <String, dynamic>{
+        'online_status': onlineStatus.index,
+        'last_online_at': _currentMillis,
+      };
+
+      await _userRef.update(_data);
       print(
         'Success: Setting activity status of user $uid to ${onlineStatus.index}',
       );
     } catch (e) {
-      print('Error!!!: Setting activity status of user');
+      print(
+        'Error!!!: Setting activity status of user $uid to ${onlineStatus.index}',
+      );
       print(e);
     }
   }
@@ -97,11 +105,12 @@ class AppUserProvider {
         'following': FieldValue.increment(following),
         'notif_count': FieldValue.increment(notifCount),
         'likeable_feeds': FieldValue.increment(likeableFeeds),
-        'likeable_comments': FieldValue.increment(likeableComments),
-        'likeable_replies': FieldValue.increment(likeableReplies),
-        'reactions_received': FieldValue.increment(reactionsReceived),
-        'comments_received': FieldValue.increment(commentsReceived),
-        'replies_received': FieldValue.increment(repliesReceived),
+        'likeable_comments_from_feeds': FieldValue.increment(likeableComments),
+        'likeable_replies_from_feeds': FieldValue.increment(likeableReplies),
+        'reactions_received_from_feeds':
+            FieldValue.increment(reactionsReceived),
+        'comments_received_from_feeds': FieldValue.increment(commentsReceived),
+        'replies_received_from_feeds': FieldValue.increment(repliesReceived),
       };
 
       _data.removeWhere((key, value) => value == 0);
