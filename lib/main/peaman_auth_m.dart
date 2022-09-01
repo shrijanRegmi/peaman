@@ -47,6 +47,16 @@ class PAuthProvider {
     );
   }
 
+  static Future<void> signInWithFacebook({
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) {
+    return AuthProvider().signUpWithFacebook(
+      onSuccess: onSuccess,
+      onError: onError,
+    );
+  }
+
   static Future<void> sendPasswordResetEmail({
     required final String email,
   }) {
