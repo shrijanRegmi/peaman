@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
@@ -7,6 +8,7 @@ import '../../peaman.dart';
 class AuthProvider {
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
+  final _facebookSignIn = FacebookAuth.instance;
 
   // create account with email and password
   Future<void> signUpWithEmailAndPassword({
@@ -75,38 +77,79 @@ class AuthProvider {
     try {
       final _account = await _googleSignIn.signIn();
 
-      if (_account != null) {
-        final _tokens = await _account.authentication;
-        final _cred = GoogleAuthProvider.credential(
-          idToken: _tokens.idToken,
-          accessToken: _tokens.accessToken,
-        );
-        final _result = await _auth.signInWithCredential(_cred);
-        final _user = _result.user;
+      if (_account == null) throw Exception('No account was selected');
 
-        if (_user != null) {
-          final _usersRef = PeamanReferenceHelper.usersCol
-              .where('email', isEqualTo: _user.email)
-              .limit(1);
-          final _usersSnap = await _usersRef.get();
-          final _registered = _usersSnap.docs.isNotEmpty;
+      final _tokens = await _account.authentication;
+      final _cred = GoogleAuthProvider.credential(
+        idToken: _tokens.idToken,
+        accessToken: _tokens.accessToken,
+      );
+      final _result = await _auth.signInWithCredential(_cred);
+      final _user = _result.user;
 
-          if (!_registered) {
-            final _appUser = PeamanUser(
-              uid: _user.uid,
-              email: _user.email,
-              createdAt: _user.metadata.creationTime?.millisecondsSinceEpoch,
-            );
-            await AppUserProvider().createUser(user: _appUser);
-          }
+      if (_user != null) {
+        final _userRef = PeamanReferenceHelper.usersCol.doc(_user.uid);
+        final _userSnap = await _userRef.get();
+        final _registered = _userSnap.exists;
 
-          print('Success: Signing up with google');
-          onSuccess?.call(_user.uid);
+        if (!_registered) {
+          final _appUser = PeamanUser(
+            uid: _user.uid,
+            email: _user.email,
+            createdAt: _user.metadata.creationTime?.millisecondsSinceEpoch,
+          );
+          await AppUserProvider().createUser(user: _appUser);
         }
+
+        print('Success: Signing up with google');
+        onSuccess?.call(_user.uid);
       }
     } catch (e) {
       print(e);
       print('Error!!!: Signing up with google');
+      onError?.call(e);
+    }
+  }
+
+  // sign up with facebook
+  Future<void> signUpWithFacebook({
+    final Function(String)? onSuccess,
+    final Function(dynamic)? onError,
+  }) async {
+    try {
+      final _account = await _facebookSignIn.login();
+
+      if (_account.status != LoginStatus.success)
+        throw Exception('${_account.status}');
+
+      final _accessToken = _account.accessToken;
+
+      if (_accessToken == null) throw Exception('Access Token is null');
+
+      final _cred = FacebookAuthProvider.credential(_accessToken.token);
+      final _result = await _auth.signInWithCredential(_cred);
+      final _user = _result.user;
+
+      if (_user != null) {
+        final _userRef = PeamanReferenceHelper.usersCol.doc(_user.uid);
+        final _userSnap = await _userRef.get();
+        final _registered = _userSnap.exists;
+
+        if (!_registered) {
+          final _appUser = PeamanUser(
+            uid: _user.uid,
+            email: _user.email,
+            createdAt: _user.metadata.creationTime?.millisecondsSinceEpoch,
+          );
+          await AppUserProvider().createUser(user: _appUser);
+        }
+
+        print('Success: Signing up with facebook');
+        onSuccess?.call(_user.uid);
+      }
+    } catch (e) {
+      print(e);
+      print('Error!!!: Signing up with facebook');
       onError?.call(e);
     }
   }

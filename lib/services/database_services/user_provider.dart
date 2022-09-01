@@ -416,7 +416,7 @@ class AppUserProvider {
   PeamanUser _appUserFromFirebase(
     DocumentSnapshot<Map<String, dynamic>> snap,
   ) {
-    return PeamanUser.fromJson(snap.data()!);
+    return PeamanUser.fromJson(snap.data() ?? <String, dynamic>{});
   }
 
   // list of users from firestore
