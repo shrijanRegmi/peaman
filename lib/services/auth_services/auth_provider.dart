@@ -172,6 +172,7 @@ class AuthProvider {
     await Future.wait([
       _auth.signOut(),
       _googleSignIn.signOut(),
+      _facebookSignIn.logOut(),
     ]);
     print('Success: Logging out user');
   }
