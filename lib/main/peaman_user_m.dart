@@ -39,12 +39,11 @@ class PUserProvider {
     final int followers = 0,
     final int following = 0,
     final int notifCount = 0,
-    final int likeableFeeds = 0,
-    final int likeableComments = 0,
-    final int likeableReplies = 0,
-    final int reactionsReceived = 0,
-    final int commentsReceived = 0,
-    final int repliesReceived = 0,
+    final int reactionsReceivedFromFeeds = 0,
+    final int commentsReceivedFromFeeds = 0,
+    final int repliesReceivedFromFeeds = 0,
+    final int sharesReceivedFromFeeds = 0,
+    final int viewsReceivedFromFeeds = 0,
   }) async {
     return AppUserProvider().updateUserPropertiesCount(
       uid: uid,
@@ -52,12 +51,11 @@ class PUserProvider {
       followers: followers,
       following: following,
       notifCount: notifCount,
-      likeableFeeds: likeableFeeds,
-      likeableComments: likeableComments,
-      likeableReplies: likeableReplies,
-      reactionsReceived: reactionsReceived,
-      commentsReceived: commentsReceived,
-      repliesReceived: repliesReceived,
+      reactionsReceivedFromFeeds: reactionsReceivedFromFeeds,
+      commentsReceivedFromFeeds: commentsReceivedFromFeeds,
+      repliesReceivedFromFeeds: repliesReceivedFromFeeds,
+      sharesReceivedFromFeeds: sharesReceivedFromFeeds,
+      viewsReceivedFromFeeds: viewsReceivedFromFeeds,
     );
   }
 

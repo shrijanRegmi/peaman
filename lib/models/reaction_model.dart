@@ -6,6 +6,7 @@ class PeamanReaction {
   final String? ownerId;
   final PeamanReactionParent parent;
   final String? parentId;
+  final String? parentOwnerId;
   final bool unreacted;
   final int? createdAt;
   final int? updatedAt;
@@ -17,6 +18,7 @@ class PeamanReaction {
     this.ownerId,
     this.parent = PeamanReactionParent.feed,
     this.parentId,
+    this.parentOwnerId,
     this.unreacted = false,
     this.createdAt,
     this.updatedAt,
@@ -29,6 +31,7 @@ class PeamanReaction {
     final String? ownerId,
     final PeamanReactionParent? parent,
     final String? parentId,
+    final String? parentOwnerId,
     final bool? unreacted,
     final int? createdAt,
     final int? updatedAt,
@@ -40,6 +43,7 @@ class PeamanReaction {
       ownerId: ownerId ?? this.ownerId,
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
+      parentOwnerId: parentOwnerId ?? this.parentOwnerId,
       unreacted: unreacted ?? this.unreacted,
       updatedAt: updatedAt ?? this.updatedAt,
       extraData: extraData ?? this.extraData,
@@ -53,6 +57,7 @@ class PeamanReaction {
       ownerId: data['owner_id'],
       parent: PeamanReactionParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
+      parentOwnerId: data['parent_owner_id'],
       unreacted: data['unreacted'] ?? false,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
       extraData: data,
@@ -66,6 +71,7 @@ class PeamanReaction {
       'owner_id': ownerId,
       'parent': parent.index,
       'parent_id': parentId,
+      'parent_owner_id': parentOwnerId,
       'created_at': updatedAt,
       'updated_at': updatedAt,
       ...extraData,

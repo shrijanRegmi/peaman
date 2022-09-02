@@ -169,7 +169,7 @@ class FeedProvider {
       final _futures = <Future>[
         _feedSaverRef.set(_feedSaverData),
         _savedFeedRef.set(_savedFeedData),
-        _updateFeedPropertiesCount(
+        updateFeedPropertiesCount(
           feedId: feedId,
           savesCount: 1,
         ),
@@ -197,7 +197,7 @@ class FeedProvider {
       final _futures = <Future>[
         _feedSaverRef.delete(),
         _savedFeedRef.delete(),
-        _updateFeedPropertiesCount(
+        updateFeedPropertiesCount(
           feedId: feedId,
           savesCount: -1,
         ),
@@ -338,7 +338,7 @@ class FeedProvider {
       final _futures = <Future>[
         _feedViewerRef.set(_feedViewerData),
         _viewedFeedRef.set(_viewedFeedData),
-        _updateFeedPropertiesCount(
+        updateFeedPropertiesCount(
           feedId: feedId,
           viewsCount: 1,
         ),
@@ -386,6 +386,12 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      if (reaction.feedId == null) throw Exception("feedId can't be null");
+      if (reaction.ownerId == null) throw Exception("feedId can't be null");
+      if (reaction.parentId == null) throw Exception("parentId can't be null");
+      if (reaction.parentOwnerId == null)
+        throw Exception("parentOwner can't be null");
+
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
       final _reactionsRef =
@@ -406,9 +412,14 @@ class FeedProvider {
       _futures.add(_reactionsRef.set(_reaction.toJson()));
 
       if (_reaction.parent == PeamanReactionParent.feed) {
-        final _feedPropertyFuture = _updateFeedPropertiesCount(
-          feedId: reaction.feedId!,
+        final _feedPropertyFuture = updateFeedPropertiesCount(
+          feedId: _reaction.feedId!,
           reactionsCount: 1,
+        );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: _reaction.parentOwnerId!,
+          reactionsReceivedFromFeeds: 1,
         );
 
         final _reactedFeedFuture = _reactedFeedRef.set({
@@ -418,15 +429,23 @@ class FeedProvider {
         });
 
         _futures.add(_feedPropertyFuture);
+        _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
         print('Success: Adding reaction to feed ${reaction.feedId}');
-      } else if (_reaction.parentId != null) {
-        final _future = _updateCommentPropertiesCount(
-          feedId: reaction.feedId!,
+      } else {
+        final _commentPropertyFuture = updateCommentPropertiesCount(
+          feedId: _reaction.feedId!,
           commentId: _reaction.parentId!,
           reactionsCount: 1,
         );
-        _futures.add(_future);
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: _reaction.parentOwnerId!,
+          reactionsReceivedFromFeeds: 1,
+        );
+
+        _futures.add(_commentPropertyFuture);
+        _futures.add(_userPropertyFuture);
         print('Success: Adding reaction to comment ${_reaction.parentId}');
       }
 
@@ -441,10 +460,11 @@ class FeedProvider {
 
   // remove reaction from post or comment
   Future<void> removeReaction({
-    required final String ownerId,
     required final String feedId,
-    required final String parentId,
     required final String reactionId,
+    required final String ownerId,
+    required final String parentId,
+    required final String parentOwnerId,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
@@ -462,22 +482,36 @@ class FeedProvider {
       _futures.add(_future);
 
       if (feedId == parentId) {
-        final _feedPropertiesFuture = _updateFeedPropertiesCount(
+        final _feedPropertiesFuture = updateFeedPropertiesCount(
           feedId: feedId,
           reactionsCount: -1,
         );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: parentOwnerId,
+          reactionsReceivedFromFeeds: -1,
+        );
+
         final _reactedFeedFuture = _reactedFeedRef.delete();
 
         _futures.add(_feedPropertiesFuture);
+        _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
         print('Success: Removing reaction from feed $feedId');
       } else {
-        final _future = _updateCommentPropertiesCount(
+        final _commentPropertyFuture = updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           reactionsCount: -1,
         );
-        _futures.add(_future);
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: parentOwnerId,
+          reactionsReceivedFromFeeds: -1,
+        );
+
+        _futures.add(_commentPropertyFuture);
+        _futures.add(_userPropertyFuture);
         print('Success: Removing reaction from comment $parentId');
       }
 
@@ -497,6 +531,12 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
+      if (comment.feedId == null) throw Exception("feedId can't be null");
+      if (comment.ownerId == null) throw Exception("feedId can't be null");
+      if (comment.parentId == null) throw Exception("parentId can't be null");
+      if (comment.parentOwnerId == null)
+        throw Exception("parentOwner can't be null");
+
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
       final _commentRef =
@@ -521,10 +561,16 @@ class FeedProvider {
       _futures.add(_future);
 
       if (_comment.parent == PeamanCommentParent.feed) {
-        final _feedPropertiesFuture = _updateFeedPropertiesCount(
-          feedId: comment.feedId!,
+        final _feedPropertiesFuture = updateFeedPropertiesCount(
+          feedId: _comment.feedId!,
           commentsCount: 1,
         );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: _comment.parentOwnerId!,
+          commentsReceivedFromFeeds: 1,
+        );
+
         final _commentedFeedFuture = _commentedFeedRef.set({
           'id': _comment.feedId,
           'created_at': _currentMillis,
@@ -532,18 +578,26 @@ class FeedProvider {
         });
 
         _futures.add(_feedPropertiesFuture);
+        _futures.add(_userPropertyFuture);
         _futures.add(_commentedFeedFuture);
         print('Success: Adding comment to feed ${comment.feedId}');
-      } else if (_comment.parentId != null) {
-        final _commentPropertiesFuture = _updateCommentPropertiesCount(
-          feedId: comment.feedId!,
+      } else {
+        final _commentPropertiesFuture = updateCommentPropertiesCount(
+          feedId: _comment.feedId!,
           commentId: _comment.parentId!,
           repliesCount: 1,
         );
-        final _feedPropertiesFuture = _updateFeedPropertiesCount(
-          feedId: comment.feedId!,
-          commentsCount: 1,
+
+        final _feedPropertiesFuture = updateFeedPropertiesCount(
+          feedId: _comment.feedId!,
+          repliesCount: 1,
         );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: _comment.parentOwnerId!,
+          repliesReceivedFromFeeds: 1,
+        );
+
         final _repliedFeedFuture = _repliedFeedRef.set({
           'id': _comment.feedId,
           'created_at': _currentMillis,
@@ -552,6 +606,7 @@ class FeedProvider {
 
         _futures.add(_feedPropertiesFuture);
         _futures.add(_commentPropertiesFuture);
+        _futures.add(_userPropertyFuture);
         _futures.add(_repliedFeedFuture);
         print('Success: Adding comment to comment ${_comment.parentId}');
       }
@@ -588,10 +643,11 @@ class FeedProvider {
 
   // remove comment from post or comment
   Future<void> removeComment({
-    required final String ownerId,
     required final String feedId,
-    required final String parentId,
     required final String commentId,
+    required final String ownerId,
+    required final String parentId,
+    required final String parentOwnerId,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
@@ -608,11 +664,18 @@ class FeedProvider {
       await _commentRef.delete();
 
       if (feedId == parentId) {
-        final _feedPropertiesFuture = _updateFeedPropertiesCount(
+        final _feedPropertiesFuture = updateFeedPropertiesCount(
           feedId: feedId,
           commentsCount: -1,
         );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: parentOwnerId,
+          commentsReceivedFromFeeds: -1,
+        );
+
         _futures.add(_feedPropertiesFuture);
+        _futures.add(_userPropertyFuture);
 
         final _commentsSnap = await getCommentsByOwnerId(
           ownerId: ownerId,
@@ -628,16 +691,24 @@ class FeedProvider {
 
         print('Success: Removing comment from feed $feedId');
       } else {
-        final _commentPropertiesFuture = _updateCommentPropertiesCount(
+        final _commentPropertiesFuture = updateCommentPropertiesCount(
           feedId: feedId,
           commentId: parentId,
           repliesCount: -1,
         );
-        final _feedPropertiesFuture = _updateFeedPropertiesCount(
+
+        final _feedPropertiesFuture = updateFeedPropertiesCount(
           feedId: feedId,
-          commentsCount: -1,
+          repliesCount: -1,
         );
+
+        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+          uid: parentOwnerId,
+          repliesReceivedFromFeeds: -1,
+        );
+
         _futures.add(_commentPropertiesFuture);
+        _futures.add(_userPropertyFuture);
         _futures.add(_feedPropertiesFuture);
 
         final _repliesSnap = await getCommentsByOwnerId(
@@ -665,37 +736,27 @@ class FeedProvider {
   }
 
   // update post properties count
-  Future<void> _updateFeedPropertiesCount({
+  Future<void> updateFeedPropertiesCount({
     required final String feedId,
-    final int? reactionsCount,
-    final int? commentsCount,
-    final int? savesCount,
-    final int? sharesCount,
-    final int? viewsCount,
+    final int reactionsCount = 0,
+    final int commentsCount = 0,
+    final int repliesCount = 0,
+    final int savesCount = 0,
+    final int sharesCount = 0,
+    final int viewsCount = 0,
   }) async {
     try {
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
-      final _data = <String, dynamic>{};
+      final _data = <String, dynamic>{
+        'reactions_count': FieldValue.increment(reactionsCount),
+        'comments_count': FieldValue.increment(commentsCount),
+        'replies_count': FieldValue.increment(repliesCount),
+        'saves_count': FieldValue.increment(savesCount),
+        'shares_count': FieldValue.increment(sharesCount),
+        'views_count': FieldValue.increment(viewsCount),
+      };
 
-      if (reactionsCount != null) {
-        _data['reactions_count'] = FieldValue.increment(reactionsCount);
-      }
-      if (commentsCount != null) {
-        _data['comments_count'] = FieldValue.increment(commentsCount);
-      }
-      if (savesCount != null) {
-        _data['saves_count'] = FieldValue.increment(savesCount);
-      }
-      if (sharesCount != null) {
-        _data['shares_count'] = FieldValue.increment(sharesCount);
-      }
-      if (viewsCount != null) {
-        _data['views_count'] = FieldValue.increment(viewsCount);
-      }
-
-      if (_data.isNotEmpty) {
-        await _feedRef.update(_data);
-      }
+      await _feedRef.update(_data);
       print('Success: Updating feed properties count of $feedId');
     } catch (e) {
       print(e);
@@ -705,27 +766,21 @@ class FeedProvider {
   }
 
   // update comment properties count
-  Future<void> _updateCommentPropertiesCount({
+  Future<void> updateCommentPropertiesCount({
     required final String feedId,
     required final String commentId,
-    final int? reactionsCount,
-    final int? repliesCount,
+    final int reactionsCount = 0,
+    final int repliesCount = 0,
   }) async {
     try {
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       final _parentCommentRef = _feedRef.collection('comments').doc(commentId);
-      final _data = <String, dynamic>{};
+      final _data = <String, dynamic>{
+        'reactions_count': FieldValue.increment(reactionsCount),
+        'replies_count': FieldValue.increment(repliesCount),
+      };
 
-      if (reactionsCount != null) {
-        _data['reactions_count'] = FieldValue.increment(reactionsCount);
-      }
-      if (repliesCount != null) {
-        _data['replies_count'] = FieldValue.increment(repliesCount);
-      }
-
-      if (_data.isNotEmpty) {
-        await _parentCommentRef.update(_data);
-      }
+      await _parentCommentRef.update(_data);
       print('Success: Updating comment properties count of $commentId');
     } catch (e) {
       print(e);

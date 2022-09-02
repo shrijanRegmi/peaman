@@ -9,6 +9,7 @@ class PeamanFeed {
   final PeamanFeedType type;
   final int reactionsCount;
   final int commentsCount;
+  final int repliesCount;
   final int savesCount;
   final int sharesCount;
   final int viewsCount;
@@ -27,6 +28,7 @@ class PeamanFeed {
     this.videos = const <String>[],
     this.reactionsCount = 0,
     this.commentsCount = 0,
+    this.repliesCount = 0,
     this.savesCount = 0,
     this.sharesCount = 0,
     this.viewsCount = 0,
@@ -46,6 +48,7 @@ class PeamanFeed {
     final List<String>? videos,
     final int? reactionsCount,
     final int? commentsCount,
+    final int? repliesCount,
     final int? savesCount,
     final int? sharesCount,
     final int? viewsCount,
@@ -64,6 +67,7 @@ class PeamanFeed {
       videos: videos ?? this.videos,
       reactionsCount: reactionsCount ?? this.reactionsCount,
       commentsCount: commentsCount ?? this.commentsCount,
+      repliesCount: commentsCount ?? this.repliesCount,
       savesCount: savesCount ?? this.savesCount,
       sharesCount: sharesCount ?? this.sharesCount,
       viewsCount: viewsCount ?? this.viewsCount,
@@ -80,16 +84,17 @@ class PeamanFeed {
       id: data['id'],
       ownerId: data['owner_id'],
       type: PeamanFeedType.values[data['type'] ?? 0],
+      caption: data['caption'] ?? '',
       photos: List<String>.from(data['photos'] ?? []),
       videos: List<String>.from(data['videos'] ?? []),
+      searchKeys: List<String>.from(data['search_keys'] ?? []),
+      featured: data['featured'] ?? false,
       reactionsCount: data['reactions_count'] ?? 0,
       commentsCount: data['comments_count'] ?? 0,
+      repliesCount: data['replies_count'] ?? 0,
       savesCount: data['saves_count'] ?? 0,
-      caption: data['caption'] ?? '',
       sharesCount: data['shares_count'] ?? 0,
       viewsCount: data['views_count'] ?? 0,
-      featured: data['featured'] ?? false,
-      searchKeys: List<String>.from(data['search_keys'] ?? []),
       updatedAt: data['updated_at'],
       createdAt: data['created_at'],
       extraData: data,
@@ -105,6 +110,13 @@ class PeamanFeed {
       'photos': photos,
       'videos': videos,
       'search_keys': searchKeys,
+      'featured': featured,
+      'reactions_count': reactionsCount,
+      'comments_count': commentsCount,
+      'replies_count': repliesCount,
+      'saves_count': savesCount,
+      'shares_count': sharesCount,
+      'views_count': viewsCount,
       'updated_at': updatedAt,
       'created_at': createdAt,
       ...extraData,

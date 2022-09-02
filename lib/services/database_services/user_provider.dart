@@ -90,12 +90,11 @@ class AppUserProvider {
     final int followers = 0,
     final int following = 0,
     final int notifCount = 0,
-    final int likeableFeeds = 0,
-    final int likeableComments = 0,
-    final int likeableReplies = 0,
-    final int reactionsReceived = 0,
-    final int commentsReceived = 0,
-    final int repliesReceived = 0,
+    final int reactionsReceivedFromFeeds = 0,
+    final int commentsReceivedFromFeeds = 0,
+    final int repliesReceivedFromFeeds = 0,
+    final int sharesReceivedFromFeeds = 0,
+    final int viewsReceivedFromFeeds = 0,
   }) async {
     try {
       final _usersRef = PeamanReferenceHelper.usersCol.doc(uid);
@@ -104,13 +103,16 @@ class AppUserProvider {
         'followers': FieldValue.increment(followers),
         'following': FieldValue.increment(following),
         'notif_count': FieldValue.increment(notifCount),
-        'likeable_feeds': FieldValue.increment(likeableFeeds),
-        'likeable_comments_from_feeds': FieldValue.increment(likeableComments),
-        'likeable_replies_from_feeds': FieldValue.increment(likeableReplies),
         'reactions_received_from_feeds':
-            FieldValue.increment(reactionsReceived),
-        'comments_received_from_feeds': FieldValue.increment(commentsReceived),
-        'replies_received_from_feeds': FieldValue.increment(repliesReceived),
+            FieldValue.increment(reactionsReceivedFromFeeds),
+        'comments_received_from_feeds':
+            FieldValue.increment(commentsReceivedFromFeeds),
+        'replies_received_from_feeds':
+            FieldValue.increment(repliesReceivedFromFeeds),
+        'shares_received_from_feeds':
+            FieldValue.increment(sharesReceivedFromFeeds),
+        'views_received_from_feeds':
+            FieldValue.increment(viewsReceivedFromFeeds),
       };
 
       _data.removeWhere((key, value) => value == 0);

@@ -9,8 +9,8 @@ class PFeedProvider {
     required final PeamanFeed feed,
     final Function(PeamanFeed)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().createFeed(
+  }) {
+    return FeedProvider().createFeed(
       feed: feed,
       onSuccess: onSuccess,
       onError: onError,
@@ -23,8 +23,8 @@ class PFeedProvider {
     final bool partial = false,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().updateFeed(
+  }) {
+    return FeedProvider().updateFeed(
       feedId: feedId,
       data: data,
       partial: partial,
@@ -33,10 +33,30 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> updateFeedPropertiesCount({
+    required final String feedId,
+    final int reactionsCount = 0,
+    final int commentsCount = 0,
+    final int repliesCount = 0,
+    final int savesCount = 0,
+    final int sharesCount = 0,
+    final int viewsCount = 0,
+  }) {
+    return FeedProvider().updateFeedPropertiesCount(
+      feedId: feedId,
+      reactionsCount: reactionsCount,
+      commentsCount: commentsCount,
+      repliesCount: repliesCount,
+      savesCount: savesCount,
+      sharesCount: sharesCount,
+      viewsCount: viewsCount,
+    );
+  }
+
   static Future<void> deleteFeed({
     required final String feedId,
-  }) async {
-    return await FeedProvider().deleteFeed(
+  }) {
+    return FeedProvider().deleteFeed(
       feedId: feedId,
     );
   }
@@ -58,8 +78,8 @@ class PFeedProvider {
   static Future<void> saveFeed({
     required final String feedId,
     required final String uid,
-  }) async {
-    return await FeedProvider().saveFeed(
+  }) {
+    return FeedProvider().saveFeed(
       feedId: feedId,
       uid: uid,
     );
@@ -68,8 +88,8 @@ class PFeedProvider {
   static Future<void> unsaveFeed({
     required final String feedId,
     required final String uid,
-  }) async {
-    return await FeedProvider().unSaveFeed(
+  }) {
+    return FeedProvider().unSaveFeed(
       feedId: feedId,
       uid: uid,
     );
@@ -114,8 +134,8 @@ class PFeedProvider {
   static Future<void> viewMoment({
     required final String momentId,
     required final String uid,
-  }) async {
-    return await FeedProvider().viewMoment(
+  }) {
+    return FeedProvider().viewMoment(
       uid: uid,
       momentId: momentId,
     );
@@ -125,8 +145,8 @@ class PFeedProvider {
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().addReaction(
+  }) {
+    return FeedProvider().addReaction(
       reaction: reaction,
       onSuccess: onSuccess,
       onError: onError,
@@ -134,18 +154,20 @@ class PFeedProvider {
   }
 
   static Future<void> removeReaction({
-    required final String ownerId,
     required final String feedId,
-    required final String parentId,
     required final String reactionId,
+    required final String ownerId,
+    required final String parentId,
+    required final String parentOwnerId,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().removeReaction(
-      ownerId: ownerId,
+  }) {
+    return FeedProvider().removeReaction(
       feedId: feedId,
-      parentId: parentId,
       reactionId: reactionId,
+      ownerId: ownerId,
+      parentId: parentId,
+      parentOwnerId: parentOwnerId,
       onSuccess: onSuccess,
       onError: onError,
     );
@@ -155,8 +177,8 @@ class PFeedProvider {
     required final PeamanComment comment,
     final Function(PeamanComment)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().addComment(
+  }) {
+    return FeedProvider().addComment(
       comment: comment,
       onSuccess: onSuccess,
       onError: onError,
@@ -169,8 +191,8 @@ class PFeedProvider {
     required final Map<String, dynamic> data,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().updateComment(
+  }) {
+    return FeedProvider().updateComment(
       feedId: feedId,
       commentId: commentId,
       data: data,
@@ -179,19 +201,35 @@ class PFeedProvider {
     );
   }
 
-  static Future<void> removeComment({
-    required final String ownerId,
+  static Future<void> updateCommentPropertiesCount({
     required final String feedId,
-    required final String parentId,
     required final String commentId,
+    final int reactionsCount = 0,
+    final int repliesCount = 0,
+  }) {
+    return FeedProvider().updateCommentPropertiesCount(
+      feedId: feedId,
+      commentId: commentId,
+      reactionsCount: reactionsCount,
+      repliesCount: repliesCount,
+    );
+  }
+
+  static Future<void> removeComment({
+    required final String feedId,
+    required final String commentId,
+    required final String ownerId,
+    required final String parentId,
+    required final String parentOwnerId,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
-  }) async {
-    return await FeedProvider().removeComment(
-      ownerId: ownerId,
+  }) {
+    return FeedProvider().removeComment(
       feedId: feedId,
-      parentId: parentId,
       commentId: commentId,
+      ownerId: ownerId,
+      parentId: parentId,
+      parentOwnerId: parentOwnerId,
       onSuccess: onSuccess,
       onError: onError,
     );
@@ -202,9 +240,9 @@ class PFeedProvider {
     required final String ownerId,
     required final PeamanReactionParent parent,
     required final String parentId,
-  }) async {
+  }) {
     PeamanCommonHelper.printListening(text: 'reactionByOwnerId');
-    return await FeedProvider().getReactionByOwnerId(
+    return FeedProvider().getReactionByOwnerId(
       feedId: feedId,
       ownerId: ownerId,
       parent: parent,
@@ -215,9 +253,9 @@ class PFeedProvider {
   static Future<PeamanFeedSaver?> getFeedSaverByUid({
     required final String feedId,
     required final String uid,
-  }) async {
+  }) {
     PeamanCommonHelper.printListening(text: 'feedSaverByUid');
-    return await FeedProvider().getFeedSaverByUid(
+    return FeedProvider().getFeedSaverByUid(
       feedId: feedId,
       uid: uid,
     );
@@ -226,7 +264,7 @@ class PFeedProvider {
   static Future<PeamanFeedViewer?> getFeedViewerByUid({
     required final String feedId,
     required final String uid,
-  }) async {
+  }) {
     PeamanCommonHelper.printListening(text: 'feedViewerByUid');
     return FeedProvider().getFeedViewerByUid(
       feedId: feedId,

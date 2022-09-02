@@ -8,6 +8,7 @@ class PeamanComment {
   final String? secondUserName;
   final PeamanCommentParent parent;
   final String? parentId;
+  final String? parentOwnerId;
   final String? comment;
   final int reactionsCount;
   final int repliesCount;
@@ -23,6 +24,7 @@ class PeamanComment {
     this.secondUserName,
     this.parent = PeamanCommentParent.feed,
     this.parentId,
+    this.parentOwnerId,
     this.comment,
     this.reactionsCount = 0,
     this.repliesCount = 0,
@@ -39,6 +41,7 @@ class PeamanComment {
     final String? secondUserName,
     final PeamanCommentParent? parent,
     final String? parentId,
+    final String? parentOwnerId,
     final String? comment,
     final int? reactionsCount,
     final int? repliesCount,
@@ -54,6 +57,7 @@ class PeamanComment {
       secondUserName: secondUserName ?? this.secondUserName,
       parent: parent ?? this.parent,
       parentId: parentId ?? this.parentId,
+      parentOwnerId: parentOwnerId ?? this.parentOwnerId,
       comment: comment ?? this.comment,
       reactionsCount: reactionsCount ?? this.reactionsCount,
       repliesCount: repliesCount ?? this.repliesCount,
@@ -72,6 +76,7 @@ class PeamanComment {
       secondUserName: data['second_user_name'],
       parent: PeamanCommentParent.values[data['parent'] ?? 0],
       parentId: data['parent_id'],
+      parentOwnerId: data['parent_owner_id'],
       comment: data['comment'] ?? '',
       reactionsCount: data['reactions_count'] ?? 0,
       repliesCount: data['replies_count'] ?? 0,
@@ -90,6 +95,7 @@ class PeamanComment {
       'second_user_name': secondUserName,
       'parent': parent.index,
       'parent_id': parentId,
+      'parent_owner_id': parentOwnerId,
       'comment': comment,
       'created_at': createdAt,
       'updated_at': updatedAt,
