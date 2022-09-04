@@ -3,9 +3,9 @@ import 'package:peaman/services/storage_services/storage_provider.dart';
 
 class PStorageProvider {
   // upload file
-  static Future<String?> uploadFile(
-    final String path,
-    final File file, {
+  static Future<String?> uploadFile({
+    required final String path,
+    required final File file,
     final Function(double)? onProgressUpdate,
   }) async {
     return await StorageProvider(
@@ -16,9 +16,9 @@ class PStorageProvider {
   }
 
   // upload files
-  static Future<List<String>?> uploadFiles(
-    final String path,
-    final List<File> files, {
+  static Future<List<String>?> uploadFiles({
+    required final String path,
+    required final List<File> files,
     final Function(double)? onProgressUpdate,
   }) async {
     return await StorageProvider(
