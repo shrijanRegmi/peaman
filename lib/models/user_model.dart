@@ -3,6 +3,7 @@ import 'package:peaman/enums/online_status.dart';
 class PeamanUser {
   final String? uid;
   final String? name;
+  final String? userName;
   final String? email;
   final String? photo;
   final String? phone;
@@ -33,6 +34,7 @@ class PeamanUser {
   PeamanUser({
     this.uid,
     this.name,
+    this.userName,
     this.email,
     this.photo,
     this.phone,
@@ -64,6 +66,7 @@ class PeamanUser {
   PeamanUser copyWith({
     final String? uid,
     final String? name,
+    final String? userName,
     final String? email,
     final String? photo,
     final String? phone,
@@ -95,6 +98,7 @@ class PeamanUser {
     return PeamanUser(
       uid: uid ?? this.uid,
       name: name ?? this.name,
+      userName: userName ?? this.userName,
       email: email ?? this.email,
       photo: photo ?? this.photo,
       phone: phone ?? this.phone,
@@ -133,6 +137,7 @@ class PeamanUser {
     final _data = {
       'uid': uid,
       'name': name,
+      'user_name': userName,
       'email': email,
       'photo': photo,
       'phone': phone,
@@ -171,6 +176,7 @@ class PeamanUser {
       uid: data['uid'],
       photo: data['photo'],
       name: data['name'],
+      userName: data['user_name'],
       email: data['email'],
       phone: data['phone'],
       country: data['country'],
