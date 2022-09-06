@@ -74,7 +74,12 @@ class AppUserProvider {
   }) async {
     try {
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
-      await _userRef.update(data);
+
+      final _data = data..removeWhere((key, value) => value == null);
+
+      if (_data.isNotEmpty) {
+        await _userRef.update(_data);
+      }
 
       print('Success: Updating details of user $uid');
     } catch (e) {
