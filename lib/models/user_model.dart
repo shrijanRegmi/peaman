@@ -1,3 +1,4 @@
+import 'package:peaman/enums/gender.dart';
 import 'package:peaman/enums/online_status.dart';
 
 class PeamanUser {
@@ -10,6 +11,8 @@ class PeamanUser {
   final String? country;
   final String? bio;
   final String? profession;
+  final PeamanGender gender;
+  final int? dob;
   final List<String> searchKeys;
   final PeamanOnlineStatus onlineStatus;
   final int? lastOnlineAt;
@@ -40,6 +43,8 @@ class PeamanUser {
     this.phone,
     this.country,
     this.bio,
+    this.gender = PeamanGender.NA,
+    this.dob,
     this.profession,
     this.photos = 0,
     this.onlineStatus = PeamanOnlineStatus.away,
@@ -72,6 +77,8 @@ class PeamanUser {
     final String? phone,
     final String? country,
     final String? bio,
+    final PeamanGender? gender,
+    final int? dob,
     final String? profession,
     final String? profileStatus,
     final PeamanOnlineStatus? onlineStatus,
@@ -104,6 +111,8 @@ class PeamanUser {
       phone: phone ?? this.phone,
       country: country ?? this.country,
       bio: bio ?? this.bio,
+      gender: gender ?? this.gender,
+      dob: dob ?? this.dob,
       profession: profession ?? this.profession,
       onlineStatus: onlineStatus ?? this.onlineStatus,
       lastOnlineAt: lastOnlineAt ?? this.lastOnlineAt,
@@ -143,6 +152,8 @@ class PeamanUser {
       'phone': phone,
       'country': country,
       'bio': bio,
+      'gender': gender.index,
+      'dob': dob,
       'profession': profession,
       'online_status': onlineStatus.index,
       'last_online_at': lastOnlineAt,
@@ -181,6 +192,8 @@ class PeamanUser {
       phone: data['phone'],
       country: data['country'],
       bio: data['bio'],
+      dob: data['dob'],
+      gender: PeamanGender.values[data['gender'] ?? 0],
       profession: data['profession'],
       onlineStatus: PeamanOnlineStatus.values[data['online_status'] ?? 0],
       lastOnlineAt: data['last_online_at'],
