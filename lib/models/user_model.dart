@@ -43,7 +43,7 @@ class PeamanUser {
     this.phone,
     this.country,
     this.bio,
-    this.gender = PeamanGender.NA,
+    this.gender = PeamanGender.np,
     this.dob,
     this.profession,
     this.photos = 0,
