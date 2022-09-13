@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/enums/gender.dart';
 import 'package:peaman/enums/online_status.dart';
 
@@ -220,7 +221,6 @@ class PeamanUser {
 }
 
 class PeamanUserUpdater {
-  String? uid;
   String? name;
   String? userName;
   String? email;
@@ -253,7 +253,6 @@ class PeamanUserUpdater {
   Map<String, dynamic> extraData;
 
   PeamanUserUpdater({
-    this.uid,
     this.name,
     this.userName,
     this.email,
@@ -288,7 +287,6 @@ class PeamanUserUpdater {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{
-      'uid': uid,
       'name': name,
       'user_name': userName,
       'email': email,
@@ -319,6 +317,105 @@ class PeamanUserUpdater {
       'longitude': longitude,
       'created_at': createdAt,
       ...extraData,
+    };
+
+    _data.removeWhere((key, value) => value == null);
+    return _data;
+  }
+}
+
+class PeamanUserPartialUpdater {
+  List<String>? searchKeys;
+  int? photos;
+  int? followers;
+  int? following;
+  int? reactionsReceivedFromFeeds;
+  int? commentsReceivedFromFeeds;
+  int? repliesReceivedFromFeeds;
+  int? sharesReceivedFromFeeds;
+  int? viewsReceivedFromFeeds;
+  int? onboardingStep;
+  Map<String, dynamic> extraData;
+
+  PeamanUserPartialUpdater({
+    this.searchKeys,
+    this.photos,
+    this.followers,
+    this.following,
+    this.reactionsReceivedFromFeeds,
+    this.commentsReceivedFromFeeds,
+    this.repliesReceivedFromFeeds,
+    this.sharesReceivedFromFeeds,
+    this.viewsReceivedFromFeeds,
+    this.onboardingStep,
+    this.extraData = const {},
+  });
+
+  Map<String, dynamic> toPositiveUpdateJson() {
+    final _extraData = extraData;
+
+    _extraData.removeWhere((key, value) => value is! FieldValue);
+
+    final _data = <String, dynamic>{
+      'searchKeys':
+          searchKeys == null ? null : FieldValue.arrayUnion(searchKeys!),
+      'photos': photos == null ? null : FieldValue.increment(photos!),
+      'followers': followers == null ? null : FieldValue.increment(followers!),
+      'following': following == null ? null : FieldValue.increment(following!),
+      'reactions_received_from_feeds': reactionsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(reactionsReceivedFromFeeds!),
+      'comments_received_from_feeds': commentsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(commentsReceivedFromFeeds!),
+      'replies_received_from_feeds': repliesReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(repliesReceivedFromFeeds!),
+      'shares_received_from_feeds': sharesReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(sharesReceivedFromFeeds!),
+      'views_received_from_feeds': viewsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(viewsReceivedFromFeeds!),
+      'onboarding_step':
+          onboardingStep == null ? null : FieldValue.increment(onboardingStep!),
+      ..._extraData,
+    };
+
+    _data.removeWhere((key, value) => value == null);
+    return _data;
+  }
+
+  Map<String, dynamic> toNegativeUpdateJson() {
+    final _extraData = extraData;
+
+    _extraData.removeWhere((key, value) => value is! FieldValue);
+
+    final _data = <String, dynamic>{
+      'searchKeys':
+          searchKeys == null ? null : FieldValue.arrayRemove(searchKeys!),
+      'photos': photos == null ? null : FieldValue.increment(-photos!),
+      'followers': followers == null ? null : FieldValue.increment(-followers!),
+      'following': following == null ? null : FieldValue.increment(-following!),
+      'reactions_received_from_feeds': reactionsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(-reactionsReceivedFromFeeds!),
+      'comments_received_from_feeds': commentsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(-commentsReceivedFromFeeds!),
+      'replies_received_from_feeds': repliesReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(-repliesReceivedFromFeeds!),
+      'shares_received_from_feeds': sharesReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(-sharesReceivedFromFeeds!),
+      'views_received_from_feeds': viewsReceivedFromFeeds == null
+          ? null
+          : FieldValue.increment(-viewsReceivedFromFeeds!),
+      'onboarding_step': onboardingStep == null
+          ? null
+          : FieldValue.increment(-onboardingStep!),
+      ..._extraData,
     };
 
     _data.removeWhere((key, value) => value == null);

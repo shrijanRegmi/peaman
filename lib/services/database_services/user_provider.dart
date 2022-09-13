@@ -70,12 +70,23 @@ class AppUserProvider {
   // update user details
   Future<void> updateUserDetail({
     required final String uid,
-    required final PeamanUserUpdater updater,
+    final PeamanUserUpdater? updater,
+    final PeamanUserPartialUpdater? positivePartialUpdater,
+    final PeamanUserPartialUpdater? negativePartialUpdater,
   }) async {
     try {
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+      final _data = <String, dynamic>{};
 
-      final _data = updater.toJson();
+      final _updaterData = updater?.toJson() ?? _data;
+      final _positivePartialUpdaterData =
+          positivePartialUpdater?.toPositiveUpdateJson() ?? _data;
+      final _negativePartialUpdaterData =
+          negativePartialUpdater?.toNegativeUpdateJson() ?? _data;
+
+      _data.addAll(_updaterData);
+      _data.addAll(_positivePartialUpdaterData);
+      _data.addAll(_negativePartialUpdaterData);
 
       if (_data.isNotEmpty) {
         await _userRef.update(_data);

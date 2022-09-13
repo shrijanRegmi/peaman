@@ -25,11 +25,15 @@ class PUserProvider {
 
   static Future<void> updateUserData({
     required final String uid,
-    required final PeamanUserUpdater updater,
+    final PeamanUserUpdater? updater,
+    final PeamanUserPartialUpdater? positivePartialUpdater,
+    final PeamanUserPartialUpdater? negativePartialUpdater,
   }) {
     return AppUserProvider().updateUserDetail(
       uid: uid,
       updater: updater,
+      positivePartialUpdater: positivePartialUpdater,
+      negativePartialUpdater: negativePartialUpdater,
     );
   }
 
