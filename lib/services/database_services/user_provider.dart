@@ -70,12 +70,12 @@ class AppUserProvider {
   // update user details
   Future<void> updateUserDetail({
     required final String uid,
-    required final Map<String, dynamic> data,
+    required final PeamanUserUpdater updater,
   }) async {
     try {
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
 
-      final _data = data..removeWhere((key, value) => value == null);
+      final _data = updater.toJson();
 
       if (_data.isNotEmpty) {
         await _userRef.update(_data);
