@@ -2,36 +2,26 @@ import 'package:peaman/peaman.dart';
 
 class PeamanChat {
   final String? id;
-  final String? firstUserId;
-  final String? secondUserId;
   final String? lastMessageId;
-  final bool firstUserTyping;
-  final bool secondUserTyping;
-  final bool firstUserPinnedSecondUser;
-  final bool secondUserPinnedFirstUser;
-  final int firstUserUnreadMessagesCount;
-  final int secondUserUnreadMessagesCount;
+  final List<String> userIds;
+  final List<String> typingUserIds;
+  final List<String> pinnedChatUserIds;
   final PeamanChatRequestStatus chatRequestStatus;
   final String? chatRequestSenderId;
+  final int Function(String uid)? unreadMessagesCount;
   final int? createdAt;
   final int? updatedAt;
-  final List<String> userIds;
   final Map<String, dynamic> extraData;
 
   PeamanChat({
     this.id,
-    this.firstUserId,
-    this.secondUserId,
     this.lastMessageId,
-    this.firstUserTyping = false,
-    this.secondUserTyping = false,
-    this.firstUserPinnedSecondUser = false,
-    this.secondUserPinnedFirstUser = false,
-    this.firstUserUnreadMessagesCount = 0,
-    this.secondUserUnreadMessagesCount = 0,
+    this.userIds = const <String>[],
+    this.typingUserIds = const <String>[],
+    this.pinnedChatUserIds = const <String>[],
     this.chatRequestStatus = PeamanChatRequestStatus.idle,
     this.chatRequestSenderId,
-    this.userIds = const [],
+    this.unreadMessagesCount,
     this.createdAt,
     this.updatedAt,
     this.extraData = const {},
@@ -39,40 +29,26 @@ class PeamanChat {
 
   PeamanChat copyWith({
     final String? id,
-    final String? firstUserId,
-    final String? secondUserId,
     final String? lastMessageId,
-    final bool? firstUserTyping,
-    final bool? secondUserTyping,
-    final bool? firstUserPinnedSecondUser,
-    final bool? secondUserPinnedFirstUser,
-    final int? firstUserUnreadMessagesCount,
-    final int? secondUserUnreadMessagesCount,
+    final List<String>? userIds,
+    final List<String>? typingUserIds,
+    final List<String>? pinnedChatUserIds,
     final PeamanChatRequestStatus? chatRequestStatus,
     final String? chatRequestSenderId,
-    final List<String>? userIds,
+    final int Function(String)? unreadMessagesCount,
     final int? createdAt,
     final int? updatedAt,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanChat(
       id: id ?? this.id,
-      firstUserId: firstUserId ?? this.firstUserId,
-      secondUserId: secondUserId ?? this.secondUserId,
       lastMessageId: lastMessageId ?? this.lastMessageId,
-      firstUserTyping: firstUserTyping ?? this.firstUserTyping,
-      secondUserTyping: secondUserTyping ?? this.secondUserTyping,
-      firstUserPinnedSecondUser:
-          firstUserPinnedSecondUser ?? this.firstUserPinnedSecondUser,
-      secondUserPinnedFirstUser:
-          secondUserPinnedFirstUser ?? this.secondUserPinnedFirstUser,
-      firstUserUnreadMessagesCount:
-          firstUserUnreadMessagesCount ?? this.firstUserUnreadMessagesCount,
-      secondUserUnreadMessagesCount:
-          secondUserUnreadMessagesCount ?? this.secondUserUnreadMessagesCount,
+      userIds: userIds ?? this.userIds,
+      typingUserIds: typingUserIds ?? this.typingUserIds,
+      pinnedChatUserIds: pinnedChatUserIds ?? this.pinnedChatUserIds,
       chatRequestStatus: chatRequestStatus ?? this.chatRequestStatus,
       chatRequestSenderId: chatRequestSenderId ?? this.chatRequestSenderId,
-      userIds: userIds ?? this.userIds,
+      unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       extraData: extraData ?? this.extraData,
@@ -82,21 +58,14 @@ class PeamanChat {
   static PeamanChat fromJson(Map<String, dynamic> data) {
     return PeamanChat(
       id: data['id'],
-      firstUserId: data['first_user_id'],
-      secondUserId: data['second_user_id'],
       lastMessageId: data['last_message_id'],
-      firstUserTyping: data['first_user_typing'] ?? false,
-      secondUserTyping: data['second_user_typing'] ?? false,
-      firstUserPinnedSecondUser: data['first_user_pinned_second_user'] ?? false,
-      secondUserPinnedFirstUser: data['second_user_pinned_first_user'] ?? false,
-      firstUserUnreadMessagesCount:
-          data['first_user_unread_messages_count'] ?? 0,
-      secondUserUnreadMessagesCount:
-          data['second_user_unread_messages_count'] ?? 0,
+      userIds: List<String>.from(data['user_ids'] ?? []),
+      typingUserIds: List<String>.from(data['typing_user_ids'] ?? []),
+      pinnedChatUserIds: List<String>.from(data['pinned_chat_user_ids'] ?? []),
       chatRequestStatus:
           PeamanChatRequestStatus.values[data['chat_request_status'] ?? 0],
       chatRequestSenderId: data['chat_request_sender_id'],
-      userIds: List<String>.from(data['user_ids'] ?? []),
+      unreadMessagesCount: (uid) => _getUnreadMessagesCountByUid(uid, data),
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
       extraData: data,
@@ -106,20 +75,25 @@ class PeamanChat {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'first_user_id': firstUserId,
-      'second_user_id': secondUserId,
       'last_message_id': lastMessageId,
-      'first_user_typing': firstUserTyping,
-      'second_user_typing': secondUserTyping,
-      'first_user_pinned_second_user': firstUserPinnedSecondUser,
-      'second_user_pinned_first_user': secondUserPinnedFirstUser,
+      'user_ids': userIds,
+      'typing_user_ids': typingUserIds,
+      'pinned_chat_user_ids': pinnedChatUserIds,
       'chat_request_status': chatRequestStatus.index,
       'chat_request_sender_id': chatRequestSenderId,
-      'user_ids': userIds,
       'created_at': createdAt,
       'updated_at': updatedAt,
       ...extraData,
     };
+  }
+
+  static int _getUnreadMessagesCountByUid(
+    final String uid,
+    final Map<String, dynamic> data,
+  ) {
+    final _key = 'z_${uid}_unread_messages';
+    final _count = data[_key] ?? 0;
+    return _count;
   }
 }
 

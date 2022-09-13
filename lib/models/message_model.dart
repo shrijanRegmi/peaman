@@ -5,7 +5,7 @@ class PeamanMessage {
   final String? chatId;
   final String? text;
   final String? senderId;
-  final String? receiverId;
+  final List<String> receiverIds;
   final String? extraId;
   final PeamanMessageType type;
   final int? createdAt;
@@ -17,7 +17,7 @@ class PeamanMessage {
     this.chatId,
     this.text,
     this.senderId,
-    this.receiverId,
+    this.receiverIds = const <String>[],
     this.extraId,
     this.type = PeamanMessageType.text,
     this.createdAt,
@@ -30,7 +30,7 @@ class PeamanMessage {
     final String? chatId,
     final String? text,
     final String? senderId,
-    final String? receiverId,
+    final List<String>? receiverId,
     final String? extraId,
     final PeamanMessageType? type,
     final int? createdAt,
@@ -42,7 +42,7 @@ class PeamanMessage {
       chatId: chatId ?? this.chatId,
       text: text ?? this.text,
       senderId: senderId ?? this.senderId,
-      receiverId: receiverId ?? this.receiverId,
+      receiverIds: receiverId ?? this.receiverIds,
       extraId: extraId ?? this.extraId,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
@@ -56,7 +56,7 @@ class PeamanMessage {
       id: data['id'],
       text: data['text'],
       senderId: data['sender_id'],
-      receiverId: data['receiver_id'],
+      receiverIds: List<String>.from(data['receiver_ids'] ?? []),
       extraId: data['extra_id'],
       type: PeamanMessageType.values[data['type'] ?? 0],
       createdAt: data['created_at'],
@@ -71,7 +71,7 @@ class PeamanMessage {
       'chat_id': chatId,
       'text': text,
       'sender_id': senderId,
-      'receiver_id': receiverId,
+      'receiver_ids': receiverIds,
       'extra_id': extraId,
       'type': type.index,
       'created_at': createdAt,

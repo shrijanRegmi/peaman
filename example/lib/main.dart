@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                     chatId: 'test_chat_id',
                     text: 'new message more',
                     senderId: 'shrijan_regmi',
-                    receiverId: 'ram_bahadur',
+                    receiverIds: ['ram_bahadur'],
                     updatedAt: DateTime.now().millisecondsSinceEpoch,
                     type: PeamanMessageType.text,
                   );

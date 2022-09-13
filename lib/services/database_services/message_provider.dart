@@ -19,27 +19,19 @@ class MessageProvider {
 
       final _messagesDocs = await _messagesRef.limit(2).get();
 
-      if (_messagesDocs.docs.length == 0) {
+      if (_messagesDocs.docs.isEmpty) {
         await _chatRef.set({
           'id': message.chatId,
           'created_at': _currentMillis,
         });
       }
 
-      final bool _isAppUserFirstUser = PeamanChatHelper.isAppUserFirstUser(
-        myId: message.senderId!,
-        friendId: message.receiverId!,
-      );
+      final _chatUpdateData = <String, dynamic>{};
 
-      if (_isAppUserFirstUser) {
-        _chatRef.update({
-          'second_user_unread_messages_count': FieldValue.increment(1),
-        });
-      } else {
-        _chatRef.update({
-          'first_user_unread_messages_count': FieldValue.increment(1),
-        });
-      }
+      message.receiverIds.forEach((element) {
+        _chatUpdateData['z_${element}_unread_messages'] =
+            FieldValue.increment(1);
+      });
 
       final _lastMsgRef = _messagesRef.doc();
       final _message = message.copyWith(
@@ -53,65 +45,42 @@ class MessageProvider {
       final _lastMsgFuture = _lastMsgRef.set(_message.toJson());
       _futures.add(_lastMsgFuture);
 
-      final _chatUpdateFuture = _chatRef.update({
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-        'last_message_id': _lastMsgRef.id,
-      });
+      _chatUpdateData['updated_at'] = DateTime.now().millisecondsSinceEpoch;
+      _chatUpdateData['last_message_id'] = _lastMsgRef.id;
+
+      final _chatUpdateFuture = _chatRef.update(_chatUpdateData);
       _futures.add(_chatUpdateFuture);
 
       if (_messagesDocs.docs.length == 0 &&
-          message.senderId != null &&
-          message.receiverId != null) {
+          _message.senderId != null &&
+          _message.receiverIds.isNotEmpty) {
         final _additionalPropertiesFuture = _sendAdditionalProperties(
-          chatId: message.chatId!,
-          myId: message.senderId!,
-          friendId: message.receiverId!,
+          message: _message,
         );
         _futures.add(_additionalPropertiesFuture);
       }
 
       await Future.wait(_futures);
       onSuccess?.call(_message);
-      print('Success: Sending message to ${message.receiverId}');
+      print('Success: Sending message to ${message.receiverIds}');
     } catch (e) {
       print(e);
-      print('Error: Sending message to ${message.receiverId}');
+      print('Error: Sending message to ${message.receiverIds}');
       onError?.call(e);
     }
   }
 
   // send additional properties with message
   Future<void> _sendAdditionalProperties({
-    required final String chatId,
-    required final String myId,
-    required final String friendId,
+    required final PeamanMessage message,
   }) async {
     try {
-      final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
+      final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
 
-      final _isAppUserFirstUser = PeamanChatHelper.isAppUserFirstUser(
-        myId: myId,
-        friendId: friendId,
-      );
-
-      String _firstUserId;
-      String _secondUserId;
-
-      final _userIds = [myId, friendId];
-
-      if (_isAppUserFirstUser) {
-        _firstUserId = myId;
-        _secondUserId = friendId;
-      } else {
-        _firstUserId = friendId;
-        _secondUserId = myId;
-      }
       await _chatRef.update({
-        'first_user_id': _firstUserId,
-        'second_user_id': _secondUserId,
-        'user_ids': _userIds,
+        'user_ids': message.receiverIds..add(message.senderId!),
         'chat_request_status': PeamanChatRequestStatus.idle.index,
-        'chat_request_sender_id': myId,
+        'chat_request_sender_id': message.senderId,
       });
     } catch (e) {
       print(e);
@@ -122,25 +91,21 @@ class MessageProvider {
   // set pinned status
   Future<void> setPinnedStatus({
     required final String chatId,
-    required final PeamanChatUser chatUser,
+    required final String uid,
     required final bool pinned,
   }) async {
     try {
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
 
-      Map<String, dynamic> _data;
-
-      if (chatUser == PeamanChatUser.first) {
-        _data = {'first_user_pinned_second_user': pinned};
-      } else {
-        _data = {'second_user_pinned_first_user': pinned};
-      }
-
-      await _chatRef.update(_data);
-      print('Success: Pinning user');
+      await _chatRef.update({
+        'pinned_chat_user_ids': pinned
+            ? FieldValue.arrayUnion([uid])
+            : FieldValue.arrayRemove([uid])
+      });
+      print('Success: Pinning chat by $uid');
     } catch (e) {
       print(e);
-      print('Error!!!: Pinned user');
+      print('Error!!!: Pinning chat by $uid');
     }
   }
 
@@ -151,6 +116,7 @@ class MessageProvider {
   }) async {
     try {
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
+
       await _chatRef.update(data);
       print('Success: Updating chat data $chatId');
     } catch (e) {
@@ -162,47 +128,38 @@ class MessageProvider {
   // read chat message
   Future<void> readChatMessage({
     required final String chatId,
-    required final PeamanChatUser chatUser,
+    required final String uid,
   }) async {
     try {
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
-      var _data = <String, dynamic>{};
 
-      if (chatUser == PeamanChatUser.first) {
-        _data['first_user_unread_messages_count'] = 0;
-      } else {
-        _data['second_user_unread_messages_count'] = 0;
-      }
-
-      await _chatRef.update(_data);
-      print('Success: Reading message by user');
+      await _chatRef.update({
+        'z_${uid}_unread_messages': FieldValue.delete(),
+      });
+      print('Success: Reading message by $uid');
     } catch (e) {
       print(e);
-      print('Error!!!: Reading message by user');
+      print('Error!!!: Reading message by $uid');
     }
   }
 
   // set typing status
   Future<void> setTypingStatus({
     required final String chatId,
-    required final PeamanChatUser chatUser,
-    required final PeamanTypingStatus typingState,
+    required final String uid,
+    required final PeamanTypingStatus typingStatus,
   }) async {
     try {
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
-      var _data = <String, dynamic>{};
-
-      if (chatUser == PeamanChatUser.first) {
-        _data['first_user_typing'] = typingState == PeamanTypingStatus.typing;
-      } else {
-        _data['second_user_typing'] = typingState == PeamanTypingStatus.typing;
-      }
-
-      await _chatRef.update(_data);
-      print('Success: Setting typing status');
+      await _chatRef.update({
+        'typing_user_ids': typingStatus == PeamanTypingStatus.typing
+            ? FieldValue.arrayUnion([uid])
+            : FieldValue.arrayRemove([uid])
+      });
+      print('Success: Setting typing status of $uid');
     } catch (e) {
       print(e);
-      print('Error!!!: Setting typing status');
+      print('Error!!!: Setting typing status of $uid');
     }
   }
 

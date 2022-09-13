@@ -19,23 +19,23 @@ class PChatProvider {
 
   static Future<void> readMessage({
     required final String chatId,
-    required final PeamanChatUser chatUser,
+    required final String uid,
   }) async {
     await MessageProvider().readChatMessage(
       chatId: chatId,
-      chatUser: chatUser,
+      uid: uid,
     );
   }
 
   static Future<void> setTypingStatus({
     required final String chatId,
-    required final PeamanChatUser chatUser,
-    required final PeamanTypingStatus typingState,
+    required final String uid,
+    required final PeamanTypingStatus typingStatus,
   }) async {
     await MessageProvider().setTypingStatus(
       chatId: chatId,
-      chatUser: chatUser,
-      typingState: typingState,
+      uid: uid,
+      typingStatus: typingStatus,
     );
   }
 
