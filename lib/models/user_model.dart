@@ -220,37 +220,37 @@ class PeamanUser {
 }
 
 class PeamanUserUpdater {
-  final String? uid;
-  final String? name;
-  final String? userName;
-  final String? email;
-  final String? photo;
-  final String? phone;
-  final String? country;
-  final String? bio;
-  final String? profession;
-  final PeamanGender? gender;
-  final int? dob;
-  final List<String>? searchKeys;
-  final PeamanOnlineStatus? onlineStatus;
-  final int? lastOnlineAt;
-  final int? photos;
-  final int? followers;
-  final int? following;
-  final int? reactionsReceivedFromFeeds;
-  final int? commentsReceivedFromFeeds;
-  final int? repliesReceivedFromFeeds;
-  final int? sharesReceivedFromFeeds;
-  final int? viewsReceivedFromFeeds;
-  final bool? admin;
-  final bool? editor;
-  final bool? tester;
-  final int? onboardingStep;
-  final bool? onboardingCompleted;
-  final double? latitude;
-  final double? longitude;
-  final int? createdAt;
-  final Map<String, dynamic> extraData;
+  String? uid;
+  String? name;
+  String? userName;
+  String? email;
+  String? photo;
+  String? phone;
+  String? country;
+  String? bio;
+  String? profession;
+  PeamanGender? gender;
+  int? dob;
+  List<String>? searchKeys;
+  PeamanOnlineStatus? onlineStatus;
+  int? lastOnlineAt;
+  int? photos;
+  int? followers;
+  int? following;
+  int? reactionsReceivedFromFeeds;
+  int? commentsReceivedFromFeeds;
+  int? repliesReceivedFromFeeds;
+  int? sharesReceivedFromFeeds;
+  int? viewsReceivedFromFeeds;
+  bool? admin;
+  bool? editor;
+  bool? tester;
+  int? onboardingStep;
+  bool? onboardingCompleted;
+  double? latitude;
+  double? longitude;
+  int? createdAt;
+  Map<String, dynamic> extraData;
 
   PeamanUserUpdater({
     this.uid,
