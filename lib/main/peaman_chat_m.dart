@@ -41,9 +41,16 @@ class PChatProvider {
 
   static Future<void> updateChat({
     required final String chatId,
-    required final Map<String, dynamic> data,
+    final PeamanChatUpdater? updater,
+    final PeamanChatPartialUpdater? positivePartialUpdater,
+    final PeamanChatPartialUpdater? negativePartialUpdater,
   }) async {
-    await MessageProvider().updateChatData(chatId: chatId, data: data);
+    await MessageProvider().updateChatData(
+      chatId: chatId,
+      updater: updater,
+      positivePartialUpdater: positivePartialUpdater,
+      negativePartialUpdater: negativePartialUpdater,
+    );
   }
 
   static Future<void> acceptRequest({

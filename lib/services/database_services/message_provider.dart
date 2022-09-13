@@ -112,12 +112,28 @@ class MessageProvider {
   // update chat data
   Future<void> updateChatData({
     required final String chatId,
-    required final Map<String, dynamic> data,
+    final PeamanChatUpdater? updater,
+    final PeamanChatPartialUpdater? positivePartialUpdater,
+    final PeamanChatPartialUpdater? negativePartialUpdater,
   }) async {
     try {
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
+      final _data = <String, dynamic>{};
 
-      await _chatRef.update(data);
+      final _updaterData = updater?.toJson() ?? _data;
+      final _positivePartialUpdaterData =
+          positivePartialUpdater?.toPositiveUpdateJson() ?? _data;
+      final _negativePartialUpdaterData =
+          negativePartialUpdater?.toNegativeUpdateJson() ?? _data;
+
+      _data.addAll(_updaterData);
+      _data.addAll(_positivePartialUpdaterData);
+      _data.addAll(_negativePartialUpdaterData);
+
+      if (_data.isNotEmpty) {
+        await _chatRef.update(_data);
+      }
+
       print('Success: Updating chat data $chatId');
     } catch (e) {
       print(e);

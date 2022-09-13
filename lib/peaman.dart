@@ -34,6 +34,7 @@ export 'models/moment_picture_model.dart';
 export 'models/feed_viewer_model.dart';
 export 'models/blocked_user_model.dart';
 export 'models/blocked_by_user_model.dart';
+export 'models/unread_messages_count_model.dart';
 
 // enums
 export 'enums/message_type.dart';
