@@ -40,6 +40,7 @@ class MessageProvider {
       final _lastMsgRef = _messagesRef.doc();
       final _message = message.copyWith(
         id: _lastMsgRef.id,
+        chatId: _chatRef.id,
         createdAt: message.createdAt ?? _currentMillis,
         updatedAt: message.updatedAt ?? _currentMillis,
       );
