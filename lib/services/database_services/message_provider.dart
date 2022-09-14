@@ -10,18 +10,22 @@ class MessageProvider {
     final Function(PeamanMessage)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
+    assert(
+      message.senderId != null && message.receiverIds.isNotEmpty,
+    );
+
     try {
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
-      final _messagesRef =
-          PeamanReferenceHelper.messagesCol(chatId: message.chatId!);
       final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
+      final _messagesRef =
+          PeamanReferenceHelper.messagesCol(chatId: _chatRef.id);
 
       final _messagesDocs = await _messagesRef.limit(2).get();
 
       if (_messagesDocs.docs.isEmpty) {
         await _chatRef.set({
-          'id': message.chatId,
+          'id': _chatRef.id,
           'created_at': _currentMillis,
         });
       }
@@ -45,15 +49,13 @@ class MessageProvider {
       final _lastMsgFuture = _lastMsgRef.set(_message.toJson());
       _futures.add(_lastMsgFuture);
 
-      _chatUpdateData['updated_at'] = DateTime.now().millisecondsSinceEpoch;
-      _chatUpdateData['last_message_id'] = _lastMsgRef.id;
+      _chatUpdateData['updated_at'] = _currentMillis;
+      _chatUpdateData['last_message_id'] = _message.id;
 
       final _chatUpdateFuture = _chatRef.update(_chatUpdateData);
       _futures.add(_chatUpdateFuture);
 
-      if (_messagesDocs.docs.length == 0 &&
-          _message.senderId != null &&
-          _message.receiverIds.isNotEmpty) {
+      if (_messagesDocs.docs.isEmpty) {
         final _additionalPropertiesFuture = _sendAdditionalProperties(
           message: _message,
         );

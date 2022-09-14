@@ -66,7 +66,7 @@ class PeamanMessage {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final _data = <String, dynamic>{
       'id': id,
       'chat_id': chatId,
       'text': text,
@@ -78,5 +78,7 @@ class PeamanMessage {
       'updated_at': updatedAt,
       ...extraData,
     };
+
+    return _data..removeWhere((key, value) => value == null);
   }
 }
