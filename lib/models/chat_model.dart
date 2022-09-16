@@ -9,7 +9,7 @@ class PeamanChat {
   final List<String> pinnedChatUserIds;
   final PeamanChatRequestStatus chatRequestStatus;
   final String? chatRequestSenderId;
-  final int Function(String uid)? unreadMessagesCount;
+  final List<PeamanUnreadMessages> unreadMessages;
   final int? createdAt;
   final int? updatedAt;
   final Map<String, dynamic> extraData;
@@ -22,7 +22,7 @@ class PeamanChat {
     this.pinnedChatUserIds = const <String>[],
     this.chatRequestStatus = PeamanChatRequestStatus.idle,
     this.chatRequestSenderId,
-    this.unreadMessagesCount,
+    this.unreadMessages = const <PeamanUnreadMessages>[],
     this.createdAt,
     this.updatedAt,
     this.extraData = const {},
@@ -36,7 +36,7 @@ class PeamanChat {
     final List<String>? pinnedChatUserIds,
     final PeamanChatRequestStatus? chatRequestStatus,
     final String? chatRequestSenderId,
-    final int Function(String)? unreadMessagesCount,
+    final List<PeamanUnreadMessages>? unreadMessages,
     final int? createdAt,
     final int? updatedAt,
     final Map<String, dynamic>? extraData,
@@ -49,7 +49,7 @@ class PeamanChat {
       pinnedChatUserIds: pinnedChatUserIds ?? this.pinnedChatUserIds,
       chatRequestStatus: chatRequestStatus ?? this.chatRequestStatus,
       chatRequestSenderId: chatRequestSenderId ?? this.chatRequestSenderId,
-      unreadMessagesCount: unreadMessagesCount ?? this.unreadMessagesCount,
+      unreadMessages: unreadMessages ?? this.unreadMessages,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       extraData: extraData ?? this.extraData,
@@ -66,7 +66,7 @@ class PeamanChat {
       chatRequestStatus:
           PeamanChatRequestStatus.values[data['chat_request_status'] ?? 0],
       chatRequestSenderId: data['chat_request_sender_id'],
-      unreadMessagesCount: (uid) => _getUnreadMessagesCountByUid(uid, data),
+      unreadMessages: _getUnreadMessagesCountByUid(data),
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
       extraData: data,
@@ -90,13 +90,24 @@ class PeamanChat {
     return _data..removeWhere((key, value) => value == null);
   }
 
-  static int _getUnreadMessagesCountByUid(
-    final String uid,
+  static List<PeamanUnreadMessages> _getUnreadMessagesCountByUid(
     final Map<String, dynamic> data,
   ) {
-    final _key = 'z_${uid}_unread_messages';
-    final _count = data[_key] ?? 0;
-    return _count;
+    final list = <PeamanUnreadMessages>[];
+    data.forEach((key, value) {
+      if (key.startsWith('z') && key.endsWith('unread_messages')) {
+        final uid = key.split('_')[1];
+        final count = data[key] ?? 0;
+
+        final unreadMessage = PeamanUnreadMessages(
+          uid: uid,
+          unreadMessagesCount: count,
+        );
+
+        list.add(unreadMessage);
+      }
+    });
+    return list;
   }
 }
 
