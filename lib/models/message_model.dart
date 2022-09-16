@@ -54,6 +54,7 @@ class PeamanMessage {
   static PeamanMessage fromJson(Map<String, dynamic> data) {
     return PeamanMessage(
       id: data['id'],
+      chatId: data['chat_id'],
       text: data['text'],
       senderId: data['sender_id'],
       receiverIds: List<String>.from(data['receiver_ids'] ?? []),
