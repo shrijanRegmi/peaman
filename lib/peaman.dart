@@ -35,6 +35,7 @@ export 'models/feed_viewer_model.dart';
 export 'models/blocked_user_model.dart';
 export 'models/blocked_by_user_model.dart';
 export 'models/unread_messages_count_model.dart';
+export 'models/chat_media_model.dart';
 
 // enums
 export 'enums/message_type.dart';
@@ -47,6 +48,7 @@ export 'enums/comment_parent_type.dart';
 export 'enums/reaction_parent_type.dart';
 export 'enums/feed_type.dart';
 export 'enums/gender.dart';
+export 'enums/media_type.dart';
 
 // helpers
 export 'helpers/chat_helper.dart';

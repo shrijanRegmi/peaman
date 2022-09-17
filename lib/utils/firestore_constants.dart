@@ -39,4 +39,5 @@ const momentViewersColName = 'moment_viewers';
 
 // chats subcollections
 const messagesColName = 'messages';
+const mediasColName = 'medias';
 //

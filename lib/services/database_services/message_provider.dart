@@ -63,6 +63,11 @@ class MessageProvider {
         _futures.add(_additionalPropertiesFuture);
       }
 
+      if (_message.type == PeamanMessageType.image) {
+        final _mediaInfoFuture = _sendMediaInformation(message: _message);
+        _futures.add(_mediaInfoFuture);
+      }
+
       await Future.wait(_futures);
       onSuccess?.call(_message);
       print('Success: Sending message to ${message.receiverIds}');
@@ -88,6 +93,28 @@ class MessageProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Sending additonal fields in chats collection');
+    }
+  }
+
+  Future<void> _sendMediaInformation({
+    required final PeamanMessage message,
+  }) async {
+    try {
+      final _mediaRef =
+          PeamanReferenceHelper.mediasCol(chatId: message.chatId!).doc();
+
+      final media = PeamanChatMedia(
+        id: _mediaRef.id,
+        url: message.text,
+        mediaType: PeamanMediaType.image,
+        createdAt: message.createdAt,
+        updatedAt: message.updatedAt,
+      );
+      await _mediaRef.set(media.toJson());
+      print('Success: Sending media information');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Sending media information');
     }
   }
 

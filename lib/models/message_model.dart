@@ -1,4 +1,4 @@
-import 'package:peaman/enums/message_type.dart';
+import '../peaman.dart';
 
 class PeamanMessage {
   final String? id;
