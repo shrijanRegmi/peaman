@@ -57,6 +57,11 @@ class StorageProvider {
           final _uploadTaskFuture = _uploadTask.whenComplete(
             () => print('Upload complete'),
           );
+          _uploadTask.snapshotEvents.listen((event) {
+            var _progress =
+                event.bytesTransferred.toDouble() / event.totalBytes.toDouble();
+            if (onProgressUpdate != null) onProgressUpdate!(_progress);
+          });
           _uploadTaskFutures.add(_uploadTaskFuture);
         }
         //
