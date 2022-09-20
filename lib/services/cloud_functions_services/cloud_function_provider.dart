@@ -17,6 +17,7 @@ class CloudFunctionsProvider {
       onSuccess?.call(resultData);
       print('Success: Calling function - $functionName');
     } catch (e) {
+      print(e);
       print('Error!!!: Calling function - $functionName');
       onError?.call(e);
     }
