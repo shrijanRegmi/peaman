@@ -10,7 +10,7 @@ class CloudFunctionsProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      HttpsCallable callable = functions.httpsCallable('listFruit');
+      HttpsCallable callable = functions.httpsCallable(functionName);
       final result = await callable.call(data);
       final resultData = result.data as Map<String, dynamic>;
 
