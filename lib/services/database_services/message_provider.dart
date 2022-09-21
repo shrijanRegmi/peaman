@@ -66,7 +66,7 @@ class MessageProvider {
         _futures.add(_additionalPropertiesFuture);
       }
 
-      if (_message.type == PeamanMessageType.image) {
+      if (_message.files.isNotEmpty) {
         final _mediaInfoFuture = _sendMediaInformation(message: _message);
         _futures.add(_mediaInfoFuture);
       }
@@ -103,16 +103,18 @@ class MessageProvider {
     required final PeamanMessage message,
   }) async {
     try {
-      final _mediaRef =
-          PeamanReferenceHelper.mediasCol(chatId: message.chatId!).doc();
+      final _mediaRef = PeamanReferenceHelper.mediasCol(
+        chatId: message.chatId!,
+      ).doc();
 
       final media = PeamanChatMedia(
         id: _mediaRef.id,
-        url: message.text,
+        urls: message.files,
         mediaType: PeamanMediaType.image,
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
       );
+
       await _mediaRef.set(media.toJson());
       print('Success: Sending media information');
     } catch (e) {

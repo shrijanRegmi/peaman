@@ -2,14 +2,14 @@ import '../peaman.dart';
 
 class PeamanChatMedia {
   final String? id;
-  final String? url;
+  final List<String> urls;
   final PeamanMediaType mediaType;
   final int? createdAt;
   final int? updatedAt;
 
   PeamanChatMedia({
     this.id,
-    this.url,
+    this.urls = const [],
     this.mediaType = PeamanMediaType.unknown,
     this.createdAt,
     this.updatedAt,
@@ -18,7 +18,7 @@ class PeamanChatMedia {
   static PeamanChatMedia fromJson(final Map<String, dynamic> data) {
     return PeamanChatMedia(
       id: data['id'],
-      url: data['url'],
+      urls: List<String>.from(data['urls'] ?? []),
       mediaType: PeamanMediaType.values[data['media_type'] ?? 0],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
@@ -28,7 +28,7 @@ class PeamanChatMedia {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{
       'id': id,
-      'url': url,
+      'urls': urls,
       'media_type': mediaType.index,
       'created_at': createdAt,
       'updated_at': updatedAt,
