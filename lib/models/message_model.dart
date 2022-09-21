@@ -1,5 +1,3 @@
-import '../peaman.dart';
-
 class PeamanMessage {
   final String? id;
   final String? chatId;

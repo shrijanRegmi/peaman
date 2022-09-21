@@ -53,7 +53,6 @@ class HomeScreen extends StatelessWidget {
                     senderId: 'shrijan_regmi',
                     receiverIds: ['ram_bahadur'],
                     updatedAt: DateTime.now().millisecondsSinceEpoch,
-                    type: PeamanMessageType.text,
                   );
 
                   await PChatProvider.sendMessage(
