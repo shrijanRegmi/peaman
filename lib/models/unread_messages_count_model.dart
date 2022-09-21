@@ -1,8 +1,8 @@
-class PeamanUnreadMessages {
+class PeamanUnreadMessage {
   final String? uid;
   final int unreadMessagesCount;
 
-  PeamanUnreadMessages({
+  PeamanUnreadMessage({
     this.uid,
     this.unreadMessagesCount = 0,
   });

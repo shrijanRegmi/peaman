@@ -36,6 +36,7 @@ export 'models/feed_viewer_model.dart';
 export 'models/blocked_user_model.dart';
 export 'models/blocked_by_user_model.dart';
 export 'models/unread_messages_count_model.dart';
+export 'models/sent_messages_count_model.dart';
 export 'models/chat_media_model.dart';
 
 // enums

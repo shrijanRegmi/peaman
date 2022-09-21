@@ -32,8 +32,11 @@ class MessageProvider {
 
       final _chatUpdateData = <String, dynamic>{};
 
-      message.receiverIds.forEach((element) {
-        _chatUpdateData['z_${element}_unread_messages'] =
+      _chatUpdateData['total_sent_messages'] = FieldValue.increment(1);
+      _chatUpdateData['z_${message.senderId}_sent_messages'] =
+          FieldValue.increment(1);
+      message.receiverIds.forEach((receiverId) {
+        _chatUpdateData['z_${receiverId}_unread_messages'] =
             FieldValue.increment(1);
       });
 

@@ -9,7 +9,9 @@ class PeamanChat {
   final List<String> pinnedChatUserIds;
   final PeamanChatRequestStatus chatRequestStatus;
   final String? chatRequestSenderId;
-  final List<PeamanUnreadMessages> unreadMessages;
+  final int totalSentMessages;
+  final List<PeamanSentMessage> sentMessages;
+  final List<PeamanUnreadMessage> unreadMessages;
   final int? createdAt;
   final int? updatedAt;
   final Map<String, dynamic> extraData;
@@ -22,7 +24,9 @@ class PeamanChat {
     this.pinnedChatUserIds = const <String>[],
     this.chatRequestStatus = PeamanChatRequestStatus.idle,
     this.chatRequestSenderId,
-    this.unreadMessages = const <PeamanUnreadMessages>[],
+    this.totalSentMessages = 0,
+    this.sentMessages = const <PeamanSentMessage>[],
+    this.unreadMessages = const <PeamanUnreadMessage>[],
     this.createdAt,
     this.updatedAt,
     this.extraData = const {},
@@ -36,7 +40,9 @@ class PeamanChat {
     final List<String>? pinnedChatUserIds,
     final PeamanChatRequestStatus? chatRequestStatus,
     final String? chatRequestSenderId,
-    final List<PeamanUnreadMessages>? unreadMessages,
+    final int? totalSentMessages,
+    final List<PeamanSentMessage>? sentMessages,
+    final List<PeamanUnreadMessage>? unreadMessages,
     final int? createdAt,
     final int? updatedAt,
     final Map<String, dynamic>? extraData,
@@ -49,6 +55,8 @@ class PeamanChat {
       pinnedChatUserIds: pinnedChatUserIds ?? this.pinnedChatUserIds,
       chatRequestStatus: chatRequestStatus ?? this.chatRequestStatus,
       chatRequestSenderId: chatRequestSenderId ?? this.chatRequestSenderId,
+      totalSentMessages: totalSentMessages ?? this.totalSentMessages,
+      sentMessages: sentMessages ?? this.sentMessages,
       unreadMessages: unreadMessages ?? this.unreadMessages,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -66,7 +74,9 @@ class PeamanChat {
       chatRequestStatus:
           PeamanChatRequestStatus.values[data['chat_request_status'] ?? 0],
       chatRequestSenderId: data['chat_request_sender_id'],
-      unreadMessages: _getUnreadMessagesCountByUid(data),
+      totalSentMessages: data['total_sent_messages'] ?? 0,
+      sentMessages: PeamanChatHelper.getSentMessagesCountByUid(data),
+      unreadMessages: PeamanChatHelper.getUnreadMessagesCountByUid(data),
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
       extraData: data,
@@ -88,26 +98,6 @@ class PeamanChat {
     };
 
     return _data..removeWhere((key, value) => value == null);
-  }
-
-  static List<PeamanUnreadMessages> _getUnreadMessagesCountByUid(
-    final Map<String, dynamic> data,
-  ) {
-    final list = <PeamanUnreadMessages>[];
-    data.forEach((key, value) {
-      if (key.startsWith('z') && key.endsWith('unread_messages')) {
-        final uid = key.split('_')[1];
-        final count = data[key] ?? 0;
-
-        final unreadMessage = PeamanUnreadMessages(
-          uid: uid,
-          unreadMessagesCount: count,
-        );
-
-        list.add(unreadMessage);
-      }
-    });
-    return list;
   }
 }
 
@@ -415,7 +405,7 @@ class PeamanChatUpdater {
   final List<String>? pinnedChatUserIds;
   final PeamanChatRequestStatus? chatRequestStatus;
   final String? chatRequestSenderId;
-  final List<PeamanUnreadMessages>? unreadMessages;
+  final List<PeamanUnreadMessage>? unreadMessages;
   final int? createdAt;
   final int? updatedAt;
   final Map<String, dynamic> extraData;
@@ -462,7 +452,7 @@ class PeamanChatPartialUpdater {
   final List<String>? userIds;
   final List<String>? typingUserIds;
   final List<String>? pinnedChatUserIds;
-  final List<PeamanUnreadMessages>? unreadMessages;
+  final List<PeamanUnreadMessage>? unreadMessages;
   final Map<String, dynamic> extraData;
 
   PeamanChatPartialUpdater({
