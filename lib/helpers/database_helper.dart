@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peaman/peaman.dart';
 
 class PeamanDatabaseHelper {
+  static String getDatabaseId() {
+    return Peaman.ref.collection('random').doc().id;
+  }
+
   static FieldValue fieldValueIncrement(num value) {
     return FieldValue.increment(value);
   }
