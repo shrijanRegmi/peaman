@@ -1,8 +1,11 @@
+import 'package:peaman/peaman.dart';
+
 class PeamanMessage {
   final String? id;
   final String? chatId;
   final String? text;
   final List<String> files;
+  final PeamanMessageType type;
   final String? senderId;
   final List<String> receiverIds;
   final String? extraId;
@@ -16,6 +19,7 @@ class PeamanMessage {
     this.text,
     this.files = const [],
     this.senderId,
+    this.type = PeamanMessageType.text,
     this.receiverIds = const <String>[],
     this.extraId,
     this.createdAt,
@@ -31,6 +35,7 @@ class PeamanMessage {
     final List<String>? receiverId,
     final String? extraId,
     final List<String>? files,
+    final PeamanMessageType? type,
     final int? createdAt,
     final int? updatedAt,
     final Map<String, dynamic>? extraData,
@@ -41,6 +46,7 @@ class PeamanMessage {
       text: text ?? this.text,
       files: files ?? this.files,
       senderId: senderId ?? this.senderId,
+      type: type ?? this.type,
       receiverIds: receiverId ?? this.receiverIds,
       extraId: extraId ?? this.extraId,
       createdAt: createdAt ?? this.createdAt,
@@ -56,6 +62,7 @@ class PeamanMessage {
       text: data['text'],
       files: List<String>.from(data['files'] ?? []),
       senderId: data['sender_id'],
+      type: PeamanMessageType.values[data['type'] ?? 0],
       receiverIds: List<String>.from(data['receiver_ids'] ?? []),
       extraId: data['extra_id'],
       createdAt: data['created_at'],
@@ -71,6 +78,7 @@ class PeamanMessage {
       'text': text,
       'files': files,
       'sender_id': senderId,
+      'type': type.index,
       'receiver_ids': receiverIds,
       'extra_id': extraId,
       'created_at': createdAt,
