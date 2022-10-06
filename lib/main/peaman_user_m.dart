@@ -144,7 +144,6 @@ class PUserProvider {
   }
 
   static Stream<List<PeamanUser>> getUsers({
-    required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'users');
