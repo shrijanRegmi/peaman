@@ -97,6 +97,8 @@ class PeamanComment {
       'parent_id': parentId,
       'parent_owner_id': parentOwnerId,
       'comment': comment,
+      'reactions_count': reactionsCount,
+      'replies_count': repliesCount,
       'created_at': createdAt,
       'updated_at': updatedAt,
       ...extraData,
