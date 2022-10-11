@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../peaman.dart';
-import '../../utils/firestore_constants.dart';
+import '../../utils/query_type_def.dart';
 
 class NotificationProvider {
   Future<void> readNotification({

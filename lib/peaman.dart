@@ -70,3 +70,6 @@ export 'helpers/reference_helper.dart';
 
 // configs
 export 'configs/peaman_lazy_load_config.dart';
+
+// utils
+export 'utils/firestore_constants.dart';

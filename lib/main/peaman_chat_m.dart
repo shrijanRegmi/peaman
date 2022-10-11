@@ -2,7 +2,7 @@ import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/message_provider.dart';
 
 import '../helpers/common_helper.dart';
-import '../utils/firestore_constants.dart';
+import '../utils/query_type_def.dart';
 
 class PChatProvider {
   static Future<void> sendMessage({

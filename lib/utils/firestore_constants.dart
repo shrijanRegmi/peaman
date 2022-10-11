@@ -1,7 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-typedef MyQuery = Query<Map<String, dynamic>>;
-
 // main collections
 const usersColName = 'users';
 const chatsColName = 'chats';

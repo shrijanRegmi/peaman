@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
-typedef MyQuery = Query<Map<String, dynamic>>;
+import '../../utils/query_type_def.dart';
 
 class AppUserProvider {
   // create user

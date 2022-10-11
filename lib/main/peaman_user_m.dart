@@ -2,6 +2,8 @@ import 'package:peaman/helpers/common_helper.dart';
 import 'package:peaman/peaman.dart';
 import 'package:peaman/services/database_services/user_provider.dart';
 
+import '../utils/query_type_def.dart';
+
 class PUserProvider {
   static Future<void> setUserOnlineStatus({
     required final String uid,
