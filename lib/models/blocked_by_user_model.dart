@@ -1,13 +1,15 @@
-class PeamanBlockedByUser {
-  final String? uid;
-  final int? createdAt;
-  final int? updatedAt;
+import 'package:peaman/models/id_user_model.dart';
 
+class PeamanBlockedByUser extends IdUser {
   PeamanBlockedByUser({
-    this.uid,
-    this.createdAt,
-    this.updatedAt,
-  });
+    final String? uid,
+    final int? createdAt,
+    final int? updatedAt,
+  }) : super(
+          uid: uid,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+        );
 
   static PeamanBlockedByUser fromJson(final Map<String, dynamic> data) {
     return PeamanBlockedByUser(

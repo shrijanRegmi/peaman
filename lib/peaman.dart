@@ -27,11 +27,8 @@ export 'models/follower_model.dart';
 export 'models/following_model.dart';
 export 'models/follow_request_model.dart';
 export 'models/reaction_model.dart';
-export 'models/feed_saver_model.dart';
-export 'models/feed_follower_model.dart';
 export 'models/moment_viewer_model.dart';
 export 'models/moment_picture_model.dart';
-export 'models/feed_viewer_model.dart';
 export 'models/blocked_user_model.dart';
 export 'models/blocked_by_user_model.dart';
 export 'models/unread_messages_count_model.dart';
@@ -45,6 +42,13 @@ export 'models/replied_feed_model.dart';
 export 'models/saved_feed_model.dart';
 export 'models/viewed_feed_model.dart';
 export 'models/followed_feed_model.dart';
+
+export 'models/feed_reactor_model.dart';
+export 'models/feed_commenter_model.dart';
+export 'models/feed_replier_model.dart';
+export 'models/feed_saver_model.dart';
+export 'models/feed_viewer_model.dart';
+export 'models/feed_follower_model.dart';
 
 // enums
 export 'enums/message_type.dart';

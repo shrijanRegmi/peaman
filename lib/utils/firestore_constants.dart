@@ -29,7 +29,10 @@ const devicesColName = 'devices';
 // feeds subcollections
 const reactionsColName = 'reactions';
 const commentsColName = 'comments';
-const feedFollwersColName = 'followers';
+const feedReactorsColName = 'feed_reactors';
+const feedCommentersColName = 'feed_commenters';
+const feedRepliersColName = 'feed_repliers';
+const feedFollowersColName = 'followers';
 const feedSaversColName = 'feed_savers';
 const feedViewersColName = 'feed_viewers';
 //

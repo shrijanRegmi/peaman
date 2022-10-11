@@ -1,7 +1,7 @@
 import 'package:peaman/models/id_user_model.dart';
 
-class PeamanFeedSaver extends IdUser {
-  PeamanFeedSaver({
+class PeamanFeedReactor extends IdUser {
+  PeamanFeedReactor({
     final String? uid,
     final int? createdAt,
     final int? updatedAt,
@@ -11,8 +11,8 @@ class PeamanFeedSaver extends IdUser {
           updatedAt: updatedAt,
         );
 
-  static PeamanFeedSaver fromJson(final Map<String, dynamic> data) {
-    return PeamanFeedSaver(
+  static PeamanFeedReactor fromJson(final Map<String, dynamic> data) {
+    return PeamanFeedReactor(
       uid: data['uid'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],

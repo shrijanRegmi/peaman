@@ -96,10 +96,23 @@ class PeamanReferenceHelper {
   }) =>
       _ref.collection(feedsColName).doc(feedId).collection(commentsColName);
 
-  static ColRef feedFollowersCol({
+  static ColRef feedReactorsCol({
     required final String feedId,
   }) =>
-      _ref.collection(feedsColName).doc(feedId).collection(feedFollwersColName);
+      _ref.collection(feedsColName).doc(feedId).collection(feedReactorsColName);
+
+  static ColRef feedCommentersCol({
+    required final String feedId,
+  }) =>
+      _ref
+          .collection(feedsColName)
+          .doc(feedId)
+          .collection(feedCommentersColName);
+
+  static ColRef feedRepliersCol({
+    required final String feedId,
+  }) =>
+      _ref.collection(feedsColName).doc(feedId).collection(feedRepliersColName);
 
   static ColRef feedSaversCol({
     required final String feedId,
@@ -110,6 +123,15 @@ class PeamanReferenceHelper {
     required final String feedId,
   }) =>
       _ref.collection(feedsColName).doc(feedId).collection(feedViewersColName);
+
+  static ColRef feedFollowersCol({
+    required final String feedId,
+  }) =>
+      _ref
+          .collection(feedsColName)
+          .doc(feedId)
+          .collection(feedFollowersColName);
+
   //
 
   // moments subcollections

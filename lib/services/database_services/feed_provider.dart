@@ -107,18 +107,18 @@ class FeedProvider {
       final _followedFeedRef =
           PeamanReferenceHelper.followedFeedsCol(uid: uid).doc(feedId);
 
-      final _feedFollowerFuture = _feedFollowerRef.set({
-        'uid': uid,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      });
-
+      final _feedFollower = PeamanFeedFollower(
+        uid: uid,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
       final _followedFeed = PeamanFollowedFeed(
         id: feedId,
         createdAt: _currentMillis,
         updatedAt: _currentMillis,
       );
 
+      final _feedFollowerFuture = _feedFollowerRef.set(_feedFollower.toJson());
       final _followedFeedFuture = _followedFeedRef.set(_followedFeed.toJson());
 
       await Future.wait([
@@ -169,12 +169,11 @@ class FeedProvider {
       final _savedFeedRef =
           PeamanReferenceHelper.savedFeedsCol(uid: uid).doc(feedId);
 
-      final _feedSaverData = {
-        'uid': uid,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      };
-
+      final _feedSaver = PeamanFeedSaver(
+        uid: uid,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
       final _savedFeed = PeamanSavedFeed(
         id: feedId,
         createdAt: _currentMillis,
@@ -182,7 +181,7 @@ class FeedProvider {
       );
 
       final _futures = <Future>[
-        _feedSaverRef.set(_feedSaverData),
+        _feedSaverRef.set(_feedSaver.toJson()),
         _savedFeedRef.set(_savedFeed.toJson()),
         updateFeedPropertiesCount(
           feedId: feedId,
@@ -339,12 +338,11 @@ class FeedProvider {
       final _feedViewerRef =
           PeamanReferenceHelper.feedViewersCol(feedId: feedId).doc(uid);
 
-      final _feedViewerData = {
-        'uid': uid,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      };
-
+      final _feedViewer = PeamanFeedViewer(
+        uid: uid,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
       final _viewedFeed = PeamanViewedFeed(
         id: feedId,
         createdAt: _currentMillis,
@@ -352,7 +350,7 @@ class FeedProvider {
       );
 
       final _futures = <Future>[
-        _feedViewerRef.set(_feedViewerData),
+        _feedViewerRef.set(_feedViewer.toJson()),
         _viewedFeedRef.set(_viewedFeed.toJson()),
         updateFeedPropertiesCount(
           feedId: feedId,
@@ -378,11 +376,14 @@ class FeedProvider {
 
       final _momentViewerRef =
           PeamanReferenceHelper.momentViewersCol(momentId: momentId).doc(uid);
-      final _momentViewerFuture = _momentViewerRef.set({
-        'uid': uid,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      });
+
+      final _momentViewer = PeamanMomentViewer(
+        uid: uid,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+
+      final _momentViewerFuture = _momentViewerRef.set(_momentViewer.toJson());
 
       await Future.wait([
         _momentViewerFuture,
@@ -416,6 +417,9 @@ class FeedProvider {
       final _reactedFeedRef =
           PeamanReferenceHelper.reactedFeedsCol(uid: reaction.ownerId!)
               .doc(reaction.feedId);
+      final _feedReactorRef =
+          PeamanReferenceHelper.feedReactorsCol(feedId: reaction.feedId!)
+              .doc(reaction.ownerId);
 
       final _reaction = reaction.copyWith(
         id: _reactionsRef.id,
@@ -424,6 +428,11 @@ class FeedProvider {
       );
       final _reactedFeed = PeamanReactedFeed(
         id: reaction.feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+      final _feedReactor = PeamanFeedReactor(
+        uid: reaction.ownerId,
         createdAt: _currentMillis,
         updatedAt: _currentMillis,
       );
@@ -445,9 +454,12 @@ class FeedProvider {
 
         final _reactedFeedFuture = _reactedFeedRef.set(_reactedFeed.toJson());
 
+        final _feedReactorFuture = _feedReactorRef.set(_feedReactor.toJson());
+
         _futures.add(_feedPropertyFuture);
         _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
+        _futures.add(_feedReactorFuture);
         print('Success: Adding reaction to feed ${reaction.feedId}');
       } else {
         final _commentPropertyFuture = updateCommentPropertiesCount(
@@ -490,6 +502,8 @@ class FeedProvider {
           PeamanReferenceHelper.reactionsCol(feedId: feedId).doc(reactionId);
       final _reactedFeedRef =
           PeamanReferenceHelper.reactedFeedsCol(uid: ownerId).doc(feedId);
+      final _feedReactorRef =
+          PeamanReferenceHelper.feedReactorsCol(feedId: feedId).doc(ownerId);
 
       final _futures = <Future>[];
 
@@ -510,10 +524,12 @@ class FeedProvider {
         );
 
         final _reactedFeedFuture = _reactedFeedRef.delete();
+        final _feedReactorFuture = _feedReactorRef.delete();
 
         _futures.add(_feedPropertiesFuture);
         _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
+        _futures.add(_feedReactorFuture);
         print('Success: Removing reaction from feed $feedId');
       } else {
         final _commentPropertyFuture = updateCommentPropertiesCount(
@@ -565,6 +581,12 @@ class FeedProvider {
       final _repliedFeedRef =
           PeamanReferenceHelper.repliedFeedsCol(uid: comment.ownerId!)
               .doc(comment.feedId);
+      final _feedCommenterRef =
+          PeamanReferenceHelper.feedCommentersCol(feedId: comment.feedId!)
+              .doc(comment.ownerId);
+      final _feedReplierRef =
+          PeamanReferenceHelper.feedRepliersCol(feedId: comment.feedId!)
+              .doc(comment.ownerId);
 
       final _comment = comment.copyWith(
         id: _commentRef.id,
@@ -578,6 +600,16 @@ class FeedProvider {
       );
       final _repliedFeed = PeamanSavedFeed(
         id: _comment.feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+      final _feedCommenter = PeamanFeedCommenter(
+        uid: _comment.ownerId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+      final _feedReplier = PeamanFeedReplier(
+        uid: _comment.ownerId,
         createdAt: _currentMillis,
         updatedAt: _currentMillis,
       );
@@ -602,9 +634,14 @@ class FeedProvider {
           _commentedFeed.toJson(),
         );
 
+        final _feedCommenterFuture = _feedCommenterRef.set(
+          _feedCommenter.toJson(),
+        );
+
         _futures.add(_feedPropertiesFuture);
         _futures.add(_userPropertyFuture);
         _futures.add(_commentedFeedFuture);
+        _futures.add(_feedCommenterFuture);
         print('Success: Adding comment to feed ${comment.feedId}');
       } else {
         final _commentPropertiesFuture = updateCommentPropertiesCount(
@@ -627,10 +664,15 @@ class FeedProvider {
           _repliedFeed.toJson(),
         );
 
+        final _feedReplierFuture = _feedReplierRef.set(
+          _feedReplier.toJson(),
+        );
+
         _futures.add(_feedPropertiesFuture);
         _futures.add(_commentPropertiesFuture);
         _futures.add(_userPropertyFuture);
         _futures.add(_repliedFeedFuture);
+        _futures.add(_feedReplierFuture);
         print('Success: Adding comment to comment ${_comment.parentId}');
       }
 
@@ -681,6 +723,10 @@ class FeedProvider {
           PeamanReferenceHelper.commentedFeedsCol(uid: ownerId).doc(feedId);
       final _repliedFeedRef =
           PeamanReferenceHelper.repliedFeedsCol(uid: ownerId).doc(feedId);
+      final _feedCommenterRef =
+          PeamanReferenceHelper.feedCommentersCol(feedId: feedId).doc(ownerId);
+      final _feedReplierRef =
+          PeamanReferenceHelper.feedRepliersCol(feedId: feedId).doc(ownerId);
 
       final _futures = <Future>[];
 
@@ -709,7 +755,9 @@ class FeedProvider {
 
         if (_commentsSnap.isEmpty) {
           final _commentedFeedFuture = _commentedFeedRef.delete();
+          final _feedCommenterFuture = _feedCommenterRef.delete();
           _futures.add(_commentedFeedFuture);
+          _futures.add(_feedCommenterFuture);
         }
 
         print('Success: Removing comment from feed $feedId');
@@ -743,7 +791,9 @@ class FeedProvider {
 
         if (_repliesSnap.isEmpty) {
           final _repliedFeedFuture = _repliedFeedRef.delete();
+          final _feedReplierFuture = _feedReplierRef.delete();
           _futures.add(_repliedFeedFuture);
+          _futures.add(_feedReplierFuture);
         }
 
         print('Success: Removing comment from comment $parentId');
@@ -971,6 +1021,50 @@ class FeedProvider {
     return PeamanMoment.fromJson(snap.data() ?? {});
   }
 
+  // list of feed reactors from firestore
+  List<PeamanFeedReactor> _feedReactorsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeedReactor.fromJson(e.data())).toList();
+  }
+
+  // list of feed commenters from firestore
+  List<PeamanFeedCommenter> _feedCommentersFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map((e) => PeamanFeedCommenter.fromJson(e.data()))
+        .toList();
+  }
+
+  // list of feed repliers from firestore
+  List<PeamanFeedReplier> _feedRepliersFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeedReplier.fromJson(e.data())).toList();
+  }
+
+  // list of feed savers from firestore
+  List<PeamanFeedSaver> _feedSaversFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeedSaver.fromJson(e.data())).toList();
+  }
+
+  // list of feed viewers from firestore
+  List<PeamanFeedViewer> _feedViewersFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeedViewer.fromJson(e.data())).toList();
+  }
+
+  // list of feed followers from firestore
+  List<PeamanFeedFollower> _feedFollowersFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeedFollower.fromJson(e.data())).toList();
+  }
+
   // list of moment viewers from firestore
   List<PeamanMomentViewer> _momentViewersFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
@@ -1116,6 +1210,72 @@ class FeedProvider {
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // stream of list of feed reactors
+  Stream<List<PeamanFeedReactor>> getFeedReactors({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedReactorsCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedReactorsFromFirebase);
+  }
+
+  // stream of list of feed commenters
+  Stream<List<PeamanFeedCommenter>> getFeedCommenters({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedCommentersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedCommentersFromFirebase);
+  }
+
+  // stream of list of feed repliers
+  Stream<List<PeamanFeedReplier>> getFeedRepliers({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedRepliersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedRepliersFromFirebase);
+  }
+
+  // stream of list of feed savers
+  Stream<List<PeamanFeedSaver>> getFeedSavers({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedSaversCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedSaversFromFirebase);
+  }
+
+  // stream of list of feed viewers
+  Stream<List<PeamanFeedViewer>> getFeedViewers({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedViewersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedViewersFromFirebase);
+  }
+
+  // stream of list of feed followers
+  Stream<List<PeamanFeedFollower>> getFeedFollowers({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedFollowersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedFollowersFromFirebase);
   }
 
   // stream of list of moment viewers
