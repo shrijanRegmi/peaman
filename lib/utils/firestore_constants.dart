@@ -14,6 +14,7 @@ const followRequestsColName = 'follow_requests';
 const userFollowersColName = 'followers';
 const userFollowingsColName = 'followings';
 const notificationsColName = 'notifications';
+const myFeedsColName = 'my_feeds';
 const reactedFeedsColName = 'reacted_feeds';
 const commentedFeedsColName = 'commented_feeds';
 const repliedFeedsColName = 'replied_feeds';

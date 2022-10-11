@@ -1,7 +1,7 @@
 import 'package:peaman/models/id_feed_model.dart';
 
-class PeamanSavedFeed extends IdFeed {
-  PeamanSavedFeed({
+class PeamanFollowedFeed extends IdFeed {
+  PeamanFollowedFeed({
     final String? id,
     final int? createdAt,
     final int? updatedAt,
@@ -11,8 +11,8 @@ class PeamanSavedFeed extends IdFeed {
           updatedAt: updatedAt,
         );
 
-  static PeamanSavedFeed fromJson(final Map<String, dynamic> data) {
-    return PeamanSavedFeed(
+  static PeamanFollowedFeed fromJson(final Map<String, dynamic> data) {
+    return PeamanFollowedFeed(
       id: data['id'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],

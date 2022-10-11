@@ -14,15 +14,28 @@ class FeedProvider {
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feed.id);
+      final _myFeedRef = PeamanReferenceHelper.myFeedsCol(
+        uid: feed.ownerId!,
+      ).doc(_feedRef.id);
+
       final _feed = feed.copyWith(
         id: _feedRef.id,
         createdAt: feed.createdAt ?? _currentMillis,
         updatedAt: feed.updatedAt ?? _currentMillis,
       );
+      final _myFeed = PeamanMyFeed(
+        id: _feedRef.id,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+
       final _futures = <Future>[];
 
       final _createFeedFuture = _feedRef.set(_feed.toJson());
       _futures.add(_createFeedFuture);
+
+      final _myFeedFuture = _myFeedRef.set(_myFeed.toJson());
+      _futures.add(_myFeedFuture);
 
       final _updatePhotosFuture = _updatePhotosCount(
         uid: feed.ownerId!,
@@ -100,11 +113,13 @@ class FeedProvider {
         'updated_at': _currentMillis,
       });
 
-      final _followedFeedFuture = _followedFeedRef.set({
-        'id': feedId,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      });
+      final _followedFeed = PeamanFollowedFeed(
+        id: feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+
+      final _followedFeedFuture = _followedFeedRef.set(_followedFeed.toJson());
 
       await Future.wait([
         _feedFollowerFuture,
@@ -160,15 +175,15 @@ class FeedProvider {
         'updated_at': _currentMillis,
       };
 
-      final _savedFeedData = {
-        'id': feedId,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      };
+      final _savedFeed = PeamanSavedFeed(
+        id: feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
 
       final _futures = <Future>[
         _feedSaverRef.set(_feedSaverData),
-        _savedFeedRef.set(_savedFeedData),
+        _savedFeedRef.set(_savedFeed.toJson()),
         updateFeedPropertiesCount(
           feedId: feedId,
           savesCount: 1,
@@ -324,20 +339,21 @@ class FeedProvider {
       final _feedViewerRef =
           PeamanReferenceHelper.feedViewersCol(feedId: feedId).doc(uid);
 
-      final _viewedFeedData = {
-        'id': feedId,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      };
       final _feedViewerData = {
         'uid': uid,
         'created_at': _currentMillis,
         'updated_at': _currentMillis,
       };
 
+      final _viewedFeed = PeamanViewedFeed(
+        id: feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+
       final _futures = <Future>[
         _feedViewerRef.set(_feedViewerData),
-        _viewedFeedRef.set(_viewedFeedData),
+        _viewedFeedRef.set(_viewedFeed.toJson()),
         updateFeedPropertiesCount(
           feedId: feedId,
           viewsCount: 1,
@@ -390,7 +406,7 @@ class FeedProvider {
       if (reaction.ownerId == null) throw Exception("feedId can't be null");
       if (reaction.parentId == null) throw Exception("parentId can't be null");
       if (reaction.parentOwnerId == null)
-        throw Exception("parentOwner can't be null");
+        throw Exception("parentOwnerId can't be null");
 
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
@@ -405,6 +421,11 @@ class FeedProvider {
         id: _reactionsRef.id,
         createdAt: reaction.createdAt ?? _currentMillis,
         updatedAt: reaction.updatedAt ?? _currentMillis,
+      );
+      final _reactedFeed = PeamanReactedFeed(
+        id: reaction.feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
       );
 
       final _futures = <Future>[];
@@ -422,11 +443,7 @@ class FeedProvider {
           reactionsReceivedFromFeeds: 1,
         );
 
-        final _reactedFeedFuture = _reactedFeedRef.set({
-          'id': _reaction.feedId,
-          'created_at': _currentMillis,
-          'updated_at': _currentMillis,
-        });
+        final _reactedFeedFuture = _reactedFeedRef.set(_reactedFeed.toJson());
 
         _futures.add(_feedPropertyFuture);
         _futures.add(_userPropertyFuture);
@@ -554,6 +571,16 @@ class FeedProvider {
         createdAt: comment.createdAt ?? _currentMillis,
         updatedAt: comment.updatedAt ?? _currentMillis,
       );
+      final _commentedFeed = PeamanSavedFeed(
+        id: _comment.feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+      final _repliedFeed = PeamanSavedFeed(
+        id: _comment.feedId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
 
       final _futures = <Future>[];
 
@@ -571,11 +598,9 @@ class FeedProvider {
           commentsReceivedFromFeeds: 1,
         );
 
-        final _commentedFeedFuture = _commentedFeedRef.set({
-          'id': _comment.feedId,
-          'created_at': _currentMillis,
-          'updated_at': _currentMillis,
-        });
+        final _commentedFeedFuture = _commentedFeedRef.set(
+          _commentedFeed.toJson(),
+        );
 
         _futures.add(_feedPropertiesFuture);
         _futures.add(_userPropertyFuture);
@@ -598,11 +623,9 @@ class FeedProvider {
           repliesReceivedFromFeeds: 1,
         );
 
-        final _repliedFeedFuture = _repliedFeedRef.set({
-          'id': _comment.feedId,
-          'created_at': _currentMillis,
-          'updated_at': _currentMillis,
-        });
+        final _repliedFeedFuture = _repliedFeedRef.set(
+          _repliedFeed.toJson(),
+        );
 
         _futures.add(_feedPropertiesFuture);
         _futures.add(_commentPropertiesFuture);
@@ -955,11 +978,55 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanMomentViewer.fromJson(e.data())).toList();
   }
 
+  // list of my feeds from firestore
+  List<PeamanMyFeed> _myFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanMyFeed.fromJson(e.data())).toList();
+  }
+
+  // list of reacted feeds from firestore
+  List<PeamanReactedFeed> _reactedFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanReactedFeed.fromJson(e.data())).toList();
+  }
+
+  // list of commented feeds from firestore
+  List<PeamanCommentedFeed> _commentedFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map((e) => PeamanCommentedFeed.fromJson(e.data()))
+        .toList();
+  }
+
+  // list of replied feeds from firestore
+  List<PeamanRepliedFeed> _repliedFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanRepliedFeed.fromJson(e.data())).toList();
+  }
+
   // list of saved feeds from firestore
   List<PeamanSavedFeed> _savedFeedsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanSavedFeed.fromJson(e.data())).toList();
+  }
+
+  // list of viewed feeds from firestore
+  List<PeamanViewedFeed> _viewedFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanViewedFeed.fromJson(e.data())).toList();
+  }
+
+  // list of followed feeds from firestore
+  List<PeamanFollowedFeed> _followedFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFollowedFeed.fromJson(e.data())).toList();
   }
 
   // list of comments from firestore
@@ -1064,6 +1131,39 @@ class FeedProvider {
     return _query.snapshots().map(_momentViewersFromFirebase);
   }
 
+  // stream of list of reacted feeds
+  Stream<List<PeamanReactedFeed>> getUserReactedFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.reactedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_reactedFeedsFromFirebase);
+  }
+
+  // stream of list of commented feeds
+  Stream<List<PeamanCommentedFeed>> getUserCommentedFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.commentedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentedFeedsFromFirebase);
+  }
+
+  // stream of list of replied feeds
+  Stream<List<PeamanRepliedFeed>> getUserRepliedFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.repliedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_repliedFeedsFromFirebase);
+  }
+
   // stream of list of saved feeds
   Stream<List<PeamanSavedFeed>> getUserSavedFeeds({
     required final String uid,
@@ -1073,6 +1173,39 @@ class FeedProvider {
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_savedFeedsFromFirebase);
+  }
+
+  // stream of list of viewed feeds
+  Stream<List<PeamanViewedFeed>> getUserViewedFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.viewedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_viewedFeedsFromFirebase);
+  }
+
+  // stream of list of followed feeds
+  Stream<List<PeamanFollowedFeed>> getUserFollowedFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.followedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_followedFeedsFromFirebase);
+  }
+
+  // stream of list of my feeds
+  Stream<List<PeamanMyFeed>> getUserMyFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.myFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_myFeedsFromFirebase);
   }
 
   // stream of list of replies
