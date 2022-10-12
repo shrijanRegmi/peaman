@@ -5,9 +5,21 @@ class PeamanLazyLoadConfig {
   final bool lazyLoadUserFollowings;
   final bool lazyLoadUserBlockedUsers;
   final bool lazyLoadUserBlockedByUsers;
-  final bool lazyLoadUserSavedFeeds;
   final bool lazyLoadUserNotifications;
   final bool lazyLoadFeeds;
+  final bool lazyLoadUserMyFeeds;
+  final bool lazyLoadUserReactedFeeds;
+  final bool lazyLoadUserCommentedFeeds;
+  final bool lazyLoadUserRepliedFeeds;
+  final bool lazyLoadUserSavedFeeds;
+  final bool lazyLoadUserViewedFeeds;
+  final bool lazyLoadUserFollowedFeeds;
+  final bool lazyLoadFeedReactors;
+  final bool lazyLoadFeedCommenters;
+  final bool lazyLoadFeedRepliers;
+  final bool lazyLoadFeedSavers;
+  final bool lazyLoadFeedViewers;
+  final bool lazyLoadFeedFollowers;
   final bool lazyLoadMoments;
 
   PeamanLazyLoadConfig({
@@ -17,9 +29,21 @@ class PeamanLazyLoadConfig {
     this.lazyLoadUserFollowings = true,
     this.lazyLoadUserBlockedUsers = true,
     this.lazyLoadUserBlockedByUsers = true,
-    this.lazyLoadUserSavedFeeds = true,
     this.lazyLoadUserNotifications = true,
     this.lazyLoadFeeds = true,
+    this.lazyLoadUserMyFeeds = true,
+    this.lazyLoadUserReactedFeeds = true,
+    this.lazyLoadUserCommentedFeeds = true,
+    this.lazyLoadUserRepliedFeeds = true,
+    this.lazyLoadUserSavedFeeds = true,
+    this.lazyLoadUserViewedFeeds = true,
+    this.lazyLoadUserFollowedFeeds = true,
+    this.lazyLoadFeedReactors = true,
+    this.lazyLoadFeedCommenters = true,
+    this.lazyLoadFeedRepliers = true,
+    this.lazyLoadFeedSavers = true,
+    this.lazyLoadFeedViewers = true,
+    this.lazyLoadFeedFollowers = true,
     this.lazyLoadMoments = true,
   });
 }
