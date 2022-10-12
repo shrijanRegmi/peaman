@@ -17,6 +17,7 @@ class PeamanUser {
   final List<String> searchKeys;
   final PeamanOnlineStatus onlineStatus;
   final int? lastOnlineAt;
+  final int feeds;
   final int photos;
   final int videos;
   final int followers;
@@ -48,6 +49,7 @@ class PeamanUser {
     this.gender = PeamanGender.unknown,
     this.dob,
     this.profession,
+    this.feeds = 0,
     this.photos = 0,
     this.videos = 0,
     this.onlineStatus = PeamanOnlineStatus.away,
@@ -86,6 +88,7 @@ class PeamanUser {
     final String? profileStatus,
     final PeamanOnlineStatus? onlineStatus,
     final int? lastOnlineAt,
+    final int? feeds,
     final int? photos,
     final int? videos,
     final int? followers,
@@ -120,6 +123,7 @@ class PeamanUser {
       profession: profession ?? this.profession,
       onlineStatus: onlineStatus ?? this.onlineStatus,
       lastOnlineAt: lastOnlineAt ?? this.lastOnlineAt,
+      feeds: feeds ?? this.feeds,
       photos: photos ?? this.photos,
       videos: videos ?? this.videos,
       followers: followers ?? this.followers,
@@ -162,6 +166,7 @@ class PeamanUser {
       'profession': profession,
       'online_status': onlineStatus.index,
       'last_online_at': lastOnlineAt,
+      'feeds': feeds,
       'photos': photos,
       'videos': videos,
       'followers': followers,
@@ -203,6 +208,7 @@ class PeamanUser {
       profession: data['profession'],
       onlineStatus: PeamanOnlineStatus.values[data['online_status'] ?? 0],
       lastOnlineAt: data['last_online_at'],
+      feeds: data['feeds'] ?? 0,
       photos: data['photos'] ?? 0,
       videos: data['videos'] ?? 0,
       followers: data['followers'] ?? 0,
@@ -240,7 +246,9 @@ class PeamanUserUpdater {
   List<String>? searchKeys;
   PeamanOnlineStatus? onlineStatus;
   int? lastOnlineAt;
+  int? feeds;
   int? photos;
+  int? videos;
   int? followers;
   int? following;
   int? reactionsReceivedFromFeeds;
@@ -269,7 +277,9 @@ class PeamanUserUpdater {
     this.gender,
     this.dob,
     this.profession,
+    this.feeds,
     this.photos,
+    this.videos,
     this.onlineStatus,
     this.lastOnlineAt,
     this.searchKeys,
@@ -305,7 +315,9 @@ class PeamanUserUpdater {
       'profession': profession,
       'online_status': onlineStatus?.index,
       'last_online_at': lastOnlineAt,
+      'feeds': feeds,
       'photos': photos,
+      'videos': videos,
       'followers': followers,
       'following': following,
       'search_keys': searchKeys,
@@ -332,7 +344,9 @@ class PeamanUserUpdater {
 
 class PeamanUserPartialUpdater {
   List<String>? searchKeys;
+  int? feeds;
   int? photos;
+  int? videos;
   int? followers;
   int? following;
   int? reactionsReceivedFromFeeds;
@@ -345,7 +359,9 @@ class PeamanUserPartialUpdater {
 
   PeamanUserPartialUpdater({
     this.searchKeys,
+    this.feeds,
     this.photos,
+    this.videos,
     this.followers,
     this.following,
     this.reactionsReceivedFromFeeds,
@@ -365,7 +381,9 @@ class PeamanUserPartialUpdater {
     final _data = <String, dynamic>{
       'searchKeys':
           searchKeys == null ? null : FieldValue.arrayUnion(searchKeys!),
+      'feeds': feeds == null ? null : FieldValue.increment(feeds!),
       'photos': photos == null ? null : FieldValue.increment(photos!),
+      'videos': videos == null ? null : FieldValue.increment(videos!),
       'followers': followers == null ? null : FieldValue.increment(followers!),
       'following': following == null ? null : FieldValue.increment(following!),
       'reactions_received_from_feeds': reactionsReceivedFromFeeds == null
@@ -400,7 +418,9 @@ class PeamanUserPartialUpdater {
     final _data = <String, dynamic>{
       'searchKeys':
           searchKeys == null ? null : FieldValue.arrayRemove(searchKeys!),
+      'feeds': feeds == null ? null : FieldValue.increment(-feeds!),
       'photos': photos == null ? null : FieldValue.increment(-photos!),
+      'videos': videos == null ? null : FieldValue.increment(-videos!),
       'followers': followers == null ? null : FieldValue.increment(-followers!),
       'following': following == null ? null : FieldValue.increment(-following!),
       'reactions_received_from_feeds': reactionsReceivedFromFeeds == null

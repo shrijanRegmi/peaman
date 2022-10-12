@@ -37,21 +37,17 @@ class FeedProvider {
       final _myFeedFuture = _myFeedRef.set(_myFeed.toJson());
       _futures.add(_myFeedFuture);
 
-      final _updatePhotosFuture = _updatePhotosCount(
+      final _updatePhotosFuture = _updateUserStatusCount(
         uid: feed.ownerId!,
-        count: feed.files
+        feeds: 1,
+        photos: feed.files
             .where((element) => element.type == PeamanFileType.image)
             .length,
-      );
-      _futures.add(_updatePhotosFuture);
-
-      final _updateVideosFuture = _updateVideosCount(
-        uid: feed.ownerId!,
-        count: feed.files
+        videos: feed.files
             .where((element) => element.type == PeamanFileType.video)
             .length,
       );
-      _futures.add(_updateVideosFuture);
+      _futures.add(_updatePhotosFuture);
 
       await Future.wait(_futures);
       print('Success: Creating feed ${_feed.id}');
@@ -873,34 +869,19 @@ class FeedProvider {
   }
 
   // update photos count
-  Future<void> _updatePhotosCount({
+  Future<void> _updateUserStatusCount({
     required final String uid,
-    required final int count,
+    required final int feeds,
+    required final int photos,
+    required final int videos,
   }) async {
     try {
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
 
       await _userRef.update({
-        'photos': FieldValue.increment(count),
-      });
-
-      print('Success: Updating photos count of $uid');
-    } catch (e) {
-      print(e);
-      print('Error!!!: Updating photos count $uid');
-    }
-  }
-
-  // update photos count
-  Future<void> _updateVideosCount({
-    required final String uid,
-    required final int count,
-  }) async {
-    try {
-      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
-
-      await _userRef.update({
-        'videos': FieldValue.increment(count),
+        'feeds': FieldValue.increment(feeds),
+        'photos': FieldValue.increment(photos),
+        'videos': FieldValue.increment(videos),
       });
 
       print('Success: Updating photos count of $uid');
