@@ -103,19 +103,18 @@ class MessageProvider {
     required final PeamanMessage message,
   }) async {
     try {
-      final _mediaRef = PeamanReferenceHelper.mediasCol(
+      final _fileRef = PeamanReferenceHelper.chatFilesCol(
         chatId: message.chatId!,
       ).doc();
 
-      final media = PeamanChatMedia(
-        id: _mediaRef.id,
+      final file = PeamanChatFile(
+        id: _fileRef.id,
         urls: message.files,
-        mediaType: PeamanMediaType.image,
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
       );
 
-      await _mediaRef.set(media.toJson());
+      await _fileRef.set(file.toJson());
       print('Success: Sending media information');
     } catch (e) {
       print(e);

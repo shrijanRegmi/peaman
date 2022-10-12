@@ -33,7 +33,8 @@ export 'models/blocked_user_model.dart';
 export 'models/blocked_by_user_model.dart';
 export 'models/unread_messages_count_model.dart';
 export 'models/sent_messages_count_model.dart';
-export 'models/chat_media_model.dart';
+export 'models/chat_file_model.dart';
+export 'models/file_url_model.dart';
 
 export 'models/my_feed_model.dart';
 export 'models/reacted_feed_model.dart';
@@ -61,7 +62,7 @@ export 'enums/comment_parent_type.dart';
 export 'enums/reaction_parent_type.dart';
 export 'enums/feed_type.dart';
 export 'enums/gender.dart';
-export 'enums/media_type.dart';
+export 'enums/file_type.dart';
 
 // helpers
 export 'helpers/chat_helper.dart';

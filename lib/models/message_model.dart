@@ -4,7 +4,7 @@ class PeamanMessage {
   final String? id;
   final String? chatId;
   final String? text;
-  final List<String> files;
+  final List<PeamanFileUrl> files;
   final PeamanMessageType type;
   final String? senderId;
   final List<String> receiverIds;
@@ -34,7 +34,7 @@ class PeamanMessage {
     final String? senderId,
     final List<String>? receiverId,
     final String? extraId,
-    final List<String>? files,
+    final List<PeamanFileUrl>? files,
     final PeamanMessageType? type,
     final int? createdAt,
     final int? updatedAt,
@@ -60,7 +60,9 @@ class PeamanMessage {
       id: data['id'],
       chatId: data['chat_id'],
       text: data['text'],
-      files: List<String>.from(data['files'] ?? []),
+      files: List<PeamanFileUrl>.from(
+        (data['files'] ?? []).map((e) => PeamanFileUrl.fromJson(e)).toList(),
+      ),
       senderId: data['sender_id'],
       type: PeamanMessageType.values[data['type'] ?? 0],
       receiverIds: List<String>.from(data['receiver_ids'] ?? []),
@@ -76,7 +78,7 @@ class PeamanMessage {
       'id': id,
       'chat_id': chatId,
       'text': text,
-      'files': files,
+      'files': files.map((e) => e.toJson()).toList(),
       'sender_id': senderId,
       'type': type.index,
       'receiver_ids': receiverIds,

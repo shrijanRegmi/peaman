@@ -111,7 +111,7 @@ class PeamanReferenceHelper {
   static ColRef messagesCol({required final String chatId}) =>
       _ref.collection(chatsColName).doc(chatId).collection(messagesColName);
 
-  static ColRef mediasCol({required final String chatId}) =>
-      _ref.collection(chatsColName).doc(chatId).collection(mediasColName);
+  static ColRef chatFilesCol({required final String chatId}) =>
+      _ref.collection(chatsColName).doc(chatId).collection(filesColName);
   //
 }

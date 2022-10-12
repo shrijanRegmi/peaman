@@ -1,4 +1,4 @@
-enum PeamanMediaType {
+enum PeamanFileType {
   unknown,
   image,
   video,
