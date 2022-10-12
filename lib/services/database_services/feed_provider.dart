@@ -39,9 +39,19 @@ class FeedProvider {
 
       final _updatePhotosFuture = _updatePhotosCount(
         uid: feed.ownerId!,
-        count: feed.photos.length,
+        count: feed.files
+            .where((element) => element.type == PeamanFileType.image)
+            .length,
       );
       _futures.add(_updatePhotosFuture);
+
+      final _updateVideosFuture = _updateVideosCount(
+        uid: feed.ownerId!,
+        count: feed.files
+            .where((element) => element.type == PeamanFileType.video)
+            .length,
+      );
+      _futures.add(_updateVideosFuture);
 
       await Future.wait(_futures);
       print('Success: Creating feed ${_feed.id}');
@@ -872,6 +882,25 @@ class FeedProvider {
 
       await _userRef.update({
         'photos': FieldValue.increment(count),
+      });
+
+      print('Success: Updating photos count of $uid');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Updating photos count $uid');
+    }
+  }
+
+  // update photos count
+  Future<void> _updateVideosCount({
+    required final String uid,
+    required final int count,
+  }) async {
+    try {
+      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+
+      await _userRef.update({
+        'videos': FieldValue.increment(count),
       });
 
       print('Success: Updating photos count of $uid');

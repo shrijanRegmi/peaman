@@ -1,11 +1,10 @@
-import '../enums/feed_type.dart';
+import 'package:peaman/peaman.dart';
 
 class PeamanFeed {
   final String? id;
   final String? ownerId;
   final String? caption;
-  final List<String> photos;
-  final List<String> videos;
+  final List<PeamanFileUrl> files;
   final PeamanFeedType type;
   final int reactionsCount;
   final int commentsCount;
@@ -22,10 +21,9 @@ class PeamanFeed {
   PeamanFeed({
     this.id,
     this.ownerId,
-    this.type = PeamanFeedType.image,
+    this.type = PeamanFeedType.text,
     this.caption,
-    this.photos = const <String>[],
-    this.videos = const <String>[],
+    this.files = const <PeamanFileUrl>[],
     this.reactionsCount = 0,
     this.commentsCount = 0,
     this.repliesCount = 0,
@@ -44,8 +42,7 @@ class PeamanFeed {
     final String? ownerId,
     final PeamanFeedType? type,
     final String? caption,
-    final List<String>? photos,
-    final List<String>? videos,
+    final List<PeamanFileUrl>? files,
     final int? reactionsCount,
     final int? commentsCount,
     final int? repliesCount,
@@ -63,8 +60,7 @@ class PeamanFeed {
       ownerId: ownerId ?? this.ownerId,
       type: type ?? this.type,
       caption: caption ?? this.caption,
-      photos: photos ?? this.photos,
-      videos: videos ?? this.videos,
+      files: files ?? this.files,
       reactionsCount: reactionsCount ?? this.reactionsCount,
       commentsCount: commentsCount ?? this.commentsCount,
       repliesCount: commentsCount ?? this.repliesCount,
@@ -85,8 +81,9 @@ class PeamanFeed {
       ownerId: data['owner_id'],
       type: PeamanFeedType.values[data['type'] ?? 0],
       caption: data['caption'] ?? '',
-      photos: List<String>.from(data['photos'] ?? []),
-      videos: List<String>.from(data['videos'] ?? []),
+      files: List<PeamanFileUrl>.from(
+        (data['files'] ?? []).map((e) => PeamanFileUrl.fromJson(e)).toList(),
+      ),
       searchKeys: List<String>.from(data['search_keys'] ?? []),
       featured: data['featured'] ?? false,
       reactionsCount: data['reactions_count'] ?? 0,
@@ -107,8 +104,7 @@ class PeamanFeed {
       'owner_id': ownerId,
       'type': type.index,
       'caption': caption,
-      'photos': photos,
-      'videos': videos,
+      'files': files.map((e) => e.toJson()).toList(),
       'search_keys': searchKeys,
       'featured': featured,
       'reactions_count': reactionsCount,

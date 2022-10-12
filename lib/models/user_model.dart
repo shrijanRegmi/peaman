@@ -18,6 +18,7 @@ class PeamanUser {
   final PeamanOnlineStatus onlineStatus;
   final int? lastOnlineAt;
   final int photos;
+  final int videos;
   final int followers;
   final int following;
   final int reactionsReceivedFromFeeds;
@@ -44,10 +45,11 @@ class PeamanUser {
     this.phone,
     this.country,
     this.bio,
-    this.gender = PeamanGender.np,
+    this.gender = PeamanGender.unknown,
     this.dob,
     this.profession,
     this.photos = 0,
+    this.videos = 0,
     this.onlineStatus = PeamanOnlineStatus.away,
     this.lastOnlineAt,
     this.searchKeys = const [],
@@ -85,6 +87,7 @@ class PeamanUser {
     final PeamanOnlineStatus? onlineStatus,
     final int? lastOnlineAt,
     final int? photos,
+    final int? videos,
     final int? followers,
     final int? following,
     final List<String>? searchKeys,
@@ -118,6 +121,7 @@ class PeamanUser {
       onlineStatus: onlineStatus ?? this.onlineStatus,
       lastOnlineAt: lastOnlineAt ?? this.lastOnlineAt,
       photos: photos ?? this.photos,
+      videos: videos ?? this.videos,
       followers: followers ?? this.followers,
       following: following ?? this.following,
       searchKeys: searchKeys ?? this.searchKeys,
@@ -159,6 +163,7 @@ class PeamanUser {
       'online_status': onlineStatus.index,
       'last_online_at': lastOnlineAt,
       'photos': photos,
+      'videos': videos,
       'followers': followers,
       'following': following,
       'search_keys': searchKeys,
@@ -199,6 +204,7 @@ class PeamanUser {
       onlineStatus: PeamanOnlineStatus.values[data['online_status'] ?? 0],
       lastOnlineAt: data['last_online_at'],
       photos: data['photos'] ?? 0,
+      videos: data['videos'] ?? 0,
       followers: data['followers'] ?? 0,
       following: data['following'] ?? 0,
       searchKeys: List<String>.from(data['search_keys'] ?? []),

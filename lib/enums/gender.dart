@@ -1,5 +1,5 @@
 enum PeamanGender {
-  np, // not provided
+  unknown,
   male,
   female,
   other,
