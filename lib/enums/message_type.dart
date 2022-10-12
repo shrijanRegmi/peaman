@@ -1,6 +1,6 @@
 enum PeamanMessageType {
   text,
-  image,
+  file,
   momentReply,
   feedShare,
 }
