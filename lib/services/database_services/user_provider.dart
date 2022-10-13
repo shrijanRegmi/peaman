@@ -255,7 +255,7 @@ class AppUserProvider {
       _futures.add(_friendFollowersFuture);
 
       final _userFollowingFuture = _userFollowingRef.set({
-        'uid': uid,
+        'uid': friendId,
         'created_at': _currentMillis,
         'updated_at': _currentMillis,
       });
