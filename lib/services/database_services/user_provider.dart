@@ -149,16 +149,31 @@ class AppUserProvider {
     try {
       final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
-      final _requestRef =
-          PeamanReferenceHelper.followRequestsCol(uid: friendId).doc(uid);
+      final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
+        uid: friendId,
+      ).doc(uid);
+      final _sentRef = PeamanReferenceHelper.sentFollowRequestsCol(
+        uid: uid,
+      ).doc(friendId);
 
-      final _data = {
-        'uid': uid,
-        'created_at': _currentMillis,
-        'updated_at': _currentMillis,
-      };
+      final _received = PeamanReceivedFollowRequest(
+        uid: uid,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
+      final _sent = PeamanSentFollowRequest(
+        uid: friendId,
+        createdAt: _currentMillis,
+        updatedAt: _currentMillis,
+      );
 
-      await _requestRef.set(_data);
+      final _receivedFuture = _receivedRef.set(_received.toJson());
+      final _sentFuture = _sentRef.set(_sent.toJson());
+
+      await Future.wait([
+        _receivedFuture,
+        _sentFuture,
+      ]);
       print('Success: Following user $friendId');
     } catch (e) {
       print(e);
@@ -172,15 +187,24 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _followRequestRef =
-          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
+      final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
+        uid: uid,
+      ).doc(friendId);
+      final _sentRef = PeamanReferenceHelper.sentFollowRequestsCol(
+        uid: friendId,
+      ).doc(uid);
 
       final _futures = <Future>[];
 
-      final _followRequestFuture = _followRequestRef.update({
+      final _receivedFuture = _receivedRef.update({
         'accepted': true,
       });
-      _futures.add(_followRequestFuture);
+      _futures.add(_receivedFuture);
+
+      final _sentFuture = _sentRef.update({
+        'accepted': true,
+      });
+      _futures.add(_sentFuture);
 
       final _addFollowFuture = _addFollower(
         uid: uid,
@@ -207,13 +231,19 @@ class AppUserProvider {
 
       final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
       final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
-      final _followReqRef =
-          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
+      final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
+        uid: uid,
+      ).doc(friendId);
+      final _sentRef = PeamanReferenceHelper.sentFollowRequestsCol(
+        uid: friendId,
+      ).doc(uid);
 
-      final _friendFollowersRef =
-          PeamanReferenceHelper.userFollowersCol(uid: friendId).doc(uid);
-      final _userFollowingRef =
-          PeamanReferenceHelper.userFollowingsCol(uid: uid).doc(friendId);
+      final _friendFollowersRef = PeamanReferenceHelper.userFollowersCol(
+        uid: friendId,
+      ).doc(uid);
+      final _userFollowingRef = PeamanReferenceHelper.userFollowingsCol(
+        uid: uid,
+      ).doc(friendId);
 
       final _futures = <Future>[];
 
@@ -241,8 +271,11 @@ class AppUserProvider {
       });
       _futures.add(_userUpdateFuture);
 
-      final _followRequestDeleteFuture = _followReqRef.delete();
-      _futures.add(_followRequestDeleteFuture);
+      final _requestFuture = _receivedRef.delete();
+      _futures.add(_requestFuture);
+
+      final _sentFuture = _sentRef.delete();
+      _futures.add(_sentFuture);
 
       await Future.wait(_futures);
       print('Success: Following back $friendId');
@@ -258,10 +291,20 @@ class AppUserProvider {
     required final String friendId,
   }) async {
     try {
-      final _followReqRef =
-          PeamanReferenceHelper.followRequestsCol(uid: uid).doc(friendId);
+      final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
+        uid: friendId,
+      ).doc(uid);
+      final _sentRef = PeamanReferenceHelper.sentFollowRequestsCol(
+        uid: uid,
+      ).doc(friendId);
 
-      await _followReqRef.delete();
+      final _receivedFututre = _receivedRef.delete();
+      final _sentFuture = _sentRef.delete();
+
+      await Future.wait([
+        _receivedFututre,
+        _sentFuture,
+      ]);
       print('Success: Canceling follow $friendId');
     } catch (e) {
       print(e);
@@ -455,12 +498,21 @@ class AppUserProvider {
     }).toList();
   }
 
-  // list of follow requests from firestore
-  List<PeamanFollowRequest> _followRequestsFromFirebase(
+  // list of received follow requests from firestore
+  List<PeamanReceivedFollowRequest> _receivedFollowRequestsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs
-        .map((e) => PeamanFollowRequest.fromJson(e.data()))
+        .map((e) => PeamanReceivedFollowRequest.fromJson(e.data()))
+        .toList();
+  }
+
+  // list of sent follow requests from firestore
+  List<PeamanSentFollowRequest> _sentFollowRequestsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs
+        .map((e) => PeamanSentFollowRequest.fromJson(e.data()))
         .toList();
   }
 
@@ -524,16 +576,28 @@ class AppUserProvider {
         .map(_appUserFromFirebase);
   }
 
-  // stream of list of follow requests
-  Stream<List<PeamanFollowRequest>> getFollowRequests({
+  // stream of list of received follow requests
+  Stream<List<PeamanReceivedFollowRequest>> getReceivedFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref = PeamanReferenceHelper.followRequestsCol(uid: uid)
+    final _ref = PeamanReferenceHelper.receivedFollowRequestsCol(uid: uid)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
 
-    return _query.snapshots().map(_followRequestsFromFirebase);
+    return _query.snapshots().map(_receivedFollowRequestsFromFirebase);
+  }
+
+  // stream of list of sent follow requests
+  Stream<List<PeamanSentFollowRequest>> getSentFollowRequests({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.sentFollowRequestsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.snapshots().map(_sentFollowRequestsFromFirebase);
   }
 
   // stream of list of follower

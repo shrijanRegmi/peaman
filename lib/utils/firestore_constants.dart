@@ -6,7 +6,8 @@ const momentsColName = 'moments';
 //
 
 // users subcollections
-const followRequestsColName = 'follow_requests';
+const receivedFollowRequestsColName = 'received_follow_requests';
+const sentFollowRequestsColName = 'sent_follow_requests';
 const userFollowersColName = 'followers';
 const userFollowingsColName = 'followings';
 const notificationsColName = 'notifications';

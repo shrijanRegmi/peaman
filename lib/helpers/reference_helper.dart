@@ -26,8 +26,15 @@ class PeamanReferenceHelper {
   //
 
   // users subcollections
-  static ColRef followRequestsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(followRequestsColName);
+  static ColRef receivedFollowRequestsCol({required final String uid}) => _ref
+      .collection(usersColName)
+      .doc(uid)
+      .collection(receivedFollowRequestsColName);
+
+  static ColRef sentFollowRequestsCol({required final String uid}) => _ref
+      .collection(usersColName)
+      .doc(uid)
+      .collection(sentFollowRequestsColName);
 
   static ColRef userFollowersCol({required final String uid}) =>
       _ref.collection(usersColName).doc(uid).collection(userFollowersColName);

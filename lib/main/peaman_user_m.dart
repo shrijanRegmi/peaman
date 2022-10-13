@@ -170,12 +170,24 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollowRequest>> getUserFollowRequests({
+  static Stream<List<PeamanReceivedFollowRequest>>
+      getUserReceivedFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
-    PeamanCommonHelper.printListening(text: 'followRequests');
-    return AppUserProvider().getFollowRequests(
+    PeamanCommonHelper.printListening(text: 'receivedFollowRequests');
+    return AppUserProvider().getReceivedFollowRequests(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanSentFollowRequest>> getUserSentFollowRequests({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'sentFollowRequests');
+    return AppUserProvider().getSentFollowRequests(
       uid: uid,
       query: query,
     );

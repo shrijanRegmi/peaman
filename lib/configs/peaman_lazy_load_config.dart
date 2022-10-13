@@ -3,6 +3,8 @@ class PeamanLazyLoadConfig {
   final bool lazyLoadUserChats;
   final bool lazyLoadUserFollowers;
   final bool lazyLoadUserFollowings;
+  final bool lazyLoadUserReceivedFollowRequests;
+  final bool lazyLoadUserSentFollowRequests;
   final bool lazyLoadUserBlockedUsers;
   final bool lazyLoadUserBlockedByUsers;
   final bool lazyLoadUserNotifications;
@@ -27,6 +29,8 @@ class PeamanLazyLoadConfig {
     this.lazyLoadUserChats = true,
     this.lazyLoadUserFollowers = true,
     this.lazyLoadUserFollowings = true,
+    this.lazyLoadUserReceivedFollowRequests = true,
+    this.lazyLoadUserSentFollowRequests = true,
     this.lazyLoadUserBlockedUsers = true,
     this.lazyLoadUserBlockedByUsers = true,
     this.lazyLoadUserNotifications = true,

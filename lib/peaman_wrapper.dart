@@ -57,6 +57,20 @@ class PeamanWrapper extends StatelessWidget {
               lazy: _lazyLoadConfig.lazyLoadUserFollowings,
               initialData: null,
             ),
+            PStateProvider.stream<List<PeamanReceivedFollowRequest>?>(
+              create: (_) => PUserProvider.getUserReceivedFollowRequests(
+                uid: _uid,
+              ),
+              lazy: _lazyLoadConfig.lazyLoadUserReceivedFollowRequests,
+              initialData: null,
+            ),
+            PStateProvider.stream<List<PeamanSentFollowRequest>?>(
+              create: (_) => PUserProvider.getUserSentFollowRequests(
+                uid: _uid,
+              ),
+              lazy: _lazyLoadConfig.lazyLoadUserSentFollowRequests,
+              initialData: null,
+            ),
             PStateProvider.stream<List<PeamanBlockedUser>?>(
               create: (_) => PUserProvider.getUserBlockedUsers(
                 uid: _uid,
