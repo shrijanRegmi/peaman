@@ -1,11 +1,13 @@
 import 'package:peaman/models/id_user_model.dart';
 
 class PeamanReceivedFollowRequest extends IdUser {
+  final bool accepted;
+
   PeamanReceivedFollowRequest({
     final String? uid,
     final int? createdAt,
     final int? updatedAt,
-    final bool accepted = false,
+    this.accepted = false,
   }) : super(
           uid: uid,
           createdAt: createdAt,
