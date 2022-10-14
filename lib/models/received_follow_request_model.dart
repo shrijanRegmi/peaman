@@ -5,10 +5,12 @@ class PeamanReceivedFollowRequest extends IdUser {
     final String? uid,
     final int? createdAt,
     final int? updatedAt,
+    final bool accepted = false,
   }) : super(
           uid: uid,
           createdAt: createdAt,
           updatedAt: updatedAt,
+          extraData: {'accepted': accepted},
         );
 
   static PeamanReceivedFollowRequest fromJson(final Map<String, dynamic> data) {
@@ -16,6 +18,7 @@ class PeamanReceivedFollowRequest extends IdUser {
       uid: data['uid'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
+      accepted: data['accepted'] ?? false,
     );
   }
 }
