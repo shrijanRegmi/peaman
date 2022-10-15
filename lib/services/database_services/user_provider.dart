@@ -230,8 +230,23 @@ class AppUserProvider {
       final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
         uid: uid,
       ).doc(friendId);
+      final _sentRef = PeamanReferenceHelper.sentFollowRequestsCol(
+        uid: friendId,
+      ).doc(uid);
 
-      await _receivedRef.delete();
+      final _futures = <Future>[];
+
+      final _receivedFuture = _receivedRef.update({
+        'ignored': true,
+      });
+      _futures.add(_receivedFuture);
+
+      final _sentFuture = _sentRef.update({
+        'ignored': true,
+      });
+      _futures.add(_sentFuture);
+
+      await Future.wait(_futures);
       print('Success: Ignoring follow request $friendId');
     } catch (e) {
       print(e);
