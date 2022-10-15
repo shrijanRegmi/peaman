@@ -221,6 +221,25 @@ class AppUserProvider {
     }
   }
 
+  // ignore follow request
+  Future<void> ignoreFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) async {
+    try {
+      final _receivedRef = PeamanReferenceHelper.receivedFollowRequestsCol(
+        uid: uid,
+      ).doc(friendId);
+
+      await _receivedRef.delete();
+      print('Success: Ignoring follow request $friendId');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Ignoring follow request');
+      return null;
+    }
+  }
+
   // follow back
   Future<void> followBackUser({
     required final String uid,

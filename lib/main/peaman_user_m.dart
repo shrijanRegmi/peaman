@@ -85,6 +85,16 @@ class PUserProvider {
     );
   }
 
+  static Future<void> ignoreFollowRequest({
+    required final String uid,
+    required final String friendId,
+  }) {
+    return AppUserProvider().ignoreFollowRequest(
+      uid: uid,
+      friendId: friendId,
+    );
+  }
+
   static Future<void> followBackUser({
     required final String uid,
     required final String friendId,
