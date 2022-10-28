@@ -144,10 +144,14 @@ class PFeedProvider {
   static Future<void> addReaction({
     required final PeamanReaction reaction,
     final Function(PeamanReaction)? onSuccess,
+    final bool updateParentReactionsCount = true,
+    final bool updateUserReactionsCount = true,
     final Function(dynamic)? onError,
   }) {
     return FeedProvider().addReaction(
       reaction: reaction,
+      updateParentReactionsCount: updateParentReactionsCount,
+      updateUserReactionsCount: updateUserReactionsCount,
       onSuccess: onSuccess,
       onError: onError,
     );
@@ -159,6 +163,8 @@ class PFeedProvider {
     required final String ownerId,
     required final String parentId,
     required final String parentOwnerId,
+    final bool updateParentReactionsCount = true,
+    final bool updateUserReactionsCount = true,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) {
@@ -168,6 +174,8 @@ class PFeedProvider {
       ownerId: ownerId,
       parentId: parentId,
       parentOwnerId: parentOwnerId,
+      updateParentReactionsCount: updateParentReactionsCount,
+      updateUserReactionsCount: updateUserReactionsCount,
       onSuccess: onSuccess,
       onError: onError,
     );
