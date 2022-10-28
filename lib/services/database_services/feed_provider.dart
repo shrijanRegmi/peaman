@@ -405,6 +405,8 @@ class FeedProvider {
   // add reaction to post or comment
   Future<void> addReaction({
     required final PeamanReaction reaction,
+    final bool updateParentReactionsCount = true,
+    final bool updateUserReactionsCount = true,
     final Function(PeamanReaction)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
@@ -448,39 +450,45 @@ class FeedProvider {
       _futures.add(_reactionsRef.set(_reaction.toJson()));
 
       if (_reaction.parent == PeamanReactionParent.feed) {
-        final _feedPropertyFuture = updateFeedPropertiesCount(
-          feedId: _reaction.feedId!,
-          reactionsCount: 1,
-        );
+        if (updateParentReactionsCount) {
+          final _feedPropertyFuture = updateFeedPropertiesCount(
+            feedId: _reaction.feedId!,
+            reactionsCount: 1,
+          );
+          _futures.add(_feedPropertyFuture);
+        }
 
-        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
-          uid: _reaction.parentOwnerId!,
-          reactionsReceivedFromFeeds: 1,
-        );
+        if (updateUserReactionsCount) {
+          final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+            uid: _reaction.parentOwnerId!,
+            reactionsReceivedFromFeeds: 1,
+          );
+          _futures.add(_userPropertyFuture);
+        }
 
         final _reactedFeedFuture = _reactedFeedRef.set(_reactedFeed.toJson());
-
         final _feedReactorFuture = _feedReactorRef.set(_feedReactor.toJson());
 
-        _futures.add(_feedPropertyFuture);
-        _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
         _futures.add(_feedReactorFuture);
         print('Success: Adding reaction to feed ${reaction.feedId}');
       } else {
-        final _commentPropertyFuture = updateCommentPropertiesCount(
-          feedId: _reaction.feedId!,
-          commentId: _reaction.parentId!,
-          reactionsCount: 1,
-        );
+        if (updateParentReactionsCount) {
+          final _commentPropertyFuture = updateCommentPropertiesCount(
+            feedId: _reaction.feedId!,
+            commentId: _reaction.parentId!,
+            reactionsCount: 1,
+          );
+          _futures.add(_commentPropertyFuture);
+        }
 
-        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
-          uid: _reaction.parentOwnerId!,
-          reactionsReceivedFromFeeds: 1,
-        );
-
-        _futures.add(_commentPropertyFuture);
-        _futures.add(_userPropertyFuture);
+        if (updateUserReactionsCount) {
+          final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+            uid: _reaction.parentOwnerId!,
+            reactionsReceivedFromFeeds: 1,
+          );
+          _futures.add(_userPropertyFuture);
+        }
         print('Success: Adding reaction to comment ${_reaction.parentId}');
       }
 
@@ -500,6 +508,8 @@ class FeedProvider {
     required final String ownerId,
     required final String parentId,
     required final String parentOwnerId,
+    final bool updateParentReactionsCount = true,
+    final bool updateUserReactionsCount = true,
     final Function(String)? onSuccess,
     final Function(dynamic)? onError,
   }) async {
@@ -519,38 +529,45 @@ class FeedProvider {
       _futures.add(_future);
 
       if (feedId == parentId) {
-        final _feedPropertiesFuture = updateFeedPropertiesCount(
-          feedId: feedId,
-          reactionsCount: -1,
-        );
+        if (updateParentReactionsCount) {
+          final _feedPropertiesFuture = updateFeedPropertiesCount(
+            feedId: feedId,
+            reactionsCount: -1,
+          );
+          _futures.add(_feedPropertiesFuture);
+        }
 
-        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
-          uid: parentOwnerId,
-          reactionsReceivedFromFeeds: -1,
-        );
+        if (updateUserReactionsCount) {
+          final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+            uid: parentOwnerId,
+            reactionsReceivedFromFeeds: -1,
+          );
+          _futures.add(_userPropertyFuture);
+        }
 
         final _reactedFeedFuture = _reactedFeedRef.delete();
         final _feedReactorFuture = _feedReactorRef.delete();
 
-        _futures.add(_feedPropertiesFuture);
-        _futures.add(_userPropertyFuture);
         _futures.add(_reactedFeedFuture);
         _futures.add(_feedReactorFuture);
         print('Success: Removing reaction from feed $feedId');
       } else {
-        final _commentPropertyFuture = updateCommentPropertiesCount(
-          feedId: feedId,
-          commentId: parentId,
-          reactionsCount: -1,
-        );
+        if (updateParentReactionsCount) {
+          final _commentPropertyFuture = updateCommentPropertiesCount(
+            feedId: feedId,
+            commentId: parentId,
+            reactionsCount: -1,
+          );
+          _futures.add(_commentPropertyFuture);
+        }
 
-        final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
-          uid: parentOwnerId,
-          reactionsReceivedFromFeeds: -1,
-        );
-
-        _futures.add(_commentPropertyFuture);
-        _futures.add(_userPropertyFuture);
+        if (updateUserReactionsCount) {
+          final _userPropertyFuture = PUserProvider.updateUserPropertiesCount(
+            uid: parentOwnerId,
+            reactionsReceivedFromFeeds: -1,
+          );
+          _futures.add(_userPropertyFuture);
+        }
         print('Success: Removing reaction from comment $parentId');
       }
 
