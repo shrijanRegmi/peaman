@@ -1048,6 +1048,13 @@ class FeedProvider {
     return PeamanMoment.fromJson(snap.data() ?? {});
   }
 
+  // list of feed reactions from firestore
+  List<PeamanReaction> _feedReactionsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanReaction.fromJson(e.data())).toList();
+  }
+
   // list of feed reactors from firestore
   List<PeamanFeedReactor> _feedReactorsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
@@ -1237,6 +1244,17 @@ class FeedProvider {
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // stream of list of feed reactions
+  Stream<List<PeamanReaction>> getFeedReactions({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedReactionsFromFirebase);
   }
 
   // stream of list of feed reactors

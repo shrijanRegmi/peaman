@@ -314,6 +314,14 @@ class PFeedProvider {
     return FeedProvider().getUserMyFeeds(uid: uid, query: query);
   }
 
+  static Stream<List<PeamanReaction>> getFeedReactions({
+    required final String feedId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'feedReactions');
+    return FeedProvider().getFeedReactions(feedId: feedId, query: query);
+  }
+
   static Stream<List<PeamanReactedFeed>> getUserReactedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
