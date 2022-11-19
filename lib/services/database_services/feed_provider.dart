@@ -103,8 +103,19 @@ class FeedProvider {
         print(e);
         print("Error!!!: Deleting my feed");
       });
+      final _userUpdateFuture = PUserProvider.updateUserData(
+        uid: ownerId,
+        negativePartialUpdater: PeamanUserPartialUpdater(feeds: 1),
+      ).catchError((e) {
+        print(e);
+        print("Error!!!: Deleting my feed");
+      });
 
-      await Future.wait([_feedFuture, _myFeedFuture]);
+      await Future.wait([
+        _feedFuture,
+        _myFeedFuture,
+        _userUpdateFuture,
+      ]);
 
       print("Success: Deleting feed $feedId");
     } catch (e) {
