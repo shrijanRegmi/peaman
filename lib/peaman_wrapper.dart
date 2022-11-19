@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peaman/peaman.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 class PeamanWrapper extends StatelessWidget {
@@ -23,7 +24,16 @@ class PeamanWrapper extends StatelessWidget {
         final _appUser = context.pwatch<PeamanUser?>();
 
         if (_appUser == null) {
-          return builder(context);
+          if (providers.isEmpty) {
+            return builder(context);
+          }
+
+          return MultiProvider(
+            providers: providers,
+            builder: (context, child) {
+              return builder(context);
+            },
+          );
         }
 
         final _uid = _appUser.uid!;
