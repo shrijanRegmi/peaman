@@ -10,6 +10,7 @@ class PeamanReaction {
   final bool unreacted;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanReaction({
@@ -22,6 +23,7 @@ class PeamanReaction {
     this.unreacted = false,
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -35,6 +37,7 @@ class PeamanReaction {
     final bool? unreacted,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanReaction(
@@ -46,6 +49,7 @@ class PeamanReaction {
       parentOwnerId: parentOwnerId ?? this.parentOwnerId,
       unreacted: unreacted ?? this.unreacted,
       updatedAt: updatedAt ?? this.updatedAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -60,6 +64,7 @@ class PeamanReaction {
       parentOwnerId: data['parent_owner_id'],
       unreacted: data['unreacted'] ?? false,
       updatedAt: data['updated_at'] ?? DateTime.now().millisecondsSinceEpoch,
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -74,6 +79,7 @@ class PeamanReaction {
       'parent_owner_id': parentOwnerId,
       'created_at': updatedAt,
       'updated_at': updatedAt,
+      'visibility': visibility,
       ...extraData,
     };
   }

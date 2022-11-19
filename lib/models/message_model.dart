@@ -11,6 +11,7 @@ class PeamanMessage {
   final String? extraId;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanMessage({
@@ -24,6 +25,7 @@ class PeamanMessage {
     this.extraId,
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -38,6 +40,7 @@ class PeamanMessage {
     final PeamanMessageType? type,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanMessage(
@@ -51,6 +54,7 @@ class PeamanMessage {
       extraId: extraId ?? this.extraId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -69,6 +73,7 @@ class PeamanMessage {
       extraId: data['extra_id'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -85,6 +90,7 @@ class PeamanMessage {
       'extra_id': extraId,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'visibility': visibility,
       ...extraData,
     };
 

@@ -14,6 +14,7 @@ class PeamanComment {
   final int repliesCount;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanComment({
@@ -30,6 +31,7 @@ class PeamanComment {
     this.repliesCount = 0,
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -47,6 +49,7 @@ class PeamanComment {
     final int? repliesCount,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanComment(
@@ -63,6 +66,7 @@ class PeamanComment {
       repliesCount: repliesCount ?? this.repliesCount,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -82,6 +86,7 @@ class PeamanComment {
       repliesCount: data['replies_count'] ?? 0,
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -101,6 +106,7 @@ class PeamanComment {
       'replies_count': repliesCount,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'visibility': visibility,
       ...extraData,
     };
 

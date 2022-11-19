@@ -35,6 +35,7 @@ class PeamanUser {
   final double? latitude;
   final double? longitude;
   final int? createdAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanUser({
@@ -70,6 +71,7 @@ class PeamanUser {
     this.latitude,
     this.longitude,
     this.createdAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -107,6 +109,7 @@ class PeamanUser {
     final int? createdAt,
     final double? latitude,
     final double? longitude,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanUser(
@@ -147,6 +150,7 @@ class PeamanUser {
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -185,6 +189,7 @@ class PeamanUser {
       'latitude': latitude,
       'longitude': longitude,
       'created_at': createdAt,
+      'visibility': visibility,
       ...extraData,
     };
 
@@ -227,6 +232,7 @@ class PeamanUser {
       latitude: data['latitude'],
       longitude: data['longitude'],
       createdAt: data['created_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -264,6 +270,7 @@ class PeamanUserUpdater {
   double? latitude;
   double? longitude;
   int? createdAt;
+  bool? visibility;
   Map<String, dynamic> extraData;
 
   PeamanUserUpdater({
@@ -298,6 +305,7 @@ class PeamanUserUpdater {
     this.latitude,
     this.longitude,
     this.createdAt,
+    this.visibility,
     this.extraData = const {},
   });
 
@@ -334,6 +342,7 @@ class PeamanUserUpdater {
       'latitude': latitude,
       'longitude': longitude,
       'created_at': createdAt,
+      'visibility': visibility,
       ...extraData,
     };
 

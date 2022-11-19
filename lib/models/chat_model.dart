@@ -14,6 +14,7 @@ class PeamanChat {
   final List<PeamanUnreadMessage> unreadMessages;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanChat({
@@ -29,6 +30,7 @@ class PeamanChat {
     this.unreadMessages = const <PeamanUnreadMessage>[],
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -45,6 +47,7 @@ class PeamanChat {
     final List<PeamanUnreadMessage>? unreadMessages,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanChat(
@@ -60,6 +63,7 @@ class PeamanChat {
       unreadMessages: unreadMessages ?? this.unreadMessages,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -79,6 +83,7 @@ class PeamanChat {
       unreadMessages: PeamanChatHelper.getUnreadMessagesCountByUid(data),
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -94,6 +99,7 @@ class PeamanChat {
       'chat_request_sender_id': chatRequestSenderId,
       'created_at': createdAt,
       'updated_at': updatedAt,
+      'visibility': visibility,
       ...extraData,
     };
 

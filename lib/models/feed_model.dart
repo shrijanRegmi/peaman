@@ -16,6 +16,7 @@ class PeamanFeed {
   final List<String> searchKeys;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanFeed({
@@ -34,6 +35,7 @@ class PeamanFeed {
     this.searchKeys = const [],
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const <String, dynamic>{},
   });
 
@@ -53,6 +55,7 @@ class PeamanFeed {
     final List<String>? searchKeys,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanFeed(
@@ -71,6 +74,7 @@ class PeamanFeed {
       searchKeys: searchKeys ?? this.searchKeys,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -94,6 +98,7 @@ class PeamanFeed {
       viewsCount: data['views_count'] ?? 0,
       updatedAt: data['updated_at'],
       createdAt: data['created_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -115,6 +120,7 @@ class PeamanFeed {
       'views_count': viewsCount,
       'updated_at': updatedAt,
       'created_at': createdAt,
+      'visibility': visibility,
       ...extraData,
     };
 

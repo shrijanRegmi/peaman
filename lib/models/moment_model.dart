@@ -8,6 +8,7 @@ class PeamanMoment {
   final int? views;
   final int? createdAt;
   final int? updatedAt;
+  final bool visibility;
   final Map<String, dynamic> extraData;
 
   PeamanMoment({
@@ -18,6 +19,7 @@ class PeamanMoment {
     this.expiresAt,
     this.createdAt,
     this.updatedAt,
+    this.visibility = true,
     this.extraData = const {},
   });
 
@@ -29,6 +31,7 @@ class PeamanMoment {
     final int? expiresAt,
     final int? createdAt,
     final int? updatedAt,
+    final bool? visibility,
     final Map<String, dynamic>? extraData,
   }) {
     return PeamanMoment(
@@ -39,6 +42,7 @@ class PeamanMoment {
       expiresAt: expiresAt ?? this.expiresAt,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
+      visibility: visibility ?? this.visibility,
       extraData: extraData ?? this.extraData,
     );
   }
@@ -54,6 +58,7 @@ class PeamanMoment {
       expiresAt: data['expires_at'],
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
+      visibility: data['visibility'] ?? true,
       extraData: data,
     );
   }
@@ -66,6 +71,7 @@ class PeamanMoment {
       'created_at': createdAt,
       'updated_at': updatedAt,
       'expires_at': expiresAt,
+      'visibility': visibility,
       ...extraData,
     };
 
