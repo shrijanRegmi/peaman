@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:peaman/peaman.dart';
+import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 class PeamanWrapper extends StatelessWidget {
   final Widget Function(BuildContext) builder;
+  final List<SingleChildWidget> globalProviders;
   final List<SingleChildWidget> providers;
   final PeamanLazyLoadConfig? lazyLoadConfig;
   const PeamanWrapper({
     Key? key,
     required this.builder,
+    this.globalProviders = const [],
     this.providers = const [],
     this.lazyLoadConfig,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (globalProviders.isNotEmpty) {
+      return MultiProvider(
+        providers: globalProviders,
+        child: _providersBuilder(),
+      );
+    }
+
+    return _providersBuilder();
+  }
+
+  Widget _providersBuilder() {
     return PStateProvider.stream<PeamanUser?>(
       create: (context) => PAuthProvider.user,
       initialData: null,
