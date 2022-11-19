@@ -467,53 +467,52 @@ class AppUserProvider {
   }
 
   // add follower
-  Future<void> _addFollower({
+  Future<dynamic> _addFollower({
     required final String uid,
     required final String friendId,
-  }) async {
-    try {
-      final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
-      final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
+  }) {
+    final _userRef = PeamanReferenceHelper.usersCol.doc(uid);
+    final _friendRef = PeamanReferenceHelper.usersCol.doc(friendId);
 
-      final _userFollowersRef =
-          PeamanReferenceHelper.userFollowersCol(uid: uid).doc(friendId);
-      final _friendFollowingRef =
-          PeamanReferenceHelper.userFollowingsCol(uid: friendId).doc(uid);
+    final _userFollowersRef =
+        PeamanReferenceHelper.userFollowersCol(uid: uid).doc(friendId);
+    final _friendFollowingRef =
+        PeamanReferenceHelper.userFollowingsCol(uid: friendId).doc(uid);
 
-      final _milli = DateTime.now().millisecondsSinceEpoch;
+    final _milli = DateTime.now().millisecondsSinceEpoch;
 
-      final _futures = <Future>[];
+    final _futures = <Future>[];
 
-      final _userFollowersFuture = _userFollowersRef.set({
-        'uid': friendId,
-        'created_at': _milli,
-        'updated_at': _milli,
-      });
-      _futures.add(_userFollowersFuture);
+    final _userFollowersFuture = _userFollowersRef.set({
+      'uid': friendId,
+      'created_at': _milli,
+      'updated_at': _milli,
+    });
+    _futures.add(_userFollowersFuture);
 
-      final _friendFollowingFuture = _friendFollowingRef.set({
-        'uid': uid,
-        'created_at': _milli,
-        'updated_at': _milli,
-      });
-      _futures.add(_friendFollowingFuture);
+    final _friendFollowingFuture = _friendFollowingRef.set({
+      'uid': uid,
+      'created_at': _milli,
+      'updated_at': _milli,
+    });
+    _futures.add(_friendFollowingFuture);
 
-      final _userUpdateFuture = _userRef.update({
-        'followers': FieldValue.increment(1),
-      });
-      _futures.add(_userUpdateFuture);
+    final _userUpdateFuture = _userRef.update({
+      'followers': FieldValue.increment(1),
+    });
+    _futures.add(_userUpdateFuture);
 
-      final _friendUpdateFuture = _friendRef.update({
-        'following': FieldValue.increment(1),
-      });
-      _futures.add(_friendUpdateFuture);
+    final _friendUpdateFuture = _friendRef.update({
+      'following': FieldValue.increment(1),
+    });
+    _futures.add(_friendUpdateFuture);
 
-      await Future.wait(_futures);
+    return Future.wait(_futures).then((value) {
       print('Success: Adding follower $friendId');
-    } catch (e) {
+    }).catchError((e) {
       print(e);
       print('Error!!!: Adding follower');
-    }
+    });
   }
 
   // user from firestore

@@ -54,9 +54,11 @@ class PFeedProvider {
   }
 
   static Future<void> deleteFeed({
+    required final String ownerId,
     required final String feedId,
   }) {
     return FeedProvider().deleteFeed(
+      ownerId: ownerId,
       feedId: feedId,
     );
   }

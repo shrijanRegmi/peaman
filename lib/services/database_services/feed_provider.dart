@@ -86,12 +86,25 @@ class FeedProvider {
 
   // delete feed
   Future<void> deleteFeed({
+    required final String ownerId,
     required final String feedId,
   }) async {
     try {
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
+      final _myFeedRef = PeamanReferenceHelper.myFeedsCol(
+        uid: ownerId,
+      ).doc(_feedRef.id);
 
-      await _feedRef.delete();
+      final _feedFuture = _feedRef.delete().catchError((e) {
+        print(e);
+        print("Error!!!: Deleting feed");
+      });
+      final _myFeedFuture = _myFeedRef.delete().catchError((e) {
+        print(e);
+        print("Error!!!: Deleting my feed");
+      });
+
+      await Future.wait([_feedFuture, _myFeedFuture]);
 
       print("Success: Deleting feed $feedId");
     } catch (e) {
