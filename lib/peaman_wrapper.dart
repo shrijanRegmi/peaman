@@ -56,7 +56,7 @@ class PeamanWrapper extends StatelessWidget {
 
     return <SingleChildWidget>[
       PStateProvider.stream<PeamanUser>(
-        create: (context) => PUserProvider.getUserById(
+        create: (context) => PUserProvider.getUserByIdStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUser,
@@ -70,42 +70,42 @@ class PeamanWrapper extends StatelessWidget {
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanFollower>?>(
-        create: (_) => PUserProvider.getUserFollowers(
+        create: (_) => PUserProvider.getUserFollowersStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserFollowers,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanFollowing>?>(
-        create: (_) => PUserProvider.getUserFollowings(
+        create: (_) => PUserProvider.getUserFollowingsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserFollowings,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanReceivedFollowRequest>?>(
-        create: (_) => PUserProvider.getUserReceivedFollowRequests(
+        create: (_) => PUserProvider.getUserReceivedFollowRequestsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserReceivedFollowRequests,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanSentFollowRequest>?>(
-        create: (_) => PUserProvider.getUserSentFollowRequests(
+        create: (_) => PUserProvider.getUserSentFollowRequestsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserSentFollowRequests,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanBlockedUser>?>(
-        create: (_) => PUserProvider.getUserBlockedUsers(
+        create: (_) => PUserProvider.getUserBlockedUsersStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserBlockedUsers,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanBlockedByUser>?>(
-        create: (_) => PUserProvider.getUserBlockedByUsers(
+        create: (_) => PUserProvider.getUserBlockedByUsersStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserBlockedByUsers,

@@ -579,8 +579,20 @@ class AppUserProvider {
         .toList();
   }
 
+  // future of users by search key from firestore
+  Future<List<PeamanUser>> getUserBySearchKey({
+    required final String searchKey,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.usersCol
+        .where('visibility', isEqualTo: true)
+        .where('search_keys', arrayContains: searchKey);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_usersFromFirebase);
+  }
+
   // stream of users by search key from firestore
-  Stream<List<PeamanUser>> getUserBySearchKey({
+  Stream<List<PeamanUser>> getUserBySearchKeyStream({
     required final String searchKey,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -591,8 +603,19 @@ class AppUserProvider {
     return _query.snapshots().map(_usersFromFirebase);
   }
 
+  // future of list of users
+  Future<List<PeamanUser>> getUsers({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.usersCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_usersFromFirebase);
+  }
+
   // stream of list of users
-  Stream<List<PeamanUser>> getUsers({
+  Stream<List<PeamanUser>> getUsersStream({
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.usersCol
@@ -602,8 +625,18 @@ class AppUserProvider {
     return _query.snapshots().map(_usersFromFirebase);
   }
 
-  // get user by id
-  Stream<PeamanUser> getUserById({
+  // stream of user by id
+  Future<PeamanUser> getUserById({
+    required final String uid,
+  }) {
+    return PeamanReferenceHelper.usersCol
+        .doc(uid)
+        .get()
+        .then(_appUserFromFirebase);
+  }
+
+  // stream of user by id
+  Stream<PeamanUser> getUserByIdStream({
     required final String uid,
   }) {
     return PeamanReferenceHelper.usersCol
@@ -612,8 +645,20 @@ class AppUserProvider {
         .map(_appUserFromFirebase);
   }
 
+  // future of list of received follow requests
+  Future<List<PeamanReceivedFollowRequest>> getReceivedFollowRequests({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.receivedFollowRequestsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.get().then(_receivedFollowRequestsFromFirebase);
+  }
+
   // stream of list of received follow requests
-  Stream<List<PeamanReceivedFollowRequest>> getReceivedFollowRequests({
+  Stream<List<PeamanReceivedFollowRequest>> getReceivedFollowRequestsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -624,8 +669,20 @@ class AppUserProvider {
     return _query.snapshots().map(_receivedFollowRequestsFromFirebase);
   }
 
+  // future of list of sent follow requests
+  Future<List<PeamanSentFollowRequest>> getSentFollowRequests({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.sentFollowRequestsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.get().then(_sentFollowRequestsFromFirebase);
+  }
+
   // stream of list of sent follow requests
-  Stream<List<PeamanSentFollowRequest>> getSentFollowRequests({
+  Stream<List<PeamanSentFollowRequest>> getSentFollowRequestsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -636,8 +693,20 @@ class AppUserProvider {
     return _query.snapshots().map(_sentFollowRequestsFromFirebase);
   }
 
+  // future of list of follower
+  Future<List<PeamanFollower>> getFollowers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.userFollowersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.get().then(_followersFromFirebase);
+  }
+
   // stream of list of follower
-  Stream<List<PeamanFollower>> getFollowers({
+  Stream<List<PeamanFollower>> getFollowersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -648,8 +717,19 @@ class AppUserProvider {
     return _query.snapshots().map(_followersFromFirebase);
   }
 
+  // future of list of following
+  Future<List<PeamanFollowing>> getFollowings({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.userFollowingsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_followingFromFirebase);
+  }
+
   // stream of list of following
-  Stream<List<PeamanFollowing>> getFollowings({
+  Stream<List<PeamanFollowing>> getFollowingsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -659,8 +739,20 @@ class AppUserProvider {
     return _query.snapshots().map(_followingFromFirebase);
   }
 
+  // future of list of blocked users
+  Future<List<PeamanBlockedUser>> getBlockedUsers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.blockedUsersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.get().then(_blockedUsersFromFirestore);
+  }
+
   // stream of list of blocked users
-  Stream<List<PeamanBlockedUser>> getBlockedUsers({
+  Stream<List<PeamanBlockedUser>> getBlockedUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -671,8 +763,20 @@ class AppUserProvider {
     return _query.snapshots().map(_blockedUsersFromFirestore);
   }
 
+  // future of list of blocked users
+  Future<List<PeamanBlockedByUser>> getBlockedByUsers({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.blockedByUsersCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+
+    return _query.get().then(_blockedByUsersFromFirestore);
+  }
+
   // stream of list of blocked users
-  Stream<List<PeamanBlockedByUser>> getBlockedByUsers({
+  Stream<List<PeamanBlockedByUser>> getBlockedByUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {

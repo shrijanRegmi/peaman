@@ -155,21 +155,35 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanUser>> getUsers({
+  static Future<List<PeamanUser>> getUsers({
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'users');
     return AppUserProvider().getUsers(query: query);
   }
 
-  static Stream<PeamanUser> getUserById({
+  static Stream<List<PeamanUser>> getUsersStream({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'users');
+    return AppUserProvider().getUsersStream(query: query);
+  }
+
+  static Future<PeamanUser> getUserById({
     required final String uid,
   }) {
     PeamanCommonHelper.printListening(text: 'userById');
     return AppUserProvider().getUserById(uid: uid);
   }
 
-  static Stream<List<PeamanUser>> getUsersBySearchKeyword({
+  static Stream<PeamanUser> getUserByIdStream({
+    required final String uid,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userById');
+    return AppUserProvider().getUserByIdStream(uid: uid);
+  }
+
+  static Future<List<PeamanUser>> getUsersBySearchKeyword({
     required final String searchKeyword,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -180,7 +194,18 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanReceivedFollowRequest>>
+  static Stream<List<PeamanUser>> getUsersBySearchKeywordStream({
+    required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userBySearchKeyword');
+    return AppUserProvider().getUserBySearchKeyStream(
+      searchKey: searchKeyword,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanReceivedFollowRequest>>
       getUserReceivedFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
@@ -192,7 +217,19 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanSentFollowRequest>> getUserSentFollowRequests({
+  static Stream<List<PeamanReceivedFollowRequest>>
+      getUserReceivedFollowRequestsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'receivedFollowRequests');
+    return AppUserProvider().getReceivedFollowRequestsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanSentFollowRequest>> getUserSentFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -203,7 +240,18 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollower>> getUserFollowers({
+  static Stream<List<PeamanSentFollowRequest>> getUserSentFollowRequestsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'sentFollowRequests');
+    return AppUserProvider().getSentFollowRequestsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanFollower>> getUserFollowers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -214,7 +262,18 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanFollowing>> getUserFollowings({
+  static Stream<List<PeamanFollower>> getUserFollowersStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'followers');
+    return AppUserProvider().getFollowersStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanFollowing>> getUserFollowings({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -225,7 +284,18 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanBlockedUser>> getUserBlockedUsers({
+  static Stream<List<PeamanFollowing>> getUserFollowingsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'followings');
+    return AppUserProvider().getFollowingsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanBlockedUser>> getUserBlockedUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -236,12 +306,34 @@ class PUserProvider {
     );
   }
 
-  static Stream<List<PeamanBlockedByUser>> getUserBlockedByUsers({
+  static Stream<List<PeamanBlockedUser>> getUserBlockedUsersStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'blockedUsers');
+    return AppUserProvider().getBlockedUsersStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanBlockedByUser>> getUserBlockedByUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'blockedByUsers');
     return AppUserProvider().getBlockedByUsers(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanBlockedByUser>> getUserBlockedByUsersStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'blockedByUsers');
+    return AppUserProvider().getBlockedByUsersStream(
       uid: uid,
       query: query,
     );
