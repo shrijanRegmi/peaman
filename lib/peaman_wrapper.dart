@@ -119,61 +119,61 @@ class PeamanWrapper extends StatelessWidget {
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanFeed>?>(
-        create: (_) => PFeedProvider.getFeeds(),
+        create: (_) => PFeedProvider.getFeedsStream(),
         lazy: _lazyLoadConfig.lazyLoadFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanMyFeed>?>(
-        create: (_) => PFeedProvider.getUserMyFeeds(
+        create: (_) => PFeedProvider.getUserMyFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserMyFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanReactedFeed>?>(
-        create: (_) => PFeedProvider.getUserReactedFeeds(
+        create: (_) => PFeedProvider.getUserReactedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserReactedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanCommentedFeed>?>(
-        create: (_) => PFeedProvider.getUserCommentedFeeds(
+        create: (_) => PFeedProvider.getUserCommentedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserCommentedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanRepliedFeed>?>(
-        create: (_) => PFeedProvider.getUserRepliedFeeds(
+        create: (_) => PFeedProvider.getUserRepliedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserRepliedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanSavedFeed>?>(
-        create: (_) => PFeedProvider.getUserSavedFeeds(
+        create: (_) => PFeedProvider.getUserSavedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserSavedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanViewedFeed>?>(
-        create: (_) => PFeedProvider.getUserViewedFeeds(
+        create: (_) => PFeedProvider.getUserViewedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserViewedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanFollowedFeed>?>(
-        create: (_) => PFeedProvider.getUserFollowedFeeds(
+        create: (_) => PFeedProvider.getUserFollowedFeedsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserFollowedFeeds,
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanMoment>?>(
-        create: (_) => PFeedProvider.getMoments(),
+        create: (_) => PFeedProvider.getMomentsStream(),
         lazy: _lazyLoadConfig.lazyLoadMoments,
         initialData: null,
       ),
