@@ -305,8 +305,20 @@ class MessageProvider {
     }).toList();
   }
 
+  // future of list of messages
+  Future<List<PeamanMessage>> getMessages({
+    required final String chatId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_messagesFromFirestore);
+  }
+
   // stream of list of messages
-  Stream<List<PeamanMessage>> getMessages({
+  Stream<List<PeamanMessage>> getMessagesStream({
     required final String chatId,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -317,8 +329,19 @@ class MessageProvider {
     return _query.snapshots().map(_messagesFromFirestore);
   }
 
+  // future of single message by id
+  Future<PeamanMessage> getSingleMessageById({
+    required final String chatId,
+    required final String messageId,
+  }) {
+    return PeamanReferenceHelper.messagesCol(chatId: chatId)
+        .doc(messageId)
+        .get()
+        .then(_messageFromFirestore);
+  }
+
   // stream of single message by id
-  Stream<PeamanMessage> getSingleMessageById({
+  Stream<PeamanMessage> getSingleMessageByIdStream({
     required final String chatId,
     required final String messageId,
   }) {
@@ -328,8 +351,19 @@ class MessageProvider {
         .map(_messageFromFirestore);
   }
 
+  // future of list of chats
+  Future<List<PeamanChat>> getChats({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_chatsFromFirestore);
+  }
+
   // stream of list of chats
-  Stream<List<PeamanChat>> getChats({
+  Stream<List<PeamanChat>> getChatsStream({
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.chatsCol
@@ -339,8 +373,21 @@ class MessageProvider {
     return _query.snapshots().map(_chatsFromFirestore);
   }
 
+  // future of list of user chats
+  Future<List<PeamanChat>> getUserChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .where('user_ids', arrayContains: uid)
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_chatsFromFirestore);
+  }
+
   // stream of list of user chats
-  Stream<List<PeamanChat>> getUserChats({
+  Stream<List<PeamanChat>> getUserChatsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -352,8 +399,25 @@ class MessageProvider {
     return _query.snapshots().map(_chatsFromFirestore);
   }
 
+  // future of list of idle chats
+  Future<List<PeamanIdleChat>> getUserIdleChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .where('user_ids', arrayContains: uid)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.idle.index,
+        )
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_idleChatsFromFirestore);
+  }
+
   // stream of list of idle chats
-  Stream<List<PeamanIdleChat>> getUserIdleChats({
+  Stream<List<PeamanIdleChat>> getUserIdleChatsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -369,8 +433,25 @@ class MessageProvider {
     return _query.snapshots().map(_idleChatsFromFirestore);
   }
 
+  // future of list of accepted chats
+  Future<List<PeamanAcceptedChat>> getUserAcceptedChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .where('user_ids', arrayContains: uid)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.accepted.index,
+        )
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_acceptedChatsFromFirestore);
+  }
+
   // stream of list of accepted chats
-  Stream<List<PeamanAcceptedChat>> getUserAcceptedChats({
+  Stream<List<PeamanAcceptedChat>> getUserAcceptedChatsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -386,8 +467,25 @@ class MessageProvider {
     return _query.snapshots().map(_acceptedChatsFromFirestore);
   }
 
+  // future of list of declined chats
+  Future<List<PeamanDeclinedChat>> getUserDeclinedChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .where('user_ids', arrayContains: uid)
+        .where(
+          'chat_request_status',
+          isEqualTo: PeamanChatRequestStatus.declined.index,
+        )
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_declinedChatsFromFirestore);
+  }
+
   // stream of list of declined chats
-  Stream<List<PeamanDeclinedChat>> getUserDeclinedChats({
+  Stream<List<PeamanDeclinedChat>> getUserDeclinedChatsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {

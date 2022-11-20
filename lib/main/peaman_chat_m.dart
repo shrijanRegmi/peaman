@@ -77,14 +77,21 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanChat>> getChats({
+  static Future<List<PeamanChat>> getChats({
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'chats');
     return MessageProvider().getChats(query: query);
   }
 
-  static Stream<List<PeamanChat>> getUserChats({
+  static Stream<List<PeamanChat>> getChatsStream({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'chats');
+    return MessageProvider().getChatsStream(query: query);
+  }
+
+  static Future<List<PeamanChat>> getUserChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -95,7 +102,18 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanIdleChat>> getUserIdleChats({
+  static Stream<List<PeamanChat>> getUserChatsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userChats');
+    return MessageProvider().getUserChatsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanIdleChat>> getUserIdleChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -106,7 +124,18 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanAcceptedChat>> getUserAcceptedChats({
+  static Stream<List<PeamanIdleChat>> getUserIdleChatsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userIdleChats');
+    return MessageProvider().getUserIdleChatsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanAcceptedChat>> getUserAcceptedChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -117,7 +146,18 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanDeclinedChat>> getUserDeclinedChats({
+  static Stream<List<PeamanAcceptedChat>> getUserAcceptedChatsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userAcceptedChats');
+    return MessageProvider().getUserAcceptedChatsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanDeclinedChat>> getUserDeclinedChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -128,7 +168,18 @@ class PChatProvider {
     );
   }
 
-  static Stream<List<PeamanMessage>> getMessages({
+  static Stream<List<PeamanDeclinedChat>> getUserDeclinedChatsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userDeclinedChats');
+    return MessageProvider().getUserDeclinedChatsStream(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanMessage>> getMessages({
     required final String chatId,
     final MyQuery Function(MyQuery)? query,
   }) {
@@ -139,12 +190,34 @@ class PChatProvider {
     );
   }
 
-  static Stream<PeamanMessage> getSingleMessageById({
+  static Stream<List<PeamanMessage>> getMessagesStream({
+    required final String chatId,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'messages');
+    return MessageProvider().getMessagesStream(
+      chatId: chatId,
+      query: query,
+    );
+  }
+
+  static Future<PeamanMessage> getSingleMessageById({
     required final String chatId,
     required final String messageId,
   }) {
     PeamanCommonHelper.printListening(text: 'messageById');
     return MessageProvider().getSingleMessageById(
+      chatId: chatId,
+      messageId: messageId,
+    );
+  }
+
+  static Stream<PeamanMessage> getSingleMessageByIdStream({
+    required final String chatId,
+    required final String messageId,
+  }) {
+    PeamanCommonHelper.printListening(text: 'messageById');
+    return MessageProvider().getSingleMessageByIdStream(
       chatId: chatId,
       messageId: messageId,
     );

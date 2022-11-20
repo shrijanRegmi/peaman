@@ -63,7 +63,7 @@ class PeamanWrapper extends StatelessWidget {
         initialData: PeamanUser(),
       ),
       PStateProvider.stream<List<PeamanChat>?>(
-        create: (context) => PChatProvider.getUserChats(
+        create: (context) => PChatProvider.getUserChatsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserChats,
