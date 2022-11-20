@@ -311,6 +311,7 @@ class MessageProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
+        .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_messagesFromFirestore);
@@ -331,8 +332,9 @@ class MessageProvider {
   Stream<List<PeamanChat>> getChats({
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref =
-        PeamanReferenceHelper.chatsCol.orderBy('updated_at', descending: true);
+    final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('updated_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_chatsFromFirestore);
   }
@@ -343,6 +345,7 @@ class MessageProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
         .where('user_ids', arrayContains: uid)
         .orderBy('updated_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
@@ -355,6 +358,7 @@ class MessageProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
         .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',
@@ -371,6 +375,7 @@ class MessageProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
         .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',
@@ -387,6 +392,7 @@ class MessageProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.chatsCol
+        .where('visibility', isEqualTo: true)
         .where('user_ids', arrayContains: uid)
         .where(
           'chat_request_status',

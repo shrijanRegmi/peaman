@@ -24,7 +24,7 @@ class NotificationProvider {
   }
 
   // get notification from firebase
-  List<PeamanNotification> notificationFromFirebase(
+  List<PeamanNotification> notificationsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> colSnap,
   ) {
     return colSnap.docs
@@ -38,8 +38,9 @@ class NotificationProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.notificationsCol(uid: uid)
+        .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
-    return _query.snapshots().map(notificationFromFirebase);
+    return _query.snapshots().map(notificationsFromFirebase);
   }
 }

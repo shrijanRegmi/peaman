@@ -1212,6 +1212,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
         .where('owner_id', isEqualTo: uid)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
@@ -1223,6 +1224,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.momentsCol
+        .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_momentsFromFirebase);
@@ -1234,6 +1236,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.momentsCol
+        .where('visibility', isEqualTo: true)
         .where('owner_id', isEqualTo: uid)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
@@ -1278,6 +1281,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedReactionsFromFirebase);
@@ -1446,6 +1450,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
         .where('parent', isEqualTo: parent.index)
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
@@ -1460,6 +1465,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
         .where('parent', isEqualTo: parent.index)
         .where('parent_id', isEqualTo: parentId)
         .orderBy('created_at', descending: true);
@@ -1475,6 +1481,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
         .where('owner_id', isEqualTo: ownerId)
         .where('parent', isEqualTo: parent.index)
         .orderBy('created_at', descending: true);
