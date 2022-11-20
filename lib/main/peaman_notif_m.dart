@@ -36,12 +36,23 @@ class PNotificationProvider {
     );
   }
 
-  static Stream<List<PeamanNotification>> getUserNotifications({
+  static Future<List<PeamanNotification>> getUserNotifications({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {
     PeamanCommonHelper.printListening(text: 'userNotifications');
     return NotificationProvider().getUserNotifications(
+      uid: uid,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanNotification>> getUserNotificationsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'userNotifications');
+    return NotificationProvider().getUserNotificationsStream(
       uid: uid,
       query: query,
     );

@@ -32,8 +32,20 @@ class NotificationProvider {
         .toList();
   }
 
+  // future of notifications
+  Future<List<PeamanNotification>> getUserNotifications({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.notificationsCol(uid: uid)
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(notificationsFromFirebase);
+  }
+
   // stream of notifications
-  Stream<List<PeamanNotification>> getUserNotifications({
+  Stream<List<PeamanNotification>> getUserNotificationsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   }) {

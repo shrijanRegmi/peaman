@@ -112,7 +112,7 @@ class PeamanWrapper extends StatelessWidget {
         initialData: null,
       ),
       PStateProvider.stream<List<PeamanNotification>?>(
-        create: (_) => PNotificationProvider.getUserNotifications(
+        create: (_) => PNotificationProvider.getUserNotificationsStream(
           uid: uid,
         ),
         lazy: _lazyLoadConfig.lazyLoadUserNotifications,
