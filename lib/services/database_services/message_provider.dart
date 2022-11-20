@@ -26,6 +26,7 @@ class MessageProvider {
       if (_messagesDocs.docs.isEmpty) {
         await _chatRef.set({
           'id': _chatRef.id,
+          'visibility': true,
           'created_at': _currentMillis,
         });
       }
