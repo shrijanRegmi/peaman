@@ -1199,8 +1199,9 @@ class FeedProvider {
   Stream<List<PeamanFeed>> getFeeds({
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref =
-        PeamanReferenceHelper.feedsCol.orderBy('created_at', descending: true);
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
   }
@@ -1265,6 +1266,7 @@ class FeedProvider {
     final MyQuery Function(MyQuery)? query,
   }) {
     final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
