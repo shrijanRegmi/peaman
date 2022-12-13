@@ -15,7 +15,7 @@ dependencies:
   device_info: ^2.0.3
   firebase_auth: ^3.3.14
   firebase_core: ^1.14.1
-  firebase_messaging: ^11.2.13
+  firebase_messaging: ^14.1.4
   firebase_storage: ^10.2.12
   flutter:
     sdk: flutter
