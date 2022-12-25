@@ -12,6 +12,7 @@ class PeamanReferenceHelper {
   static ColRef get feedsCol => _ref.collection(feedsColName);
   static ColRef get chatsCol => _ref.collection(chatsColName);
   static ColRef get momentsCol => _ref.collection(momentsColName);
+  static ColRef get hashtagsCol => _ref.collection(hashtagsColName);
   //
 
   // main docs
@@ -23,6 +24,8 @@ class PeamanReferenceHelper {
       _ref.collection(chatsColName).doc(chatId);
   static DocRef momentDoc({required final String momentId}) =>
       _ref.collection(momentsColName).doc(momentId);
+  static DocRef hashtagDoc({required final String hashtag}) =>
+      _ref.collection(hashtagsColName).doc(hashtag);
   //
 
   // users subcollections
@@ -120,5 +123,10 @@ class PeamanReferenceHelper {
 
   static ColRef chatFilesCol({required final String chatId}) =>
       _ref.collection(chatsColName).doc(chatId).collection(filesColName);
+  //
+
+  // hastag subcollections
+  static ColRef hashtagFeedsCol({required final String hashtag}) =>
+      _ref.collection(hashtagsColName).doc(hashtag).collection(feedsColName);
   //
 }

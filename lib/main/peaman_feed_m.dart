@@ -63,6 +63,16 @@ class PFeedProvider {
     );
   }
 
+  static Future<void> addFeedToHashtags({
+    required final String feedId,
+    required final List<String> hashtags,
+  }) {
+    return FeedProvider().addFeedToHashtags(
+      feedId: feedId,
+      hashtags: hashtags,
+    );
+  }
+
   static Future<void> followFeed({
     required final String uid,
     required final String feedId,
@@ -337,6 +347,20 @@ class PFeedProvider {
   }) {
     PeamanCommonHelper.printListening(text: 'userMyFeeds');
     return FeedProvider().getUserMyFeedsStream(uid: uid, query: query);
+  }
+
+  static Future<List<PeamanHashtag>> getHashtags({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtags');
+    return FeedProvider().getHashtags(query: query);
+  }
+
+  static Stream<List<PeamanHashtag>> getHashtagsStream({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtags');
+    return FeedProvider().getHashtagsStream(query: query);
   }
 
   static Future<List<PeamanReaction>> getFeedReactions({
@@ -653,6 +677,28 @@ class PFeedProvider {
     PeamanCommonHelper.printListening(text: 'feedsBySearchKeyword');
     return FeedProvider().getFeedsBySearchKeywordStream(
       searchKeyword: searchKeyword,
+      query: query,
+    );
+  }
+
+  static Future<List<PeamanHashtagFeed>> getFeedsByHashtag({
+    required final String hashtag,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'feedsByHashtag');
+    return FeedProvider().getFeedsByHashtag(
+      hashtag: hashtag,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanHashtagFeed>> getFeedsByHashtagStream({
+    required final String hashtag,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'feedsByHashtag');
+    return FeedProvider().getFeedsByHashtagStream(
+      hashtag: hashtag,
       query: query,
     );
   }

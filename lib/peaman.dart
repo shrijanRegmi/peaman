@@ -36,6 +36,7 @@ export 'models/unread_messages_count_model.dart';
 export 'models/sent_messages_count_model.dart';
 export 'models/chat_file_model.dart';
 export 'models/file_url_model.dart';
+export 'models/hashtag_model.dart';
 
 export 'models/my_feed_model.dart';
 export 'models/reacted_feed_model.dart';
@@ -44,6 +45,7 @@ export 'models/replied_feed_model.dart';
 export 'models/saved_feed_model.dart';
 export 'models/viewed_feed_model.dart';
 export 'models/followed_feed_model.dart';
+export 'models/hashtag_feed_model.dart';
 
 export 'models/feed_reactor_model.dart';
 export 'models/feed_commenter_model.dart';

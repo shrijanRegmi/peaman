@@ -23,6 +23,7 @@ class PeamanLazyLoadConfig {
   final bool lazyLoadFeedViewers;
   final bool lazyLoadFeedFollowers;
   final bool lazyLoadMoments;
+  final bool lazyLoadHashtags;
 
   PeamanLazyLoadConfig({
     this.lazyLoadUser = true,
@@ -49,5 +50,6 @@ class PeamanLazyLoadConfig {
     this.lazyLoadFeedViewers = true,
     this.lazyLoadFeedFollowers = true,
     this.lazyLoadMoments = true,
+    this.lazyLoadHashtags = true,
   });
 }

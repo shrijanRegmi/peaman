@@ -124,6 +124,59 @@ class FeedProvider {
     }
   }
 
+  // add feed to hastags
+  Future<void> addFeedToHashtags({
+    required final String feedId,
+    required final List<String> hashtags,
+  }) async {
+    for (final hashtag in hashtags) {
+      final splittedHashtag = hashtag.split(' ');
+
+      assert(splittedHashtag.length > 1, 'Invalid hashtag - $hashtag');
+    }
+
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    try {
+      final futures = <Future>[];
+
+      for (var hashtag in hashtags) {
+        hashtag = hashtag.replaceAll('#', '');
+
+        final hashtagRef = PeamanReferenceHelper.hashtagDoc(
+          hashtag: hashtag,
+        );
+
+        final future = hashtagRef.set({
+          'id': hashtag,
+          'title': hashtag,
+          'feeds': FieldValue.increment(1),
+          'updated_at': currentTime,
+        }, SetOptions(merge: true)).then((value) {
+          final hashtagFeedRef = PeamanReferenceHelper.hashtagFeedsCol(
+            hashtag: hashtag,
+          ).doc(feedId);
+
+          final hashtagFeed = PeamanHashtagFeed(
+            id: feedId,
+            createdAt: currentTime,
+            updatedAt: currentTime,
+          );
+
+          return hashtagFeedRef.set(hashtagFeed.toJson());
+        });
+
+        futures.add(future);
+      }
+
+      await Future.wait(futures);
+      print('Success: Adding feed - $feedId to hashtags - $hashtags');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Adding feed - $feedId to hashtags - $hashtags');
+    }
+  }
+
   // follow feed
   Future<void> followFeed({
     required final String uid,
@@ -1051,6 +1104,13 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
   }
 
+  // list of hashtags from firestore
+  List<PeamanHashtag> _hashtagsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanHashtag.fromJson(e.data())).toList();
+  }
+
   // single feed from firestore
   PeamanFeed _feedFromFirebase(
     DocumentSnapshot<Map<String, dynamic>> snap,
@@ -1135,6 +1195,13 @@ class FeedProvider {
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanMyFeed.fromJson(e.data())).toList();
+  }
+
+  // list of hashtag feeds from firestore
+  List<PeamanHashtagFeed> _hashtagFeedsFromFirebase(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanHashtagFeed.fromJson(e.data())).toList();
   }
 
   // list of reacted feeds from firestore
@@ -1241,6 +1308,28 @@ class FeedProvider {
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // future of all hashtags
+  Future<List<PeamanHashtag>> getHashtags({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_hashtagsFromFirebase);
+  }
+
+  // stream of all hashtags
+  Stream<List<PeamanHashtag>> getHashtagsStream({
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('updated_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_hashtagsFromFirebase);
   }
 
   // future of all moments
@@ -1353,6 +1442,28 @@ class FeedProvider {
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // future of list of hashtag feeds
+  Future<List<PeamanHashtagFeed>> getFeedsByHashtag({
+    required final String hashtag,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.hashtagFeedsCol(hashtag: hashtag)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_hashtagFeedsFromFirebase);
+  }
+
+  // stream of list of hashtag feeds
+  Stream<List<PeamanHashtagFeed>> getFeedsByHashtagStream({
+    required final String hashtag,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.hashtagFeedsCol(hashtag: hashtag)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_hashtagFeedsFromFirebase);
   }
 
   // future of list of feed reactions

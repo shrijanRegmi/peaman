@@ -177,6 +177,11 @@ class PeamanWrapper extends StatelessWidget {
         lazy: _lazyLoadConfig.lazyLoadMoments,
         initialData: null,
       ),
+      PStateProvider.stream<List<PeamanHashtag>?>(
+        create: (_) => PFeedProvider.getHashtagsStream(),
+        lazy: _lazyLoadConfig.lazyLoadHashtags,
+        initialData: null,
+      ),
     ];
   }
 }
