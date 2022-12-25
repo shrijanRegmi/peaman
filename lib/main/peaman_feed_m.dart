@@ -363,6 +363,28 @@ class PFeedProvider {
     return FeedProvider().getHashtagsStream(query: query);
   }
 
+  static Future<List<PeamanHashtag>> getHashtagsBySearchKeyword({
+    required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtagsBySearchKeyword');
+    return FeedProvider().getHashtagsBySearchKeyword(
+      searchKeyword: searchKeyword,
+      query: query,
+    );
+  }
+
+  static Stream<List<PeamanHashtag>> getHashtagsBySearchKeywordStream({
+    required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtagsBySearchKeyword');
+    return FeedProvider().getHashtagsBySearchKeywordStream(
+      searchKeyword: searchKeyword,
+      query: query,
+    );
+  }
+
   static Future<List<PeamanReaction>> getFeedReactions({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,

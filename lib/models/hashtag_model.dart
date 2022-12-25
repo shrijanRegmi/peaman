@@ -2,6 +2,7 @@ class PeamanHashtag {
   final String? id;
   final String? title;
   final int? feeds;
+  final List<String> searchKeys;
   final bool visibility;
   final int? updatedAt;
 
@@ -9,6 +10,7 @@ class PeamanHashtag {
     this.id,
     this.title,
     this.feeds,
+    this.searchKeys = const <String>[],
     this.visibility = true,
     this.updatedAt,
   });
@@ -18,6 +20,7 @@ class PeamanHashtag {
       id: data['id'],
       title: data['title'],
       feeds: data['feeds'] ?? 0,
+      searchKeys: List<String>.from(data['search_keys'] ?? []),
       visibility: data['visibility'] ?? true,
       updatedAt: data['updated_at'],
     );
@@ -28,6 +31,7 @@ class PeamanHashtag {
       'id': id,
       'title': title,
       'feeds': feeds,
+      'search_keys': searchKeys,
       'visibility': true,
       'updated_at': updatedAt,
     };

@@ -1332,6 +1332,30 @@ class FeedProvider {
     return _query.snapshots().map(_hashtagsFromFirebase);
   }
 
+  // future of all hashtags
+  Future<List<PeamanHashtag>> getHashtagsBySearchKeyword({
+    required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .where('search_keys', arrayContains: searchKeyword);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.get().then(_hashtagsFromFirebase);
+  }
+
+  // stream of all hashtags
+  Stream<List<PeamanHashtag>> getHashtagsBySearchKeywordStream({
+    required final String searchKeyword,
+    final MyQuery Function(MyQuery)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .where('search_keys', arrayContains: searchKeyword);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_hashtagsFromFirebase);
+  }
+
   // future of all moments
   Future<List<PeamanMoment>> getMoments({
     final MyQuery Function(MyQuery)? query,
