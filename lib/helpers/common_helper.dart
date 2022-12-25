@@ -52,4 +52,39 @@ class PeamanCommonHelper {
 
     return result;
   }
+
+  // get search keys
+  static List<String> getSearchKeys({required final String text}) {
+    final searchKeys = <String>[];
+
+    var _text = text.length > 300 ? text.substring(0, 300) : text;
+    final _texts = _text.split(' ');
+
+    // split letters of text
+    for (int i = 0; i < _text.length; i++) {
+      final letter = _text.substring(0, i + 1);
+      if (!searchKeys.contains(letter.toUpperCase())) {
+        searchKeys.add(letter.toUpperCase());
+      }
+    }
+    //
+
+    // split letters of texts
+    for (int i = 0; i < _texts.length; i++) {
+      for (int j = 0; j < _texts[i].length; j++) {
+        final letter = _texts[i].substring(0, j + 1);
+        if (!searchKeys.contains(letter.toUpperCase())) {
+          searchKeys.add(letter.toUpperCase());
+        }
+      }
+    }
+    //
+
+    return searchKeys
+        .where((element) =>
+            element.trim() != '' &&
+            element.trim() != ',' &&
+            element.trim() != '.')
+        .toList();
+  }
 }

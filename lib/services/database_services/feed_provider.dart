@@ -162,6 +162,7 @@ class FeedProvider {
           'id': hashtag,
           'title': hashtag,
           'feeds': FieldValue.increment(1),
+          'search_keys': PeamanCommonHelper.getSearchKeys(text: hashtag),
           'updated_at': currentTime,
         }, SetOptions(merge: true)).then((value) {
           final hashtagFeedRef = PeamanReferenceHelper.hashtagFeedsCol(
