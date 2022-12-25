@@ -25,4 +25,31 @@ class PeamanCommonHelper {
 
     return _data;
   }
+
+  // get hashtags from text
+  static List<String> getHashtagsFromText({
+    required final String text,
+  }) {
+    final result = <String>[];
+
+    var thisText = text;
+
+    while (thisText.contains('#')) {
+      final hashIndex = thisText.indexOf('#');
+
+      if (hashIndex != -1) {
+        final newText = thisText.substring(hashIndex, thisText.length);
+
+        final splittedText = newText.split(' ');
+        if (splittedText.isNotEmpty) {
+          final hashTagText = splittedText.first;
+
+          result.add(hashTagText);
+          thisText = thisText.replaceAll(hashTagText, '');
+        }
+      }
+    }
+
+    return result;
+  }
 }

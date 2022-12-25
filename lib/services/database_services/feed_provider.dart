@@ -18,10 +18,15 @@ class FeedProvider {
         uid: feed.ownerId!,
       ).doc(_feedRef.id);
 
+      final hashtags = PeamanCommonHelper.getHashtagsFromText(
+        text: feed.caption ?? '',
+      );
+
       final _feed = feed.copyWith(
         id: _feedRef.id,
         createdAt: feed.createdAt ?? _currentMillis,
         updatedAt: feed.updatedAt ?? _currentMillis,
+        searchKeys: [...hashtags, ...feed.searchKeys],
       );
       final _myFeed = PeamanMyFeed(
         id: _feedRef.id,
@@ -36,6 +41,12 @@ class FeedProvider {
 
       final _myFeedFuture = _myFeedRef.set(_myFeed.toJson());
       _futures.add(_myFeedFuture);
+
+      final _hashTagFuture = addFeedToHashtags(
+        feedId: _feed.id!,
+        hashtags: hashtags,
+      );
+      _futures.add(_hashTagFuture);
 
       final _updatePhotosFuture = _updateUserStatusCount(
         uid: feed.ownerId!,
@@ -108,7 +119,7 @@ class FeedProvider {
         negativePartialUpdater: PeamanUserPartialUpdater(feeds: 1),
       ).catchError((e) {
         print(e);
-        print("Error!!!: Deleting my feed");
+        print("Error!!!: Decreasing feeds count");
       });
 
       await Future.wait([
@@ -174,6 +185,42 @@ class FeedProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Adding feed - $feedId to hashtags - $hashtags');
+    }
+  }
+
+  // remove feed from hastags
+  Future<void> removeFeedFromHashtags({
+    required final String feedId,
+    required final List<String> hashtags,
+  }) async {
+    for (final hashtag in hashtags) {
+      final splittedHashtag = hashtag.split(' ');
+      assert(splittedHashtag.length > 1, 'Invalid hashtag - $hashtag');
+    }
+
+    try {
+      final futures = <Future>[];
+
+      for (var hashtag in hashtags) {
+        hashtag = hashtag.replaceAll('#', '');
+
+        final hashtagFeedRef = PeamanReferenceHelper.hashtagFeedsCol(
+          hashtag: hashtag,
+        ).doc(feedId);
+
+        final future = hashtagFeedRef.delete().catchError((e) {
+          print(e);
+          print('Error!!!: Deleting feed - $feedId from hashtag - $hashtag');
+        });
+
+        futures.add(future);
+      }
+
+      await Future.wait(futures);
+      print('Success: Removing feed - $feedId from hashtags - $hashtags');
+    } catch (e) {
+      print(e);
+      print('Error!!!: Removing feed - $feedId from hashtags - $hashtags');
     }
   }
 
