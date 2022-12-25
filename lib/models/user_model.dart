@@ -383,7 +383,7 @@ class PeamanUserPartialUpdater {
   });
 
   Map<String, dynamic> toPositiveUpdateJson() {
-    final _extraData = extraData;
+    final _extraData = Map<String, dynamic>.from(extraData);
 
     _extraData.removeWhere((key, value) => value is! FieldValue);
 
@@ -420,7 +420,7 @@ class PeamanUserPartialUpdater {
   }
 
   Map<String, dynamic> toNegativeUpdateJson() {
-    final _extraData = extraData;
+    final _extraData = Map<String, dynamic>.from(extraData);
 
     _extraData.removeWhere((key, value) => value is! FieldValue);
 
