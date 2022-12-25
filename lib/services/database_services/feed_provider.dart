@@ -162,6 +162,7 @@ class FeedProvider {
           'id': hashtag,
           'title': hashtag,
           'feeds': FieldValue.increment(1),
+          'visibility': true,
           'search_keys': PeamanCommonHelper.getSearchKeys(text: hashtag),
           'updated_at': currentTime,
         }, SetOptions(merge: true)).then((value) {
@@ -1385,7 +1386,8 @@ class FeedProvider {
     required final String searchKeyword,
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref = PeamanReferenceHelper.feedsCol
+    final _ref = PeamanReferenceHelper.hashtagsCol
+        .orderBy('feeds', descending: true)
         .where('visibility', isEqualTo: true)
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
@@ -1397,7 +1399,8 @@ class FeedProvider {
     required final String searchKeyword,
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref = PeamanReferenceHelper.feedsCol
+    final _ref = PeamanReferenceHelper.hashtagsCol
+        .orderBy('feeds', descending: true)
         .where('visibility', isEqualTo: true)
         .where('search_keys', arrayContains: searchKeyword);
     final _query = query?.call(_ref) ?? _ref;
