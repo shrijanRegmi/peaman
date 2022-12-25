@@ -143,7 +143,7 @@ class FeedProvider {
     for (final hashtag in hashtags) {
       final splittedHashtag = hashtag.split(' ');
 
-      assert(splittedHashtag.length > 1, 'Invalid hashtag - $hashtag');
+      assert(splittedHashtag.length == 1, 'Invalid hashtag - $hashtag');
     }
 
     final currentTime = DateTime.now().millisecondsSinceEpoch;
