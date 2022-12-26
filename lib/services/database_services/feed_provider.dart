@@ -1153,6 +1153,13 @@ class FeedProvider {
     return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
   }
 
+  // hashtag from firestore
+  PeamanHashtag _hashtagFromFirebase(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanHashtag.fromJson(snap.data() ?? {});
+  }
+
   // list of hashtags from firestore
   List<PeamanHashtag> _hashtagsFromFirebase(
     QuerySnapshot<Map<String, dynamic>> snap,
@@ -1357,6 +1364,22 @@ class FeedProvider {
         .orderBy('created_at', descending: true);
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_feedsFromFirebase);
+  }
+
+  // future of hashtag by id
+  Future<PeamanHashtag> getHashtagById({
+    required final String hashtagId,
+  }) {
+    final _ref = PeamanReferenceHelper.hashtagDoc(hashtag: hashtagId);
+    return _ref.get().then(_hashtagFromFirebase);
+  }
+
+  // stream of hashtag by id
+  Stream<PeamanHashtag> getHashtagByIdStream({
+    required final String hashtagId,
+  }) {
+    final _ref = PeamanReferenceHelper.hashtagDoc(hashtag: hashtagId);
+    return _ref.snapshots().map(_hashtagFromFirebase);
   }
 
   // future of all hashtags

@@ -349,6 +349,20 @@ class PFeedProvider {
     return FeedProvider().getUserMyFeedsStream(uid: uid, query: query);
   }
 
+  static Future<PeamanHashtag> getHashtagById({
+    required final String hashtagId,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtagById');
+    return FeedProvider().getHashtagById(hashtagId: hashtagId);
+  }
+
+  static Stream<PeamanHashtag> getHashtagByIdStream({
+    required final String hashtagId,
+  }) {
+    PeamanCommonHelper.printListening(text: 'hashtagById');
+    return FeedProvider().getHashtagByIdStream(hashtagId: hashtagId);
+  }
+
   static Future<List<PeamanHashtag>> getHashtags({
     final MyQuery Function(MyQuery)? query,
   }) {
