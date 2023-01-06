@@ -1,10 +1,6 @@
 library peaman;
 
-// wrapper
-export './peaman_wrapper.dart';
-
 // main classes
-export 'main/peaman_state_m.dart';
 export 'main/peaman_auth_m.dart';
 export 'main/peaman_chat_m.dart';
 export 'main/peaman_feed_m.dart';
