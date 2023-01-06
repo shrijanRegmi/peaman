@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
-import '../../utils/query_type_def.dart';
-
 class AppUserProvider {
   // create user
   Future<void> createUser({
