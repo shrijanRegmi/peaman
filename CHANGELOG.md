@@ -5,3 +5,7 @@
 ## 0.0.2
 
 * Improved reaction, comment, follow feeds and block user feature 
+
+## 0.0.3
+
+* Complete refactor of code and a lot of improvements
