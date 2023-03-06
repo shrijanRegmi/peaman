@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman/peaman.dart';
 
@@ -12,7 +11,7 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(),
+      future: Peaman.initializeApp(),
       builder: (context, snap) {
         if (snap.hasData) {
           return MaterialApp(
