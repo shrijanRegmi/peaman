@@ -70,5 +70,5 @@ export 'helpers/database_helper.dart';
 export 'helpers/reference_helper.dart';
 
 // utils
-export 'utils/firestore_constants.dart';
-export 'utils/query_type_def.dart';
+export 'src/utils/firestore_constants.dart';
+export 'src/utils/query_type_def.dart';

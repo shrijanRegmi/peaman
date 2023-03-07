@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:peaman/features/chat/models/chat_sent_messages_count_model.dart';
 
 import '../enums/chat_request_status.dart';
+import 'chat_sent_messages_count_model.dart';
 import 'chat_start_after_model.dart';
 import 'chat_unread_messages_count_model.dart';
 

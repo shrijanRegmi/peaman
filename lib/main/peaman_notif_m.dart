@@ -3,7 +3,7 @@ import 'package:peaman/models/notification_model.dart';
 import 'package:peaman/services/database_services/notif_provider.dart';
 import '../helpers/common_helper.dart';
 import '../services/messaging_services/firebase_messaging_provider.dart';
-import '../utils/query_type_def.dart';
+import '../src/utils/query_type_def.dart';
 
 class PNotificationProvider {
   static Future<void> initializePushNotification({

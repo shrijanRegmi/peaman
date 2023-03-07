@@ -1,7 +1,7 @@
 import 'package:either_dart/either.dart';
-import 'package:peaman/utils/peaman_error.dart';
+import 'package:peaman/src/features/shared/models/peaman_error.dart';
 
-import '../../../utils/peaman_field.dart';
+import '../../shared/models/peaman_field.dart';
 import '../../../utils/query_type_def.dart';
 import '../enums/online_status_type.dart';
 import '../models/blocked_user_model.dart';

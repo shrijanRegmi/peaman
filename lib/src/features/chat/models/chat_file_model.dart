@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:peaman/features/chat/models/chat_file_url_model.dart';
+
+import 'chat_file_url_model.dart';
 
 part 'chat_file_model.freezed.dart';
 part 'chat_file_model.g.dart';

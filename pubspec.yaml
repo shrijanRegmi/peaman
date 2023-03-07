@@ -24,6 +24,7 @@ dependencies:
   freezed_annotation: ^2.2.0
   google_sign_in: ^6.0.2
   json_annotation: ^4.8.0
+  riverpod: ^2.3.0
   tuple: ^2.0.1
 
 dev_dependencies:

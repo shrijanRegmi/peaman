@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/utils/firestore_constants.dart';
+import 'package:peaman/src/utils/firestore_constants.dart';
 
 typedef ColRef = CollectionReference<Map<String, dynamic>>;
 typedef DocRef = DocumentReference<Map<String, dynamic>>;

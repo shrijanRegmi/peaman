@@ -1,10 +1,10 @@
 import 'package:either_dart/either.dart';
-import 'package:peaman/utils/peaman_error.dart';
+import 'package:peaman/src/features/shared/models/peaman_error.dart';
 
 import '../enums/chat_typing_status.dart';
 import '../models/chat_model.dart';
 import '../models/chat_message_model.dart';
-import '../../../utils/peaman_field.dart';
+import '../../shared/models/peaman_field.dart';
 import '../../../utils/query_type_def.dart';
 
 abstract class PeamanChatRepository {
