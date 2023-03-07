@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chat_file_url_model.dart';
+part of 'file_url_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -9,21 +9,21 @@ part of 'chat_file_url_model.dart';
 _$_PeamanChatFileUrl _$$_PeamanChatFileUrlFromJson(Map<String, dynamic> json) =>
     _$_PeamanChatFileUrl(
       url: json['url'] as String?,
-      type: $enumDecodeNullable(_$PeamanChatFileTypeEnumMap, json['type']) ??
-          PeamanChatFileType.unknown,
+      type: $enumDecodeNullable(_$PeamanFileTypeEnumMap, json['type']) ??
+          PeamanFileType.unknown,
     );
 
 Map<String, dynamic> _$$_PeamanChatFileUrlToJson(
         _$_PeamanChatFileUrl instance) =>
     <String, dynamic>{
       'url': instance.url,
-      'type': _$PeamanChatFileTypeEnumMap[instance.type]!,
+      'type': _$PeamanFileTypeEnumMap[instance.type]!,
     };
 
-const _$PeamanChatFileTypeEnumMap = {
-  PeamanChatFileType.unknown: 'unknown',
-  PeamanChatFileType.image: 'image',
-  PeamanChatFileType.video: 'video',
-  PeamanChatFileType.pdf: 'pdf',
-  PeamanChatFileType.other: 'other',
+const _$PeamanFileTypeEnumMap = {
+  PeamanFileType.unknown: 'unknown',
+  PeamanFileType.image: 'image',
+  PeamanFileType.video: 'video',
+  PeamanFileType.pdf: 'pdf',
+  PeamanFileType.other: 'other',
 };

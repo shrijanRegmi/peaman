@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'follower_model.dart';
+part of 'sub_feed_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_PeamanFollower _$$_PeamanFollowerFromJson(Map<String, dynamic> json) =>
-    _$_PeamanFollower(
-      uid: json['uid'] as String?,
+_$_PeamanSubFeed _$$_PeamanSubFeedFromJson(Map<String, dynamic> json) =>
+    _$_PeamanSubFeed(
+      id: json['id'] as String?,
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
     );
 
-Map<String, dynamic> _$$_PeamanFollowerToJson(_$_PeamanFollower instance) =>
+Map<String, dynamic> _$$_PeamanSubFeedToJson(_$_PeamanSubFeed instance) =>
     <String, dynamic>{
-      'uid': instance.uid,
+      'id': instance.id,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };

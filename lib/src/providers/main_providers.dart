@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 
 import '../features/auth/repositories/auth_repository.dart';
 import '../features/chat/repositories/chat_repository.dart';
+import '../features/feed/repositories/feed_repository.dart';
 import '../features/user/repositories/user_repository.dart';
 
 final providerOfPeamanAuth = Provider<PeamanAuthRepository>((ref) {
@@ -14,4 +15,8 @@ final providerOfPeamanUser = Provider<PeamanUserRepository>((ref) {
 
 final providerOfPeamanChat = Provider<PeamanChatRepository>((ref) {
   return PeamanChatRepositoryImpl();
+});
+
+final providerOfPeamanFeed = Provider<PeamanFeedRepository>((ref) {
+  return PeamanFeedRepositoryImpl();
 });

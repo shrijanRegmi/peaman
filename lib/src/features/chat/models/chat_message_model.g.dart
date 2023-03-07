@@ -12,10 +12,9 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
       chatId: json['chatId'] as String?,
       text: json['text'] as String?,
       files: (json['files'] as List<dynamic>?)
-              ?.map(
-                  (e) => PeamanChatFileUrl.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <PeamanChatFileUrl>[],
+          const <PeamanFileUrl>[],
       type: $enumDecodeNullable(_$PeamanChatMessageTypeEnumMap, json['type']) ??
           PeamanChatMessageType.text,
       senderId: json['senderId'] as String?,
@@ -28,10 +27,9 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
       parentId: json['parentId'] as String?,
       parentText: json['parentText'] as String?,
       parentFiles: (json['parentFiles'] as List<dynamic>?)
-              ?.map(
-                  (e) => PeamanChatFileUrl.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <PeamanChatFileUrl>[],
+          const <PeamanFileUrl>[],
       visibility: json['visibility'] as bool? ?? true,
       isForwarded: json['isForwarded'] as bool? ?? false,
       forwardedFromChatId: json['forwardedFromChatId'] as String?,

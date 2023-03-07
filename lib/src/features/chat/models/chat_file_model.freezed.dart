@@ -21,7 +21,7 @@ PeamanChatFile _$PeamanChatFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PeamanChatFile {
   String? get id => throw _privateConstructorUsedError;
-  List<PeamanChatFileUrl> get urls => throw _privateConstructorUsedError;
+  List<PeamanFileUrl> get urls => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
 
@@ -38,10 +38,7 @@ abstract class $PeamanChatFileCopyWith<$Res> {
       _$PeamanChatFileCopyWithImpl<$Res, PeamanChatFile>;
   @useResult
   $Res call(
-      {String? id,
-      List<PeamanChatFileUrl> urls,
-      int? createdAt,
-      int? updatedAt});
+      {String? id, List<PeamanFileUrl> urls, int? createdAt, int? updatedAt});
 }
 
 /// @nodoc
@@ -70,7 +67,7 @@ class _$PeamanChatFileCopyWithImpl<$Res, $Val extends PeamanChatFile>
       urls: null == urls
           ? _value.urls
           : urls // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -92,10 +89,7 @@ abstract class _$$_PeamanChatFileCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id,
-      List<PeamanChatFileUrl> urls,
-      int? createdAt,
-      int? updatedAt});
+      {String? id, List<PeamanFileUrl> urls, int? createdAt, int? updatedAt});
 }
 
 /// @nodoc
@@ -122,7 +116,7 @@ class __$$_PeamanChatFileCopyWithImpl<$Res>
       urls: null == urls
           ? _value._urls
           : urls // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -140,7 +134,7 @@ class __$$_PeamanChatFileCopyWithImpl<$Res>
 class _$_PeamanChatFile implements _PeamanChatFile {
   const _$_PeamanChatFile(
       {this.id,
-      final List<PeamanChatFileUrl> urls = const <PeamanChatFileUrl>[],
+      final List<PeamanFileUrl> urls = const <PeamanFileUrl>[],
       this.createdAt,
       this.updatedAt})
       : _urls = urls;
@@ -150,10 +144,10 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 
   @override
   final String? id;
-  final List<PeamanChatFileUrl> _urls;
+  final List<PeamanFileUrl> _urls;
   @override
   @JsonKey()
-  List<PeamanChatFileUrl> get urls {
+  List<PeamanFileUrl> get urls {
     if (_urls is EqualUnmodifiableListView) return _urls;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_urls);
@@ -204,7 +198,7 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 abstract class _PeamanChatFile implements PeamanChatFile {
   const factory _PeamanChatFile(
       {final String? id,
-      final List<PeamanChatFileUrl> urls,
+      final List<PeamanFileUrl> urls,
       final int? createdAt,
       final int? updatedAt}) = _$_PeamanChatFile;
 
@@ -214,7 +208,7 @@ abstract class _PeamanChatFile implements PeamanChatFile {
   @override
   String? get id;
   @override
-  List<PeamanChatFileUrl> get urls;
+  List<PeamanFileUrl> get urls;
   @override
   int? get createdAt;
   @override

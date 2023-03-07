@@ -10,10 +10,9 @@ _$_PeamanChatFile _$$_PeamanChatFileFromJson(Map<String, dynamic> json) =>
     _$_PeamanChatFile(
       id: json['id'] as String?,
       urls: (json['urls'] as List<dynamic>?)
-              ?.map(
-                  (e) => PeamanChatFileUrl.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <PeamanChatFileUrl>[],
+          const <PeamanFileUrl>[],
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
     );

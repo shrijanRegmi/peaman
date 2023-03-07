@@ -1,13 +1,12 @@
 import 'package:either_dart/either.dart';
-import 'package:peaman/src/features/shared/models/peaman_error.dart';
 
+import '../../shared/models/peaman_error.dart';
 import '../../shared/models/peaman_field.dart';
 import '../../../utils/query_type_def.dart';
 import '../enums/online_status_type.dart';
-import '../models/blocked_user_model.dart';
 import '../models/follow_request_model.dart';
-import '../models/follower_model.dart';
 import '../models/following_model.dart';
+import '../models/sub_user_model.dart';
 import '../models/user_model.dart';
 
 abstract class PeamanUserRepository {
@@ -123,12 +122,12 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanFollower>, PeamanError>> getFollowers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFollower>, PeamanError>> getFollowersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getFollowersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -143,22 +142,22 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedUsers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedUsersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedByUsers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedByUsersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -227,7 +226,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedByUsers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -236,7 +235,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedByUsersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -245,7 +244,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedUsers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -254,7 +253,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanBlockedUser>, PeamanError>> getBlockedUsersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -263,7 +262,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanFollower>, PeamanError>> getFollowers({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -272,7 +271,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanFollower>, PeamanError>> getFollowersStream({
+  Stream<Either<List<PeamanSubUser>, PeamanError>> getFollowersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {

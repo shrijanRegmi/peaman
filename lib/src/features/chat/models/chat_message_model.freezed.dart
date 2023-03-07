@@ -23,7 +23,7 @@ mixin _$PeamanChatMessage {
   String? get id => throw _privateConstructorUsedError;
   String? get chatId => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
-  List<PeamanChatFileUrl> get files => throw _privateConstructorUsedError;
+  List<PeamanFileUrl> get files => throw _privateConstructorUsedError;
   PeamanChatMessageType get type => throw _privateConstructorUsedError;
   String? get senderId => throw _privateConstructorUsedError;
   String? get senderName => throw _privateConstructorUsedError;
@@ -31,7 +31,7 @@ mixin _$PeamanChatMessage {
   String? get extraId => throw _privateConstructorUsedError;
   String? get parentId => throw _privateConstructorUsedError;
   String? get parentText => throw _privateConstructorUsedError;
-  List<PeamanChatFileUrl> get parentFiles => throw _privateConstructorUsedError;
+  List<PeamanFileUrl> get parentFiles => throw _privateConstructorUsedError;
   bool get visibility => throw _privateConstructorUsedError;
   bool get isForwarded => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +57,7 @@ abstract class $PeamanChatMessageCopyWith<$Res> {
       {String? id,
       String? chatId,
       String? text,
-      List<PeamanChatFileUrl> files,
+      List<PeamanFileUrl> files,
       PeamanChatMessageType type,
       String? senderId,
       String? senderName,
@@ -65,7 +65,7 @@ abstract class $PeamanChatMessageCopyWith<$Res> {
       String? extraId,
       String? parentId,
       String? parentText,
-      List<PeamanChatFileUrl> parentFiles,
+      List<PeamanFileUrl> parentFiles,
       bool visibility,
       bool isForwarded,
       @JsonKey(ignore: true) bool isTemp,
@@ -124,7 +124,7 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
       files: null == files
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
       parentFiles: null == parentFiles
           ? _value.parentFiles
           : parentFiles // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       visibility: null == visibility
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
@@ -201,7 +201,7 @@ abstract class _$$_PeamanChatMessageCopyWith<$Res>
       {String? id,
       String? chatId,
       String? text,
-      List<PeamanChatFileUrl> files,
+      List<PeamanFileUrl> files,
       PeamanChatMessageType type,
       String? senderId,
       String? senderName,
@@ -209,7 +209,7 @@ abstract class _$$_PeamanChatMessageCopyWith<$Res>
       String? extraId,
       String? parentId,
       String? parentText,
-      List<PeamanChatFileUrl> parentFiles,
+      List<PeamanFileUrl> parentFiles,
       bool visibility,
       bool isForwarded,
       @JsonKey(ignore: true) bool isTemp,
@@ -266,7 +266,7 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
       files: null == files
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -298,7 +298,7 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
       parentFiles: null == parentFiles
           ? _value._parentFiles
           : parentFiles // ignore: cast_nullable_to_non_nullable
-              as List<PeamanChatFileUrl>,
+              as List<PeamanFileUrl>,
       visibility: null == visibility
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
@@ -338,7 +338,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
       {this.id,
       this.chatId,
       this.text,
-      final List<PeamanChatFileUrl> files = const <PeamanChatFileUrl>[],
+      final List<PeamanFileUrl> files = const <PeamanFileUrl>[],
       this.type = PeamanChatMessageType.text,
       this.senderId,
       this.senderName,
@@ -346,7 +346,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
       this.extraId,
       this.parentId,
       this.parentText,
-      final List<PeamanChatFileUrl> parentFiles = const <PeamanChatFileUrl>[],
+      final List<PeamanFileUrl> parentFiles = const <PeamanFileUrl>[],
       this.visibility = true,
       this.isForwarded = false,
       @JsonKey(ignore: true) this.isTemp = false,
@@ -368,10 +368,10 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
   final String? chatId;
   @override
   final String? text;
-  final List<PeamanChatFileUrl> _files;
+  final List<PeamanFileUrl> _files;
   @override
   @JsonKey()
-  List<PeamanChatFileUrl> get files {
+  List<PeamanFileUrl> get files {
     if (_files is EqualUnmodifiableListView) return _files;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_files);
@@ -399,10 +399,10 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
   final String? parentId;
   @override
   final String? parentText;
-  final List<PeamanChatFileUrl> _parentFiles;
+  final List<PeamanFileUrl> _parentFiles;
   @override
   @JsonKey()
-  List<PeamanChatFileUrl> get parentFiles {
+  List<PeamanFileUrl> get parentFiles {
     if (_parentFiles is EqualUnmodifiableListView) return _parentFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_parentFiles);
@@ -520,7 +520,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
       {final String? id,
       final String? chatId,
       final String? text,
-      final List<PeamanChatFileUrl> files,
+      final List<PeamanFileUrl> files,
       final PeamanChatMessageType type,
       final String? senderId,
       final String? senderName,
@@ -528,7 +528,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
       final String? extraId,
       final String? parentId,
       final String? parentText,
-      final List<PeamanChatFileUrl> parentFiles,
+      final List<PeamanFileUrl> parentFiles,
       final bool visibility,
       final bool isForwarded,
       @JsonKey(ignore: true) final bool isTemp,
@@ -547,7 +547,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
   @override
   String? get text;
   @override
-  List<PeamanChatFileUrl> get files;
+  List<PeamanFileUrl> get files;
   @override
   PeamanChatMessageType get type;
   @override
@@ -563,7 +563,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
   @override
   String? get parentText;
   @override
-  List<PeamanChatFileUrl> get parentFiles;
+  List<PeamanFileUrl> get parentFiles;
   @override
   bool get visibility;
   @override

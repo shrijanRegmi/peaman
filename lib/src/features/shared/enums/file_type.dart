@@ -1,4 +1,4 @@
-enum PeamanChatFileType {
+enum PeamanFileType {
   unknown,
   image,
   video,

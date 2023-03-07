@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../enums/chat_message_type.dart';
-import './chat_file_url_model.dart';
+import '../../shared/models/file_url_model.dart';
 
 part 'chat_message_model.freezed.dart';
 part 'chat_message_model.g.dart';
@@ -12,7 +12,7 @@ class PeamanChatMessage with _$PeamanChatMessage {
     final String? id,
     final String? chatId,
     final String? text,
-    @Default(<PeamanChatFileUrl>[]) final List<PeamanChatFileUrl> files,
+    @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> files,
     @Default(PeamanChatMessageType.text) final PeamanChatMessageType type,
     final String? senderId,
     final String? senderName,
@@ -20,7 +20,7 @@ class PeamanChatMessage with _$PeamanChatMessage {
     final String? extraId,
     final String? parentId,
     final String? parentText,
-    @Default(<PeamanChatFileUrl>[]) final List<PeamanChatFileUrl> parentFiles,
+    @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> parentFiles,
     @Default(true) final bool visibility,
     @Default(false) final bool isForwarded,
     @JsonKey(ignore: true) @Default(false) final bool isTemp,

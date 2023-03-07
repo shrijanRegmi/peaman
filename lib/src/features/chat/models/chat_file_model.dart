@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'chat_file_url_model.dart';
+import '../../shared/models/file_url_model.dart';
 
 part 'chat_file_model.freezed.dart';
 part 'chat_file_model.g.dart';
@@ -9,7 +9,7 @@ part 'chat_file_model.g.dart';
 class PeamanChatFile with _$PeamanChatFile {
   const factory PeamanChatFile({
     final String? id,
-    @Default(<PeamanChatFileUrl>[]) final List<PeamanChatFileUrl> urls,
+    @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> urls,
     final int? createdAt,
     final int? updatedAt,
   }) = _PeamanChatFile;

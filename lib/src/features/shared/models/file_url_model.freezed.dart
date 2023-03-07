@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'chat_file_url_model.dart';
+part of 'file_url_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,34 +14,34 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-PeamanChatFileUrl _$PeamanChatFileUrlFromJson(Map<String, dynamic> json) {
+PeamanFileUrl _$PeamanFileUrlFromJson(Map<String, dynamic> json) {
   return _PeamanChatFileUrl.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PeamanChatFileUrl {
+mixin _$PeamanFileUrl {
   String? get url => throw _privateConstructorUsedError;
-  PeamanChatFileType get type => throw _privateConstructorUsedError;
+  PeamanFileType get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PeamanChatFileUrlCopyWith<PeamanChatFileUrl> get copyWith =>
+  $PeamanFileUrlCopyWith<PeamanFileUrl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PeamanChatFileUrlCopyWith<$Res> {
-  factory $PeamanChatFileUrlCopyWith(
-          PeamanChatFileUrl value, $Res Function(PeamanChatFileUrl) then) =
-      _$PeamanChatFileUrlCopyWithImpl<$Res, PeamanChatFileUrl>;
+abstract class $PeamanFileUrlCopyWith<$Res> {
+  factory $PeamanFileUrlCopyWith(
+          PeamanFileUrl value, $Res Function(PeamanFileUrl) then) =
+      _$PeamanFileUrlCopyWithImpl<$Res, PeamanFileUrl>;
   @useResult
-  $Res call({String? url, PeamanChatFileType type});
+  $Res call({String? url, PeamanFileType type});
 }
 
 /// @nodoc
-class _$PeamanChatFileUrlCopyWithImpl<$Res, $Val extends PeamanChatFileUrl>
-    implements $PeamanChatFileUrlCopyWith<$Res> {
-  _$PeamanChatFileUrlCopyWithImpl(this._value, this._then);
+class _$PeamanFileUrlCopyWithImpl<$Res, $Val extends PeamanFileUrl>
+    implements $PeamanFileUrlCopyWith<$Res> {
+  _$PeamanFileUrlCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -62,25 +62,25 @@ class _$PeamanChatFileUrlCopyWithImpl<$Res, $Val extends PeamanChatFileUrl>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as PeamanChatFileType,
+              as PeamanFileType,
     ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$_PeamanChatFileUrlCopyWith<$Res>
-    implements $PeamanChatFileUrlCopyWith<$Res> {
+    implements $PeamanFileUrlCopyWith<$Res> {
   factory _$$_PeamanChatFileUrlCopyWith(_$_PeamanChatFileUrl value,
           $Res Function(_$_PeamanChatFileUrl) then) =
       __$$_PeamanChatFileUrlCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? url, PeamanChatFileType type});
+  $Res call({String? url, PeamanFileType type});
 }
 
 /// @nodoc
 class __$$_PeamanChatFileUrlCopyWithImpl<$Res>
-    extends _$PeamanChatFileUrlCopyWithImpl<$Res, _$_PeamanChatFileUrl>
+    extends _$PeamanFileUrlCopyWithImpl<$Res, _$_PeamanChatFileUrl>
     implements _$$_PeamanChatFileUrlCopyWith<$Res> {
   __$$_PeamanChatFileUrlCopyWithImpl(
       _$_PeamanChatFileUrl _value, $Res Function(_$_PeamanChatFileUrl) _then)
@@ -100,7 +100,7 @@ class __$$_PeamanChatFileUrlCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as PeamanChatFileType,
+              as PeamanFileType,
     ));
   }
 }
@@ -108,8 +108,7 @@ class __$$_PeamanChatFileUrlCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
-  const _$_PeamanChatFileUrl(
-      {this.url, this.type = PeamanChatFileType.unknown});
+  const _$_PeamanChatFileUrl({this.url, this.type = PeamanFileType.unknown});
 
   factory _$_PeamanChatFileUrl.fromJson(Map<String, dynamic> json) =>
       _$$_PeamanChatFileUrlFromJson(json);
@@ -118,11 +117,11 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
   final String? url;
   @override
   @JsonKey()
-  final PeamanChatFileType type;
+  final PeamanFileType type;
 
   @override
   String toString() {
-    return 'PeamanChatFileUrl(url: $url, type: $type)';
+    return 'PeamanFileUrl(url: $url, type: $type)';
   }
 
   @override
@@ -153,10 +152,9 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
   }
 }
 
-abstract class _PeamanChatFileUrl implements PeamanChatFileUrl {
+abstract class _PeamanChatFileUrl implements PeamanFileUrl {
   const factory _PeamanChatFileUrl(
-      {final String? url,
-      final PeamanChatFileType type}) = _$_PeamanChatFileUrl;
+      {final String? url, final PeamanFileType type}) = _$_PeamanChatFileUrl;
 
   factory _PeamanChatFileUrl.fromJson(Map<String, dynamic> json) =
       _$_PeamanChatFileUrl.fromJson;
@@ -164,7 +162,7 @@ abstract class _PeamanChatFileUrl implements PeamanChatFileUrl {
   @override
   String? get url;
   @override
-  PeamanChatFileType get type;
+  PeamanFileType get type;
   @override
   @JsonKey(ignore: true)
   _$$_PeamanChatFileUrlCopyWith<_$_PeamanChatFileUrl> get copyWith =>

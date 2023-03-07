@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'follower_model.dart';
+part of 'sub_feed_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,35 +14,35 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-PeamanFollower _$PeamanFollowerFromJson(Map<String, dynamic> json) {
-  return _PeamanFollower.fromJson(json);
+PeamanSubFeed _$PeamanSubFeedFromJson(Map<String, dynamic> json) {
+  return _PeamanSubFeed.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PeamanFollower {
-  String? get uid => throw _privateConstructorUsedError;
+mixin _$PeamanSubFeed {
+  String? get id => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PeamanFollowerCopyWith<PeamanFollower> get copyWith =>
+  $PeamanSubFeedCopyWith<PeamanSubFeed> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PeamanFollowerCopyWith<$Res> {
-  factory $PeamanFollowerCopyWith(
-          PeamanFollower value, $Res Function(PeamanFollower) then) =
-      _$PeamanFollowerCopyWithImpl<$Res, PeamanFollower>;
+abstract class $PeamanSubFeedCopyWith<$Res> {
+  factory $PeamanSubFeedCopyWith(
+          PeamanSubFeed value, $Res Function(PeamanSubFeed) then) =
+      _$PeamanSubFeedCopyWithImpl<$Res, PeamanSubFeed>;
   @useResult
-  $Res call({String? uid, int? createdAt, int? updatedAt});
+  $Res call({String? id, int? createdAt, int? updatedAt});
 }
 
 /// @nodoc
-class _$PeamanFollowerCopyWithImpl<$Res, $Val extends PeamanFollower>
-    implements $PeamanFollowerCopyWith<$Res> {
-  _$PeamanFollowerCopyWithImpl(this._value, this._then);
+class _$PeamanSubFeedCopyWithImpl<$Res, $Val extends PeamanSubFeed>
+    implements $PeamanSubFeedCopyWith<$Res> {
+  _$PeamanSubFeedCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -52,14 +52,14 @@ class _$PeamanFollowerCopyWithImpl<$Res, $Val extends PeamanFollower>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = freezed,
+    Object? id = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      uid: freezed == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -74,35 +74,35 @@ class _$PeamanFollowerCopyWithImpl<$Res, $Val extends PeamanFollower>
 }
 
 /// @nodoc
-abstract class _$$_PeamanFollowerCopyWith<$Res>
-    implements $PeamanFollowerCopyWith<$Res> {
-  factory _$$_PeamanFollowerCopyWith(
-          _$_PeamanFollower value, $Res Function(_$_PeamanFollower) then) =
-      __$$_PeamanFollowerCopyWithImpl<$Res>;
+abstract class _$$_PeamanSubFeedCopyWith<$Res>
+    implements $PeamanSubFeedCopyWith<$Res> {
+  factory _$$_PeamanSubFeedCopyWith(
+          _$_PeamanSubFeed value, $Res Function(_$_PeamanSubFeed) then) =
+      __$$_PeamanSubFeedCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? uid, int? createdAt, int? updatedAt});
+  $Res call({String? id, int? createdAt, int? updatedAt});
 }
 
 /// @nodoc
-class __$$_PeamanFollowerCopyWithImpl<$Res>
-    extends _$PeamanFollowerCopyWithImpl<$Res, _$_PeamanFollower>
-    implements _$$_PeamanFollowerCopyWith<$Res> {
-  __$$_PeamanFollowerCopyWithImpl(
-      _$_PeamanFollower _value, $Res Function(_$_PeamanFollower) _then)
+class __$$_PeamanSubFeedCopyWithImpl<$Res>
+    extends _$PeamanSubFeedCopyWithImpl<$Res, _$_PeamanSubFeed>
+    implements _$$_PeamanSubFeedCopyWith<$Res> {
+  __$$_PeamanSubFeedCopyWithImpl(
+      _$_PeamanSubFeed _value, $Res Function(_$_PeamanSubFeed) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = freezed,
+    Object? id = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
-    return _then(_$_PeamanFollower(
-      uid: freezed == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
+    return _then(_$_PeamanSubFeed(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -118,14 +118,14 @@ class __$$_PeamanFollowerCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PeamanFollower implements _PeamanFollower {
-  const _$_PeamanFollower({this.uid, this.createdAt, this.updatedAt});
+class _$_PeamanSubFeed implements _PeamanSubFeed {
+  const _$_PeamanSubFeed({this.id, this.createdAt, this.updatedAt});
 
-  factory _$_PeamanFollower.fromJson(Map<String, dynamic> json) =>
-      _$$_PeamanFollowerFromJson(json);
+  factory _$_PeamanSubFeed.fromJson(Map<String, dynamic> json) =>
+      _$$_PeamanSubFeedFromJson(json);
 
   @override
-  final String? uid;
+  final String? id;
   @override
   final int? createdAt;
   @override
@@ -133,15 +133,15 @@ class _$_PeamanFollower implements _PeamanFollower {
 
   @override
   String toString() {
-    return 'PeamanFollower(uid: $uid, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PeamanSubFeed(id: $id, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PeamanFollower &&
-            (identical(other.uid, uid) || other.uid == uid) &&
+            other is _$_PeamanSubFeed &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -150,39 +150,39 @@ class _$_PeamanFollower implements _PeamanFollower {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PeamanFollowerCopyWith<_$_PeamanFollower> get copyWith =>
-      __$$_PeamanFollowerCopyWithImpl<_$_PeamanFollower>(this, _$identity);
+  _$$_PeamanSubFeedCopyWith<_$_PeamanSubFeed> get copyWith =>
+      __$$_PeamanSubFeedCopyWithImpl<_$_PeamanSubFeed>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PeamanFollowerToJson(
+    return _$$_PeamanSubFeedToJson(
       this,
     );
   }
 }
 
-abstract class _PeamanFollower implements PeamanFollower {
-  const factory _PeamanFollower(
-      {final String? uid,
+abstract class _PeamanSubFeed implements PeamanSubFeed {
+  const factory _PeamanSubFeed(
+      {final String? id,
       final int? createdAt,
-      final int? updatedAt}) = _$_PeamanFollower;
+      final int? updatedAt}) = _$_PeamanSubFeed;
 
-  factory _PeamanFollower.fromJson(Map<String, dynamic> json) =
-      _$_PeamanFollower.fromJson;
+  factory _PeamanSubFeed.fromJson(Map<String, dynamic> json) =
+      _$_PeamanSubFeed.fromJson;
 
   @override
-  String? get uid;
+  String? get id;
   @override
   int? get createdAt;
   @override
   int? get updatedAt;
   @override
   @JsonKey(ignore: true)
-  _$$_PeamanFollowerCopyWith<_$_PeamanFollower> get copyWith =>
+  _$$_PeamanSubFeedCopyWith<_$_PeamanSubFeed> get copyWith =>
       throw _privateConstructorUsedError;
 }
