@@ -1,6 +1,6 @@
 import 'package:either_dart/either.dart';
-import 'package:peaman/src/features/shared/models/peaman_error.dart';
 
+import '../../shared/models/peaman_error.dart';
 import '../enums/chat_typing_status.dart';
 import '../models/chat_model.dart';
 import '../models/chat_message_model.dart';
@@ -8,8 +8,8 @@ import '../../shared/models/peaman_field.dart';
 import '../../../utils/query_type_def.dart';
 
 abstract class PeamanChatRepository {
-  Future<Either<bool, PeamanError>> sendMessage({
-    required final PeamanChatMessage message,
+  Future<Either<PeamanChat, PeamanError>> createChat({
+    required final PeamanChat chat,
   });
 
   Future<Either<bool, PeamanError>> updateChat({
@@ -23,6 +23,10 @@ abstract class PeamanChatRepository {
 
   Future<Either<bool, PeamanError>> archiveChat({
     required final String chatId,
+  });
+
+  Future<Either<PeamanChatMessage, PeamanError>> createChatMessage({
+    required final PeamanChatMessage message,
   });
 
   Future<Either<bool, PeamanError>> updateChatMessage({
@@ -276,14 +280,6 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> sendMessage({
-    required PeamanChatMessage message,
-  }) {
-    // TODO: implement sendMessage
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<bool, PeamanError>> setTypingStatus({
     required String chatId,
     required String uid,
@@ -307,6 +303,22 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required String chatId,
   }) {
     // TODO: implement updateChatMessage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<PeamanChat, PeamanError>> createChat({
+    required PeamanChat chat,
+  }) {
+    // TODO: implement createChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<PeamanChatMessage, PeamanError>> createChatMessage({
+    required PeamanChatMessage message,
+  }) {
+    // TODO: implement createChatMessage
     throw UnimplementedError();
   }
 }
