@@ -349,14 +349,19 @@ class MessageProvider {
 
   // stream of list of messages
   Stream<List<PeamanMessage>> getMessagesStream({
-    required final String chatId,
-    final MyQuery Function(MyQuery)? query,
+    required String chatId,
+    int? startAfter,
   }) {
-    final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
+    final query = PeamanReferenceHelper.messagesCol(chatId: chatId)
         .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
-    final _query = query?.call(_ref) ?? _ref;
-    return _query.snapshots().map(_messagesFromFirestore);
+    if (startAfter != null) {
+      return query
+          .endBefore([startAfter])
+          .snapshots()
+          .map(_messagesFromFirestore);
+    }
+    return query.snapshots().map(_messagesFromFirestore);
   }
 
   // future of single message by id

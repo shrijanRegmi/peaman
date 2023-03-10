@@ -222,12 +222,12 @@ class PChatProvider {
 
   static Stream<List<PeamanMessage>> getMessagesStream({
     required final String chatId,
-    final MyQuery Function(MyQuery)? query,
+    final int? startAfter,
   }) {
     PeamanCommonHelper.printListening(text: 'messages');
     return MessageProvider().getMessagesStream(
       chatId: chatId,
-      query: query,
+      startAfter: startAfter,
     );
   }
 
