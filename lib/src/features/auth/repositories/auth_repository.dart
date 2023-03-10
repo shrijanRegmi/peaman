@@ -32,7 +32,7 @@ abstract class PeamanAuthRepository {
 
   Future<Either<bool, PeamanError>> signOut();
 
-  Stream<Either<PeamanAuthUser?, PeamanError>> get authUser;
+  Stream<PeamanAuthUser?> get authUser;
 }
 
 class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
@@ -46,9 +46,9 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   final _facebookSignIn = FacebookAuth.instance;
 
   @override
-  Stream<Either<PeamanAuthUser?, PeamanError>> get authUser => _auth
+  Stream<PeamanAuthUser?> get authUser => _auth
       .authStateChanges()
-      .map((e) => Left(e == null ? null : PeamanAuthUser(uid: e.uid)));
+      .map((e) => e == null ? null : PeamanAuthUser(uid: e.uid));
 
   @override
   Future<Either<bool, PeamanError>> sendPasswordResetEmail({
