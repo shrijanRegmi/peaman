@@ -9,3 +9,7 @@
 ## 0.0.3
 
 * Complete refactor of code and a lot of improvements
+
+## 0.0.4
+
+* Chat delete and message delete implemented
