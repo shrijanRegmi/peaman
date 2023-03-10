@@ -31,6 +31,7 @@ class MessageProvider {
 
       final _chatUpdateData = <String, dynamic>{};
 
+      _chatUpdateData['hidden_to_user_ids'] = [];
       _chatUpdateData['total_sent_messages'] = FieldValue.increment(1);
       _chatUpdateData['z_${message.senderId}_sent_messages'] =
           FieldValue.increment(1);
