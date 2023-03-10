@@ -15,6 +15,38 @@ class PChatProvider {
     );
   }
 
+  static Future<void> deleteChat({
+    required String uid,
+    required String chatId,
+    required int lastMessageCreatedAt,
+  }) async {
+    await MessageProvider().deleteChat(
+      uid: uid,
+      chatId: chatId,
+      lastMessageCreatedAt: lastMessageCreatedAt,
+    );
+  }
+
+  Future<void> deleteChatMessage({
+    required String chatId,
+    required String messageId,
+  }) async {
+    await MessageProvider().deleteChatMessage(
+      chatId: chatId,
+      messageId: messageId,
+    );
+  }
+
+  Future<void> unsendChatMessage({
+    required String chatId,
+    required String messageId,
+  }) async {
+    await MessageProvider().unsendChatMessage(
+      chatId: chatId,
+      messageId: messageId,
+    );
+  }
+
   static Future<void> readMessage({
     required final String chatId,
     required final String uid,

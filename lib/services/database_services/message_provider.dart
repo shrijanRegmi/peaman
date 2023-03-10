@@ -80,6 +80,36 @@ class MessageProvider {
     }
   }
 
+  Future<void> deleteChat({
+    required String uid,
+    required String chatId,
+    required int lastMessageCreatedAt,
+  }) async {
+    final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chatId);
+    await _chatRef.update({
+      'hidden_to_user_ids': FieldValue.arrayUnion([uid]),
+      'z_${uid}_start_after': lastMessageCreatedAt,
+    });
+  }
+
+  Future<void> deleteChatMessage({
+    required String chatId,
+    required String messageId,
+  }) async {
+    final _messageRef =
+        PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
+    await _messageRef.delete();
+  }
+
+  Future<void> unsendChatMessage({
+    required String chatId,
+    required String messageId,
+  }) async {
+    final _messageRef =
+        PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
+    await _messageRef.update({'unsent': true});
+  }
+
   // send additional properties with message
   Future<void> _sendAdditionalProperties({
     required final PeamanMessage message,
