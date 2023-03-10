@@ -5,18 +5,20 @@ import '../features/chat/repositories/chat_repository.dart';
 import '../features/feed/repositories/feed_repository.dart';
 import '../features/user/repositories/user_repository.dart';
 
-final providerOfPeamanAuth = Provider<PeamanAuthRepository>((ref) {
-  return PeamanAuthRepositoryImpl();
+final providerOfPeamanAuthRepository = Provider<PeamanAuthRepository>((ref) {
+  return PeamanAuthRepositoryImpl(
+    peamanUserRepository: ref.watch(providerOfPeamanUserRepository),
+  );
 });
 
-final providerOfPeamanUser = Provider<PeamanUserRepository>((ref) {
+final providerOfPeamanUserRepository = Provider<PeamanUserRepository>((ref) {
   return PeamanUserRepositoryImpl();
 });
 
-final providerOfPeamanChat = Provider<PeamanChatRepository>((ref) {
+final providerOfPeamanChatRepository = Provider<PeamanChatRepository>((ref) {
   return PeamanChatRepositoryImpl();
 });
 
-final providerOfPeamanFeed = Provider<PeamanFeedRepository>((ref) {
+final providerOfPeamanFeedRepository = Provider<PeamanFeedRepository>((ref) {
   return PeamanFeedRepositoryImpl();
 });

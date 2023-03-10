@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peaman/src/features/shared/models/peaman_field.dart';
 
 class PeamanCommonHelper {
   // print listening to
@@ -8,19 +9,40 @@ class PeamanCommonHelper {
 
   // prepare data to update on firestore
   static Map<String, dynamic> prepareDataToUpdate({
-    required final Map<String, dynamic> data,
-    final bool partial = false,
+    required final List<PeamanField> fields,
   }) {
-    var _data = data;
+    final _data = <String, dynamic>{};
 
-    if (partial) {
-      data.forEach((key, value) {
-        if (value is int || value is double) {
-          _data[key] = FieldValue.increment(value);
-        } else if (value is List) {
-          _data[key] = FieldValue.arrayUnion(value);
-        }
-      });
+    for (final field in fields) {
+      switch (field.type) {
+        case PeamanFieldType.delete:
+          _data[field.key] = FieldValue.delete();
+          break;
+        case PeamanFieldType.positivePartial:
+          if (field.value is num) {
+            _data[field.key] = FieldValue.increment(field.value);
+          } else if (field.value is List) {
+            _data[field.key] = FieldValue.arrayUnion(field.value);
+          } else {
+            throw Exception(
+              "value must be either a [num] type or a [List] type",
+            );
+          }
+          break;
+        case PeamanFieldType.negativePartial:
+          if (field.value is num) {
+            _data[field.key] = FieldValue.increment(-field.value);
+          } else if (field.value is List) {
+            _data[field.key] = FieldValue.arrayRemove(field.value);
+          } else {
+            throw Exception(
+              "value must be either a [num] type or a [List] type",
+            );
+          }
+          break;
+        default:
+          _data[field.key] = field.value;
+      }
     }
 
     return _data;

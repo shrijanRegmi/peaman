@@ -16,15 +16,15 @@ class PeamanReferenceHelper {
   //
 
   // main docs
-  static DocRef userDoc({required final String uid}) =>
+  static DocRef userDoc({required final String? uid}) =>
       _ref.collection(usersColName).doc(uid);
-  static DocRef feedDoc({required final String feedId}) =>
+  static DocRef feedDoc({required final String? feedId}) =>
       _ref.collection(feedsColName).doc(feedId);
-  static DocRef chatDoc({required final String chatId}) =>
+  static DocRef chatDoc({required final String? chatId}) =>
       _ref.collection(chatsColName).doc(chatId);
-  static DocRef momentDoc({required final String momentId}) =>
+  static DocRef momentDoc({required final String? momentId}) =>
       _ref.collection(momentsColName).doc(momentId);
-  static DocRef hashtagDoc({required final String hashtag}) =>
+  static DocRef hashtagDoc({required final String? hashtag}) =>
       _ref.collection(hashtagsColName).doc(hashtag);
   //
 

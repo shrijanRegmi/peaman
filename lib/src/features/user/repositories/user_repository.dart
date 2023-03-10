@@ -85,7 +85,7 @@ abstract class PeamanUserRepository {
     required final String uid,
   });
 
-  Stream<Either<PeamanUser, PeamanError>> getSingleUserStream({
+  Stream<PeamanUser> getSingleUserStream({
     required final String uid,
   });
 
@@ -94,7 +94,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanUser>, PeamanError>> getUsersBySearchKeyStream({
+  Stream<List<PeamanUser>> getUsersBySearchKeyStream({
     required final String searchKey,
     final MyQuery Function(MyQuery)? query,
   });
@@ -105,8 +105,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFollowRequest>, PeamanError>>
-      getReceivedFollowRequestsStream({
+  Stream<List<PeamanFollowRequest>> getReceivedFollowRequestsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -116,8 +115,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFollowRequest>, PeamanError>>
-      getSentFollowRequestsStream({
+  Stream<List<PeamanFollowRequest>> getSentFollowRequestsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -127,7 +125,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFollowersStream({
+  Stream<List<PeamanSubUser>> getFollowersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -137,7 +135,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFollowing>, PeamanError>> getFollowingsStream({
+  Stream<List<PeamanFollowing>> getFollowingsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -147,7 +145,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsersStream({
+  Stream<List<PeamanSubUser>> getBlockedUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -157,7 +155,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsersStream({
+  Stream<List<PeamanSubUser>> getBlockedByUsersStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -235,7 +233,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsersStream({
+  Stream<List<PeamanSubUser>> getBlockedByUsersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -253,7 +251,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsersStream({
+  Stream<List<PeamanSubUser>> getBlockedUsersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -271,7 +269,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFollowersStream({
+  Stream<List<PeamanSubUser>> getFollowersStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -289,7 +287,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanFollowing>, PeamanError>> getFollowingsStream({
+  Stream<List<PeamanFollowing>> getFollowingsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -308,8 +306,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanFollowRequest>, PeamanError>>
-      getReceivedFollowRequestsStream({
+  Stream<List<PeamanFollowRequest>> getReceivedFollowRequestsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -327,8 +324,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanFollowRequest>, PeamanError>>
-      getSentFollowRequestsStream({
+  Stream<List<PeamanFollowRequest>> getSentFollowRequestsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -345,7 +341,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<PeamanUser, PeamanError>> getSingleUserStream({
+  Stream<PeamanUser> getSingleUserStream({
     required String uid,
   }) {
     // TODO: implement getSingleUserStream
@@ -370,7 +366,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Stream<Either<List<PeamanUser>, PeamanError>> getUsersBySearchKeyStream({
+  Stream<List<PeamanUser>> getUsersBySearchKeyStream({
     required String searchKey,
     MyQuery Function(MyQuery p1)? query,
   }) {

@@ -25,6 +25,7 @@ class PeamanChatMessage with _$PeamanChatMessage {
     @Default(false) final bool isForwarded,
     @JsonKey(ignore: true) @Default(false) final bool isTemp,
     final String? forwardedFromChatId,
+    @Default(false) final bool unsent,
     final int? createdAt,
     final int? updatedAt,
     @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,

@@ -37,6 +37,7 @@ mixin _$PeamanChatMessage {
   @JsonKey(ignore: true)
   bool get isTemp => throw _privateConstructorUsedError;
   String? get forwardedFromChatId => throw _privateConstructorUsedError;
+  bool get unsent => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
@@ -70,6 +71,7 @@ abstract class $PeamanChatMessageCopyWith<$Res> {
       bool isForwarded,
       @JsonKey(ignore: true) bool isTemp,
       String? forwardedFromChatId,
+      bool unsent,
       int? createdAt,
       int? updatedAt,
       Map<String, dynamic> extraData});
@@ -104,6 +106,7 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
     Object? isForwarded = null,
     Object? isTemp = null,
     Object? forwardedFromChatId = freezed,
+    Object? unsent = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? extraData = null,
@@ -173,6 +176,10 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
           ? _value.forwardedFromChatId
           : forwardedFromChatId // ignore: cast_nullable_to_non_nullable
               as String?,
+      unsent: null == unsent
+          ? _value.unsent
+          : unsent // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -214,6 +221,7 @@ abstract class _$$_PeamanChatMessageCopyWith<$Res>
       bool isForwarded,
       @JsonKey(ignore: true) bool isTemp,
       String? forwardedFromChatId,
+      bool unsent,
       int? createdAt,
       int? updatedAt,
       Map<String, dynamic> extraData});
@@ -246,6 +254,7 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
     Object? isForwarded = null,
     Object? isTemp = null,
     Object? forwardedFromChatId = freezed,
+    Object? unsent = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? extraData = null,
@@ -315,6 +324,10 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
           ? _value.forwardedFromChatId
           : forwardedFromChatId // ignore: cast_nullable_to_non_nullable
               as String?,
+      unsent: null == unsent
+          ? _value.unsent
+          : unsent // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -351,6 +364,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
       this.isForwarded = false,
       @JsonKey(ignore: true) this.isTemp = false,
       this.forwardedFromChatId,
+      this.unsent = false,
       this.createdAt,
       this.updatedAt,
       final Map<String, dynamic> extraData = const <String, dynamic>{}})
@@ -420,6 +434,9 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
   @override
   final String? forwardedFromChatId;
   @override
+  @JsonKey()
+  final bool unsent;
+  @override
   final int? createdAt;
   @override
   final int? updatedAt;
@@ -434,7 +451,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
 
   @override
   String toString() {
-    return 'PeamanChatMessage(id: $id, chatId: $chatId, text: $text, files: $files, type: $type, senderId: $senderId, senderName: $senderName, receiverIds: $receiverIds, extraId: $extraId, parentId: $parentId, parentText: $parentText, parentFiles: $parentFiles, visibility: $visibility, isForwarded: $isForwarded, isTemp: $isTemp, forwardedFromChatId: $forwardedFromChatId, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChatMessage(id: $id, chatId: $chatId, text: $text, files: $files, type: $type, senderId: $senderId, senderName: $senderName, receiverIds: $receiverIds, extraId: $extraId, parentId: $parentId, parentText: $parentText, parentFiles: $parentFiles, visibility: $visibility, isForwarded: $isForwarded, isTemp: $isTemp, forwardedFromChatId: $forwardedFromChatId, unsent: $unsent, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -467,6 +484,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
             (identical(other.isTemp, isTemp) || other.isTemp == isTemp) &&
             (identical(other.forwardedFromChatId, forwardedFromChatId) ||
                 other.forwardedFromChatId == forwardedFromChatId) &&
+            (identical(other.unsent, unsent) || other.unsent == unsent) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -495,6 +513,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
         isForwarded,
         isTemp,
         forwardedFromChatId,
+        unsent,
         createdAt,
         updatedAt,
         const DeepCollectionEquality().hash(_extraData)
@@ -533,6 +552,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
       final bool isForwarded,
       @JsonKey(ignore: true) final bool isTemp,
       final String? forwardedFromChatId,
+      final bool unsent,
       final int? createdAt,
       final int? updatedAt,
       final Map<String, dynamic> extraData}) = _$_PeamanChatMessage;
@@ -573,6 +593,8 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
   bool get isTemp;
   @override
   String? get forwardedFromChatId;
+  @override
+  bool get unsent;
   @override
   int? get createdAt;
   @override

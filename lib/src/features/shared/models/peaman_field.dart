@@ -7,7 +7,7 @@ enum PeamanFieldType {
 
 class PeamanField {
   final String key;
-  final String value;
+  final dynamic value;
   final PeamanFieldType type;
 
   const PeamanField({

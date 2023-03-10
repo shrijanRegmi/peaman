@@ -33,6 +33,7 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
       visibility: json['visibility'] as bool? ?? true,
       isForwarded: json['isForwarded'] as bool? ?? false,
       forwardedFromChatId: json['forwardedFromChatId'] as String?,
+      unsent: json['unsent'] as bool? ?? false,
       createdAt: json['createdAt'] as int?,
       updatedAt: json['updatedAt'] as int?,
       extraData: json['extraData'] as Map<String, dynamic>? ??
@@ -57,6 +58,7 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
       'visibility': instance.visibility,
       'isForwarded': instance.isForwarded,
       'forwardedFromChatId': instance.forwardedFromChatId,
+      'unsent': instance.unsent,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'extraData': instance.extraData,

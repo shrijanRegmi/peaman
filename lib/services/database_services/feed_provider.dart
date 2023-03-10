@@ -77,10 +77,7 @@ class FeedProvider {
     final Function(dynamic)? onError,
   }) async {
     try {
-      final _data = PeamanCommonHelper.prepareDataToUpdate(
-        data: data,
-        partial: partial,
-      );
+      final _data = data;
 
       final _feedRef = PeamanReferenceHelper.feedsCol.doc(feedId);
       await _feedRef.update(_data);
