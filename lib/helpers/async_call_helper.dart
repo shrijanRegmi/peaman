@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:either_dart/either.dart';
 import 'package:peaman/src/features/shared/models/peaman_error.dart';
 
 /// Used to abstract the error handling when making API requests.
