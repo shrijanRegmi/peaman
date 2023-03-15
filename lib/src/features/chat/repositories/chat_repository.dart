@@ -517,12 +517,16 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required String chatId,
     required List<PeamanField> fields,
   }) {
+    final _millis = DateTime.now().millisecondsSinceEpoch;
     return runAsyncCall(
       future: () async {
-        final _chatRef = PeamanReferenceHelper.chatsCol.doc(chatId);
+        final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chatId);
         final _data = PeamanCommonHelper.prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
-          await _chatRef.update(_data);
+          await _chatRef.update({
+            ..._data,
+            'updated_at': _millis,
+          });
         }
         return Left(true);
       },
@@ -536,13 +540,17 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String messageId,
     required final List<PeamanField> fields,
   }) {
+    final _millis = DateTime.now().millisecondsSinceEpoch;
     return runAsyncCall(
       future: () async {
         final _messageRef =
             PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
         final _data = PeamanCommonHelper.prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
-          await _messageRef.update(_data);
+          await _messageRef.update({
+            ..._data,
+            'updated_at': _millis,
+          });
         }
         return Left(true);
       },

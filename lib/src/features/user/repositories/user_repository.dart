@@ -796,12 +796,16 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     required String uid,
     required List<PeamanField> fields,
   }) {
+    final _millis = DateTime.now().millisecondsSinceEpoch;
     return runAsyncCall(
       future: () async {
         final _userRef = PeamanReferenceHelper.userDoc(uid: uid);
         final _data = PeamanCommonHelper.prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
-          await _userRef.update(_data);
+          await _userRef.update({
+            ..._data,
+            'updated_at': _millis,
+          });
         }
         return Left(true);
       },
