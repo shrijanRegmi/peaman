@@ -2,12 +2,12 @@ import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:peaman/helpers/async_call_helper.dart';
-import 'package:peaman/src/features/shared/models/peaman_error.dart';
-import 'package:peaman/src/features/user/repositories/user_repository.dart';
 
-import '../../../../helpers/reference_helper.dart';
+import '../../shared/helpers/async_call_helper.dart';
+import '../../shared/helpers/reference_helper.dart';
+import '../../shared/models/peaman_error.dart';
 import '../../user/models/user_model.dart';
+import '../../user/repositories/user_repository.dart';
 import '../models/auth_user_model.dart';
 
 abstract class PeamanAuthRepository {

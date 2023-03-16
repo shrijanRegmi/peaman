@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:either_dart/either.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:peaman/helpers/async_call_helper.dart';
 
+import '../../shared/helpers/async_call_helper.dart';
 import '../../shared/models/peaman_error.dart';
 
 abstract class PeamanStorageRepository {
