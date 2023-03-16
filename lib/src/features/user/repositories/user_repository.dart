@@ -201,7 +201,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_addFollowFuture);
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -241,7 +241,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _blockedByUserFuture,
         ]);
 
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -268,7 +268,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _receivedFututre,
           _sentFuture,
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -282,7 +282,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
       future: () async {
         final _appUserRef = PeamanReferenceHelper.usersCol.doc(user.uid);
         await _appUserRef.set(user.toJson());
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -294,7 +294,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -356,7 +356,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_sentFuture);
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -393,7 +393,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _receivedFuture,
           _sentFuture,
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -681,7 +681,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_sentFuture);
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -695,7 +695,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     return updateUser(
       uid: uid,
       fields: [
-        PeamanField(
+        const PeamanField(
           key: 'is_onboarding_completed',
           value: true,
         ),
@@ -735,7 +735,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _blockedUserRef.delete(),
           _blockedByUserRef.delete(),
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -764,7 +764,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         final _userUpdateFuture = updateUser(
           uid: uid,
           fields: [
-            PeamanField.negativePartial(
+            const PeamanField.negativePartial(
               key: 'following',
               value: 1,
             )
@@ -775,7 +775,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         final _friendUpdateFuture = updateUser(
           uid: friendId,
           fields: [
-            PeamanField.negativePartial(
+            const PeamanField.negativePartial(
               key: 'followers',
               value: 1,
             )
@@ -784,7 +784,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_friendUpdateFuture);
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -806,7 +806,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             'updated_at': _millis,
           });
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -847,7 +847,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     final _userUpdateFuture = updateUser(
       uid: uid,
       fields: [
-        PeamanField.positivePartial(
+        const PeamanField.positivePartial(
           key: 'followers',
           value: 1,
         ),
@@ -858,7 +858,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     final _friendUpdateFuture = updateUser(
       uid: friendId,
       fields: [
-        PeamanField.positivePartial(
+        const PeamanField.positivePartial(
           key: 'following',
           value: 1,
         ),

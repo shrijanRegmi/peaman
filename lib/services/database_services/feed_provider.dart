@@ -349,7 +349,6 @@ class FeedProvider {
     } catch (e) {
       print(e);
       print('Error!!!: Unsaving feed');
-      return null;
     }
   }
 

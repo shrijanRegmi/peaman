@@ -416,7 +416,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           futures.add(future);
         }
 
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -786,7 +786,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         }
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -825,7 +825,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           _myFeedFuture,
           _userUpdateFuture,
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -899,7 +899,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         }
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -936,7 +936,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           _feedFollowerFuture,
           _followedFeedFuture,
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1694,7 +1694,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         }
 
         await Future.wait(futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1732,7 +1732,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         ];
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1754,7 +1754,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           _feedFollowerRef.delete(),
           _followedFeedRef.delete(),
         ]);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1782,7 +1782,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         ];
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1810,7 +1810,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         ];
 
         await Future.wait(_futures);
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1835,7 +1835,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
             'updated_at': _millis,
           });
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1857,7 +1857,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
             'updated_at': _millis,
           });
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -1870,7 +1870,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );

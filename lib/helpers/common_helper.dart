@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/src/features/shared/models/peaman_field.dart';
 
 class PeamanCommonHelper {
   // print listening to
   static void printListening({required final String text}) {
-    print('Started getting $text');
+    log('Started getting $text');
   }
 
   // prepare data to update on firestore

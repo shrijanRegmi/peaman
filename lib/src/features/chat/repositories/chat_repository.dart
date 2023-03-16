@@ -232,7 +232,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _messageRef =
             PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
         await _messageRef.delete();
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -247,7 +247,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       chatId: chatId,
       messageId: messageId,
       fields: [
-        PeamanField(
+        const PeamanField(
           key: 'unsent',
           value: true,
         ),
@@ -528,7 +528,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         await _chatRef.update({
           'z_${uid}_unread_messages': FieldValue.delete(),
         });
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -548,7 +548,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
               ? FieldValue.arrayUnion([uid])
               : FieldValue.arrayRemove([uid])
         });
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -570,7 +570,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             'updated_at': _millis,
           });
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -594,7 +594,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             'updated_at': _millis,
           });
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );

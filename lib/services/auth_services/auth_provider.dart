@@ -119,8 +119,9 @@ class AuthProvider {
     try {
       final _account = await _facebookSignIn.login();
 
-      if (_account.status != LoginStatus.success)
+      if (_account.status != LoginStatus.success) {
         throw Exception('${_account.status}');
+      }
 
       final _accessToken = _account.accessToken;
 

@@ -57,7 +57,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
     return runAsyncCall(
       future: () async {
         await _auth.sendPasswordResetEmail(email: email);
-        return Left(true);
+        return const Left(true);
       },
       onError: (e) {
         return Right(e);
@@ -79,7 +79,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
         if (_result.user == null) {
           throw Exception('User from firestore was null');
         }
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -118,7 +118,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           if (_createUserResult.isRight) throw _createUserResult.right;
         }
 
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -158,7 +158,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           if (_createUserResult.isRight) throw _createUserResult.right;
         }
 
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
@@ -174,7 +174,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           _facebookSignIn.logOut(),
         ]);
 
-        return Left(true);
+        return const Left(true);
       },
       onError: Right.new,
     );
