@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
-import 'package:peaman/helpers/async_call_helper.dart';
-import 'package:peaman/src/features/feed/models/hashtag_model.dart';
-import 'package:peaman/src/features/user/repositories/user_repository.dart';
 
+import '../../../../helpers/async_call_helper.dart';
 import '../../../../helpers/common_helper.dart';
 import '../../../../helpers/reference_helper.dart';
 import '../../../utils/query_type_def.dart';
@@ -13,10 +11,12 @@ import '../../shared/enums/file_type.dart';
 import '../../shared/models/peaman_error.dart';
 import '../../shared/models/peaman_field.dart';
 import '../../user/models/sub_user_model.dart';
+import '../../user/repositories/user_repository.dart';
 import '../enums/comment_parent_type.dart';
 import '../enums/reaction_parent_type.dart';
 import '../models/comment_model.dart';
 import '../models/feed_model.dart';
+import '../models/hashtag_model.dart';
 import '../models/reaction_model.dart';
 import '../models/sub_feed_model.dart';
 
@@ -113,7 +113,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFeed>, PeamanError>> getFeedsStream({
+  Stream<List<PeamanFeed>> getFeedsStream({
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -122,7 +122,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanFeed>, PeamanError>> getUserFeedsStream({
+  Stream<List<PeamanFeed>> getUserFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -132,7 +132,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserReactedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserReactedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -142,7 +142,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserCommentedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -152,7 +152,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserRepliedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -162,7 +162,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserFollowedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -172,7 +172,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserSavedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserSavedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -182,17 +182,17 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserViewedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserViewedFeedsStream({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedReactorsStream({
+  Stream<List<PeamanSubUser>> getFeedReactorsStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -202,7 +202,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedCommentersStream({
+  Stream<List<PeamanSubUser>> getFeedCommentersStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -212,7 +212,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedRepliersStream({
+  Stream<List<PeamanSubUser>> getFeedRepliersStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -222,7 +222,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedFollowersStream({
+  Stream<List<PeamanSubUser>> getFeedFollowersStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -232,7 +232,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedSaversStream({
+  Stream<List<PeamanSubUser>> getFeedSaversStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -242,7 +242,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedViewersStream({
+  Stream<List<PeamanSubUser>> getFeedViewersStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -252,7 +252,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanReaction>, PeamanError>> getReactionsStream({
+  Stream<List<PeamanReaction>> getReactionsStream({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -260,40 +260,40 @@ abstract class PeamanFeedRepository {
   Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByOwnerId({
     required final String feedId,
     required final String ownerId,
-    required final PeamanCommentParent parent,
+    required final PeamanReactionParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanReaction>, PeamanError>>
-      getReactionsByOwnerIdStream({
+  Stream<List<PeamanReaction>> getReactionsByOwnerIdStream({
     required final String feedId,
     required final String ownerId,
-    required final PeamanCommentParent parent,
+    required final PeamanReactionParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
   Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByParentId({
     required final String feedId,
     required final String parentId,
-    required final PeamanCommentParent parent,
+    required final PeamanReactionParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanReaction>, PeamanError>>
-      getReactionsByParentIdStream({
+  Stream<List<PeamanReaction>> getReactionsByParentIdStream({
     required final String feedId,
     required final String parentId,
-    required final PeamanCommentParent parent,
+    required final PeamanReactionParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
   Future<Either<List<PeamanComment>, PeamanError>> getComments({
     required final String feedId,
+    required PeamanCommentParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsStream({
+  Stream<List<PeamanComment>> getCommentsStream({
     required final String feedId,
+    required PeamanCommentParent parent,
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -304,7 +304,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsByOwnerIdStream({
+  Stream<List<PeamanComment>> getCommentsByOwnerIdStream({
     required final String feedId,
     required final String ownerId,
     required final PeamanCommentParent parent,
@@ -318,7 +318,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsByParentIdStream({
+  Stream<List<PeamanComment>> getCommentsByParentIdStream({
     required final String feedId,
     required final String parentId,
     required final PeamanCommentParent parent,
@@ -330,7 +330,7 @@ abstract class PeamanFeedRepository {
     required final String reactionId,
   });
 
-  Stream<Either<PeamanReaction, PeamanError>> getSingleReactionStream({
+  Stream<PeamanReaction> getSingleReactionStream({
     required final String feedId,
     required final String reactionId,
   });
@@ -342,21 +342,21 @@ abstract class PeamanFeedRepository {
     required final String parentId,
   });
 
-  Stream<Either<PeamanReaction, PeamanError>> getSingleReactionByOwnerIdStream({
-    required final String feedId,
-    required final String ownerId,
-    required final PeamanReactionParent parent,
-    required final String parentId,
-  });
-
   Future<Either<PeamanComment, PeamanError>> getSingleComment({
     required final String feedId,
     required final String commentId,
   });
 
-  Stream<Either<PeamanComment, PeamanError>> getSingleCommentStream({
+  Stream<PeamanComment> getSingleCommentStream({
     required final String feedId,
     required final String commentId,
+  });
+
+  Future<Either<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
+    required final String feedId,
+    required final String ownerId,
+    required final PeamanCommentParent parent,
+    required final String parentId,
   });
 }
 
@@ -945,11 +945,18 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   @override
   Future<Either<List<PeamanComment>, PeamanError>> getComments({
     required String feedId,
+    required PeamanCommentParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_commentsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
@@ -964,21 +971,33 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .where('owner_id', isEqualTo: ownerId)
+            .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_commentsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsByOwnerIdStream({
+  Stream<List<PeamanComment>> getCommentsByOwnerIdStream({
     required String feedId,
     required String ownerId,
     required PeamanCommentParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getCommentsByOwnerIdStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .where('owner_id', isEqualTo: ownerId)
+        .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirestore);
   }
 
   @override
@@ -990,30 +1009,47 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+            .where('parent_id', isEqualTo: parentId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_commentsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsByParentIdStream({
+  Stream<List<PeamanComment>> getCommentsByParentIdStream({
     required String feedId,
     required String parentId,
     required PeamanCommentParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getCommentsByParentIdStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+        .where('parent_id', isEqualTo: parentId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirestore);
   }
 
   @override
-  Stream<Either<List<PeamanComment>, PeamanError>> getCommentsStream({
+  Stream<List<PeamanComment>> getCommentsStream({
     required String feedId,
+    required PeamanCommentParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getCommentsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.commentsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .where('parent', isEqualTo: ksPeamanCommentParent[parent])
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_commentsFromFirestore);
   }
 
   @override
@@ -1023,19 +1059,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedCommentersCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedCommentersStream({
+  Stream<List<PeamanSubUser>> getFeedCommentersStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedCommentersStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedCommentersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
@@ -1045,37 +1087,53 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedFollowersCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedFollowersStream({
+  Stream<List<PeamanSubUser>> getFeedFollowersStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedFollowersStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedFollowersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
+  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedReactors
-    throw UnimplementedError();
+    return runAsyncCall(
+      future: () async {
+        final _ref = PeamanReferenceHelper.feedReactorsCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
+      },
+      onError: Right.new,
+    );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedReactorsStream({
+  Stream<List<PeamanSubUser>> getFeedReactorsStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedReactorsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedReactorsCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
@@ -1085,19 +1143,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedRepliersCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedRepliersStream({
+  Stream<List<PeamanSubUser>> getFeedRepliersStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedRepliersStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedRepliersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
@@ -1107,19 +1171,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedSaversCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedSaversStream({
+  Stream<List<PeamanSubUser>> getFeedSaversStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedSaversStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedSaversCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
@@ -1129,19 +1199,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedViewersCol(feedId: feedId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subUsersFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubUser>, PeamanError>> getFeedViewersStream({
+  Stream<List<PeamanSubUser>> getFeedViewersStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedViewersStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedViewersCol(feedId: feedId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subUsersFromFirestore);
   }
 
   @override
@@ -1150,18 +1226,26 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.feedsCol
+            .where('visibility', isEqualTo: true)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_feedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanFeed>, PeamanError>> getFeedsStream({
+  Stream<List<PeamanFeed>> getFeedsStream({
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.feedsCol
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_feedsFromFirestore);
   }
 
   @override
@@ -1171,7 +1255,12 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_reactionsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
@@ -1181,63 +1270,88 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByOwnerId({
     required String feedId,
     required String ownerId,
-    required PeamanCommentParent parent,
+    required PeamanReactionParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .where('owner_id', isEqualTo: ownerId)
+            .where('parent', isEqualTo: ksPeamanReactionParent[parent])
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_reactionsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanReaction>, PeamanError>>
-      getReactionsByOwnerIdStream({
+  Stream<List<PeamanReaction>> getReactionsByOwnerIdStream({
     required String feedId,
     required String ownerId,
-    required PeamanCommentParent parent,
+    required PeamanReactionParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getReactionsByOwnerIdStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .where('owner_id', isEqualTo: ownerId)
+        .where('parent', isEqualTo: ksPeamanReactionParent[parent])
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_reactionsFromFirestore);
   }
 
   @override
   Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByParentId({
     required String feedId,
     required String parentId,
-    required PeamanCommentParent parent,
+    required PeamanReactionParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+            .where('visibility', isEqualTo: true)
+            .where('parent', isEqualTo: ksPeamanReactionParent[parent])
+            .where('parent_id', isEqualTo: parentId)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_reactionsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanReaction>, PeamanError>>
-      getReactionsByParentIdStream({
+  Stream<List<PeamanReaction>> getReactionsByParentIdStream({
     required String feedId,
     required String parentId,
-    required PeamanCommentParent parent,
+    required PeamanReactionParent parent,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getReactionsByParentIdStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .where('parent', isEqualTo: ksPeamanReactionParent[parent])
+        .where('parent_id', isEqualTo: parentId)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_reactionsFromFirestore);
   }
 
   @override
-  Stream<Either<List<PeamanReaction>, PeamanError>> getReactionsStream({
+  Stream<List<PeamanReaction>> getReactionsStream({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getReactionsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.reactionsCol(feedId: feedId)
+        .where('visibility', isEqualTo: true)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_reactionsFromFirestore);
   }
 
   @override
@@ -1247,19 +1361,57 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _commentRef = PeamanReferenceHelper.commentsCol(
+          feedId: feedId,
+        ).doc(commentId);
+
+        final _commentSnap = await _commentRef.get();
+        if (!_commentSnap.exists) throw Exception('Comment not found!');
+
+        final _commentData = _commentSnap.data();
+        if (_commentData == null) throw Exception('Comment not found!');
+
+        final _comment = PeamanComment.fromJson(_commentData);
+        return Left(_comment);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<PeamanComment, PeamanError>> getSingleCommentStream({
+  Stream<PeamanComment> getSingleCommentStream({
     required String feedId,
     required String commentId,
   }) {
-    // TODO: implement getSingleCommentStream
-    throw UnimplementedError();
+    return PeamanReferenceHelper.commentsCol(
+      feedId: feedId,
+    ).doc(commentId).snapshots().map(_commentFromFirestore);
+  }
+
+  @override
+  Future<Either<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
+    required String feedId,
+    required String ownerId,
+    required PeamanCommentParent parent,
+    required String parentId,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final _commentsEither = await getCommentsByOwnerId(
+          feedId: feedId,
+          ownerId: ownerId,
+          parent: parent,
+          query: (ref) => ref.where('parent_id', isEqualTo: parentId).limit(1),
+        );
+        if (_commentsEither.isRight) throw _commentsEither.right;
+
+        final _comments = _commentsEither.left;
+        if (_comments.isEmpty) throw Exception('Reaction not found!');
+
+        return Left(_comments.first);
+      },
+      onError: Right.new,
+    );
   }
 
   @override
@@ -1269,7 +1421,18 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _reactionRef = PeamanReferenceHelper.reactionsCol(
+          feedId: feedId,
+        ).doc(reactionId);
+
+        final _reactionSnap = await _reactionRef.get();
+        if (!_reactionSnap.exists) throw Exception('Reaction not found!');
+
+        final _reactionData = _reactionSnap.data();
+        if (_reactionData == null) throw Exception('Reaction not found!');
+
+        final _reaction = PeamanReaction.fromJson(_reactionData);
+        return Left(_reaction);
       },
       onError: Right.new,
     );
@@ -1284,30 +1447,31 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _reactionsEither = await getReactionsByOwnerId(
+          feedId: feedId,
+          ownerId: ownerId,
+          parent: parent,
+          query: (ref) => ref.where('parent_id', isEqualTo: parentId).limit(1),
+        );
+        if (_reactionsEither.isRight) throw _reactionsEither.right;
+
+        final _reactions = _reactionsEither.left;
+        if (_reactions.isEmpty) throw Exception('Reaction not found!');
+
+        return Left(_reactions.first);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<PeamanReaction, PeamanError>> getSingleReactionByOwnerIdStream({
-    required String feedId,
-    required String ownerId,
-    required PeamanReactionParent parent,
-    required String parentId,
-  }) {
-    // TODO: implement getSingleReactionByOwnerIdStream
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<Either<PeamanReaction, PeamanError>> getSingleReactionStream({
+  Stream<PeamanReaction> getSingleReactionStream({
     required String feedId,
     required String reactionId,
   }) {
-    // TODO: implement getSingleReactionStream
-    throw UnimplementedError();
+    return PeamanReferenceHelper.reactionsCol(
+      feedId: feedId,
+    ).doc(reactionId).snapshots().map(_reactionFromFirestore);
   }
 
   @override
@@ -1317,19 +1481,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.commentedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserCommentedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserCommentedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.commentedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1337,21 +1507,19 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    return runAsyncCall(
-      future: () async {
-        return Left(true);
-      },
-      onError: Right.new,
+    return getFeeds(
+      query: (ref) => ref.where('owner_id', isEqualTo: uid),
     );
   }
 
   @override
-  Stream<Either<List<PeamanFeed>, PeamanError>> getUserFeedsStream({
+  Stream<List<PeamanFeed>> getUserFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserFeedsStream
-    throw UnimplementedError();
+    return getFeedsStream(
+      query: (ref) => ref.where('owner_id', isEqualTo: uid),
+    );
   }
 
   @override
@@ -1361,19 +1529,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.followedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserFollowedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserFollowedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.followedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1383,19 +1557,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.reactedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserReactedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserReactedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserReactedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.reactedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1405,19 +1585,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.repliedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserRepliedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserRepliedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.repliedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1427,19 +1613,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.savedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserSavedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserSavedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserSavedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.savedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1449,19 +1641,25 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return Left(true);
+        final _ref = PeamanReferenceHelper.viewedFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final _query = query?.call(_ref) ?? _ref;
+        final _result = await _query.get().then(_subFeedsFromFirestore);
+        return Left(_result);
       },
       onError: Right.new,
     );
   }
 
   @override
-  Stream<Either<List<PeamanSubFeed>, PeamanError>> getUserViewedFeedsStream({
+  Stream<List<PeamanSubFeed>> getUserViewedFeedsStream({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    // TODO: implement getUserViewedFeedsStream
-    throw UnimplementedError();
+    final _ref = PeamanReferenceHelper.viewedFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_subFeedsFromFirestore);
   }
 
   @override
@@ -1803,5 +2001,47 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         ),
       ],
     );
+  }
+
+  PeamanReaction _reactionFromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanReaction.fromJson(snap.data() ?? {});
+  }
+
+  PeamanComment _commentFromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanComment.fromJson(snap.data() ?? {});
+  }
+
+  List<PeamanComment> _commentsFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanComment.fromJson(e.data())).toList();
+  }
+
+  List<PeamanReaction> _reactionsFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanReaction.fromJson(e.data())).toList();
+  }
+
+  List<PeamanSubUser> _subUsersFromFirestore(
+    final QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanSubUser.fromJson(e.data())).toList();
+  }
+
+  List<PeamanSubFeed> _subFeedsFromFirestore(
+    final QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanSubFeed.fromJson(e.data())).toList();
+  }
+
+  List<PeamanFeed> _feedsFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
   }
 }
