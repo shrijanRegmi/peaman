@@ -6,6 +6,7 @@ typedef DocRef = DocumentReference<Map<String, dynamic>>;
 
 class PeamanReferenceHelper {
   static final _ref = FirebaseFirestore.instance;
+  static FirebaseFirestore get ref => _ref;
 
   // main collections
   static ColRef get usersCol => _ref.collection(usersColName);

@@ -6,7 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../shared/helpers/async_call_helper.dart';
 import '../../shared/helpers/reference_helper.dart';
-import '../../shared/models/peaman_error.dart';
+import '../../shared/models/peaman_error_model.dart';
 
 abstract class PeamanCloudMessagingRepository {
   Future<Either<bool, PeamanError>> initializeMessaging({

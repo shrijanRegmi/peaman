@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 
 import '../../shared/helpers/async_call_helper.dart';
 import '../../shared/helpers/reference_helper.dart';
 import '../../shared/helpers/common_helper.dart';
-import '../../shared/models/peaman_error.dart';
-import '../../shared/models/peaman_field.dart';
+import '../../shared/models/peaman_error_model.dart';
+import '../../shared/models/peaman_field_model.dart';
 import '../../../utils/query_type_def.dart';
 import '../enums/online_status_type.dart';
 import '../models/follow_request_model.dart';
@@ -867,10 +869,10 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     _futures.add(_friendUpdateFuture);
 
     return Future.wait(_futures).then((value) {
-      print('Success: Adding follower $friendId');
+      log('Success: Adding follower $friendId');
     }).catchError((e) {
-      print(e);
-      print('Error!!!: Adding follower');
+      log(e);
+      log('Error!!!: Adding follower');
     });
   }
 

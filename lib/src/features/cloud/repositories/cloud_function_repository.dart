@@ -2,7 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:either_dart/either.dart';
 
 import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/models/peaman_error.dart';
+import '../../shared/models/peaman_error_model.dart';
 
 abstract class PeamanCloudFunctionRepository {
   Future<Either<dynamic, PeamanError>> callFunction({

@@ -8,8 +8,8 @@ import '../../shared/helpers/reference_helper.dart';
 import '../../shared/helpers/common_helper.dart';
 import '../../../utils/query_type_def.dart';
 import '../../shared/enums/file_type.dart';
-import '../../shared/models/peaman_error.dart';
-import '../../shared/models/peaman_field.dart';
+import '../../shared/models/peaman_error_model.dart';
+import '../../shared/models/peaman_field_model.dart';
 import '../../user/models/sub_user_model.dart';
 import '../../user/repositories/user_repository.dart';
 import '../enums/comment_parent_type.dart';
@@ -501,7 +501,6 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           _futures.add(_userPropertyFuture);
           _futures.add(_commentedFeedFuture);
           _futures.add(_feedCommenterFuture);
-          print('Success: Adding comment to feed ${comment.feedId}');
         } else {
           final _commentPropertiesFuture = _updateCommentPropertiesCount(
             feedId: _comment.feedId!,
@@ -532,7 +531,6 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           _futures.add(_userPropertyFuture);
           _futures.add(_repliedFeedFuture);
           _futures.add(_feedReplierFuture);
-          print('Success: Adding comment to comment ${_comment.parentId}');
         }
 
         await Future.wait(_futures);
@@ -668,7 +666,6 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
 
           _futures.add(_reactedFeedFuture);
           _futures.add(_feedReactorFuture);
-          print('Success: Adding reaction to feed ${reaction.feedId}');
         } else {
           if (updateParentReactionsCount) {
             final _commentPropertyFuture = _updateCommentPropertiesCount(
@@ -686,7 +683,6 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
             );
             _futures.add(_userPropertyFuture);
           }
-          print('Success: Adding reaction to comment ${_reaction.parentId}');
         }
 
         await Future.wait(_futures);

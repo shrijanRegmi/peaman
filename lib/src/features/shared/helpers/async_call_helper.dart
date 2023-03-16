@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/src/features/shared/models/peaman_error.dart';
+import 'package:peaman/src/features/shared/models/peaman_error_model.dart';
 
 /// Used to abstract the error handling when making API requests.
 /// For a function [future], executes the [onError]

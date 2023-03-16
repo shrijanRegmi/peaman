@@ -45,7 +45,7 @@ class HomeScreen extends StatelessWidget {
               ),
               MaterialButton(
                 onPressed: () async {
-                  final _message = PeamanMessage(
+                  final _message = PeamanChatMessage(
                     id: null,
                     chatId: 'test_chat_id',
                     text: 'new message more',
@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     updatedAt: DateTime.now().millisecondsSinceEpoch,
                   );
 
-                  await PChatProvider.sendMessage(
+                  await PeamanChatRepositoryImpl().createChatMessage(
                     message: _message,
                   );
                 },
@@ -75,8 +75,10 @@ class HomeScreen extends StatelessWidget {
 
   Widget _messagesDisplay() {
     return Expanded(
-      child: StreamBuilder<List<PeamanMessage>>(
-        stream: PChatProvider.getMessagesStream(chatId: 'test_chat_id'),
+      child: StreamBuilder<List<PeamanChatMessage>>(
+        stream: PeamanChatRepositoryImpl().getChatMessagesStream(
+          chatId: 'test_chat_id',
+        ),
         builder: (context, snap) {
           if (snap.hasData) {
             final _messages = snap.data;

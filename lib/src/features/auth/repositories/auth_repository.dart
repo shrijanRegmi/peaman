@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../shared/helpers/async_call_helper.dart';
 import '../../shared/helpers/reference_helper.dart';
-import '../../shared/models/peaman_error.dart';
+import '../../shared/models/peaman_error_model.dart';
 import '../../user/models/user_model.dart';
 import '../../user/repositories/user_repository.dart';
 import '../models/auth_user_model.dart';

@@ -4,7 +4,7 @@ import 'package:either_dart/either.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/models/peaman_error.dart';
+import '../../shared/models/peaman_error_model.dart';
 
 abstract class PeamanStorageRepository {
   Future<Either<String, PeamanError>> uploadFile({

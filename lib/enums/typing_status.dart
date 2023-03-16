@@ -1,4 +1,0 @@
-enum PeamanTypingStatus {
-  idle,
-  typing,
-}
