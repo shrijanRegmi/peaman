@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
-import 'package:peaman/helpers/async_call_helper.dart';
-import 'package:peaman/helpers/common_helper.dart';
 
+import '../../../../helpers/async_call_helper.dart';
+import '../../../../helpers/common_helper.dart';
 import '../../../../helpers/reference_helper.dart';
 import '../../shared/models/peaman_error.dart';
 import '../enums/chat_request_status.dart';
@@ -78,6 +78,16 @@ abstract class PeamanChatRepository {
   });
 
   Stream<List<PeamanChat>> getChatsStream({
+    final MyQuery Function(MyQuery)? query,
+  });
+
+  Future<Either<List<PeamanChat>, PeamanError>> getUserChats({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  });
+
+  Stream<List<PeamanChat>> getUserChatsStream({
+    required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -250,21 +260,17 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    return runAsyncCall(
-      future: () async {
-        final _ref = PeamanReferenceHelper.chatsCol
-            .where('visibility', isEqualTo: true)
-            .where('user_ids', arrayContains: uid)
-            .where(
-              'chat_request_status',
-              isEqualTo:
-                  ksPeamanChatRequestStatus[PeamanChatRequestStatus.accepted],
-            )
-            .orderBy('updated_at', descending: true);
-        final _query = query?.call(_ref) ?? _ref;
-        return _query.get().then((event) => Left(_chatsFromFirestore(event)));
+    return getUserChats(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
+          'chat_request_status',
+          isEqualTo:
+              ksPeamanChatRequestStatus[PeamanChatRequestStatus.accepted],
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
       },
-      onError: Right.new,
     );
   }
 
@@ -273,17 +279,18 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    final _ref = PeamanReferenceHelper.chatsCol
-        .where('visibility', isEqualTo: true)
-        .where('user_ids', arrayContains: uid)
-        .where(
+    return getUserChatsStream(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
           'chat_request_status',
           isEqualTo:
               ksPeamanChatRequestStatus[PeamanChatRequestStatus.accepted],
-        )
-        .orderBy('updated_at', descending: true);
-    final _query = query?.call(_ref) ?? _ref;
-    return _query.snapshots().map((event) => _chatsFromFirestore(event));
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
+      },
+    );
   }
 
   @override
@@ -345,25 +352,49 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
+  Future<Either<List<PeamanChat>, PeamanError>> getUserChats({
+    required String uid,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    return getChats(
+      query: (ref) {
+        final _ref = ref.where('user_ids', arrayContains: uid);
+        final _query = query?.call(_ref) ?? _ref;
+        return _query;
+      },
+    );
+  }
+
+  @override
+  Stream<List<PeamanChat>> getUserChatsStream({
+    required String uid,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    return getChatsStream(
+      query: (ref) {
+        final _ref = ref.where('user_ids', arrayContains: uid);
+        final _query = query?.call(_ref) ?? _ref;
+        return _query;
+      },
+    );
+  }
+
+  @override
   Future<Either<List<PeamanChat>, PeamanError>> getDeclinedChats({
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    return runAsyncCall(
-      future: () async {
-        final _ref = PeamanReferenceHelper.chatsCol
-            .where('visibility', isEqualTo: true)
-            .where('user_ids', arrayContains: uid)
-            .where(
-              'chat_request_status',
-              isEqualTo:
-                  ksPeamanChatRequestStatus[PeamanChatRequestStatus.declined],
-            )
-            .orderBy('updated_at', descending: true);
-        final _query = query?.call(_ref) ?? _ref;
-        return _query.get().then((event) => Left(_chatsFromFirestore(event)));
+    return getUserChats(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
+          'chat_request_status',
+          isEqualTo:
+              ksPeamanChatRequestStatus[PeamanChatRequestStatus.declined],
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
       },
-      onError: Right.new,
     );
   }
 
@@ -372,17 +403,18 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    final _ref = PeamanReferenceHelper.chatsCol
-        .where('visibility', isEqualTo: true)
-        .where('user_ids', arrayContains: uid)
-        .where(
+    return getUserChatsStream(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
           'chat_request_status',
           isEqualTo:
               ksPeamanChatRequestStatus[PeamanChatRequestStatus.declined],
-        )
-        .orderBy('updated_at', descending: true);
-    final _query = query?.call(_ref) ?? _ref;
-    return _query.snapshots().map((event) => _chatsFromFirestore(event));
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
+      },
+    );
   }
 
   @override
@@ -390,21 +422,16 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    return runAsyncCall(
-      future: () async {
-        final _ref = PeamanReferenceHelper.chatsCol
-            .where('visibility', isEqualTo: true)
-            .where('user_ids', arrayContains: uid)
-            .where(
-              'chat_request_status',
-              isEqualTo:
-                  ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
-            )
-            .orderBy('updated_at', descending: true);
-        final _query = query?.call(_ref) ?? _ref;
-        return _query.get().then((event) => Left(_chatsFromFirestore(event)));
+    return getUserChats(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
+          'chat_request_status',
+          isEqualTo: ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
       },
-      onError: Right.new,
     );
   }
 
@@ -413,16 +440,17 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
-    final _ref = PeamanReferenceHelper.chatsCol
-        .where('visibility', isEqualTo: true)
-        .where('user_ids', arrayContains: uid)
-        .where(
+    return getUserChatsStream(
+      uid: uid,
+      query: (ref) {
+        final _ref = ref.where(
           'chat_request_status',
           isEqualTo: ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
-        )
-        .orderBy('updated_at', descending: true);
-    final _query = query?.call(_ref) ?? _ref;
-    return _query.snapshots().map((event) => _chatsFromFirestore(event));
+        );
+        final _query = query?.call(ref) ?? _ref;
+        return _query;
+      },
+    );
   }
 
   @override
@@ -431,9 +459,16 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return PeamanReferenceHelper.chatDoc(chatId: chatId)
-            .get()
-            .then((event) => Left(_chatFromFirestore(event)));
+        final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chatId);
+
+        final _chatSnap = await _chatRef.get();
+        if (!_chatSnap.exists) throw Exception('Chat not found!');
+
+        final _chatData = _chatSnap.data();
+        if (_chatData == null) throw Exception('Chat not found!');
+
+        final _chat = PeamanChat.fromJson(_chatData);
+        return Left(_chat);
       },
       onError: Right.new,
     );
@@ -445,11 +480,18 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     required String messageId,
   }) {
     return runAsyncCall(
-      future: () {
-        return PeamanReferenceHelper.messagesCol(chatId: chatId)
-            .doc(messageId)
-            .get()
-            .then((event) => Left(_messageFromFirestore(event)));
+      future: () async {
+        final _messageRef =
+            PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
+
+        final _messageSnap = await _messageRef.get();
+        if (!_messageSnap.exists) throw Exception('Message not found!');
+
+        final _messageData = _messageSnap.data();
+        if (_messageData == null) throw Exception('Message not found!');
+
+        final _message = PeamanChatMessage.fromJson(_messageData);
+        return Left(_message);
       },
       onError: Right.new,
     );

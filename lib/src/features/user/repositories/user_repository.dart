@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
-import 'package:peaman/helpers/async_call_helper.dart';
 
+import '../../../../helpers/async_call_helper.dart';
 import '../../../../helpers/common_helper.dart';
 import '../../../../helpers/reference_helper.dart';
 import '../../shared/models/peaman_error.dart';
@@ -9,7 +9,6 @@ import '../../shared/models/peaman_field.dart';
 import '../../../utils/query_type_def.dart';
 import '../enums/online_status_type.dart';
 import '../models/follow_request_model.dart';
-import '../models/following_model.dart';
 import '../models/sub_user_model.dart';
 import '../models/user_model.dart';
 
