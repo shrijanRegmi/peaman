@@ -1,6 +1,6 @@
 name: peaman
 description: A service for building social media applications with ease!
-version: 0.0.3
+version: 1.0.0
 homepage: https://peaman.web.app
 repository: https://github.com/shrijanRegmi/peaman
 issue_tracker: https://github.com/shrijanRegmi/peaman/issues
