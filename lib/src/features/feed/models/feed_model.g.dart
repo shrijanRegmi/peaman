@@ -9,7 +9,7 @@ part of 'feed_model.dart';
 _$_PeamanFeed _$$_PeamanFeedFromJson(Map<String, dynamic> json) =>
     _$_PeamanFeed(
       id: json['id'] as String?,
-      ownerId: json['ownerId'] as String?,
+      ownerId: json['owner_id'] as String?,
       caption: json['caption'] as String?,
       files: (json['files'] as List<dynamic>?)
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
@@ -17,43 +17,43 @@ _$_PeamanFeed _$$_PeamanFeedFromJson(Map<String, dynamic> json) =>
           const <PeamanFileUrl>[],
       type: $enumDecodeNullable(_$PeamanFeedTypeEnumMap, json['type']) ??
           PeamanFeedType.text,
-      reactionsCount: json['reactionsCount'] as int? ?? 0,
-      commentsCount: json['commentsCount'] as int? ?? 0,
-      repliesCount: json['repliesCount'] as int? ?? 0,
-      savesCount: json['savesCount'] as int? ?? 0,
-      sharesCount: json['sharesCount'] as int? ?? 0,
-      viewsCount: json['viewsCount'] as int? ?? 0,
+      reactionsCount: json['reactions_count'] as int? ?? 0,
+      commentsCount: json['comments_count'] as int? ?? 0,
+      repliesCount: json['replies_count'] as int? ?? 0,
+      savesCount: json['saves_count'] as int? ?? 0,
+      sharesCount: json['shares_count'] as int? ?? 0,
+      viewsCount: json['views_count'] as int? ?? 0,
       featured: json['featured'] as bool? ?? false,
-      searchKeys: (json['searchKeys'] as List<dynamic>?)
+      searchKeys: (json['search_keys'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
-      extraData: json['extraData'] as Map<String, dynamic>? ??
+      extraData: json['extra_data'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
     );
 
 Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'ownerId': instance.ownerId,
+      'owner_id': instance.ownerId,
       'caption': instance.caption,
       'files': instance.files,
       'type': _$PeamanFeedTypeEnumMap[instance.type]!,
-      'reactionsCount': instance.reactionsCount,
-      'commentsCount': instance.commentsCount,
-      'repliesCount': instance.repliesCount,
-      'savesCount': instance.savesCount,
-      'sharesCount': instance.sharesCount,
-      'viewsCount': instance.viewsCount,
+      'reactions_count': instance.reactionsCount,
+      'comments_count': instance.commentsCount,
+      'replies_count': instance.repliesCount,
+      'saves_count': instance.savesCount,
+      'shares_count': instance.sharesCount,
+      'views_count': instance.viewsCount,
       'featured': instance.featured,
-      'searchKeys': instance.searchKeys,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'search_keys': instance.searchKeys,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'visibility': instance.visibility,
-      'extraData': instance.extraData,
+      'extra_data': instance.extraData,
     };
 
 const _$PeamanFeedTypeEnumMap = {

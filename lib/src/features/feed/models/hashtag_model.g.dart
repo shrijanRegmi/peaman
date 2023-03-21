@@ -11,13 +11,13 @@ _$_PeamanHashtag _$$_PeamanHashtagFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       title: json['title'] as String?,
       feeds: json['feeds'] as int?,
-      searchKeys: (json['searchKeys'] as List<dynamic>?)
+      searchKeys: (json['search_keys'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
       visibility: json['visibility'] as bool? ?? true,
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
     );
 
 Map<String, dynamic> _$$_PeamanHashtagToJson(_$_PeamanHashtag instance) =>
@@ -25,8 +25,8 @@ Map<String, dynamic> _$$_PeamanHashtagToJson(_$_PeamanHashtag instance) =>
       'id': instance.id,
       'title': instance.title,
       'feeds': instance.feeds,
-      'searchKeys': instance.searchKeys,
+      'search_keys': instance.searchKeys,
       'visibility': instance.visibility,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

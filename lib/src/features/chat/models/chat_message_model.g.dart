@@ -9,7 +9,7 @@ part of 'chat_message_model.dart';
 _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
     _$_PeamanChatMessage(
       id: json['id'] as String?,
-      chatId: json['chatId'] as String?,
+      chatId: json['chat_id'] as String?,
       text: json['text'] as String?,
       files: (json['files'] as List<dynamic>?)
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
@@ -17,26 +17,26 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
           const <PeamanFileUrl>[],
       type: $enumDecodeNullable(_$PeamanChatMessageTypeEnumMap, json['type']) ??
           PeamanChatMessageType.text,
-      senderId: json['senderId'] as String?,
-      senderName: json['senderName'] as String?,
-      receiverIds: (json['receiverIds'] as List<dynamic>?)
+      senderId: json['sender_id'] as String?,
+      senderName: json['sender_name'] as String?,
+      receiverIds: (json['receiver_ids'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      extraId: json['extraId'] as String?,
-      parentId: json['parentId'] as String?,
-      parentText: json['parentText'] as String?,
-      parentFiles: (json['parentFiles'] as List<dynamic>?)
+      extraId: json['extra_id'] as String?,
+      parentId: json['parent_id'] as String?,
+      parentText: json['parent_text'] as String?,
+      parentFiles: (json['parent_files'] as List<dynamic>?)
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <PeamanFileUrl>[],
       visibility: json['visibility'] as bool? ?? true,
-      isForwarded: json['isForwarded'] as bool? ?? false,
-      forwardedFromChatId: json['forwardedFromChatId'] as String?,
+      isForwarded: json['is_forwarded'] as bool? ?? false,
+      forwardedFromChatId: json['forwarded_from_chat_id'] as String?,
       unsent: json['unsent'] as bool? ?? false,
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
-      extraData: json['extraData'] as Map<String, dynamic>? ??
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
+      extraData: json['extra_data'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
     );
 
@@ -44,24 +44,24 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
         _$_PeamanChatMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'chatId': instance.chatId,
+      'chat_id': instance.chatId,
       'text': instance.text,
       'files': instance.files,
       'type': _$PeamanChatMessageTypeEnumMap[instance.type]!,
-      'senderId': instance.senderId,
-      'senderName': instance.senderName,
-      'receiverIds': instance.receiverIds,
-      'extraId': instance.extraId,
-      'parentId': instance.parentId,
-      'parentText': instance.parentText,
-      'parentFiles': instance.parentFiles,
+      'sender_id': instance.senderId,
+      'sender_name': instance.senderName,
+      'receiver_ids': instance.receiverIds,
+      'extra_id': instance.extraId,
+      'parent_id': instance.parentId,
+      'parent_text': instance.parentText,
+      'parent_files': instance.parentFiles,
       'visibility': instance.visibility,
-      'isForwarded': instance.isForwarded,
-      'forwardedFromChatId': instance.forwardedFromChatId,
+      'is_forwarded': instance.isForwarded,
+      'forwarded_from_chat_id': instance.forwardedFromChatId,
       'unsent': instance.unsent,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'extraData': instance.extraData,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'extra_data': instance.extraData,
     };
 
 const _$PeamanChatMessageTypeEnumMap = {

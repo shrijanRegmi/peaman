@@ -10,7 +10,7 @@ _$_PeamanUser _$$_PeamanUserFromJson(Map<String, dynamic> json) =>
     _$_PeamanUser(
       uid: json['uid'] as String?,
       name: json['name'] as String?,
-      userName: json['userName'] as String?,
+      userName: json['user_name'] as String?,
       email: json['email'] as String?,
       photo: json['photo'] as String?,
       phone: json['phone'] as String?,
@@ -20,39 +20,39 @@ _$_PeamanUser _$$_PeamanUserFromJson(Map<String, dynamic> json) =>
       gender: $enumDecodeNullable(_$PeamanGenderEnumMap, json['gender']) ??
           PeamanGender.unknown,
       dob: json['dob'] as int?,
-      searchKeys: (json['searchKeys'] as List<dynamic>?)
+      searchKeys: (json['search_keys'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
       onlineStatus: $enumDecodeNullable(
-              _$PeamanOnlineStatusEnumMap, json['onlineStatus']) ??
+              _$PeamanOnlineStatusEnumMap, json['online_status']) ??
           PeamanOnlineStatus.unknown,
-      lastOnlineAt: json['lastOnlineAt'] as int?,
-      feedsCount: json['feedsCount'] as int? ?? 0,
-      photosCount: json['photosCount'] as int? ?? 0,
-      videosCount: json['videosCount'] as int? ?? 0,
-      followersCount: json['followersCount'] as int? ?? 0,
-      followingCount: json['followingCount'] as int? ?? 0,
+      lastOnlineAt: json['last_online_at'] as int?,
+      feedsCount: json['feeds_count'] as int? ?? 0,
+      photosCount: json['photos_count'] as int? ?? 0,
+      videosCount: json['videos_count'] as int? ?? 0,
+      followersCount: json['followers_count'] as int? ?? 0,
+      followingCount: json['following_count'] as int? ?? 0,
       reactionsReceivedFromFeedsCount:
-          json['reactionsReceivedFromFeedsCount'] as int? ?? 0,
+          json['reactions_received_from_feeds_count'] as int? ?? 0,
       commentsReceivedFromFeedsCount:
-          json['commentsReceivedFromFeedsCount'] as int? ?? 0,
+          json['comments_received_from_feeds_count'] as int? ?? 0,
       repliesReceivedFromFeedsCount:
-          json['repliesReceivedFromFeedsCount'] as int? ?? 0,
+          json['replies_received_from_feeds_count'] as int? ?? 0,
       sharesReceivedFromFeedsCount:
-          json['sharesReceivedFromFeedsCount'] as int? ?? 0,
+          json['shares_received_from_feeds_count'] as int? ?? 0,
       viewsReceivedFromFeedsCount:
-          json['viewsReceivedFromFeedsCount'] as int? ?? 0,
-      isAdmin: json['isAdmin'] as bool? ?? false,
-      isEditor: json['isEditor'] as bool? ?? false,
-      isTester: json['isTester'] as bool? ?? false,
-      onboardingStep: json['onboardingStep'] as int? ?? 0,
-      isOnboardingCompleted: json['isOnboardingCompleted'] as bool? ?? false,
+          json['views_received_from_feeds_count'] as int? ?? 0,
+      isAdmin: json['is_admin'] as bool? ?? false,
+      isEditor: json['is_editor'] as bool? ?? false,
+      isTester: json['is_tester'] as bool? ?? false,
+      onboardingStep: json['onboarding_step'] as int? ?? 0,
+      isOnboardingCompleted: json['is_onboarding_completed'] as bool? ?? false,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
-      createdAt: json['createdAt'] as int?,
+      createdAt: json['created_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
-      extraData: json['extraData'] as Map<String, dynamic>? ??
+      extraData: json['extra_data'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
     );
 
@@ -60,7 +60,7 @@ Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
-      'userName': instance.userName,
+      'user_name': instance.userName,
       'email': instance.email,
       'photo': instance.photo,
       'phone': instance.phone,
@@ -69,30 +69,32 @@ Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) =>
       'profession': instance.profession,
       'gender': _$PeamanGenderEnumMap[instance.gender]!,
       'dob': instance.dob,
-      'searchKeys': instance.searchKeys,
-      'onlineStatus': _$PeamanOnlineStatusEnumMap[instance.onlineStatus]!,
-      'lastOnlineAt': instance.lastOnlineAt,
-      'feedsCount': instance.feedsCount,
-      'photosCount': instance.photosCount,
-      'videosCount': instance.videosCount,
-      'followersCount': instance.followersCount,
-      'followingCount': instance.followingCount,
-      'reactionsReceivedFromFeedsCount':
+      'search_keys': instance.searchKeys,
+      'online_status': _$PeamanOnlineStatusEnumMap[instance.onlineStatus]!,
+      'last_online_at': instance.lastOnlineAt,
+      'feeds_count': instance.feedsCount,
+      'photos_count': instance.photosCount,
+      'videos_count': instance.videosCount,
+      'followers_count': instance.followersCount,
+      'following_count': instance.followingCount,
+      'reactions_received_from_feeds_count':
           instance.reactionsReceivedFromFeedsCount,
-      'commentsReceivedFromFeedsCount': instance.commentsReceivedFromFeedsCount,
-      'repliesReceivedFromFeedsCount': instance.repliesReceivedFromFeedsCount,
-      'sharesReceivedFromFeedsCount': instance.sharesReceivedFromFeedsCount,
-      'viewsReceivedFromFeedsCount': instance.viewsReceivedFromFeedsCount,
-      'isAdmin': instance.isAdmin,
-      'isEditor': instance.isEditor,
-      'isTester': instance.isTester,
-      'onboardingStep': instance.onboardingStep,
-      'isOnboardingCompleted': instance.isOnboardingCompleted,
+      'comments_received_from_feeds_count':
+          instance.commentsReceivedFromFeedsCount,
+      'replies_received_from_feeds_count':
+          instance.repliesReceivedFromFeedsCount,
+      'shares_received_from_feeds_count': instance.sharesReceivedFromFeedsCount,
+      'views_received_from_feeds_count': instance.viewsReceivedFromFeedsCount,
+      'is_admin': instance.isAdmin,
+      'is_editor': instance.isEditor,
+      'is_tester': instance.isTester,
+      'onboarding_step': instance.onboardingStep,
+      'is_onboarding_completed': instance.isOnboardingCompleted,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'createdAt': instance.createdAt,
+      'created_at': instance.createdAt,
       'visibility': instance.visibility,
-      'extraData': instance.extraData,
+      'extra_data': instance.extraData,
     };
 
 const _$PeamanGenderEnumMap = {

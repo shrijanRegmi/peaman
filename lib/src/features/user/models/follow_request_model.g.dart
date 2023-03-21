@@ -10,18 +10,18 @@ _$_PeamanFollowRequest _$$_PeamanFollowRequestFromJson(
         Map<String, dynamic> json) =>
     _$_PeamanFollowRequest(
       uid: json['uid'] as String?,
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
-      isAccepted: json['isAccepted'] as bool? ?? false,
-      isIgnored: json['isIgnored'] as bool? ?? false,
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
+      isAccepted: json['is_accepted'] as bool? ?? false,
+      isIgnored: json['is_ignored'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_PeamanFollowRequestToJson(
         _$_PeamanFollowRequest instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'isAccepted': instance.isAccepted,
-      'isIgnored': instance.isIgnored,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'is_accepted': instance.isAccepted,
+      'is_ignored': instance.isIgnored,
     };

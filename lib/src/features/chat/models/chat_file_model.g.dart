@@ -13,14 +13,14 @@ _$_PeamanChatFile _$$_PeamanChatFileFromJson(Map<String, dynamic> json) =>
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <PeamanFileUrl>[],
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
     );
 
 Map<String, dynamic> _$$_PeamanChatFileToJson(_$_PeamanChatFile instance) =>
     <String, dynamic>{
       'id': instance.id,
       'urls': instance.urls,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

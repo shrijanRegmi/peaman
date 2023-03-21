@@ -9,42 +9,42 @@ part of 'comment_model.dart';
 _$_PeamanComment _$$_PeamanCommentFromJson(Map<String, dynamic> json) =>
     _$_PeamanComment(
       id: json['id'] as String?,
-      feedId: json['feedId'] as String?,
-      ownerId: json['ownerId'] as String?,
-      secondUserId: json['secondUserId'] as String?,
-      secondUserName: json['secondUserName'] as String?,
+      feedId: json['feed_id'] as String?,
+      ownerId: json['owner_id'] as String?,
+      secondUserId: json['second_user_id'] as String?,
+      secondUserName: json['second_user_name'] as String?,
       parent:
           $enumDecodeNullable(_$PeamanCommentParentEnumMap, json['parent']) ??
               PeamanCommentParent.feed,
-      parentId: json['parentId'] as String?,
-      parentOwnerId: json['parentOwnerId'] as String?,
+      parentId: json['parent_id'] as String?,
+      parentOwnerId: json['parent_owner_id'] as String?,
       comment: json['comment'] as String?,
-      reactionsCount: json['reactionsCount'] as int? ?? 0,
-      repliesCount: json['repliesCount'] as int? ?? 0,
-      createdAt: json['createdAt'] as int?,
-      updatedAt: json['updatedAt'] as int?,
+      reactionsCount: json['reactions_count'] as int? ?? 0,
+      repliesCount: json['replies_count'] as int? ?? 0,
+      createdAt: json['created_at'] as int?,
+      updatedAt: json['updated_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
-      extraData: json['extraData'] as Map<String, dynamic>? ??
+      extraData: json['extra_data'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
     );
 
 Map<String, dynamic> _$$_PeamanCommentToJson(_$_PeamanComment instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'feedId': instance.feedId,
-      'ownerId': instance.ownerId,
-      'secondUserId': instance.secondUserId,
-      'secondUserName': instance.secondUserName,
+      'feed_id': instance.feedId,
+      'owner_id': instance.ownerId,
+      'second_user_id': instance.secondUserId,
+      'second_user_name': instance.secondUserName,
       'parent': _$PeamanCommentParentEnumMap[instance.parent]!,
-      'parentId': instance.parentId,
-      'parentOwnerId': instance.parentOwnerId,
+      'parent_id': instance.parentId,
+      'parent_owner_id': instance.parentOwnerId,
       'comment': instance.comment,
-      'reactionsCount': instance.reactionsCount,
-      'repliesCount': instance.repliesCount,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'reactions_count': instance.reactionsCount,
+      'replies_count': instance.repliesCount,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'visibility': instance.visibility,
-      'extraData': instance.extraData,
+      'extra_data': instance.extraData,
     };
 
 const _$PeamanCommentParentEnumMap = {

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:peaman/src/features/shared/extensions/string_extension.dart';
 import 'package:peaman/src/features/shared/models/peaman_field_model.dart';
 
 class PeamanCommonHelper {
@@ -16,15 +17,17 @@ class PeamanCommonHelper {
     final _data = <String, dynamic>{};
 
     for (final field in fields) {
+      final key = field.key.toJsonKey;
+
       switch (field.type) {
         case PeamanFieldType.delete:
-          _data[field.key] = FieldValue.delete();
+          _data[key] = FieldValue.delete();
           break;
         case PeamanFieldType.positivePartial:
           if (field.value is num) {
-            _data[field.key] = FieldValue.increment(field.value);
+            _data[key] = FieldValue.increment(field.value);
           } else if (field.value is List) {
-            _data[field.key] = FieldValue.arrayUnion(field.value);
+            _data[key] = FieldValue.arrayUnion(field.value);
           } else {
             throw Exception(
               "value must be either a [num] type or a [List] type",
@@ -33,9 +36,9 @@ class PeamanCommonHelper {
           break;
         case PeamanFieldType.negativePartial:
           if (field.value is num) {
-            _data[field.key] = FieldValue.increment(-field.value);
+            _data[key] = FieldValue.increment(-field.value);
           } else if (field.value is List) {
-            _data[field.key] = FieldValue.arrayRemove(field.value);
+            _data[key] = FieldValue.arrayRemove(field.value);
           } else {
             throw Exception(
               "value must be either a [num] type or a [List] type",
@@ -43,7 +46,7 @@ class PeamanCommonHelper {
           }
           break;
         default:
-          _data[field.key] = field.value;
+          _data[key] = field.value;
       }
     }
 
