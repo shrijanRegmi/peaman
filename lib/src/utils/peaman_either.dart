@@ -5,9 +5,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 /// Receives two values [F] and [S]
 /// as [F] is an failure and [S] is a success.
 @sealed
-abstract class Either<S, F> {
+abstract class PeamanEither<S, F> {
   /// Default constructor.
-  const Either();
+  const PeamanEither();
 
   /// Returns the current Either.
   ///
@@ -42,17 +42,17 @@ abstract class Either<S, F> {
   /// [whenFailure],
   /// if it is a success it will be returned in [whenSuccess].
   W when<W>(
-    W Function(F failure) whenFailure,
     W Function(S success) whenSuccess,
+    W Function(F failure) whenFailure,
   );
 }
 
 /// Success Either.
 ///
-/// return it when the Either of a [Either] is
+/// return it when the Either of a [PeamanEither] is
 /// the expected value.
 @immutable
-class Success<S, F> implements Either<S, F> {
+class Success<S, F> implements PeamanEither<S, F> {
   /// Receives the [S] param as
   /// the successful Either.
   const Success(
@@ -81,8 +81,8 @@ class Success<S, F> implements Either<S, F> {
 
   @override
   W when<W>(
-    W Function(F failure) whenFailure,
     W Function(S success) whenSuccess,
+    W Function(F failure) whenFailure,
   ) {
     return whenSuccess(_success);
   }
@@ -98,10 +98,10 @@ class Success<S, F> implements Either<S, F> {
 
 /// Failure Either.
 ///
-/// return it when the Either of a [Either] is
+/// return it when the Either of a [PeamanEither] is
 /// not the expected value.
 @immutable
-class Failure<S, F> implements Either<S, F> {
+class Failure<S, F> implements PeamanEither<S, F> {
   /// Receives the [F] param as
   /// the failure Either.
   const Failure(this._failure);
@@ -128,8 +128,8 @@ class Failure<S, F> implements Either<S, F> {
 
   @override
   W when<W>(
-    W Function(F failure) whenFailure,
     W Function(S succcess) whenSuccess,
+    W Function(F failure) whenFailure,
   ) {
     return whenFailure(_failure);
   }

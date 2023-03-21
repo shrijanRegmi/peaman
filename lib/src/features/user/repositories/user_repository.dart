@@ -4,70 +4,70 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanUserRepository {
-  Future<Either<bool, PeamanError>> createUser({
+  Future<PeamanEither<bool, PeamanError>> createUser({
     required final PeamanUser user,
   });
 
-  Future<Either<bool, PeamanError>> updateUser({
+  Future<PeamanEither<bool, PeamanError>> updateUser({
     required final String uid,
     required final List<PeamanField> fields,
   });
 
-  Future<Either<bool, PeamanError>> deleteUser({
+  Future<PeamanEither<bool, PeamanError>> deleteUser({
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> followUser({
-    required final String uid,
-    required final String friendId,
-  });
-
-  Future<Either<bool, PeamanError>> acceptFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> followUser({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> ignoreFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> acceptFollowRequest({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> cancelFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> ignoreFollowRequest({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> followBackUser({
+  Future<PeamanEither<bool, PeamanError>> cancelFollowRequest({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> unfollowUser({
+  Future<PeamanEither<bool, PeamanError>> followBackUser({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> blockUser({
+  Future<PeamanEither<bool, PeamanError>> unfollowUser({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> unblockUser({
+  Future<PeamanEither<bool, PeamanError>> blockUser({
     required final String uid,
     required final String friendId,
   });
 
-  Future<Either<bool, PeamanError>> setUserOnlineStatus({
+  Future<PeamanEither<bool, PeamanError>> unblockUser({
+    required final String uid,
+    required final String friendId,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> setUserOnlineStatus({
     required final String uid,
     required final PeamanOnlineStatus onlineStatus,
   });
 
-  Future<Either<bool, PeamanError>> setIsOnboardingCompleted({
+  Future<PeamanEither<bool, PeamanError>> setIsOnboardingCompleted({
     required final String uid,
     required final bool isOnboardingCompleted,
   });
 
-  Future<Either<List<PeamanUser>, PeamanError>> getUsers({
+  Future<PeamanEither<List<PeamanUser>, PeamanError>> getUsers({
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -75,7 +75,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<PeamanUser, PeamanError>> getSingleUser({
+  Future<PeamanEither<PeamanUser, PeamanError>> getSingleUser({
     required final String uid,
   });
 
@@ -83,7 +83,7 @@ abstract class PeamanUserRepository {
     required final String uid,
   });
 
-  Future<Either<List<PeamanUser>, PeamanError>> getUsersBySearchKey({
+  Future<PeamanEither<List<PeamanUser>, PeamanError>> getUsersBySearchKey({
     required final String searchKey,
     final MyQuery Function(MyQuery)? query,
   });
@@ -93,7 +93,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanFollowRequest>, PeamanError>>
+  Future<PeamanEither<List<PeamanFollowRequest>, PeamanError>>
       getReceivedFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
@@ -104,7 +104,8 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanFollowRequest>, PeamanError>> getSentFollowRequests({
+  Future<PeamanEither<List<PeamanFollowRequest>, PeamanError>>
+      getSentFollowRequests({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -114,7 +115,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFollowers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -124,7 +125,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowings({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFollowings({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -134,7 +135,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -144,7 +145,7 @@ abstract class PeamanUserRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -157,7 +158,7 @@ abstract class PeamanUserRepository {
 
 class PeamanUserRepositoryImpl extends PeamanUserRepository {
   @override
-  Future<Either<bool, PeamanError>> acceptFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> acceptFollowRequest({
     required String uid,
     required String friendId,
   }) {
@@ -199,7 +200,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> blockUser({
+  Future<PeamanEither<bool, PeamanError>> blockUser({
     required String uid,
     required String friendId,
   }) {
@@ -239,7 +240,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> cancelFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> cancelFollowRequest({
     required String uid,
     required String friendId,
   }) {
@@ -266,7 +267,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> createUser({
+  Future<PeamanEither<bool, PeamanError>> createUser({
     required PeamanUser user,
   }) {
     return runAsyncCall(
@@ -280,7 +281,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteUser({
+  Future<PeamanEither<bool, PeamanError>> deleteUser({
     required String uid,
   }) {
     return runAsyncCall(
@@ -292,7 +293,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> followBackUser({
+  Future<PeamanEither<bool, PeamanError>> followBackUser({
     required String uid,
     required String friendId,
   }) {
@@ -354,7 +355,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> followUser({
+  Future<PeamanEither<bool, PeamanError>> followUser({
     required String uid,
     required String friendId,
   }) {
@@ -391,7 +392,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getBlockedByUsers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -419,7 +420,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getBlockedUsers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -447,7 +448,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFollowers({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -475,7 +476,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFollowings({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFollowings({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -503,7 +504,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanFollowRequest>, PeamanError>>
+  Future<PeamanEither<List<PeamanFollowRequest>, PeamanError>>
       getReceivedFollowRequests({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
@@ -532,7 +533,8 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanFollowRequest>, PeamanError>> getSentFollowRequests({
+  Future<PeamanEither<List<PeamanFollowRequest>, PeamanError>>
+      getSentFollowRequests({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -560,7 +562,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<PeamanUser, PeamanError>> getSingleUser({
+  Future<PeamanEither<PeamanUser, PeamanError>> getSingleUser({
     required String uid,
   }) {
     return runAsyncCall(
@@ -585,7 +587,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanUser>, PeamanError>> getUsers({
+  Future<PeamanEither<List<PeamanUser>, PeamanError>> getUsers({
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
@@ -602,7 +604,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<List<PeamanUser>, PeamanError>> getUsersBySearchKey({
+  Future<PeamanEither<List<PeamanUser>, PeamanError>> getUsersBySearchKey({
     required String searchKey,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -643,7 +645,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> ignoreFollowRequest({
+  Future<PeamanEither<bool, PeamanError>> ignoreFollowRequest({
     required String uid,
     required String friendId,
   }) {
@@ -679,7 +681,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> setIsOnboardingCompleted({
+  Future<PeamanEither<bool, PeamanError>> setIsOnboardingCompleted({
     required String uid,
     required bool isOnboardingCompleted,
   }) {
@@ -695,7 +697,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> setUserOnlineStatus({
+  Future<PeamanEither<bool, PeamanError>> setUserOnlineStatus({
     required String uid,
     required PeamanOnlineStatus onlineStatus,
   }) {
@@ -711,7 +713,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unblockUser({
+  Future<PeamanEither<bool, PeamanError>> unblockUser({
     required String uid,
     required String friendId,
   }) {
@@ -733,7 +735,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unfollowUser({
+  Future<PeamanEither<bool, PeamanError>> unfollowUser({
     required String uid,
     required String friendId,
   }) {
@@ -782,7 +784,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> updateUser({
+  Future<PeamanEither<bool, PeamanError>> updateUser({
     required String uid,
     required List<PeamanField> fields,
   }) {

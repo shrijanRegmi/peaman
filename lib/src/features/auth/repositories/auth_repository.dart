@@ -4,26 +4,26 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanAuthRepository {
-  Future<Either<PeamanUser, PeamanError>> signUpWithEmailAndPassword({
+  Future<PeamanEither<PeamanUser, PeamanError>> signUpWithEmailAndPassword({
     required final PeamanUser user,
     required final String email,
     required final String password,
   });
 
-  Future<Either<bool, PeamanError>> signInWithEmailAndPassword({
+  Future<PeamanEither<bool, PeamanError>> signInWithEmailAndPassword({
     required final String email,
     required final String password,
   });
 
-  Future<Either<bool, PeamanError>> sendPasswordResetEmail({
+  Future<PeamanEither<bool, PeamanError>> sendPasswordResetEmail({
     required final String email,
   });
 
-  Future<Either<bool, PeamanError>> signInWithGoogle();
+  Future<PeamanEither<bool, PeamanError>> signInWithGoogle();
 
-  Future<Either<bool, PeamanError>> signInWithFacebook();
+  Future<PeamanEither<bool, PeamanError>> signInWithFacebook();
 
-  Future<Either<bool, PeamanError>> signOut();
+  Future<PeamanEither<bool, PeamanError>> signOut();
 
   Stream<PeamanAuthUser?> get authUser;
 }
@@ -44,7 +44,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
       .map((e) => e == null ? null : PeamanAuthUser(uid: e.uid));
 
   @override
-  Future<Either<bool, PeamanError>> sendPasswordResetEmail({
+  Future<PeamanEither<bool, PeamanError>> sendPasswordResetEmail({
     required String email,
   }) {
     return runAsyncCall(
@@ -59,7 +59,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> signInWithEmailAndPassword({
+  Future<PeamanEither<bool, PeamanError>> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) {
@@ -79,7 +79,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> signInWithFacebook() {
+  Future<PeamanEither<bool, PeamanError>> signInWithFacebook() {
     return runAsyncCall(
       future: () async {
         final _account = await _facebookSignIn.login();
@@ -118,7 +118,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> signInWithGoogle() {
+  Future<PeamanEither<bool, PeamanError>> signInWithGoogle() {
     return runAsyncCall(
       future: () async {
         final _account = await _googleSignIn.signIn();
@@ -158,7 +158,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> signOut() {
+  Future<PeamanEither<bool, PeamanError>> signOut() {
     return runAsyncCall(
       future: () async {
         await Future.wait([
@@ -174,7 +174,7 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<Either<PeamanUser, PeamanError>> signUpWithEmailAndPassword({
+  Future<PeamanEither<PeamanUser, PeamanError>> signUpWithEmailAndPassword({
     required PeamanUser user,
     required String email,
     required String password,

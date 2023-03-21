@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:peaman/peaman.dart';
+
+import '../peaman.dart';
 
 class Peaman {
-  static Future<Either<bool, PeamanError>> initializeApp({
+  static Future<PeamanEither<bool, PeamanError>> initializeApp({
     String? name,
     PeamanOptions? options,
   }) {

@@ -4,14 +4,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanStorageRepository {
-  Future<Either<String, PeamanError>> uploadFile({
+  Future<PeamanEither<String, PeamanError>> uploadFile({
     required final String path,
     required final File file,
     final String? fileName,
     final Function(double)? onProgress,
   });
 
-  Future<Either<List<String>, PeamanError>> uploadFiles({
+  Future<PeamanEither<List<String>, PeamanError>> uploadFiles({
     required final String path,
     required final List<File> files,
     final String? fileName,
@@ -23,7 +23,7 @@ class PeamanStorageRepositoryImpl extends PeamanStorageRepository {
   final _storage = FirebaseStorage.instance;
 
   @override
-  Future<Either<String, PeamanError>> uploadFile({
+  Future<PeamanEither<String, PeamanError>> uploadFile({
     required String path,
     required File file,
     String? fileName,
@@ -51,7 +51,7 @@ class PeamanStorageRepositoryImpl extends PeamanStorageRepository {
   }
 
   @override
-  Future<Either<List<String>, PeamanError>> uploadFiles({
+  Future<PeamanEither<List<String>, PeamanError>> uploadFiles({
     required String path,
     required List<File> files,
     String? fileName,

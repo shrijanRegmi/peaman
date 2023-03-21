@@ -4,67 +4,67 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanFeedRepository {
-  Future<Either<PeamanFeed, PeamanError>> createFeed({
+  Future<PeamanEither<PeamanFeed, PeamanError>> createFeed({
     required final PeamanFeed feed,
   });
 
-  Future<Either<bool, PeamanError>> updateFeed({
+  Future<PeamanEither<bool, PeamanError>> updateFeed({
     required final String feedId,
     required final List<PeamanField> fields,
   });
 
-  Future<Either<bool, PeamanError>> deleteFeed({
+  Future<PeamanEither<bool, PeamanError>> deleteFeed({
     required final String feedId,
     required final String ownerId,
   });
 
-  Future<Either<bool, PeamanError>> addFeedToHashtags({
+  Future<PeamanEither<bool, PeamanError>> addFeedToHashtags({
     required final String feedId,
     required final List<String> hashtags,
   });
 
-  Future<Either<bool, PeamanError>> removeFeedFromHashtags({
+  Future<PeamanEither<bool, PeamanError>> removeFeedFromHashtags({
     required final String feedId,
     required final List<String> hashtags,
   });
 
-  Future<Either<bool, PeamanError>> followFeed({
+  Future<PeamanEither<bool, PeamanError>> followFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> unfollowFeed({
+  Future<PeamanEither<bool, PeamanError>> unfollowFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> saveFeed({
+  Future<PeamanEither<bool, PeamanError>> saveFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> unsaveFeed({
+  Future<PeamanEither<bool, PeamanError>> unsaveFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> viewFeed({
+  Future<PeamanEither<bool, PeamanError>> viewFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> unviewFeed({
+  Future<PeamanEither<bool, PeamanError>> unviewFeed({
     required final String feedId,
     required final String uid,
   });
 
-  Future<Either<PeamanReaction, PeamanError>> createReaction({
+  Future<PeamanEither<PeamanReaction, PeamanError>> createReaction({
     required final PeamanReaction reaction,
     final bool updateParentReactionsCount = true,
     final bool updateUserReactionsCount = true,
   });
 
-  Future<Either<bool, PeamanError>> deleteReaction({
+  Future<PeamanEither<bool, PeamanError>> deleteReaction({
     required final String feedId,
     required final String reactionId,
     required final String ownerId,
@@ -74,17 +74,17 @@ abstract class PeamanFeedRepository {
     final bool updateUserReactionsCount = true,
   });
 
-  Future<Either<PeamanComment, PeamanError>> createComment({
+  Future<PeamanEither<PeamanComment, PeamanError>> createComment({
     required final PeamanComment comment,
   });
 
-  Future<Either<bool, PeamanError>> updateComment({
+  Future<PeamanEither<bool, PeamanError>> updateComment({
     required String feedId,
     required final String commentId,
     required final List<PeamanField> fields,
   });
 
-  Future<Either<bool, PeamanError>> deleteComment({
+  Future<PeamanEither<bool, PeamanError>> deleteComment({
     required final String feedId,
     required final String commentId,
     required final String ownerId,
@@ -92,7 +92,7 @@ abstract class PeamanFeedRepository {
     required final String parentOwnerId,
   });
 
-  Future<Either<List<PeamanFeed>, PeamanError>> getFeeds({
+  Future<PeamanEither<List<PeamanFeed>, PeamanError>> getFeeds({
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -100,7 +100,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanFeed>, PeamanError>> getUserFeeds({
+  Future<PeamanEither<List<PeamanFeed>, PeamanError>> getUserFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -110,7 +110,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserReactedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserReactedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -120,7 +120,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -130,7 +130,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -140,7 +140,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -150,7 +150,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserSavedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserSavedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -160,7 +160,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserViewedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserViewedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -170,7 +170,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedReactors({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -180,7 +180,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedCommenters({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedCommenters({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -190,7 +190,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedRepliers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedRepliers({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -200,7 +200,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedFollowers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedFollowers({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -210,7 +210,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedSavers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedSavers({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -220,7 +220,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedViewers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedViewers({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -230,7 +230,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactions({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>> getReactions({
     required final String feedId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -240,7 +240,8 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByOwnerId({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>>
+      getReactionsByOwnerId({
     required final String feedId,
     required final String ownerId,
     required final PeamanReactionParent parent,
@@ -254,7 +255,8 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByParentId({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>>
+      getReactionsByParentId({
     required final String feedId,
     required final String parentId,
     required final PeamanReactionParent parent,
@@ -268,7 +270,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanComment>, PeamanError>> getComments({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getComments({
     required final String feedId,
     required PeamanCommentParent parent,
     final MyQuery Function(MyQuery)? query,
@@ -280,7 +282,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanComment>, PeamanError>> getCommentsByOwnerId({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getCommentsByOwnerId({
     required final String feedId,
     required final String ownerId,
     required final PeamanCommentParent parent,
@@ -294,7 +296,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanComment>, PeamanError>> getCommentsByParentId({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getCommentsByParentId({
     required final String feedId,
     required final String parentId,
     required final PeamanCommentParent parent,
@@ -308,7 +310,7 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<PeamanReaction, PeamanError>> getSingleReaction({
+  Future<PeamanEither<PeamanReaction, PeamanError>> getSingleReaction({
     required final String feedId,
     required final String reactionId,
   });
@@ -318,14 +320,14 @@ abstract class PeamanFeedRepository {
     required final String reactionId,
   });
 
-  Future<Either<PeamanReaction, PeamanError>> getSingleReactionByOwnerId({
+  Future<PeamanEither<PeamanReaction, PeamanError>> getSingleReactionByOwnerId({
     required final String feedId,
     required final String ownerId,
     required final PeamanReactionParent parent,
     required final String parentId,
   });
 
-  Future<Either<PeamanComment, PeamanError>> getSingleComment({
+  Future<PeamanEither<PeamanComment, PeamanError>> getSingleComment({
     required final String feedId,
     required final String commentId,
   });
@@ -335,7 +337,7 @@ abstract class PeamanFeedRepository {
     required final String commentId,
   });
 
-  Future<Either<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
+  Future<PeamanEither<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
     required final String feedId,
     required final String ownerId,
     required final PeamanCommentParent parent,
@@ -351,7 +353,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   final PeamanUserRepository _peamanUserRepository;
 
   @override
-  Future<Either<bool, PeamanError>> addFeedToHashtags({
+  Future<PeamanEither<bool, PeamanError>> addFeedToHashtags({
     required String feedId,
     required List<String> hashtags,
   }) {
@@ -406,7 +408,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanComment, PeamanError>> createComment({
+  Future<PeamanEither<PeamanComment, PeamanError>> createComment({
     required PeamanComment comment,
   }) {
     final _millis = DateTime.now().millisecondsSinceEpoch;
@@ -524,7 +526,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanFeed, PeamanError>> createFeed({
+  Future<PeamanEither<PeamanFeed, PeamanError>> createFeed({
     required PeamanFeed feed,
   }) {
     final _millis = DateTime.now().millisecondsSinceEpoch;
@@ -584,7 +586,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanReaction, PeamanError>> createReaction({
+  Future<PeamanEither<PeamanReaction, PeamanError>> createReaction({
     required PeamanReaction reaction,
     bool updateParentReactionsCount = true,
     bool updateUserReactionsCount = true,
@@ -676,7 +678,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteComment({
+  Future<PeamanEither<bool, PeamanError>> deleteComment({
     required final String feedId,
     required final String commentId,
     required final String ownerId,
@@ -772,7 +774,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteFeed({
+  Future<PeamanEither<bool, PeamanError>> deleteFeed({
     required final String feedId,
     required final String ownerId,
   }) {
@@ -811,7 +813,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteReaction({
+  Future<PeamanEither<bool, PeamanError>> deleteReaction({
     required String feedId,
     required String reactionId,
     required String ownerId,
@@ -885,7 +887,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> followFeed({
+  Future<PeamanEither<bool, PeamanError>> followFeed({
     required String feedId,
     required String uid,
   }) {
@@ -922,7 +924,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanComment>, PeamanError>> getComments({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getComments({
     required String feedId,
     required PeamanCommentParent parent,
     MyQuery Function(MyQuery p1)? query,
@@ -942,7 +944,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanComment>, PeamanError>> getCommentsByOwnerId({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getCommentsByOwnerId({
     required String feedId,
     required String ownerId,
     required PeamanCommentParent parent,
@@ -980,7 +982,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanComment>, PeamanError>> getCommentsByParentId({
+  Future<PeamanEither<List<PeamanComment>, PeamanError>> getCommentsByParentId({
     required String feedId,
     required String parentId,
     required PeamanCommentParent parent,
@@ -1032,7 +1034,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedCommenters({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedCommenters({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1060,7 +1062,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedFollowers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedFollowers({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1088,7 +1090,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedReactors({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedReactors({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1116,7 +1118,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedRepliers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedRepliers({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1144,7 +1146,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedSavers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedSavers({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1172,7 +1174,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubUser>, PeamanError>> getFeedViewers({
+  Future<PeamanEither<List<PeamanSubUser>, PeamanError>> getFeedViewers({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1200,7 +1202,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanFeed>, PeamanError>> getFeeds({
+  Future<PeamanEither<List<PeamanFeed>, PeamanError>> getFeeds({
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
@@ -1228,7 +1230,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactions({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>> getReactions({
     required String feedId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1246,7 +1248,8 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByOwnerId({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>>
+      getReactionsByOwnerId({
     required String feedId,
     required String ownerId,
     required PeamanReactionParent parent,
@@ -1284,7 +1287,8 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanReaction>, PeamanError>> getReactionsByParentId({
+  Future<PeamanEither<List<PeamanReaction>, PeamanError>>
+      getReactionsByParentId({
     required String feedId,
     required String parentId,
     required PeamanReactionParent parent,
@@ -1334,7 +1338,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanComment, PeamanError>> getSingleComment({
+  Future<PeamanEither<PeamanComment, PeamanError>> getSingleComment({
     required String feedId,
     required String commentId,
   }) {
@@ -1368,7 +1372,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
+  Future<PeamanEither<PeamanComment, PeamanError>> getSingleCommentByOwnerId({
     required String feedId,
     required String ownerId,
     required PeamanCommentParent parent,
@@ -1394,7 +1398,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanReaction, PeamanError>> getSingleReaction({
+  Future<PeamanEither<PeamanReaction, PeamanError>> getSingleReaction({
     required String feedId,
     required String reactionId,
   }) {
@@ -1418,7 +1422,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<PeamanReaction, PeamanError>> getSingleReactionByOwnerId({
+  Future<PeamanEither<PeamanReaction, PeamanError>> getSingleReactionByOwnerId({
     required String feedId,
     required String ownerId,
     required PeamanReactionParent parent,
@@ -1454,7 +1458,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserCommentedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1482,7 +1486,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanFeed>, PeamanError>> getUserFeeds({
+  Future<PeamanEither<List<PeamanFeed>, PeamanError>> getUserFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1502,7 +1506,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserFollowedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1530,7 +1534,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserReactedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserReactedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1558,7 +1562,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserRepliedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1586,7 +1590,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserSavedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserSavedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1614,7 +1618,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<List<PeamanSubFeed>, PeamanError>> getUserViewedFeeds({
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserViewedFeeds({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -1642,7 +1646,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> removeFeedFromHashtags({
+  Future<PeamanEither<bool, PeamanError>> removeFeedFromHashtags({
     required String feedId,
     required List<String> hashtags,
   }) {
@@ -1680,7 +1684,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> saveFeed({
+  Future<PeamanEither<bool, PeamanError>> saveFeed({
     required String feedId,
     required String uid,
   }) {
@@ -1718,7 +1722,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unfollowFeed({
+  Future<PeamanEither<bool, PeamanError>> unfollowFeed({
     required String feedId,
     required String uid,
   }) {
@@ -1740,7 +1744,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unsaveFeed({
+  Future<PeamanEither<bool, PeamanError>> unsaveFeed({
     required String feedId,
     required String uid,
   }) {
@@ -1768,7 +1772,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unviewFeed({
+  Future<PeamanEither<bool, PeamanError>> unviewFeed({
     required String feedId,
     required String uid,
   }) {
@@ -1796,7 +1800,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> updateComment({
+  Future<PeamanEither<bool, PeamanError>> updateComment({
     required String feedId,
     required String commentId,
     required List<PeamanField> fields,
@@ -1821,7 +1825,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> updateFeed({
+  Future<PeamanEither<bool, PeamanError>> updateFeed({
     required String feedId,
     required List<PeamanField> fields,
   }) {
@@ -1843,7 +1847,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> viewFeed({
+  Future<PeamanEither<bool, PeamanError>> viewFeed({
     required String feedId,
     required String uid,
   }) {
@@ -1855,7 +1859,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     );
   }
 
-  Future<Either<bool, PeamanError>> _updateFeedPropertiesCount({
+  Future<PeamanEither<bool, PeamanError>> _updateFeedPropertiesCount({
     required final String feedId,
     final int reactionsCount = 0,
     final int commentsCount = 0,
@@ -1895,7 +1899,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     );
   }
 
-  Future<Either<bool, PeamanError>> _updateCommentPropertiesCount({
+  Future<PeamanEither<bool, PeamanError>> _updateCommentPropertiesCount({
     required final String feedId,
     required final String commentId,
     final int reactionsCount = 0,
@@ -1917,7 +1921,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     );
   }
 
-  Future<Either<bool, PeamanError>> _updateUserPropertiesCount({
+  Future<PeamanEither<bool, PeamanError>> _updateUserPropertiesCount({
     required final String uid,
     final int onboardingStep = 0,
     final int feeds = 0,

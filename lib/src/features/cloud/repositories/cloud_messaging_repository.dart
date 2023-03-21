@@ -5,15 +5,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanCloudMessagingRepository {
-  Future<Either<bool, PeamanError>> initializeMessaging({
+  Future<PeamanEither<bool, PeamanError>> initializeMessaging({
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> onReceivedMessage({
+  Future<PeamanEither<bool, PeamanError>> onReceivedMessage({
     required final Future<void> Function(RemoteMessage) onMessage,
   });
 
-  Future<Either<bool, PeamanError>> resetMessaging({
+  Future<PeamanEither<bool, PeamanError>> resetMessaging({
     required final String uid,
   });
 }
@@ -23,7 +23,7 @@ class PeamanCloudMessagingRepositoryImpl
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
-  Future<Either<bool, PeamanError>> initializeMessaging({
+  Future<PeamanEither<bool, PeamanError>> initializeMessaging({
     required String uid,
   }) {
     final _millis = DateTime.now().millisecondsSinceEpoch;
@@ -68,7 +68,7 @@ class PeamanCloudMessagingRepositoryImpl
   }
 
   @override
-  Future<Either<bool, PeamanError>> onReceivedMessage({
+  Future<PeamanEither<bool, PeamanError>> onReceivedMessage({
     required Future<void> Function(RemoteMessage p1) onMessage,
   }) {
     return runAsyncCall(
@@ -88,7 +88,7 @@ class PeamanCloudMessagingRepositoryImpl
   }
 
   @override
-  Future<Either<bool, PeamanError>> resetMessaging({
+  Future<PeamanEither<bool, PeamanError>> resetMessaging({
     required String uid,
   }) {
     return runAsyncCall(

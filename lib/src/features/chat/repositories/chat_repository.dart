@@ -2,66 +2,66 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanChatRepository {
-  Future<Either<PeamanChat, PeamanError>> createChat({
+  Future<PeamanEither<PeamanChat, PeamanError>> createChat({
     required final PeamanChat chat,
   });
 
-  Future<Either<bool, PeamanError>> updateChat({
+  Future<PeamanEither<bool, PeamanError>> updateChat({
     required final String chatId,
     required final List<PeamanField> fields,
   });
 
-  Future<Either<bool, PeamanError>> deleteChat({
+  Future<PeamanEither<bool, PeamanError>> deleteChat({
     required final String uid,
     required final String chatId,
     required final int lastMessageCreatedAt,
   });
 
-  Future<Either<bool, PeamanError>> archiveChat({
+  Future<PeamanEither<bool, PeamanError>> archiveChat({
     required final String uid,
     required final String chatId,
   });
 
-  Future<Either<PeamanChatMessage, PeamanError>> createChatMessage({
+  Future<PeamanEither<PeamanChatMessage, PeamanError>> createChatMessage({
     required final PeamanChatMessage message,
   });
 
-  Future<Either<bool, PeamanError>> updateChatMessage({
+  Future<PeamanEither<bool, PeamanError>> updateChatMessage({
     required final String chatId,
     required final String messageId,
     required final List<PeamanField> fields,
   });
 
-  Future<Either<bool, PeamanError>> deleteChatMessage({
+  Future<PeamanEither<bool, PeamanError>> deleteChatMessage({
     required final String chatId,
     required final String messageId,
   });
 
-  Future<Either<bool, PeamanError>> unsendChatMessage({
+  Future<PeamanEither<bool, PeamanError>> unsendChatMessage({
     required final String chatId,
     required final String messageId,
   });
 
-  Future<Either<bool, PeamanError>> readChatMessages({
+  Future<PeamanEither<bool, PeamanError>> readChatMessages({
     required final String chatId,
     required final String uid,
   });
 
-  Future<Either<bool, PeamanError>> setTypingStatus({
+  Future<PeamanEither<bool, PeamanError>> setTypingStatus({
     required final String chatId,
     required final String uid,
     required final PeamanChatTypingStatus typingStatus,
   });
 
-  Future<Either<bool, PeamanError>> acceptChatRequest({
+  Future<PeamanEither<bool, PeamanError>> acceptChatRequest({
     required final String chatId,
   });
 
-  Future<Either<bool, PeamanError>> declineChatRequest({
+  Future<PeamanEither<bool, PeamanError>> declineChatRequest({
     required final String chatId,
   });
 
-  Future<Either<List<PeamanChat>, PeamanError>> getChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getChats({
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -69,7 +69,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanChat>, PeamanError>> getUserChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getUserChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -79,7 +79,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<PeamanChat, PeamanError>> getSingleChat({
+  Future<PeamanEither<PeamanChat, PeamanError>> getSingleChat({
     required final String chatId,
   });
 
@@ -87,7 +87,7 @@ abstract class PeamanChatRepository {
     required final String chatId,
   });
 
-  Future<Either<List<PeamanChat>, PeamanError>> getIdleChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getIdleChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -97,7 +97,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanChat>, PeamanError>> getAcceptedChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getAcceptedChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -107,7 +107,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanChat>, PeamanError>> getDeclinedChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getDeclinedChats({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
   });
@@ -117,7 +117,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<List<PeamanChatMessage>, PeamanError>> getChatMessages({
+  Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
     final MyQuery Function(MyQuery)? query,
   });
@@ -127,7 +127,7 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
-  Future<Either<PeamanChatMessage, PeamanError>> getSingleChatMessage({
+  Future<PeamanEither<PeamanChatMessage, PeamanError>> getSingleChatMessage({
     required final String chatId,
     required final String messageId,
   });
@@ -140,7 +140,7 @@ abstract class PeamanChatRepository {
 
 class PeamanChatRepositoryImpl extends PeamanChatRepository {
   @override
-  Future<Either<bool, PeamanError>> acceptChatRequest({
+  Future<PeamanEither<bool, PeamanError>> acceptChatRequest({
     required String chatId,
   }) {
     return updateChat(
@@ -155,7 +155,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> archiveChat({
+  Future<PeamanEither<bool, PeamanError>> archiveChat({
     required String uid,
     required String chatId,
   }) {
@@ -175,7 +175,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> declineChatRequest({
+  Future<PeamanEither<bool, PeamanError>> declineChatRequest({
     required String chatId,
   }) {
     return updateChat(
@@ -190,7 +190,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteChat({
+  Future<PeamanEither<bool, PeamanError>> deleteChat({
     required String uid,
     required String chatId,
     required int lastMessageCreatedAt,
@@ -211,7 +211,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> deleteChatMessage({
+  Future<PeamanEither<bool, PeamanError>> deleteChatMessage({
     required String chatId,
     required String messageId,
   }) {
@@ -227,7 +227,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> unsendChatMessage({
+  Future<PeamanEither<bool, PeamanError>> unsendChatMessage({
     required String chatId,
     required String messageId,
   }) {
@@ -244,7 +244,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChat>, PeamanError>> getAcceptedChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getAcceptedChats({
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -282,7 +282,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChatMessage>, PeamanError>> getChatMessages({
+  Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -313,7 +313,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChat>, PeamanError>> getChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getChats({
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
@@ -342,7 +342,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChat>, PeamanError>> getUserChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getUserChats({
     required String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -370,7 +370,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChat>, PeamanError>> getDeclinedChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getDeclinedChats({
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -408,7 +408,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<List<PeamanChat>, PeamanError>> getIdleChats({
+  Future<PeamanEither<List<PeamanChat>, PeamanError>> getIdleChats({
     required final String uid,
     MyQuery Function(MyQuery p1)? query,
   }) {
@@ -444,7 +444,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<PeamanChat, PeamanError>> getSingleChat({
+  Future<PeamanEither<PeamanChat, PeamanError>> getSingleChat({
     required String chatId,
   }) {
     return runAsyncCall(
@@ -465,7 +465,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<PeamanChatMessage, PeamanError>> getSingleChatMessage({
+  Future<PeamanEither<PeamanChatMessage, PeamanError>> getSingleChatMessage({
     required String chatId,
     required String messageId,
   }) {
@@ -508,7 +508,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> readChatMessages({
+  Future<PeamanEither<bool, PeamanError>> readChatMessages({
     required String chatId,
     required String uid,
   }) {
@@ -525,7 +525,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> setTypingStatus({
+  Future<PeamanEither<bool, PeamanError>> setTypingStatus({
     required String chatId,
     required String uid,
     required PeamanChatTypingStatus typingStatus,
@@ -545,7 +545,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> updateChat({
+  Future<PeamanEither<bool, PeamanError>> updateChat({
     required String chatId,
     required List<PeamanField> fields,
   }) {
@@ -567,7 +567,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<bool, PeamanError>> updateChatMessage({
+  Future<PeamanEither<bool, PeamanError>> updateChatMessage({
     required String chatId,
     required final String messageId,
     required final List<PeamanField> fields,
@@ -591,7 +591,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<PeamanChat, PeamanError>> createChat({
+  Future<PeamanEither<PeamanChat, PeamanError>> createChat({
     required PeamanChat chat,
   }) {
     return runAsyncCall(
@@ -606,7 +606,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }
 
   @override
-  Future<Either<PeamanChatMessage, PeamanError>> createChatMessage({
+  Future<PeamanEither<PeamanChatMessage, PeamanError>> createChatMessage({
     required PeamanChatMessage message,
   }) {
     return runAsyncCall(

@@ -2,7 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:peaman/peaman.dart';
 
 abstract class PeamanCloudFunctionRepository {
-  Future<Either<dynamic, PeamanError>> callFunction({
+  Future<PeamanEither<dynamic, PeamanError>> callFunction({
     required final String functionName,
     final Map<String, dynamic>? data,
   });
@@ -12,7 +12,7 @@ class PeamanCloudFunctionRepositoryImpl extends PeamanCloudFunctionRepository {
   static final _functions = FirebaseFunctions.instance;
 
   @override
-  Future<Either<dynamic, PeamanError>> callFunction({
+  Future<PeamanEither<dynamic, PeamanError>> callFunction({
     required String functionName,
     Map<String, dynamic>? data,
   }) {
