@@ -1,17 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:either_dart/either.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/helpers/reference_helper.dart';
-import '../../shared/helpers/common_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
-import '../enums/chat_request_status.dart';
-import '../enums/chat_typing_status.dart';
-import '../models/chat_file_model.dart';
-import '../models/chat_model.dart';
-import '../models/chat_message_model.dart';
-import '../../shared/models/peaman_field_model.dart';
-import '../../../utils/query_type_def.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanChatRepository {
   Future<Either<PeamanChat, PeamanError>> createChat({
@@ -232,9 +220,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _messageRef =
             PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
         await _messageRef.delete();
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -306,9 +294,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _query = query?.call(_ref) ?? _ref;
         return _query
             .get()
-            .then((event) => Left(_messagesFromFirestore(event)));
+            .then((event) => Success(_messagesFromFirestore(event)));
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -334,9 +322,11 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             .where('visibility', isEqualTo: true)
             .orderBy('updated_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
-        return _query.get().then((event) => Left(_chatsFromFirestore(event)));
+        return _query
+            .get()
+            .then((event) => Success(_chatsFromFirestore(event)));
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -468,9 +458,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         if (_chatData == null) throw Exception('Chat not found!');
 
         final _chat = PeamanChat.fromJson(_chatData);
-        return Left(_chat);
+        return Success(_chat);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -491,9 +481,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         if (_messageData == null) throw Exception('Message not found!');
 
         final _message = PeamanChatMessage.fromJson(_messageData);
-        return Left(_message);
+        return Success(_message);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -528,9 +518,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         await _chatRef.update({
           'z_${uid}_unread_messages': FieldValue.delete(),
         });
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -548,9 +538,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
               ? FieldValue.arrayUnion([uid])
               : FieldValue.arrayRemove([uid])
         });
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -570,9 +560,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             'updated_at': _millis,
           });
         }
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -594,9 +584,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             'updated_at': _millis,
           });
         }
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -609,9 +599,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _chatRef = PeamanReferenceHelper.chatsCol.doc();
         final _chat = chat.copyWith(id: _chatRef.id);
         await _chatRef.set(_chat.toJson());
-        return Left(_chat);
+        return Success(_chat);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -689,9 +679,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         }
 
         await Future.wait(_futures);
-        return Left(message);
+        return Success(message);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 

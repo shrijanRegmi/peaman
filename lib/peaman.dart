@@ -14,3 +14,4 @@ export 'src/features/user/user.dart';
 // utils
 export 'src/utils/firestore_constants.dart';
 export 'src/utils/query_type_def.dart';
+export 'src/utils/either.dart';

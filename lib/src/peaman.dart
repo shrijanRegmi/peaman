@@ -1,7 +1,5 @@
-import 'package:either_dart/either.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import '../peaman.dart';
+import 'package:peaman/peaman.dart';
 
 class Peaman {
   static Future<Either<bool, PeamanError>> initializeApp({
@@ -14,9 +12,9 @@ class Peaman {
           name: name,
           options: options,
         );
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 }

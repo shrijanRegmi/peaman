@@ -1,8 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:either_dart/either.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanCloudFunctionRepository {
   Future<Either<dynamic, PeamanError>> callFunction({
@@ -24,9 +21,9 @@ class PeamanCloudFunctionRepositoryImpl extends PeamanCloudFunctionRepository {
         HttpsCallable callable = _functions.httpsCallable(functionName);
         final result = await callable.call(data);
         final resultData = result.data;
-        return Left(resultData);
+        return Success(resultData);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 }

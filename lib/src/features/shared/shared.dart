@@ -6,4 +6,4 @@ export 'helpers/reference_helper.dart';
 
 export 'models/file_url_model.dart';
 export 'models/peaman_error_model.dart';
-export 'models/peaman_error_model.dart';
+export 'models/peaman_field_model.dart';

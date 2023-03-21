@@ -1,18 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:either_dart/either.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/helpers/reference_helper.dart';
-import '../../shared/helpers/common_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
-import '../../shared/models/peaman_field_model.dart';
-import '../../../utils/query_type_def.dart';
-import '../enums/online_status_type.dart';
-import '../models/follow_request_model.dart';
-import '../models/sub_user_model.dart';
-import '../models/user_model.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanUserRepository {
   Future<Either<bool, PeamanError>> createUser({
@@ -203,9 +192,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_addFollowFuture);
 
         await Future.wait(_futures);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -243,9 +232,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _blockedByUserFuture,
         ]);
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -270,9 +259,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _receivedFututre,
           _sentFuture,
         ]);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -284,9 +273,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
       future: () async {
         final _appUserRef = PeamanReferenceHelper.usersCol.doc(user.uid);
         await _appUserRef.set(user.toJson());
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -296,9 +285,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -358,9 +347,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_sentFuture);
 
         await Future.wait(_futures);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -395,9 +384,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _receivedFuture,
           _sentFuture,
         ]);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -412,9 +401,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_subUsersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -440,9 +429,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_subUsersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -468,9 +457,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_subUsersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -496,9 +485,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_subUsersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -525,9 +514,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_followRequestsFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -553,9 +542,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_followRequestsFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -581,9 +570,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         final _userData = _userSnap.data();
         if (_userData == null) throw Exception('user data is null');
         final _user = PeamanUser.fromJson(_userData);
-        return Left(_user);
+        return Success(_user);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -606,9 +595,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .orderBy('created_at', descending: true);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_usersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -624,9 +613,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             .where('search_keys', arrayContains: searchKey);
         final _query = query?.call(_ref) ?? _ref;
         final _result = await _query.get().then(_usersFromFirestore);
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -683,9 +672,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_sentFuture);
 
         await Future.wait(_futures);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -737,9 +726,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           _blockedUserRef.delete(),
           _blockedByUserRef.delete(),
         ]);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -786,9 +775,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         _futures.add(_friendUpdateFuture);
 
         await Future.wait(_futures);
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -808,9 +797,9 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
             'updated_at': _millis,
           });
         }
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 

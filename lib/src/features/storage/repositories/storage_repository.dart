@@ -1,10 +1,7 @@
 import 'dart:io';
 
-import 'package:either_dart/either.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanStorageRepository {
   Future<Either<String, PeamanError>> uploadFile({
@@ -47,9 +44,9 @@ class PeamanStorageRepositoryImpl extends PeamanStorageRepository {
         });
         await _uploadTask.whenComplete(() {});
         final _downloadUrl = await _ref.getDownloadURL();
-        return Left(_downloadUrl);
+        return Success(_downloadUrl);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -93,9 +90,9 @@ class PeamanStorageRepositoryImpl extends PeamanStorageRepository {
         }
         final _result = await Future.wait(_downloadUrlFutures);
 
-        return Left(_result);
+        return Success(_result);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 }

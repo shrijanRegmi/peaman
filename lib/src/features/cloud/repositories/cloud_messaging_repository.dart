@@ -1,12 +1,8 @@
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
-import 'package:either_dart/either.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/helpers/reference_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanCloudMessagingRepository {
   Future<Either<bool, PeamanError>> initializeMessaging({
@@ -65,9 +61,9 @@ class PeamanCloudMessagingRepositoryImpl
           'created_at': _millis,
         });
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -85,9 +81,9 @@ class PeamanCloudMessagingRepositoryImpl
 
         FirebaseMessaging.onMessageOpenedApp.listen(onMessage);
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -105,9 +101,9 @@ class PeamanCloudMessagingRepositoryImpl
         ).doc(_androidInfo.androidId);
 
         await _deviceRef.delete();
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 }

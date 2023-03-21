@@ -1,6 +1,6 @@
 export 'enums/feed_type.dart';
 export 'enums/reaction_parent_type.dart';
-export 'enums/reaction_parent_type.dart';
+export 'enums/comment_parent_type.dart';
 
 export 'models/comment_model.dart';
 export 'models/feed_model.dart';

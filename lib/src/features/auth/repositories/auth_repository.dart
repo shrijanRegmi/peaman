@@ -1,14 +1,7 @@
-import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../../shared/helpers/async_call_helper.dart';
-import '../../shared/helpers/reference_helper.dart';
-import '../../shared/models/peaman_error_model.dart';
-import '../../user/models/user_model.dart';
-import '../../user/repositories/user_repository.dart';
-import '../models/auth_user_model.dart';
+import 'package:peaman/peaman.dart';
 
 abstract class PeamanAuthRepository {
   Future<Either<PeamanUser, PeamanError>> signUpWithEmailAndPassword({
@@ -57,10 +50,10 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
     return runAsyncCall(
       future: () async {
         await _auth.sendPasswordResetEmail(email: email);
-        return const Left(true);
+        return const Success(true);
       },
       onError: (e) {
-        return Right(e);
+        return Failure(e);
       },
     );
   }
@@ -79,9 +72,9 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
         if (_result.user == null) {
           throw Exception('User from firestore was null');
         }
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -115,12 +108,12 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           );
           final _createUserResult =
               await _peamanUserRepository.createUser(user: _appUser);
-          if (_createUserResult.isRight) throw _createUserResult.right;
+          if (_createUserResult.isFailure) throw _createUserResult.failure;
         }
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -155,12 +148,12 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           );
           final _createUserResult =
               await _peamanUserRepository.createUser(user: _appUser);
-          if (_createUserResult.isRight) throw _createUserResult.right;
+          if (_createUserResult.isFailure) throw _createUserResult.failure;
         }
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -174,9 +167,9 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
           _facebookSignIn.logOut(),
         ]);
 
-        return const Left(true);
+        return const Success(true);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 
@@ -203,11 +196,11 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
         final _createUserResult = await _peamanUserRepository.createUser(
           user: _user,
         );
-        if (_createUserResult.isRight) throw _createUserResult.right;
+        if (_createUserResult.isFailure) throw _createUserResult.failure;
 
-        return Left(_user);
+        return Success(_user);
       },
-      onError: Right.new,
+      onError: Failure.new,
     );
   }
 }
