@@ -9,7 +9,7 @@ class Peaman {
   }) {
     return runAsyncCall(
       future: () async {
-        Firebase.initializeApp(
+        await Firebase.initializeApp(
           name: name,
           options: options,
         );
