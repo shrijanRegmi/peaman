@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:peaman/peaman.dart';
 
 import '../enums/chat_request_status.dart';
 import 'chat_sent_messages_count_model.dart';
@@ -12,6 +13,7 @@ part 'chat_model.g.dart';
 class PeamanChat with _$PeamanChat {
   const factory PeamanChat({
     final String? id,
+    @Default(PeamanChatType.oneToOne) final PeamanChatType chatType,
     final String? lastMessageId,
     @Default(<String>[]) final List<String> userIds,
     @Default(<String>[]) final List<String> hiddenToUserIds,
@@ -34,7 +36,9 @@ class PeamanChat with _$PeamanChat {
     @Default(true) final bool visibility,
     final int? createdAt,
     final int? updatedAt,
-    @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,
+    @JsonKey(ignore: true)
+    @Default(<String, dynamic>{})
+        final Map<String, dynamic> extraData,
   }) = _PeamanChat;
 
   factory PeamanChat.fromJson(Map<String, dynamic> data) =>
@@ -42,6 +46,7 @@ class PeamanChat with _$PeamanChat {
         sentMessages: _ListGenerator.getSentMessagesCountByUid(data),
         unreadMessages: _ListGenerator.getUnreadMessagesCountByUid(data),
         startAfters: _ListGenerator.getStartAftersByUid(data),
+        extraData: data,
       );
 }
 

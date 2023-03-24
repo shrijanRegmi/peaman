@@ -56,46 +56,55 @@ _$_PeamanUser _$$_PeamanUserFromJson(Map<String, dynamic> json) =>
           const <String, dynamic>{},
     );
 
-Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) =>
-    <String, dynamic>{
-      'uid': instance.uid,
-      'name': instance.name,
-      'user_name': instance.userName,
-      'email': instance.email,
-      'photo': instance.photo,
-      'phone': instance.phone,
-      'country': instance.country,
-      'bio': instance.bio,
-      'profession': instance.profession,
-      'gender': _$PeamanGenderEnumMap[instance.gender]!,
-      'dob': instance.dob,
-      'search_keys': instance.searchKeys,
-      'online_status': _$PeamanOnlineStatusEnumMap[instance.onlineStatus]!,
-      'last_online_at': instance.lastOnlineAt,
-      'feeds_count': instance.feedsCount,
-      'photos_count': instance.photosCount,
-      'videos_count': instance.videosCount,
-      'followers_count': instance.followersCount,
-      'following_count': instance.followingCount,
-      'reactions_received_from_feeds_count':
-          instance.reactionsReceivedFromFeedsCount,
-      'comments_received_from_feeds_count':
-          instance.commentsReceivedFromFeedsCount,
-      'replies_received_from_feeds_count':
-          instance.repliesReceivedFromFeedsCount,
-      'shares_received_from_feeds_count': instance.sharesReceivedFromFeedsCount,
-      'views_received_from_feeds_count': instance.viewsReceivedFromFeedsCount,
-      'is_admin': instance.isAdmin,
-      'is_editor': instance.isEditor,
-      'is_tester': instance.isTester,
-      'onboarding_step': instance.onboardingStep,
-      'is_onboarding_completed': instance.isOnboardingCompleted,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
-      'created_at': instance.createdAt,
-      'visibility': instance.visibility,
-      'extra_data': instance.extraData,
-    };
+Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('uid', instance.uid);
+  writeNotNull('name', instance.name);
+  writeNotNull('user_name', instance.userName);
+  writeNotNull('email', instance.email);
+  writeNotNull('photo', instance.photo);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('country', instance.country);
+  writeNotNull('bio', instance.bio);
+  writeNotNull('profession', instance.profession);
+  val['gender'] = _$PeamanGenderEnumMap[instance.gender]!;
+  writeNotNull('dob', instance.dob);
+  val['search_keys'] = instance.searchKeys;
+  val['online_status'] = _$PeamanOnlineStatusEnumMap[instance.onlineStatus]!;
+  writeNotNull('last_online_at', instance.lastOnlineAt);
+  val['feeds_count'] = instance.feedsCount;
+  val['photos_count'] = instance.photosCount;
+  val['videos_count'] = instance.videosCount;
+  val['followers_count'] = instance.followersCount;
+  val['following_count'] = instance.followingCount;
+  val['reactions_received_from_feeds_count'] =
+      instance.reactionsReceivedFromFeedsCount;
+  val['comments_received_from_feeds_count'] =
+      instance.commentsReceivedFromFeedsCount;
+  val['replies_received_from_feeds_count'] =
+      instance.repliesReceivedFromFeedsCount;
+  val['shares_received_from_feeds_count'] =
+      instance.sharesReceivedFromFeedsCount;
+  val['views_received_from_feeds_count'] = instance.viewsReceivedFromFeedsCount;
+  val['is_admin'] = instance.isAdmin;
+  val['is_editor'] = instance.isEditor;
+  val['is_tester'] = instance.isTester;
+  val['onboarding_step'] = instance.onboardingStep;
+  val['is_onboarding_completed'] = instance.isOnboardingCompleted;
+  writeNotNull('latitude', instance.latitude);
+  writeNotNull('longitude', instance.longitude);
+  writeNotNull('created_at', instance.createdAt);
+  val['visibility'] = instance.visibility;
+  val['extra_data'] = instance.extraData;
+  return val;
+}
 
 const _$PeamanGenderEnumMap = {
   PeamanGender.unknown: 'unknown',

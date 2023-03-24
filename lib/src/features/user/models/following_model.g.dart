@@ -13,9 +13,17 @@ _$_PeamanFollowing _$$_PeamanFollowingFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updated_at'] as int?,
     );
 
-Map<String, dynamic> _$$_PeamanFollowingToJson(_$_PeamanFollowing instance) =>
-    <String, dynamic>{
-      'uid': instance.uid,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-    };
+Map<String, dynamic> _$$_PeamanFollowingToJson(_$_PeamanFollowing instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('uid', instance.uid);
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  return val;
+}

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:peaman/peaman.dart';
 
 import '../enums/chat_message_type.dart';
 import '../../shared/models/file_url_model.dart';
@@ -11,6 +12,7 @@ class PeamanChatMessage with _$PeamanChatMessage {
   const factory PeamanChatMessage({
     final String? id,
     final String? chatId,
+    @Default(PeamanChatType.oneToOne) final PeamanChatType chatType,
     final String? text,
     @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> files,
     @Default(PeamanChatMessageType.text) final PeamanChatMessageType type,

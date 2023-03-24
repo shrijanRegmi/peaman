@@ -14,11 +14,19 @@ _$_PeamanChatFileUrl _$$_PeamanChatFileUrlFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$_PeamanChatFileUrlToJson(
-        _$_PeamanChatFileUrl instance) =>
-    <String, dynamic>{
-      'url': instance.url,
-      'type': _$PeamanFileTypeEnumMap[instance.type]!,
-    };
+    _$_PeamanChatFileUrl instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('url', instance.url);
+  val['type'] = _$PeamanFileTypeEnumMap[instance.type]!;
+  return val;
+}
 
 const _$PeamanFileTypeEnumMap = {
   PeamanFileType.unknown: 'unknown',

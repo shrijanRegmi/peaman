@@ -24,20 +24,28 @@ _$_PeamanReaction _$$_PeamanReactionFromJson(Map<String, dynamic> json) =>
           const <String, dynamic>{},
     );
 
-Map<String, dynamic> _$$_PeamanReactionToJson(_$_PeamanReaction instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'feed_id': instance.feedId,
-      'owner_id': instance.ownerId,
-      'parent': _$PeamanReactionParentEnumMap[instance.parent]!,
-      'parent_id': instance.parentId,
-      'parent_owner_id': instance.parentOwnerId,
-      'unreacted': instance.unreacted,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'visibility': instance.visibility,
-      'extra_data': instance.extraData,
-    };
+Map<String, dynamic> _$$_PeamanReactionToJson(_$_PeamanReaction instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('feed_id', instance.feedId);
+  writeNotNull('owner_id', instance.ownerId);
+  val['parent'] = _$PeamanReactionParentEnumMap[instance.parent]!;
+  writeNotNull('parent_id', instance.parentId);
+  writeNotNull('parent_owner_id', instance.parentOwnerId);
+  val['unreacted'] = instance.unreacted;
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  val['visibility'] = instance.visibility;
+  val['extra_data'] = instance.extraData;
+  return val;
+}
 
 const _$PeamanReactionParentEnumMap = {
   PeamanReactionParent.feed: 'feed',

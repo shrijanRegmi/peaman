@@ -17,10 +17,18 @@ _$_PeamanChatFile _$$_PeamanChatFileFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updated_at'] as int?,
     );
 
-Map<String, dynamic> _$$_PeamanChatFileToJson(_$_PeamanChatFile instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'urls': instance.urls,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-    };
+Map<String, dynamic> _$$_PeamanChatFileToJson(_$_PeamanChatFile instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  val['urls'] = instance.urls;
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  return val;
+}

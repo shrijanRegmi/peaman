@@ -615,6 +615,11 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           throw Exception("senderId cannot be null");
         } else if (message.receiverIds.isEmpty) {
           throw Exception("receiverIds cannot be empty");
+        } else if (message.chatType == PeamanChatType.oneToOne &&
+            message.receiverIds.length > 1) {
+          throw Exception(
+            "cannot have more than 1 receiver for PeamanChatType.oneToOne",
+          );
         }
         final _currentMillis = DateTime.now().millisecondsSinceEpoch;
 
@@ -634,6 +639,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
 
         final _chatUpdateData = <String, dynamic>{};
 
+        _chatUpdateData['chat_type'] = ksPeamanChatType[message.chatType];
         _chatUpdateData['total_sent_messages'] = FieldValue.increment(1);
         _chatUpdateData['z_${message.senderId}_sent_messages'] =
             FieldValue.increment(1);

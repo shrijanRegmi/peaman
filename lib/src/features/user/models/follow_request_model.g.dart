@@ -17,11 +17,19 @@ _$_PeamanFollowRequest _$$_PeamanFollowRequestFromJson(
     );
 
 Map<String, dynamic> _$$_PeamanFollowRequestToJson(
-        _$_PeamanFollowRequest instance) =>
-    <String, dynamic>{
-      'uid': instance.uid,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'is_accepted': instance.isAccepted,
-      'is_ignored': instance.isIgnored,
-    };
+    _$_PeamanFollowRequest instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('uid', instance.uid);
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  val['is_accepted'] = instance.isAccepted;
+  val['is_ignored'] = instance.isIgnored;
+  return val;
+}

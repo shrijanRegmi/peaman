@@ -21,6 +21,7 @@ PeamanChat _$PeamanChatFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PeamanChat {
   String? get id => throw _privateConstructorUsedError;
+  PeamanChatType get chatType => throw _privateConstructorUsedError;
   String? get lastMessageId => throw _privateConstructorUsedError;
   List<String> get userIds => throw _privateConstructorUsedError;
   List<String> get hiddenToUserIds => throw _privateConstructorUsedError;
@@ -43,6 +44,7 @@ mixin _$PeamanChat {
   bool get visibility => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,6 +61,7 @@ abstract class $PeamanChatCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      PeamanChatType chatType,
       String? lastMessageId,
       List<String> userIds,
       List<String> hiddenToUserIds,
@@ -74,7 +77,7 @@ abstract class $PeamanChatCopyWith<$Res> {
       bool visibility,
       int? createdAt,
       int? updatedAt,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -91,6 +94,7 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
   @override
   $Res call({
     Object? id = freezed,
+    Object? chatType = null,
     Object? lastMessageId = freezed,
     Object? userIds = null,
     Object? hiddenToUserIds = null,
@@ -113,6 +117,10 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      chatType: null == chatType
+          ? _value.chatType
+          : chatType // ignore: cast_nullable_to_non_nullable
+              as PeamanChatType,
       lastMessageId: freezed == lastMessageId
           ? _value.lastMessageId
           : lastMessageId // ignore: cast_nullable_to_non_nullable
@@ -191,6 +199,7 @@ abstract class _$$_PeamanChatCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
+      PeamanChatType chatType,
       String? lastMessageId,
       List<String> userIds,
       List<String> hiddenToUserIds,
@@ -206,7 +215,7 @@ abstract class _$$_PeamanChatCopyWith<$Res>
       bool visibility,
       int? createdAt,
       int? updatedAt,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -221,6 +230,7 @@ class __$$_PeamanChatCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? chatType = null,
     Object? lastMessageId = freezed,
     Object? userIds = null,
     Object? hiddenToUserIds = null,
@@ -243,6 +253,10 @@ class __$$_PeamanChatCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      chatType: null == chatType
+          ? _value.chatType
+          : chatType // ignore: cast_nullable_to_non_nullable
+              as PeamanChatType,
       lastMessageId: freezed == lastMessageId
           ? _value.lastMessageId
           : lastMessageId // ignore: cast_nullable_to_non_nullable
@@ -316,6 +330,7 @@ class __$$_PeamanChatCopyWithImpl<$Res>
 class _$_PeamanChat implements _PeamanChat {
   const _$_PeamanChat(
       {this.id,
+      this.chatType = PeamanChatType.oneToOne,
       this.lastMessageId,
       final List<String> userIds = const <String>[],
       final List<String> hiddenToUserIds = const <String>[],
@@ -337,7 +352,8 @@ class _$_PeamanChat implements _PeamanChat {
       this.visibility = true,
       this.createdAt,
       this.updatedAt,
-      final Map<String, dynamic> extraData = const <String, dynamic>{}})
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData = const <String, dynamic>{}})
       : _userIds = userIds,
         _hiddenToUserIds = hiddenToUserIds,
         _archivedByUserIds = archivedByUserIds,
@@ -353,6 +369,9 @@ class _$_PeamanChat implements _PeamanChat {
 
   @override
   final String? id;
+  @override
+  @JsonKey()
+  final PeamanChatType chatType;
   @override
   final String? lastMessageId;
   final List<String> _userIds;
@@ -446,7 +465,7 @@ class _$_PeamanChat implements _PeamanChat {
   final int? updatedAt;
   final Map<String, dynamic> _extraData;
   @override
-  @JsonKey()
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData {
     if (_extraData is EqualUnmodifiableMapView) return _extraData;
     // ignore: implicit_dynamic_type
@@ -455,7 +474,7 @@ class _$_PeamanChat implements _PeamanChat {
 
   @override
   String toString() {
-    return 'PeamanChat(id: $id, lastMessageId: $lastMessageId, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, startAfters: $startAfters, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChat(id: $id, chatType: $chatType, lastMessageId: $lastMessageId, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, startAfters: $startAfters, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -464,6 +483,8 @@ class _$_PeamanChat implements _PeamanChat {
         (other.runtimeType == runtimeType &&
             other is _$_PeamanChat &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.chatType, chatType) ||
+                other.chatType == chatType) &&
             (identical(other.lastMessageId, lastMessageId) ||
                 other.lastMessageId == lastMessageId) &&
             const DeepCollectionEquality().equals(other._userIds, _userIds) &&
@@ -502,6 +523,7 @@ class _$_PeamanChat implements _PeamanChat {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      chatType,
       lastMessageId,
       const DeepCollectionEquality().hash(_userIds),
       const DeepCollectionEquality().hash(_hiddenToUserIds),
@@ -536,6 +558,7 @@ class _$_PeamanChat implements _PeamanChat {
 abstract class _PeamanChat implements PeamanChat {
   const factory _PeamanChat(
       {final String? id,
+      final PeamanChatType chatType,
       final String? lastMessageId,
       final List<String> userIds,
       final List<String> hiddenToUserIds,
@@ -545,19 +568,25 @@ abstract class _PeamanChat implements PeamanChat {
       final PeamanChatRequestStatus chatRequestStatus,
       final String? chatRequestSenderId,
       final int totalSentMessages,
-      @JsonKey(ignore: true) final List<PeamanChatSentMessage> sentMessages,
-      @JsonKey(ignore: true) final List<PeamanChatUnreadMessage> unreadMessages,
-      @JsonKey(ignore: true) final List<PeamanChatStartAfter> startAfters,
+      @JsonKey(ignore: true)
+          final List<PeamanChatSentMessage> sentMessages,
+      @JsonKey(ignore: true)
+          final List<PeamanChatUnreadMessage> unreadMessages,
+      @JsonKey(ignore: true)
+          final List<PeamanChatStartAfter> startAfters,
       final bool visibility,
       final int? createdAt,
       final int? updatedAt,
-      final Map<String, dynamic> extraData}) = _$_PeamanChat;
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData}) = _$_PeamanChat;
 
   factory _PeamanChat.fromJson(Map<String, dynamic> json) =
       _$_PeamanChat.fromJson;
 
   @override
   String? get id;
+  @override
+  PeamanChatType get chatType;
   @override
   String? get lastMessageId;
   @override
@@ -592,6 +621,7 @@ abstract class _PeamanChat implements PeamanChat {
   @override
   int? get updatedAt;
   @override
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData;
   @override
   @JsonKey(ignore: true)

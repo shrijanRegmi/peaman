@@ -1,6 +1,7 @@
 export 'enums/chat_message_type.dart';
 export 'enums/chat_request_status.dart';
 export 'enums/chat_typing_status.dart';
+export 'enums/chat_type.dart';
 
 export 'models/chat_file_model.dart';
 export 'models/chat_message_model.dart';

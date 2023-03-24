@@ -28,24 +28,32 @@ _$_PeamanComment _$$_PeamanCommentFromJson(Map<String, dynamic> json) =>
           const <String, dynamic>{},
     );
 
-Map<String, dynamic> _$$_PeamanCommentToJson(_$_PeamanComment instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'feed_id': instance.feedId,
-      'owner_id': instance.ownerId,
-      'second_user_id': instance.secondUserId,
-      'second_user_name': instance.secondUserName,
-      'parent': _$PeamanCommentParentEnumMap[instance.parent]!,
-      'parent_id': instance.parentId,
-      'parent_owner_id': instance.parentOwnerId,
-      'comment': instance.comment,
-      'reactions_count': instance.reactionsCount,
-      'replies_count': instance.repliesCount,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'visibility': instance.visibility,
-      'extra_data': instance.extraData,
-    };
+Map<String, dynamic> _$$_PeamanCommentToJson(_$_PeamanComment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('feed_id', instance.feedId);
+  writeNotNull('owner_id', instance.ownerId);
+  writeNotNull('second_user_id', instance.secondUserId);
+  writeNotNull('second_user_name', instance.secondUserName);
+  val['parent'] = _$PeamanCommentParentEnumMap[instance.parent]!;
+  writeNotNull('parent_id', instance.parentId);
+  writeNotNull('parent_owner_id', instance.parentOwnerId);
+  writeNotNull('comment', instance.comment);
+  val['reactions_count'] = instance.reactionsCount;
+  val['replies_count'] = instance.repliesCount;
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  val['visibility'] = instance.visibility;
+  val['extra_data'] = instance.extraData;
+  return val;
+}
 
 const _$PeamanCommentParentEnumMap = {
   PeamanCommentParent.feed: 'feed',

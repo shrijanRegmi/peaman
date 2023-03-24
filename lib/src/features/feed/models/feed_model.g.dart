@@ -35,26 +35,34 @@ _$_PeamanFeed _$$_PeamanFeedFromJson(Map<String, dynamic> json) =>
           const <String, dynamic>{},
     );
 
-Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'owner_id': instance.ownerId,
-      'caption': instance.caption,
-      'files': instance.files,
-      'type': _$PeamanFeedTypeEnumMap[instance.type]!,
-      'reactions_count': instance.reactionsCount,
-      'comments_count': instance.commentsCount,
-      'replies_count': instance.repliesCount,
-      'saves_count': instance.savesCount,
-      'shares_count': instance.sharesCount,
-      'views_count': instance.viewsCount,
-      'featured': instance.featured,
-      'search_keys': instance.searchKeys,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'visibility': instance.visibility,
-      'extra_data': instance.extraData,
-    };
+Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('owner_id', instance.ownerId);
+  writeNotNull('caption', instance.caption);
+  val['files'] = instance.files;
+  val['type'] = _$PeamanFeedTypeEnumMap[instance.type]!;
+  val['reactions_count'] = instance.reactionsCount;
+  val['comments_count'] = instance.commentsCount;
+  val['replies_count'] = instance.repliesCount;
+  val['saves_count'] = instance.savesCount;
+  val['shares_count'] = instance.sharesCount;
+  val['views_count'] = instance.viewsCount;
+  val['featured'] = instance.featured;
+  val['search_keys'] = instance.searchKeys;
+  writeNotNull('created_at', instance.createdAt);
+  writeNotNull('updated_at', instance.updatedAt);
+  val['visibility'] = instance.visibility;
+  val['extra_data'] = instance.extraData;
+  return val;
+}
 
 const _$PeamanFeedTypeEnumMap = {
   PeamanFeedType.text: 'text',
