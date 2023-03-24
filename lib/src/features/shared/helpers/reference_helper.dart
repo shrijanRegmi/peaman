@@ -8,6 +8,8 @@ class PeamanReferenceHelper {
   static final _ref = FirebaseFirestore.instance;
   static FirebaseFirestore get ref => _ref;
 
+  static String uniqueId = _ref.collection('random').doc().id;
+
   // main collections
   static ColRef get usersCol => _ref.collection(usersColName);
   static ColRef get feedsCol => _ref.collection(feedsColName);

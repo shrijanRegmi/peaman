@@ -13,7 +13,7 @@ part 'chat_model.g.dart';
 class PeamanChat with _$PeamanChat {
   const factory PeamanChat({
     final String? id,
-    @Default(PeamanChatType.oneToOne) final PeamanChatType chatType,
+    @Default(PeamanChatType.oneToOne) final PeamanChatType type,
     final String? lastMessageId,
     @Default(<String>[]) final List<String> userIds,
     @Default(<String>[]) final List<String> hiddenToUserIds,

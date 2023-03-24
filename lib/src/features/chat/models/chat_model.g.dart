@@ -9,9 +9,8 @@ part of 'chat_model.dart';
 _$_PeamanChat _$$_PeamanChatFromJson(Map<String, dynamic> json) =>
     _$_PeamanChat(
       id: json['id'] as String?,
-      chatType:
-          $enumDecodeNullable(_$PeamanChatTypeEnumMap, json['chat_type']) ??
-              PeamanChatType.oneToOne,
+      type: $enumDecodeNullable(_$PeamanChatTypeEnumMap, json['type']) ??
+          PeamanChatType.oneToOne,
       lastMessageId: json['last_message_id'] as String?,
       userIds: (json['user_ids'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -53,7 +52,7 @@ Map<String, dynamic> _$$_PeamanChatToJson(_$_PeamanChat instance) {
   }
 
   writeNotNull('id', instance.id);
-  val['chat_type'] = _$PeamanChatTypeEnumMap[instance.chatType]!;
+  val['type'] = _$PeamanChatTypeEnumMap[instance.type]!;
   writeNotNull('last_message_id', instance.lastMessageId);
   val['user_ids'] = instance.userIds;
   val['hidden_to_user_ids'] = instance.hiddenToUserIds;
