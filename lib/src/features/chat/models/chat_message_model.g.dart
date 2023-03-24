@@ -57,7 +57,7 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
   writeNotNull('chat_id', instance.chatId);
   val['chat_type'] = _$PeamanChatTypeEnumMap[instance.chatType]!;
   writeNotNull('text', instance.text);
-  val['files'] = instance.files;
+  val['files'] = instance.files.map((e) => e.toJson()).toList();
   val['type'] = _$PeamanChatMessageTypeEnumMap[instance.type]!;
   writeNotNull('sender_id', instance.senderId);
   writeNotNull('sender_name', instance.senderName);
@@ -65,7 +65,7 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
   writeNotNull('extra_id', instance.extraId);
   writeNotNull('parent_id', instance.parentId);
   writeNotNull('parent_text', instance.parentText);
-  val['parent_files'] = instance.parentFiles;
+  val['parent_files'] = instance.parentFiles.map((e) => e.toJson()).toList();
   val['visibility'] = instance.visibility;
   val['is_forwarded'] = instance.isForwarded;
   writeNotNull('forwarded_from_chat_id', instance.forwardedFromChatId);

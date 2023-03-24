@@ -27,7 +27,7 @@ Map<String, dynamic> _$$_PeamanChatFileToJson(_$_PeamanChatFile instance) {
   }
 
   writeNotNull('id', instance.id);
-  val['urls'] = instance.urls;
+  val['urls'] = instance.urls.map((e) => e.toJson()).toList();
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);
   return val;

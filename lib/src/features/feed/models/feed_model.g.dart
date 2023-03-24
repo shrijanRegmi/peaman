@@ -47,7 +47,7 @@ Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) {
   writeNotNull('id', instance.id);
   writeNotNull('owner_id', instance.ownerId);
   writeNotNull('caption', instance.caption);
-  val['files'] = instance.files;
+  val['files'] = instance.files.map((e) => e.toJson()).toList();
   val['type'] = _$PeamanFeedTypeEnumMap[instance.type]!;
   val['reactions_count'] = instance.reactionsCount;
   val['comments_count'] = instance.commentsCount;
