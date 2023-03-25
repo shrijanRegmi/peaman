@@ -23,7 +23,10 @@ abstract class PeamanAuthRepository {
 
   Future<PeamanEither<bool, PeamanError>> signInWithFacebook();
 
-  Future<PeamanEither<bool, PeamanError>> signOut();
+  Future<PeamanEither<bool, PeamanError>> signOut({
+    final bool signOutGoogleLogin = false,
+    final bool signOutFacebookLogin = false,
+  });
 
   Stream<PeamanAuthUser?> get authUser;
 }
@@ -158,13 +161,16 @@ class PeamanAuthRepositoryImpl extends PeamanAuthRepository {
   }
 
   @override
-  Future<PeamanEither<bool, PeamanError>> signOut() {
+  Future<PeamanEither<bool, PeamanError>> signOut({
+    bool signOutGoogleLogin = false,
+    bool signOutFacebookLogin = false,
+  }) {
     return runAsyncCall(
       future: () async {
         await Future.wait([
           _auth.signOut(),
-          _googleSignIn.signOut(),
-          _facebookSignIn.logOut(),
+          if (signOutGoogleLogin) _googleSignIn.signOut(),
+          if (signOutFacebookLogin) _facebookSignIn.logOut(),
         ]);
 
         return const Success(true);
