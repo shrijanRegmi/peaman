@@ -698,7 +698,8 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       future: () {
         final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
         return _chatRef.update({
-          'user_ids': message.receiverIds..add(message.senderId!),
+          'user_ids': List<String>.from(message.receiverIds)
+            ..add(message.senderId!),
           'chat_request_status': PeamanChatRequestStatus.idle.index,
           'chat_request_sender_id': message.senderId,
         });
