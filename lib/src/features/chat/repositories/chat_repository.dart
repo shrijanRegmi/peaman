@@ -639,7 +639,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
 
         final _chatUpdateData = <String, dynamic>{};
 
-        _chatUpdateData['chat_type'] = ksPeamanChatType[message.chatType];
+        _chatUpdateData['type'] = ksPeamanChatType[message.chatType];
         _chatUpdateData['total_sent_messages'] = FieldValue.increment(1);
         _chatUpdateData['z_${message.senderId}_sent_messages'] =
             FieldValue.increment(1);
