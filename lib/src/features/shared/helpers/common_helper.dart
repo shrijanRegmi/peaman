@@ -17,7 +17,7 @@ class PeamanCommonHelper {
     final _data = <String, dynamic>{};
 
     for (final field in fields) {
-      final key = field.key.toJsonKey;
+      final key = field.useKeyAsItIs ? field.key : field.key.toJsonKey;
 
       switch (field.type) {
         case PeamanFieldType.delete:

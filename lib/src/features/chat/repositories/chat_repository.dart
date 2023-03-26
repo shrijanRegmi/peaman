@@ -207,6 +207,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         PeamanField(
           key: 'z_${uid}_start_after',
           value: lastMessageCreatedAt,
+          useKeyAsItIs: true,
         ),
       ],
     );
