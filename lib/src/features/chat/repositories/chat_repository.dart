@@ -621,7 +621,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             "cannot have more than 1 receiver for PeamanChatType.oneToOne",
           );
         }
-        final _currentMillis = DateTime.now().millisecondsSinceEpoch;
+        final _millis = DateTime.now().millisecondsSinceEpoch;
 
         final _chatRef = PeamanReferenceHelper.chatDoc(chatId: message.chatId);
         final _messagesRef =
@@ -633,7 +633,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           await _chatRef.set({
             'id': _chatRef.id,
             'visibility': true,
-            'created_at': _currentMillis,
+            'created_at': _millis,
           });
         }
 
@@ -657,8 +657,8 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _message = message.copyWith(
           id: _lastMsgRef.id,
           chatId: _chatRef.id,
-          createdAt: message.createdAt ?? _currentMillis,
-          updatedAt: message.updatedAt ?? _currentMillis,
+          createdAt: message.createdAt ?? _millis,
+          updatedAt: message.updatedAt ?? _millis,
         );
 
         final _futures = <Future>[];
@@ -666,8 +666,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _lastMsgFuture = _lastMsgRef.set(_message.toJson());
         _futures.add(_lastMsgFuture);
 
-        _chatUpdateData['updated_at'] = _currentMillis;
+        _chatUpdateData['updated_at'] = _millis;
         _chatUpdateData['last_message_id'] = _message.id;
+        _chatUpdateData['last_message_created_at'] = _message.createdAt;
 
         final _chatUpdateFuture = _chatRef.update(_chatUpdateData);
         _futures.add(_chatUpdateFuture);
@@ -700,7 +701,8 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         return _chatRef.update({
           'user_ids': List<String>.from(message.receiverIds)
             ..add(message.senderId!),
-          'chat_request_status': PeamanChatRequestStatus.idle.index,
+          'chat_request_status':
+              ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
           'chat_request_sender_id': message.senderId,
         });
       },

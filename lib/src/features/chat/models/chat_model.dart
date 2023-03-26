@@ -15,6 +15,7 @@ class PeamanChat with _$PeamanChat {
     final String? id,
     @Default(PeamanChatType.oneToOne) final PeamanChatType type,
     final String? lastMessageId,
+    final int? lastMessageCreatedAt,
     @Default(<String>[]) final List<String> userIds,
     @Default(<String>[]) final List<String> hiddenToUserIds,
     @Default(<String>[]) final List<String> archivedByUserIds,
