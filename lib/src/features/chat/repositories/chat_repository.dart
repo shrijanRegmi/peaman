@@ -119,11 +119,13 @@ abstract class PeamanChatRepository {
 
   Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
+    final int? startAfter,
     final MyQuery Function(MyQuery)? query,
   });
 
   Stream<List<PeamanChatMessage>> getChatMessagesStream({
     required final String chatId,
+    final int? startAfter,
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -284,6 +286,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   @override
   Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
+    final int? startAfter,
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
@@ -291,7 +294,10 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
             .where('visibility', isEqualTo: true)
             .orderBy('created_at', descending: true);
-        final _query = query?.call(_ref) ?? _ref;
+        var _query = query?.call(_ref) ?? _ref;
+        if (startAfter != null) {
+          _query = _query.endBefore([startAfter]);
+        }
         return _query
             .get()
             .then((event) => Success(_messagesFromFirestore(event)));
@@ -303,12 +309,16 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   @override
   Stream<List<PeamanChatMessage>> getChatMessagesStream({
     required final String chatId,
+    final int? startAfter,
     MyQuery Function(MyQuery p1)? query,
   }) {
     final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
         .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
-    final _query = query?.call(_ref) ?? _ref;
+    var _query = query?.call(_ref) ?? _ref;
+    if (startAfter != null) {
+      _query = _query.endBefore([startAfter]);
+    }
     return _query.snapshots().map(_messagesFromFirestore);
   }
 
