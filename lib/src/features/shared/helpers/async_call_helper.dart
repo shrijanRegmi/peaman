@@ -45,23 +45,17 @@ Future<T> runAsyncCall<T>({
         detailedMessage: e.toString(),
         code: e.code,
       );
-    }
-
-    if (e is FirebaseAuthException) {
+    } else if (e is FirebaseAuthException) {
       peamanError = PeamanError(
         message: e.message.toString(),
         detailedMessage: e.toString(),
         code: e.code,
       );
-    }
-
-    if (e is Exception) {
+    } else if (e is Exception) {
       peamanError = PeamanError(
         message: e.toString(),
       );
-    }
-
-    if (e is PeamanError) {
+    } else if (e is PeamanError) {
       peamanError = e;
     }
 
