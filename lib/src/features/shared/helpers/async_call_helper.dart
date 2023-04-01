@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/src/features/shared/models/peaman_error_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:peaman/peaman.dart';
 
 /// Used to abstract the error handling when making API requests.
 /// For a function [future], executes the [onError]
@@ -40,6 +40,14 @@ Future<T> runAsyncCall<T>({
     );
 
     if (e is FirebaseException) {
+      peamanError = PeamanError(
+        message: e.message.toString(),
+        detailedMessage: e.toString(),
+        code: e.code,
+      );
+    }
+
+    if (e is FirebaseAuthException) {
       peamanError = PeamanError(
         message: e.message.toString(),
         detailedMessage: e.toString(),
