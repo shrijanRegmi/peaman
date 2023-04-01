@@ -1,11 +1,12 @@
-class PeamanError {
-  final String message;
-  final String? code;
-  final String? detailedMessage;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  PeamanError({
-    required this.message,
-    this.code,
-    this.detailedMessage,
-  });
+part 'peaman_error_model.freezed.dart';
+
+@freezed
+class PeamanError with _$PeamanError {
+  const factory PeamanError({
+    required final String message,
+    final String? code,
+    final String? detailedMessage,
+  }) = _PeamanError;
 }
