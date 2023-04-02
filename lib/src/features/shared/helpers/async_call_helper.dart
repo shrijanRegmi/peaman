@@ -64,8 +64,11 @@ Future<T> runAsyncCall<T>({
         peamanError = PeamanError(
           message: e.message.toString(),
         );
+      } else {
+        peamanError = PeamanError(
+          message: e.toString(),
+        );
       }
-      peamanError = PeamanError(message: e.toString());
     } else if (e is PeamanError) {
       peamanError = e;
     }
