@@ -32,6 +32,6 @@ class PeamanField {
   const PeamanField.delete({
     required this.key,
     this.useKeyAsItIs = false,
-  })  : type = PeamanFieldType.negativePartial,
+  })  : type = PeamanFieldType.delete,
         value = '';
 }
