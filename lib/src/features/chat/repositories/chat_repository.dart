@@ -795,7 +795,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       fields: [
         PeamanField(
           key: 'z_${uid}_muted',
-          value: {
+          value: <String, dynamic>{
             'muted_at': mutedAt,
             'muted_until': mutedUntil,
           },
