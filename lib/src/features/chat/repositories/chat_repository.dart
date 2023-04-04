@@ -815,6 +815,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       fields: [
         PeamanField.delete(
           key: 'z_${uid}_muted',
+          useKeyAsItIs: true,
         ),
       ],
     );
