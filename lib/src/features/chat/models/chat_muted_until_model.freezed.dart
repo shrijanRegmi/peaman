@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PeamanChatMutedUntil {
   String? get uid => throw _privateConstructorUsedError;
+  int? get mutedAt => throw _privateConstructorUsedError;
   int? get mutedUntil => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,7 @@ abstract class $PeamanChatMutedUntilCopyWith<$Res> {
           $Res Function(PeamanChatMutedUntil) then) =
       _$PeamanChatMutedUntilCopyWithImpl<$Res, PeamanChatMutedUntil>;
   @useResult
-  $Res call({String? uid, int? mutedUntil});
+  $Res call({String? uid, int? mutedAt, int? mutedUntil});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$PeamanChatMutedUntilCopyWithImpl<$Res,
   @override
   $Res call({
     Object? uid = freezed,
+    Object? mutedAt = freezed,
     Object? mutedUntil = freezed,
   }) {
     return _then(_value.copyWith(
@@ -55,6 +57,10 @@ class _$PeamanChatMutedUntilCopyWithImpl<$Res,
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String?,
+      mutedAt: freezed == mutedAt
+          ? _value.mutedAt
+          : mutedAt // ignore: cast_nullable_to_non_nullable
+              as int?,
       mutedUntil: freezed == mutedUntil
           ? _value.mutedUntil
           : mutedUntil // ignore: cast_nullable_to_non_nullable
@@ -71,7 +77,7 @@ abstract class _$$_PeamanChatMutedUsersCopyWith<$Res>
       __$$_PeamanChatMutedUsersCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? uid, int? mutedUntil});
+  $Res call({String? uid, int? mutedAt, int? mutedUntil});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$_PeamanChatMutedUsersCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = freezed,
+    Object? mutedAt = freezed,
     Object? mutedUntil = freezed,
   }) {
     return _then(_$_PeamanChatMutedUsers(
@@ -93,6 +100,10 @@ class __$$_PeamanChatMutedUsersCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String?,
+      mutedAt: freezed == mutedAt
+          ? _value.mutedAt
+          : mutedAt // ignore: cast_nullable_to_non_nullable
+              as int?,
       mutedUntil: freezed == mutedUntil
           ? _value.mutedUntil
           : mutedUntil // ignore: cast_nullable_to_non_nullable
@@ -104,16 +115,18 @@ class __$$_PeamanChatMutedUsersCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
-  const _$_PeamanChatMutedUsers({this.uid, this.mutedUntil});
+  const _$_PeamanChatMutedUsers({this.uid, this.mutedAt, this.mutedUntil});
 
   @override
   final String? uid;
+  @override
+  final int? mutedAt;
   @override
   final int? mutedUntil;
 
   @override
   String toString() {
-    return 'PeamanChatMutedUntil(uid: $uid, mutedUntil: $mutedUntil)';
+    return 'PeamanChatMutedUntil(uid: $uid, mutedAt: $mutedAt, mutedUntil: $mutedUntil)';
   }
 
   @override
@@ -122,12 +135,13 @@ class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
         (other.runtimeType == runtimeType &&
             other is _$_PeamanChatMutedUsers &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.mutedAt, mutedAt) || other.mutedAt == mutedAt) &&
             (identical(other.mutedUntil, mutedUntil) ||
                 other.mutedUntil == mutedUntil));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, uid, mutedUntil);
+  int get hashCode => Object.hash(runtimeType, uid, mutedAt, mutedUntil);
 
   @JsonKey(ignore: true)
   @override
@@ -139,10 +153,14 @@ class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
 
 abstract class _PeamanChatMutedUsers implements PeamanChatMutedUntil {
   const factory _PeamanChatMutedUsers(
-      {final String? uid, final int? mutedUntil}) = _$_PeamanChatMutedUsers;
+      {final String? uid,
+      final int? mutedAt,
+      final int? mutedUntil}) = _$_PeamanChatMutedUsers;
 
   @override
   String? get uid;
+  @override
+  int? get mutedAt;
   @override
   int? get mutedUntil;
   @override

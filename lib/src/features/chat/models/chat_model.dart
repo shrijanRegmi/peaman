@@ -58,14 +58,17 @@ class _ListGenerator {
     data.forEach((key, value) {
       if (key.startsWith('z') && key.endsWith('unread_messages')) {
         final uid = key.split('_')[1];
-        final count = (data[key] ?? 0) as int;
 
-        final unreadMessage = PeamanChatUnreadMessage(
-          uid: uid,
-          unreadMessagesCount: count,
-        );
+        if (data[key] == null || data[key] is int) {
+          final count = (data[key] ?? 0) as int;
 
-        list.add(unreadMessage);
+          final unreadMessage = PeamanChatUnreadMessage(
+            uid: uid,
+            unreadMessagesCount: count,
+          );
+
+          list.add(unreadMessage);
+        }
       }
     });
     return list;
@@ -78,14 +81,17 @@ class _ListGenerator {
     data.forEach((key, value) {
       if (key.startsWith('z') && key.endsWith('sent_messages')) {
         final uid = key.split('_')[1];
-        final count = (data[key] ?? 0) as int;
 
-        final unreadMessage = PeamanChatSentMessage(
-          uid: uid,
-          sentMessagesCount: count,
-        );
+        if (data[key] == null || data[key] is int) {
+          final count = (data[key] ?? 0) as int;
 
-        list.add(unreadMessage);
+          final unreadMessage = PeamanChatSentMessage(
+            uid: uid,
+            sentMessagesCount: count,
+          );
+
+          list.add(unreadMessage);
+        }
       }
     });
     return list;
@@ -98,14 +104,17 @@ class _ListGenerator {
     data.forEach((key, value) {
       if (key.startsWith('z') && key.endsWith('start_after')) {
         final uid = key.split('_')[1];
-        final value = (data[key] ?? 0) as int;
 
-        final startAfter = PeamanChatStartAfter(
-          uid: uid,
-          messageCreatedAt: value,
-        );
+        if (data[key] == null || data[key] is int) {
+          final value = (data[key] ?? 0) as int;
 
-        list.add(startAfter);
+          final startAfter = PeamanChatStartAfter(
+            uid: uid,
+            messageCreatedAt: value,
+          );
+
+          list.add(startAfter);
+        }
       }
     });
     return list;
@@ -116,16 +125,17 @@ class _ListGenerator {
   ) {
     final list = <PeamanChatMutedUntil>[];
     data.forEach((key, value) {
-      if (key.startsWith('z') && key.endsWith('muted_until')) {
+      if (key.startsWith('z') && key.endsWith('muted')) {
         final uid = key.split('_')[1];
-        final value = (data[key] ?? 0) as int;
 
-        final startAfter = PeamanChatMutedUntil(
-          uid: uid,
-          mutedUntil: value,
-        );
-
-        list.add(startAfter);
+        if (data[key] is Map<String, dynamic>) {
+          final startAfter = PeamanChatMutedUntil(
+            uid: uid,
+            mutedAt: data[key]['muted_at'],
+            mutedUntil: data[key]['muted_until'],
+          );
+          list.add(startAfter);
+        }
       }
     });
     return list;

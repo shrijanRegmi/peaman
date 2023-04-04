@@ -6,6 +6,7 @@ part 'chat_muted_until_model.freezed.dart';
 class PeamanChatMutedUntil with _$PeamanChatMutedUntil {
   const factory PeamanChatMutedUntil({
     final String? uid,
+    final int? mutedAt,
     final int? mutedUntil,
   }) = _PeamanChatMutedUsers;
 }

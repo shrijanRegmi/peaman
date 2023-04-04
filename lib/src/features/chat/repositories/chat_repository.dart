@@ -64,6 +64,7 @@ abstract class PeamanChatRepository {
   Future<PeamanEither<bool, PeamanError>> muteChat({
     required final String chatId,
     required final String uid,
+    required final int mutedAt,
     required final int mutedUntil,
   });
 
@@ -786,14 +787,18 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   Future<PeamanEither<bool, PeamanError>> muteChat({
     required String chatId,
     required String uid,
+    required int mutedAt,
     required int mutedUntil,
   }) {
     return updateChat(
       chatId: chatId,
       fields: [
         PeamanField(
-          key: 'z_${uid}_muted_until',
-          value: mutedUntil,
+          key: 'z_${uid}_muted',
+          value: {
+            'muted_at': mutedAt,
+            'muted_until': mutedUntil,
+          },
           useKeyAsItIs: true,
         ),
       ],
@@ -809,7 +814,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       chatId: chatId,
       fields: [
         PeamanField.delete(
-          key: 'z_${uid}_muted_until',
+          key: 'z_${uid}_muted',
         ),
       ],
     );
