@@ -29,6 +29,9 @@ class PeamanChat with _$PeamanChat {
     @JsonKey(ignore: true)
     @Default(<PeamanChatStartAfter>[])
         final List<PeamanChatStartAfter> startAfters,
+    @JsonKey(ignore: true)
+    @Default(<PeamanChatMutedUntil>[])
+        final List<PeamanChatMutedUntil> mutedUntils,
     @Default(true) final bool visibility,
     final int? createdAt,
     final int? updatedAt,
@@ -42,6 +45,7 @@ class PeamanChat with _$PeamanChat {
         sentMessages: _ListGenerator.getSentMessagesCountByUid(data),
         unreadMessages: _ListGenerator.getUnreadMessagesCountByUid(data),
         startAfters: _ListGenerator.getStartAftersByUid(data),
+        mutedUntils: _ListGenerator.getMutedUntilsByUid(data),
         extraData: data,
       );
 }
@@ -99,6 +103,26 @@ class _ListGenerator {
         final startAfter = PeamanChatStartAfter(
           uid: uid,
           messageCreatedAt: value,
+        );
+
+        list.add(startAfter);
+      }
+    });
+    return list;
+  }
+
+  static List<PeamanChatMutedUntil> getMutedUntilsByUid(
+    final Map<String, dynamic> data,
+  ) {
+    final list = <PeamanChatMutedUntil>[];
+    data.forEach((key, value) {
+      if (key.startsWith('z') && key.endsWith('muted_until')) {
+        final uid = key.split('_')[1];
+        final value = (data[key] ?? 0) as int;
+
+        final startAfter = PeamanChatMutedUntil(
+          uid: uid,
+          mutedUntil: value,
         );
 
         list.add(startAfter);

@@ -42,6 +42,9 @@ mixin _$PeamanChat {
   @JsonKey(ignore: true)
   List<PeamanChatStartAfter> get startAfters =>
       throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  List<PeamanChatMutedUntil> get mutedUntils =>
+      throw _privateConstructorUsedError;
   bool get visibility => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
@@ -76,6 +79,7 @@ abstract class $PeamanChatCopyWith<$Res> {
       @JsonKey(ignore: true) List<PeamanChatSentMessage> sentMessages,
       @JsonKey(ignore: true) List<PeamanChatUnreadMessage> unreadMessages,
       @JsonKey(ignore: true) List<PeamanChatStartAfter> startAfters,
+      @JsonKey(ignore: true) List<PeamanChatMutedUntil> mutedUntils,
       bool visibility,
       int? createdAt,
       int? updatedAt,
@@ -110,6 +114,7 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
     Object? sentMessages = null,
     Object? unreadMessages = null,
     Object? startAfters = null,
+    Object? mutedUntils = null,
     Object? visibility = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -176,6 +181,10 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
           ? _value.startAfters
           : startAfters // ignore: cast_nullable_to_non_nullable
               as List<PeamanChatStartAfter>,
+      mutedUntils: null == mutedUntils
+          ? _value.mutedUntils
+          : mutedUntils // ignore: cast_nullable_to_non_nullable
+              as List<PeamanChatMutedUntil>,
       visibility: null == visibility
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
@@ -220,6 +229,7 @@ abstract class _$$_PeamanChatCopyWith<$Res>
       @JsonKey(ignore: true) List<PeamanChatSentMessage> sentMessages,
       @JsonKey(ignore: true) List<PeamanChatUnreadMessage> unreadMessages,
       @JsonKey(ignore: true) List<PeamanChatStartAfter> startAfters,
+      @JsonKey(ignore: true) List<PeamanChatMutedUntil> mutedUntils,
       bool visibility,
       int? createdAt,
       int? updatedAt,
@@ -252,6 +262,7 @@ class __$$_PeamanChatCopyWithImpl<$Res>
     Object? sentMessages = null,
     Object? unreadMessages = null,
     Object? startAfters = null,
+    Object? mutedUntils = null,
     Object? visibility = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -318,6 +329,10 @@ class __$$_PeamanChatCopyWithImpl<$Res>
           ? _value._startAfters
           : startAfters // ignore: cast_nullable_to_non_nullable
               as List<PeamanChatStartAfter>,
+      mutedUntils: null == mutedUntils
+          ? _value._mutedUntils
+          : mutedUntils // ignore: cast_nullable_to_non_nullable
+              as List<PeamanChatMutedUntil>,
       visibility: null == visibility
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
@@ -363,6 +378,9 @@ class _$_PeamanChat implements _PeamanChat {
       @JsonKey(ignore: true)
           final List<PeamanChatStartAfter>
               startAfters = const <PeamanChatStartAfter>[],
+      @JsonKey(ignore: true)
+          final List<PeamanChatMutedUntil>
+              mutedUntils = const <PeamanChatMutedUntil>[],
       this.visibility = true,
       this.createdAt,
       this.updatedAt,
@@ -376,6 +394,7 @@ class _$_PeamanChat implements _PeamanChat {
         _sentMessages = sentMessages,
         _unreadMessages = unreadMessages,
         _startAfters = startAfters,
+        _mutedUntils = mutedUntils,
         _extraData = extraData;
 
   factory _$_PeamanChat.fromJson(Map<String, dynamic> json) =>
@@ -472,6 +491,15 @@ class _$_PeamanChat implements _PeamanChat {
     return EqualUnmodifiableListView(_startAfters);
   }
 
+  final List<PeamanChatMutedUntil> _mutedUntils;
+  @override
+  @JsonKey(ignore: true)
+  List<PeamanChatMutedUntil> get mutedUntils {
+    if (_mutedUntils is EqualUnmodifiableListView) return _mutedUntils;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mutedUntils);
+  }
+
   @override
   @JsonKey()
   final bool visibility;
@@ -490,7 +518,7 @@ class _$_PeamanChat implements _PeamanChat {
 
   @override
   String toString() {
-    return 'PeamanChat(id: $id, type: $type, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, startAfters: $startAfters, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChat(id: $id, type: $type, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, startAfters: $startAfters, mutedUntils: $mutedUntils, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -525,6 +553,8 @@ class _$_PeamanChat implements _PeamanChat {
                 .equals(other._unreadMessages, _unreadMessages) &&
             const DeepCollectionEquality()
                 .equals(other._startAfters, _startAfters) &&
+            const DeepCollectionEquality()
+                .equals(other._mutedUntils, _mutedUntils) &&
             (identical(other.visibility, visibility) ||
                 other.visibility == visibility) &&
             (identical(other.createdAt, createdAt) ||
@@ -554,6 +584,7 @@ class _$_PeamanChat implements _PeamanChat {
         const DeepCollectionEquality().hash(_sentMessages),
         const DeepCollectionEquality().hash(_unreadMessages),
         const DeepCollectionEquality().hash(_startAfters),
+        const DeepCollectionEquality().hash(_mutedUntils),
         visibility,
         createdAt,
         updatedAt,
@@ -594,6 +625,8 @@ abstract class _PeamanChat implements PeamanChat {
           final List<PeamanChatUnreadMessage> unreadMessages,
       @JsonKey(ignore: true)
           final List<PeamanChatStartAfter> startAfters,
+      @JsonKey(ignore: true)
+          final List<PeamanChatMutedUntil> mutedUntils,
       final bool visibility,
       final int? createdAt,
       final int? updatedAt,
@@ -636,6 +669,9 @@ abstract class _PeamanChat implements PeamanChat {
   @override
   @JsonKey(ignore: true)
   List<PeamanChatStartAfter> get startAfters;
+  @override
+  @JsonKey(ignore: true)
+  List<PeamanChatMutedUntil> get mutedUntils;
   @override
   bool get visibility;
   @override

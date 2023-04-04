@@ -1,9 +1,11 @@
-class PeamanChatStartAfter {
-  PeamanChatStartAfter({
-    this.uid,
-    this.messageCreatedAt,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String? uid;
-  final int? messageCreatedAt;
+part 'chat_start_after_model.freezed.dart';
+
+@freezed
+class PeamanChatStartAfter with _$PeamanChatStartAfter {
+  const factory PeamanChatStartAfter({
+    final String? uid,
+    final int? messageCreatedAt,
+  }) = _PeamanChatStartAfter;
 }

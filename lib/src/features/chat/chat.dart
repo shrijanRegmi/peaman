@@ -9,5 +9,6 @@ export 'models/chat_model.dart';
 export 'models/chat_sent_messages_count_model.dart';
 export 'models/chat_start_after_model.dart';
 export 'models/chat_unread_messages_count_model.dart';
+export 'models/chat_muted_until_model.dart';
 
 export 'repositories/chat_repository.dart';

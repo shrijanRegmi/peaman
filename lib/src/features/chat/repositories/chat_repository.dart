@@ -61,6 +61,17 @@ abstract class PeamanChatRepository {
     required final String chatId,
   });
 
+  Future<PeamanEither<bool, PeamanError>> muteChat({
+    required final String chatId,
+    required final String uid,
+    required final int mutedUntil,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> unmuteChat({
+    required final String chatId,
+    required final String uid,
+  });
+
   Future<PeamanEither<List<PeamanChat>, PeamanError>> getChats({
     final MyQuery Function(MyQuery)? query,
   });
@@ -769,5 +780,38 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     DocumentSnapshot<Map<String, dynamic>> snap,
   ) {
     return PeamanChatMessage.fromJson(snap.data() ?? {});
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> muteChat({
+    required String chatId,
+    required String uid,
+    required int mutedUntil,
+  }) {
+    return updateChat(
+      chatId: chatId,
+      fields: [
+        PeamanField(
+          key: 'z_${uid}_muted_until',
+          value: mutedUntil,
+          useKeyAsItIs: true,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> unmuteChat({
+    required String chatId,
+    required String uid,
+  }) {
+    return updateChat(
+      chatId: chatId,
+      fields: [
+        PeamanField.delete(
+          key: 'z_${uid}_muted_until',
+        ),
+      ],
+    );
   }
 }
