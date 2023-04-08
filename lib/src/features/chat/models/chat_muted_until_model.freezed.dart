@@ -14,12 +14,18 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+PeamanChatMutedUntil _$PeamanChatMutedUntilFromJson(Map<String, dynamic> json) {
+  return _PeamanChatMutedUsers.fromJson(json);
+}
+
 /// @nodoc
 mixin _$PeamanChatMutedUntil {
+  @JsonKey(ignore: true)
   String? get uid => throw _privateConstructorUsedError;
   int? get mutedAt => throw _privateConstructorUsedError;
   int? get mutedUntil => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $PeamanChatMutedUntilCopyWith<PeamanChatMutedUntil> get copyWith =>
       throw _privateConstructorUsedError;
@@ -31,7 +37,8 @@ abstract class $PeamanChatMutedUntilCopyWith<$Res> {
           $Res Function(PeamanChatMutedUntil) then) =
       _$PeamanChatMutedUntilCopyWithImpl<$Res, PeamanChatMutedUntil>;
   @useResult
-  $Res call({String? uid, int? mutedAt, int? mutedUntil});
+  $Res call(
+      {@JsonKey(ignore: true) String? uid, int? mutedAt, int? mutedUntil});
 }
 
 /// @nodoc
@@ -77,7 +84,8 @@ abstract class _$$_PeamanChatMutedUsersCopyWith<$Res>
       __$$_PeamanChatMutedUsersCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? uid, int? mutedAt, int? mutedUntil});
+  $Res call(
+      {@JsonKey(ignore: true) String? uid, int? mutedAt, int? mutedUntil});
 }
 
 /// @nodoc
@@ -113,11 +121,16 @@ class __$$_PeamanChatMutedUsersCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
-  const _$_PeamanChatMutedUsers({this.uid, this.mutedAt, this.mutedUntil});
+  const _$_PeamanChatMutedUsers(
+      {@JsonKey(ignore: true) this.uid, this.mutedAt, this.mutedUntil});
+
+  factory _$_PeamanChatMutedUsers.fromJson(Map<String, dynamic> json) =>
+      _$$_PeamanChatMutedUsersFromJson(json);
 
   @override
+  @JsonKey(ignore: true)
   final String? uid;
   @override
   final int? mutedAt;
@@ -140,6 +153,7 @@ class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
                 other.mutedUntil == mutedUntil));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, mutedAt, mutedUntil);
 
@@ -149,15 +163,26 @@ class _$_PeamanChatMutedUsers implements _PeamanChatMutedUsers {
   _$$_PeamanChatMutedUsersCopyWith<_$_PeamanChatMutedUsers> get copyWith =>
       __$$_PeamanChatMutedUsersCopyWithImpl<_$_PeamanChatMutedUsers>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_PeamanChatMutedUsersToJson(
+      this,
+    );
+  }
 }
 
 abstract class _PeamanChatMutedUsers implements PeamanChatMutedUntil {
   const factory _PeamanChatMutedUsers(
-      {final String? uid,
+      {@JsonKey(ignore: true) final String? uid,
       final int? mutedAt,
       final int? mutedUntil}) = _$_PeamanChatMutedUsers;
 
+  factory _PeamanChatMutedUsers.fromJson(Map<String, dynamic> json) =
+      _$_PeamanChatMutedUsers.fromJson;
+
   @override
+  @JsonKey(ignore: true)
   String? get uid;
   @override
   int? get mutedAt;

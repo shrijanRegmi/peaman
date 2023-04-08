@@ -27,11 +27,17 @@ class PeamanChat with _$PeamanChat {
     @Default(<PeamanChatUnreadMessage>[])
         final List<PeamanChatUnreadMessage> unreadMessages,
     @JsonKey(ignore: true)
-    @Default(<PeamanChatStartAfter>[])
-        final List<PeamanChatStartAfter> startAfters,
+    @Default(<PeamanChatMessagesCursor>[])
+        final List<PeamanChatMessagesCursor> messagesCursors,
     @JsonKey(ignore: true)
     @Default(<PeamanChatMutedUntil>[])
         final List<PeamanChatMutedUntil> mutedUntils,
+    @JsonKey(ignore: true)
+    @Default(<PeamanChatAddedBy>[])
+        final List<PeamanChatAddedBy> addedBys,
+    @JsonKey(ignore: true)
+    @Default(<PeamanChatRemovedBy>[])
+        final List<PeamanChatRemovedBy> removedBys,
     @Default(true) final bool visibility,
     final int? createdAt,
     final int? updatedAt,
@@ -44,8 +50,10 @@ class PeamanChat with _$PeamanChat {
       _$PeamanChatFromJson(data).copyWith(
         sentMessages: _ListGenerator.getSentMessagesCountByUid(data),
         unreadMessages: _ListGenerator.getUnreadMessagesCountByUid(data),
-        startAfters: _ListGenerator.getStartAftersByUid(data),
+        messagesCursors: _ListGenerator.getMessagesCursorsByUid(data),
         mutedUntils: _ListGenerator.getMutedUntilsByUid(data),
+        addedBys: _ListGenerator.getAddedBysByUid(data),
+        removedBys: _ListGenerator.getRemovedBysByUid(data),
         extraData: data,
       );
 }
@@ -97,23 +105,20 @@ class _ListGenerator {
     return list;
   }
 
-  static List<PeamanChatStartAfter> getStartAftersByUid(
+  static List<PeamanChatMessagesCursor> getMessagesCursorsByUid(
     final Map<String, dynamic> data,
   ) {
-    final list = <PeamanChatStartAfter>[];
+    final list = <PeamanChatMessagesCursor>[];
     data.forEach((key, value) {
-      if (key.startsWith('z') && key.endsWith('start_after')) {
+      if (key.startsWith('z') && key.endsWith('messages_cursor')) {
         final uid = key.split('_')[1];
 
-        if (data[key] == null || data[key] is int) {
-          final value = (data[key] ?? 0) as int;
+        if (data[key] is Map<String, dynamic>) {
+          final messagesCursor = PeamanChatMessagesCursor.fromJson(
+            data[key],
+          ).copyWith(uid: uid);
 
-          final startAfter = PeamanChatStartAfter(
-            uid: uid,
-            messageCreatedAt: value,
-          );
-
-          list.add(startAfter);
+          list.add(messagesCursor);
         }
       }
     });
@@ -129,12 +134,51 @@ class _ListGenerator {
         final uid = key.split('_')[1];
 
         if (data[key] is Map<String, dynamic>) {
-          final startAfter = PeamanChatMutedUntil(
-            uid: uid,
-            mutedAt: data[key]['muted_at'],
-            mutedUntil: data[key]['muted_until'],
-          );
-          list.add(startAfter);
+          final mutedUntil = PeamanChatMutedUntil.fromJson(
+            data[key],
+          ).copyWith(uid: uid);
+
+          list.add(mutedUntil);
+        }
+      }
+    });
+    return list;
+  }
+
+  static List<PeamanChatAddedBy> getAddedBysByUid(
+    final Map<String, dynamic> data,
+  ) {
+    final list = <PeamanChatAddedBy>[];
+    data.forEach((key, value) {
+      if (key.startsWith('z') && key.endsWith('added_by')) {
+        final uid = key.split('_')[1];
+
+        if (data[key] is Map<String, dynamic>) {
+          final addedBy = PeamanChatAddedBy.fromJson(
+            data[key],
+          ).copyWith(uid: uid);
+
+          list.add(addedBy);
+        }
+      }
+    });
+    return list;
+  }
+
+  static List<PeamanChatRemovedBy> getRemovedBysByUid(
+    final Map<String, dynamic> data,
+  ) {
+    final list = <PeamanChatRemovedBy>[];
+    data.forEach((key, value) {
+      if (key.startsWith('z') && key.endsWith('removed_by')) {
+        final uid = key.split('_')[1];
+
+        if (data[key] is Map<String, dynamic>) {
+          final removedBy = PeamanChatRemovedBy.fromJson(
+            data[key],
+          ).copyWith(uid: uid);
+
+          list.add(removedBy);
         }
       }
     });

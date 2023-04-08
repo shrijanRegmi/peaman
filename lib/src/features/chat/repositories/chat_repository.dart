@@ -12,14 +12,33 @@ abstract class PeamanChatRepository {
   });
 
   Future<PeamanEither<bool, PeamanError>> deleteChat({
-    required final String uid,
     required final String chatId,
+    required final String uid,
     required final int lastMessageCreatedAt,
   });
 
   Future<PeamanEither<bool, PeamanError>> archiveChat({
+    required final String chatId,
+    required final String uid,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> leaveChat({
+    required final String chatId,
+    required final String uid,
+    required final int lastMessageCreatedAt,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> addChatMembers({
     required final String uid,
     required final String chatId,
+    required final List<String> friendIds,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> removeChatMembers({
+    required final String uid,
+    required final String chatId,
+    required final List<String> friendIds,
+    required final int lastMessageCreatedAt,
   });
 
   Future<PeamanEither<PeamanChatMessage, PeamanError>> createChatMessage({
@@ -131,13 +150,13 @@ abstract class PeamanChatRepository {
 
   Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
-    final int? startAfter,
+    final PeamanChatMessagesCursor? messagesCursor,
     final MyQuery Function(MyQuery)? query,
   });
 
   Stream<List<PeamanChatMessage>> getChatMessagesStream({
     required final String chatId,
-    final int? startAfter,
+    final PeamanChatMessagesCursor? messagesCursor,
     final MyQuery Function(MyQuery)? query,
   });
 
@@ -217,9 +236,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           value: [uid],
         ),
         PeamanField(
-          key: 'z_${uid}_start_after',
-          value: lastMessageCreatedAt,
+          key: 'z_${uid}_messages_cursor.start_after',
           useKeyAsItIs: true,
+          value: lastMessageCreatedAt,
         ),
       ],
     );
@@ -299,7 +318,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   @override
   Future<PeamanEither<List<PeamanChatMessage>, PeamanError>> getChatMessages({
     required final String chatId,
-    final int? startAfter,
+    final PeamanChatMessagesCursor? messagesCursor,
     MyQuery Function(MyQuery p1)? query,
   }) {
     return runAsyncCall(
@@ -308,8 +327,13 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             .where('visibility', isEqualTo: true)
             .orderBy('created_at', descending: true);
         var _query = query?.call(_ref) ?? _ref;
-        if (startAfter != null) {
-          _query = _query.endBefore([startAfter]);
+        if (messagesCursor != null) {
+          if (messagesCursor.startAfter != null) {
+            _query = _query.endBefore([messagesCursor.startAfter]);
+          }
+          if (messagesCursor.endAt != null) {
+            _query = _query.startAt([messagesCursor.endAt]);
+          }
         }
         return _query
             .get()
@@ -322,15 +346,20 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   @override
   Stream<List<PeamanChatMessage>> getChatMessagesStream({
     required final String chatId,
-    final int? startAfter,
+    final PeamanChatMessagesCursor? messagesCursor,
     MyQuery Function(MyQuery p1)? query,
   }) {
     final _ref = PeamanReferenceHelper.messagesCol(chatId: chatId)
         .where('visibility', isEqualTo: true)
         .orderBy('created_at', descending: true);
     var _query = query?.call(_ref) ?? _ref;
-    if (startAfter != null) {
-      _query = _query.endBefore([startAfter]);
+    if (messagesCursor != null) {
+      if (messagesCursor.startAfter != null) {
+        _query = _query.endBefore([messagesCursor.startAfter]);
+      }
+      if (messagesCursor.endAt != null) {
+        _query = _query.startAt([messagesCursor.endAt]);
+      }
     }
     return _query.snapshots().map(_messagesFromFirestore);
   }
@@ -795,11 +824,12 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       fields: [
         PeamanField(
           key: 'z_${uid}_muted',
-          value: <String, dynamic>{
-            'muted_at': mutedAt,
-            'muted_until': mutedUntil,
-          },
           useKeyAsItIs: true,
+          value: PeamanChatMutedUntil(
+            uid: uid,
+            mutedAt: mutedAt,
+            mutedUntil: mutedUntil,
+          ).toJson(),
         ),
       ],
     );
@@ -817,6 +847,85 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           key: 'z_${uid}_muted',
           useKeyAsItIs: true,
         ),
+      ],
+    );
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> addChatMembers({
+    required String uid,
+    required String chatId,
+    required List<String> friendIds,
+  }) {
+    final _millis = DateTime.now().millisecondsSinceEpoch;
+    return updateChat(
+      chatId: chatId,
+      fields: [
+        PeamanField.positivePartial(
+          key: 'userIds',
+          value: friendIds,
+        ),
+        for (final friendId in friendIds)
+          PeamanField(
+            key: 'z_${friendId}_added_by',
+            useKeyAsItIs: true,
+            value: PeamanChatAddedBy(
+              uid: friendId,
+              addedBy: uid,
+              addedAt: _millis,
+            ).toJson(),
+          ),
+        for (final friendId in friendIds)
+          PeamanField(
+            key: 'z_${friendId}_messages_cursor.end_at',
+            useKeyAsItIs: true,
+            value: null,
+          ),
+      ],
+    );
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> leaveChat({
+    required String chatId,
+    required String uid,
+    required int lastMessageCreatedAt,
+  }) {
+    return removeChatMembers(
+      chatId: chatId,
+      uid: uid,
+      friendIds: [uid],
+      lastMessageCreatedAt: lastMessageCreatedAt,
+    );
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> removeChatMembers({
+    required String uid,
+    required String chatId,
+    required List<String> friendIds,
+    required int lastMessageCreatedAt,
+  }) {
+    final _millis = DateTime.now().millisecondsSinceEpoch;
+    return updateChat(
+      chatId: chatId,
+      fields: [
+        for (final friendId in friendIds)
+          PeamanField(
+            key: 'z_${friendId}_removed_by',
+            useKeyAsItIs: true,
+            value: PeamanChatRemovedBy(
+              uid: friendId,
+              removedBy: uid,
+              removedAt: _millis,
+            ).toJson(),
+          ),
+        for (final friendId in friendIds)
+          PeamanField(
+            key: 'z_${friendId}_messages_cursor.end_at',
+            useKeyAsItIs: true,
+            value: lastMessageCreatedAt,
+          ),
       ],
     );
   }

@@ -7,8 +7,10 @@ export 'models/chat_file_model.dart';
 export 'models/chat_message_model.dart';
 export 'models/chat_model.dart';
 export 'models/chat_sent_messages_count_model.dart';
-export 'models/chat_start_after_model.dart';
+export 'models/chat_messages_cursor_model.dart';
 export 'models/chat_unread_messages_count_model.dart';
 export 'models/chat_muted_until_model.dart';
+export 'models/chat_added_by_model.dart';
+export 'models/chat_removed_by_model.dart';
 
 export 'repositories/chat_repository.dart';
