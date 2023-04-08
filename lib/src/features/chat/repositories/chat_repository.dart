@@ -876,6 +876,11 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             ).toJson(),
           ),
         for (final friendId in friendIds)
+          PeamanField.delete(
+            key: 'z_${friendId}_removed_by',
+            useKeyAsItIs: true,
+          ),
+        for (final friendId in friendIds)
           PeamanField(
             key: 'z_${friendId}_messages_cursor.end_at',
             useKeyAsItIs: true,
