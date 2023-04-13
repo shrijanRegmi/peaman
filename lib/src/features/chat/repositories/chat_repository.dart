@@ -672,10 +672,11 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           throw Exception(
             "cannot have more than 1 receiver for PeamanChatType.oneToOne",
           );
-        } else if (message.type == PeamanChatMessageType.text ||
-            message.type == PeamanChatMessageType.info) {
+        } else if ((message.type == PeamanChatMessageType.text ||
+                message.type == PeamanChatMessageType.info) &&
+            (message.text?.isEmpty ?? true)) {
           throw Exception(
-            'text field cannot be empty for PeamanChatMessageType.${ksPeamanChatType[message.type]}',
+            'text field cannot be empty for PeamanChatMessageType.${ksPeamanChatMessageType[message.type]}',
           );
         }
         final _millis = DateTime.now().millisecondsSinceEpoch;
