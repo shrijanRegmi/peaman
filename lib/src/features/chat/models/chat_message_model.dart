@@ -27,9 +27,13 @@ class PeamanChatMessage with _$PeamanChatMessage {
     @Default(false) final bool unsent,
     final int? createdAt,
     final int? updatedAt,
-    @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,
+    @JsonKey(ignore: true)
+    @Default(<String, dynamic>{})
+        final Map<String, dynamic> extraData,
   }) = _PeamanChatMessage;
 
   factory PeamanChatMessage.fromJson(Map<String, dynamic> data) =>
-      _$PeamanChatMessageFromJson(data);
+      _$PeamanChatMessageFromJson(data).copyWith(
+        extraData: data,
+      );
 }

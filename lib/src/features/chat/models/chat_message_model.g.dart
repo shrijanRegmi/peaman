@@ -39,8 +39,6 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
       unsent: json['unsent'] as bool? ?? false,
       createdAt: json['created_at'] as int?,
       updatedAt: json['updated_at'] as int?,
-      extraData: json['extra_data'] as Map<String, dynamic>? ??
-          const <String, dynamic>{},
     );
 
 Map<String, dynamic> _$$_PeamanChatMessageToJson(
@@ -72,7 +70,6 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
   val['unsent'] = instance.unsent;
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);
-  val['extra_data'] = instance.extraData;
   return val;
 }
 

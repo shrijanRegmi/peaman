@@ -721,7 +721,10 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
 
         final _futures = <Future>[];
 
-        final _lastMsgFuture = _lastMsgRef.set(_message.toJson());
+        final _lastMsgFuture = _lastMsgRef.set({
+          ..._message.toJson(),
+          ..._message.extraData,
+        });
         _futures.add(_lastMsgFuture);
 
         _chatUpdateData['updated_at'] = _millis;

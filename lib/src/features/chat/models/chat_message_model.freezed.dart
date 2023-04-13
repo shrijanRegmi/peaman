@@ -41,6 +41,7 @@ mixin _$PeamanChatMessage {
   bool get unsent => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,7 +77,7 @@ abstract class $PeamanChatMessageCopyWith<$Res> {
       bool unsent,
       int? createdAt,
       int? updatedAt,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -232,7 +233,7 @@ abstract class _$$_PeamanChatMessageCopyWith<$Res>
       bool unsent,
       int? createdAt,
       int? updatedAt,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -376,12 +377,14 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
       final List<PeamanFileUrl> parentFiles = const <PeamanFileUrl>[],
       this.visibility = true,
       this.isForwarded = false,
-      @JsonKey(ignore: true) this.isTemp = false,
+      @JsonKey(ignore: true)
+          this.isTemp = false,
       this.forwardedFromChatId,
       this.unsent = false,
       this.createdAt,
       this.updatedAt,
-      final Map<String, dynamic> extraData = const <String, dynamic>{}})
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData = const <String, dynamic>{}})
       : _files = files,
         _receiverIds = receiverIds,
         _parentFiles = parentFiles,
@@ -459,7 +462,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
   final int? updatedAt;
   final Map<String, dynamic> _extraData;
   @override
-  @JsonKey()
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData {
     if (_extraData is EqualUnmodifiableMapView) return _extraData;
     // ignore: implicit_dynamic_type
@@ -556,27 +559,28 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
 
 abstract class _PeamanChatMessage implements PeamanChatMessage {
   const factory _PeamanChatMessage(
-      {final String? id,
-      final String? chatId,
-      final PeamanChatType chatType,
-      final String? text,
-      final List<PeamanFileUrl> files,
-      final PeamanChatMessageType type,
-      final String? senderId,
-      final String? senderName,
-      final List<String> receiverIds,
-      final String? extraId,
-      final String? parentId,
-      final String? parentText,
-      final List<PeamanFileUrl> parentFiles,
-      final bool visibility,
-      final bool isForwarded,
-      @JsonKey(ignore: true) final bool isTemp,
-      final String? forwardedFromChatId,
-      final bool unsent,
-      final int? createdAt,
-      final int? updatedAt,
-      final Map<String, dynamic> extraData}) = _$_PeamanChatMessage;
+          {final String? id,
+          final String? chatId,
+          final PeamanChatType chatType,
+          final String? text,
+          final List<PeamanFileUrl> files,
+          final PeamanChatMessageType type,
+          final String? senderId,
+          final String? senderName,
+          final List<String> receiverIds,
+          final String? extraId,
+          final String? parentId,
+          final String? parentText,
+          final List<PeamanFileUrl> parentFiles,
+          final bool visibility,
+          final bool isForwarded,
+          @JsonKey(ignore: true) final bool isTemp,
+          final String? forwardedFromChatId,
+          final bool unsent,
+          final int? createdAt,
+          final int? updatedAt,
+          @JsonKey(ignore: true) final Map<String, dynamic> extraData}) =
+      _$_PeamanChatMessage;
 
   factory _PeamanChatMessage.fromJson(Map<String, dynamic> json) =
       _$_PeamanChatMessage.fromJson;
@@ -623,6 +627,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
   @override
   int? get updatedAt;
   @override
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData;
   @override
   @JsonKey(ignore: true)
