@@ -85,6 +85,7 @@ const _$PeamanChatMessageTypeEnumMap = {
   PeamanChatMessageType.unknown: 'unknown',
   PeamanChatMessageType.text: 'text',
   PeamanChatMessageType.file: 'file',
+  PeamanChatMessageType.info: 'info',
   PeamanChatMessageType.storyReply: 'storyReply',
   PeamanChatMessageType.feedShare: 'feedShare',
 };
