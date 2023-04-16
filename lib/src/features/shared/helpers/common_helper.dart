@@ -5,12 +5,10 @@ import 'package:peaman/src/features/shared/extensions/string_extension.dart';
 import 'package:peaman/src/features/shared/models/peaman_field_model.dart';
 
 class PeamanCommonHelper {
-  // print listening to
   static void printListening({required final String text}) {
     log('Started getting $text');
   }
 
-  // prepare data to update on firestore
   static Map<String, dynamic> prepareDataToUpdate({
     required final List<PeamanField> fields,
   }) {
@@ -53,7 +51,6 @@ class PeamanCommonHelper {
     return _data;
   }
 
-  // get hashtags from text
   static List<String> getHashtagsFromText({
     required final String text,
   }) {
@@ -80,8 +77,9 @@ class PeamanCommonHelper {
     return result;
   }
 
-  // get search keys
-  static List<String> getSearchKeys({required final String text}) {
+  static List<String> getSearchKeys({
+    required final String text,
+  }) {
     final searchKeys = <String>[];
 
     var _text = text.length > 300 ? text.substring(0, 300) : text;
@@ -113,5 +111,20 @@ class PeamanCommonHelper {
             element.trim() != ',' &&
             element.trim() != '.')
         .toList();
+  }
+
+  static List<String> getUrlsFromText({
+    required final String text,
+  }) {
+    RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+    Iterable<RegExpMatch> matches = exp.allMatches(text);
+
+    final urls = <String>[];
+    matches.forEach((match) {
+      final url = text.substring(match.start, match.end);
+      urls.add(url);
+    });
+
+    return urls;
   }
 }

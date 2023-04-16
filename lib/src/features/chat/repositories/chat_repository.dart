@@ -648,7 +648,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        final _chatRef = PeamanReferenceHelper.chatsCol.doc();
+        final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chat.id);
         final _chat = chat.copyWith(id: _chatRef.id);
         await _chatRef.set(_chat.toJson());
         return Success(_chat);
@@ -686,29 +686,16 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             PeamanReferenceHelper.messagesCol(chatId: _chatRef.id);
 
         final _messagesDocs = await _messagesRef.limit(2).get();
+        final isFirstMessage = _messagesDocs.docs.isEmpty;
 
-        if (_messagesDocs.docs.isEmpty) {
-          await _chatRef.set({
-            'id': _chatRef.id,
-            'visibility': true,
-            'created_at': _millis,
-          });
-        }
-
-        final _chatUpdateData = <String, dynamic>{};
-
-        _chatUpdateData['type'] = ksPeamanChatType[message.chatType];
-        _chatUpdateData['total_sent_messages'] = FieldValue.increment(1);
-        _chatUpdateData['z_${message.senderId}_sent_messages'] =
-            FieldValue.increment(1);
-        _chatUpdateData['user_ids'] = FieldValue.arrayUnion(
-          List<String>.from(message.receiverIds)..add(message.senderId!),
-        );
-        _chatUpdateData['hidden_to_user_ids'] = [];
-        _chatUpdateData['archived_by_user_ids'] = [];
-        for (final receiverId in message.receiverIds) {
-          _chatUpdateData['z_${receiverId}_unread_messages'] =
-              FieldValue.increment(1);
+        if (isFirstMessage) {
+          final newChat = PeamanChat(
+            id: _chatRef.id,
+            visibility: true,
+            createdAt: message.createdAt ?? _millis,
+          );
+          final result = await createChat(chat: newChat);
+          if (result.isFailure) throw result.failure;
         }
 
         final _lastMsgRef = _messagesRef.doc();
@@ -727,24 +714,20 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         });
         _futures.add(_lastMsgFuture);
 
-        _chatUpdateData['updated_at'] = _millis;
-        _chatUpdateData['last_message_id'] = _message.id;
-        _chatUpdateData['last_message_created_at'] = _message.createdAt;
-
-        final _chatUpdateFuture = _chatRef.update(_chatUpdateData);
+        final chatUpdateFields = _getChatUpdateFieldsForCreatingChat(
+          message: _message,
+          isFirstMessage: isFirstMessage,
+        );
+        final _chatUpdateFuture = updateChat(
+          chatId: _message.chatId!,
+          fields: chatUpdateFields,
+        );
         _futures.add(_chatUpdateFuture);
 
-        if (_messagesDocs.docs.isEmpty) {
-          final _additionalPropertiesFuture = _sendAdditionalProperties(
-            message: _message,
-          );
-          _futures.add(_additionalPropertiesFuture);
-        }
-
-        if (_message.files.isNotEmpty) {
-          final _mediaInfoFuture = _sendMediaInformation(message: _message);
-          _futures.add(_mediaInfoFuture);
-        }
+        final _mediaInfoFuture = _saveMediasFilesAndLinks(
+          message: _message,
+        );
+        _futures.add(_mediaInfoFuture);
 
         await Future.wait(_futures);
         return Success(message);
@@ -753,44 +736,99 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     );
   }
 
-  Future<void> _sendAdditionalProperties({
+  Future<PeamanEither<bool, PeamanError>> _saveMediasFilesAndLinks({
     required final PeamanChatMessage message,
   }) {
     return runAsyncCall(
-      future: () {
-        final _chatRef = PeamanReferenceHelper.chatsCol.doc(message.chatId);
-        return _chatRef.update({
-          'user_ids': List<String>.from(message.receiverIds)
-            ..add(message.senderId!),
-          'chat_request_status':
-              ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
-          'chat_request_sender_id': message.senderId,
-        });
-      },
-      onError: (e) {},
-    );
-  }
-
-  Future<void> _sendMediaInformation({
-    required final PeamanChatMessage message,
-  }) {
-    return runAsyncCall(
-      future: () {
-        final _fileRef = PeamanReferenceHelper.chatFilesCol(
+      future: () async {
+        final _fileRef = PeamanReferenceHelper.mediasLinksFilesCol(
           chatId: message.chatId!,
         ).doc();
 
-        final file = PeamanChatFile(
-          id: _fileRef.id,
-          urls: message.files,
-          createdAt: message.createdAt,
-          updatedAt: message.updatedAt,
-        );
+        var allFileUrls = message.files;
 
-        return _fileRef.set(file.toJson());
+        final links = PeamanCommonHelper.getUrlsFromText(
+          text: message.text ?? '',
+        );
+        if (links.isNotEmpty) {
+          final fileUrlsFromLinks = links.map(
+            (e) => PeamanFileUrl(
+              url: e,
+              type: PeamanFileType.link,
+            ),
+          );
+          allFileUrls = [...allFileUrls, ...fileUrlsFromLinks];
+        }
+
+        if (allFileUrls.isNotEmpty) {
+          final file = PeamanChatFile(
+            id: _fileRef.id,
+            urls: allFileUrls,
+            createdAt: message.createdAt,
+            updatedAt: message.updatedAt,
+          );
+          await _fileRef.set(file.toJson());
+        }
+
+        return const Success(true);
       },
-      onError: (e) {},
+      onError: Failure.new,
     );
+  }
+
+  List<PeamanField> _getChatUpdateFieldsForCreatingChat({
+    required final PeamanChatMessage message,
+    final bool isFirstMessage = false,
+  }) {
+    return [
+      PeamanField(
+        key: 'type',
+        value: ksPeamanChatType[message.chatType],
+      ),
+      PeamanField.positivePartial(
+        key: 'user_ids',
+        value: [...message.receiverIds, message.senderId],
+      ),
+      const PeamanField(
+        key: 'hidden_to_user_ids',
+        value: [],
+      ),
+      const PeamanField(
+        key: 'archived_by_user_ids',
+        value: [],
+      ),
+      PeamanField(
+        key: 'last_message_id',
+        value: message.id,
+      ),
+      PeamanField(
+        key: 'last_message_created_at',
+        value: message.createdAt,
+      ),
+      const PeamanField.positivePartial(
+        key: 'total_sent_messages',
+        value: 1,
+      ),
+      PeamanField.positivePartial(
+        key: 'z_${message.senderId}_sent_messages',
+        value: 1,
+      ),
+      for (final receiverId in message.receiverIds)
+        PeamanField.positivePartial(
+          key: 'z_${receiverId}_unread_messages',
+          value: 1,
+        ),
+      if (isFirstMessage)
+        PeamanField(
+          key: 'chat_request_status',
+          value: ksPeamanChatRequestStatus[PeamanChatRequestStatus.idle],
+        ),
+      if (isFirstMessage)
+        PeamanField(
+          key: 'chat_request_sender_id',
+          value: message.senderId,
+        ),
+    ];
   }
 
   List<PeamanChat> _chatsFromFirestore(

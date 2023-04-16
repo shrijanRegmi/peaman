@@ -41,5 +41,5 @@ const momentViewersColName = 'moment_viewers';
 
 // chats subcollections
 const messagesColName = 'messages';
-const filesColName = 'files';
+const mediasLinksFilesColName = 'medias_links_files';
 //

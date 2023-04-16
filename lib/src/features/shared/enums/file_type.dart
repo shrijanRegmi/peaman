@@ -3,5 +3,6 @@ enum PeamanFileType {
   image,
   video,
   pdf,
+  link,
   other,
 }

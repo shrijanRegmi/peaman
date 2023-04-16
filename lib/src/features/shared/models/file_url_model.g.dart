@@ -33,5 +33,6 @@ const _$PeamanFileTypeEnumMap = {
   PeamanFileType.image: 'image',
   PeamanFileType.video: 'video',
   PeamanFileType.pdf: 'pdf',
+  PeamanFileType.link: 'link',
   PeamanFileType.other: 'other',
 };
