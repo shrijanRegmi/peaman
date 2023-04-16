@@ -160,6 +160,16 @@ abstract class PeamanChatRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
+  Future<PeamanEither<List<PeamanChatFile>, PeamanError>> getChatFiles({
+    required final String chatId,
+    final MyQuery Function(MyQuery)? query,
+  });
+
+  Stream<List<PeamanChatFile>> getChatFilesStream({
+    required final String chatId,
+    final MyQuery Function(MyQuery)? query,
+  });
+
   Future<PeamanEither<PeamanChatMessage, PeamanError>> getSingleChatMessage({
     required final String chatId,
     required final String messageId,
@@ -741,7 +751,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        final _fileRef = PeamanReferenceHelper.mediasLinksFilesCol(
+        final _fileRef = PeamanReferenceHelper.chatMediasLinksFilesCol(
           chatId: message.chatId!,
         ).doc();
 
@@ -843,6 +853,14 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     DocumentSnapshot<Map<String, dynamic>> snap,
   ) {
     return PeamanChat.fromJson(snap.data() ?? {});
+  }
+
+  List<PeamanChatFile> _chatFilesFromFirestore(
+    QuerySnapshot<Map<String, dynamic>> snap,
+  ) {
+    return snap.docs.map((doc) {
+      return PeamanChatFile.fromJson(doc.data());
+    }).toList();
   }
 
   List<PeamanChatMessage> _messagesFromFirestore(
@@ -980,5 +998,35 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           ),
       ],
     );
+  }
+
+  @override
+  Future<PeamanEither<List<PeamanChatFile>, PeamanError>> getChatFiles({
+    required String chatId,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final _ref = PeamanReferenceHelper.chatMediasLinksFilesCol(
+          chatId: chatId,
+        );
+        final _query = query?.call(_ref) ?? _ref;
+        final result = await _query.get();
+        return Success(_chatFilesFromFirestore(result));
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Stream<List<PeamanChatFile>> getChatFilesStream({
+    required String chatId,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    final _ref = PeamanReferenceHelper.chatMediasLinksFilesCol(
+      chatId: chatId,
+    );
+    final _query = query?.call(_ref) ?? _ref;
+    return _query.snapshots().map(_chatFilesFromFirestore);
   }
 }
