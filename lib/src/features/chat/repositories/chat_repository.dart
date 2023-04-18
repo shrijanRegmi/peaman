@@ -822,11 +822,13 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       PeamanField.positivePartial(
         key: 'z_${message.senderId}_sent_messages',
         value: 1,
+        useKeyAsItIs: true,
       ),
       for (final receiverId in message.receiverIds)
         PeamanField.positivePartial(
           key: 'z_${receiverId}_unread_messages',
           value: 1,
+          useKeyAsItIs: true,
         ),
       if (isFirstMessage)
         PeamanField(
