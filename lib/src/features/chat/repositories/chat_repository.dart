@@ -782,15 +782,8 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
             ownerId: message.senderId,
             urls: allFileUrls,
             createdAt: message.createdAt,
-            updatedAt: currentDate.millisecondsSinceEpoch,
           );
-          await fileRef.set(
-            file.toJson(),
-            SetOptions(
-              merge: true,
-              mergeFields: ['updated_at'],
-            ),
-          );
+          await fileRef.set(file.toJson());
         }
 
         return const Success(true);
