@@ -22,6 +22,7 @@ PeamanChat _$PeamanChatFromJson(Map<String, dynamic> json) {
 mixin _$PeamanChat {
   String? get id => throw _privateConstructorUsedError;
   PeamanChatType get type => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get lastMessageId => throw _privateConstructorUsedError;
   int? get lastMessageCreatedAt => throw _privateConstructorUsedError;
   List<String> get userIds => throw _privateConstructorUsedError;
@@ -71,6 +72,7 @@ abstract class $PeamanChatCopyWith<$Res> {
   $Res call(
       {String? id,
       PeamanChatType type,
+      String? title,
       String? lastMessageId,
       int? lastMessageCreatedAt,
       List<String> userIds,
@@ -108,6 +110,7 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
   $Res call({
     Object? id = freezed,
     Object? type = null,
+    Object? title = freezed,
     Object? lastMessageId = freezed,
     Object? lastMessageCreatedAt = freezed,
     Object? userIds = null,
@@ -138,6 +141,10 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PeamanChatType,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastMessageId: freezed == lastMessageId
           ? _value.lastMessageId
           : lastMessageId // ignore: cast_nullable_to_non_nullable
@@ -233,6 +240,7 @@ abstract class _$$_PeamanChatCopyWith<$Res>
   $Res call(
       {String? id,
       PeamanChatType type,
+      String? title,
       String? lastMessageId,
       int? lastMessageCreatedAt,
       List<String> userIds,
@@ -268,6 +276,7 @@ class __$$_PeamanChatCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? type = null,
+    Object? title = freezed,
     Object? lastMessageId = freezed,
     Object? lastMessageCreatedAt = freezed,
     Object? userIds = null,
@@ -298,6 +307,10 @@ class __$$_PeamanChatCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PeamanChatType,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastMessageId: freezed == lastMessageId
           ? _value.lastMessageId
           : lastMessageId // ignore: cast_nullable_to_non_nullable
@@ -388,6 +401,7 @@ class _$_PeamanChat implements _PeamanChat {
   const _$_PeamanChat(
       {this.id,
       this.type = PeamanChatType.oneToOne,
+      this.title,
       this.lastMessageId,
       this.lastMessageCreatedAt,
       final List<String> userIds = const <String>[],
@@ -441,6 +455,8 @@ class _$_PeamanChat implements _PeamanChat {
   @override
   @JsonKey()
   final PeamanChatType type;
+  @override
+  final String? title;
   @override
   final String? lastMessageId;
   @override
@@ -572,7 +588,7 @@ class _$_PeamanChat implements _PeamanChat {
 
   @override
   String toString() {
-    return 'PeamanChat(id: $id, type: $type, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, messagesCursors: $messagesCursors, mutedUntils: $mutedUntils, addedBys: $addedBys, removedBys: $removedBys, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChat(id: $id, type: $type, title: $title, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, chatRequestSenderId: $chatRequestSenderId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, messagesCursors: $messagesCursors, mutedUntils: $mutedUntils, addedBys: $addedBys, removedBys: $removedBys, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -582,6 +598,7 @@ class _$_PeamanChat implements _PeamanChat {
             other is _$_PeamanChat &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.lastMessageId, lastMessageId) ||
                 other.lastMessageId == lastMessageId) &&
             (identical(other.lastMessageCreatedAt, lastMessageCreatedAt) ||
@@ -628,6 +645,7 @@ class _$_PeamanChat implements _PeamanChat {
         runtimeType,
         id,
         type,
+        title,
         lastMessageId,
         lastMessageCreatedAt,
         const DeepCollectionEquality().hash(_userIds),
@@ -668,6 +686,7 @@ abstract class _PeamanChat implements PeamanChat {
   const factory _PeamanChat(
       {final String? id,
       final PeamanChatType type,
+      final String? title,
       final String? lastMessageId,
       final int? lastMessageCreatedAt,
       final List<String> userIds,
@@ -703,6 +722,8 @@ abstract class _PeamanChat implements PeamanChat {
   String? get id;
   @override
   PeamanChatType get type;
+  @override
+  String? get title;
   @override
   String? get lastMessageId;
   @override

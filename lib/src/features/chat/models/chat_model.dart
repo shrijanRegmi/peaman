@@ -9,6 +9,7 @@ class PeamanChat with _$PeamanChat {
   const factory PeamanChat({
     final String? id,
     @Default(PeamanChatType.oneToOne) final PeamanChatType type,
+    final String? title,
     final String? lastMessageId,
     final int? lastMessageCreatedAt,
     @Default(<String>[]) final List<String> userIds,

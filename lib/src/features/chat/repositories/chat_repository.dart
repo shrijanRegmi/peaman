@@ -28,6 +28,11 @@ abstract class PeamanChatRepository {
     required final int lastMessageCreatedAt,
   });
 
+  Future<PeamanEither<bool, PeamanError>> setChatTitle({
+    required final String chatId,
+    required final String title,
+  });
+
   Future<PeamanEither<bool, PeamanError>> addChatMembers({
     required final String uid,
     required final String chatId,
@@ -1030,5 +1035,21 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     );
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_chatFilesFromFirestore);
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> setChatTitle({
+    required String chatId,
+    required String title,
+  }) {
+    return updateChat(
+      chatId: chatId,
+      fields: [
+        PeamanField(
+          key: 'title',
+          value: title,
+        ),
+      ],
+    );
   }
 }

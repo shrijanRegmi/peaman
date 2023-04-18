@@ -13,6 +13,7 @@ _$_PeamanChatMessage _$$_PeamanChatMessageFromJson(Map<String, dynamic> json) =>
       chatType:
           $enumDecodeNullable(_$PeamanChatTypeEnumMap, json['chat_type']) ??
               PeamanChatType.oneToOne,
+      chatTitle: json['chat_title'] as String?,
       text: json['text'] as String?,
       files: (json['files'] as List<dynamic>?)
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
@@ -54,6 +55,7 @@ Map<String, dynamic> _$$_PeamanChatMessageToJson(
   writeNotNull('id', instance.id);
   writeNotNull('chat_id', instance.chatId);
   val['chat_type'] = _$PeamanChatTypeEnumMap[instance.chatType]!;
+  writeNotNull('chat_title', instance.chatTitle);
   writeNotNull('text', instance.text);
   val['files'] = instance.files.map((e) => e.toJson()).toList();
   val['type'] = _$PeamanChatMessageTypeEnumMap[instance.type]!;

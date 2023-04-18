@@ -10,6 +10,7 @@ class PeamanChatMessage with _$PeamanChatMessage {
     final String? id,
     final String? chatId,
     @Default(PeamanChatType.oneToOne) final PeamanChatType chatType,
+    final String? chatTitle,
     final String? text,
     @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> files,
     @Default(PeamanChatMessageType.text) final PeamanChatMessageType type,

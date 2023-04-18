@@ -23,6 +23,7 @@ mixin _$PeamanChatMessage {
   String? get id => throw _privateConstructorUsedError;
   String? get chatId => throw _privateConstructorUsedError;
   PeamanChatType get chatType => throw _privateConstructorUsedError;
+  String? get chatTitle => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
   List<PeamanFileUrl> get files => throw _privateConstructorUsedError;
   PeamanChatMessageType get type => throw _privateConstructorUsedError;
@@ -60,6 +61,7 @@ abstract class $PeamanChatMessageCopyWith<$Res> {
       {String? id,
       String? chatId,
       PeamanChatType chatType,
+      String? chatTitle,
       String? text,
       List<PeamanFileUrl> files,
       PeamanChatMessageType type,
@@ -96,6 +98,7 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
     Object? id = freezed,
     Object? chatId = freezed,
     Object? chatType = null,
+    Object? chatTitle = freezed,
     Object? text = freezed,
     Object? files = null,
     Object? type = null,
@@ -128,6 +131,10 @@ class _$PeamanChatMessageCopyWithImpl<$Res, $Val extends PeamanChatMessage>
           ? _value.chatType
           : chatType // ignore: cast_nullable_to_non_nullable
               as PeamanChatType,
+      chatTitle: freezed == chatTitle
+          ? _value.chatTitle
+          : chatTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -216,6 +223,7 @@ abstract class _$$_PeamanChatMessageCopyWith<$Res>
       {String? id,
       String? chatId,
       PeamanChatType chatType,
+      String? chatTitle,
       String? text,
       List<PeamanFileUrl> files,
       PeamanChatMessageType type,
@@ -250,6 +258,7 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
     Object? id = freezed,
     Object? chatId = freezed,
     Object? chatType = null,
+    Object? chatTitle = freezed,
     Object? text = freezed,
     Object? files = null,
     Object? type = null,
@@ -282,6 +291,10 @@ class __$$_PeamanChatMessageCopyWithImpl<$Res>
           ? _value.chatType
           : chatType // ignore: cast_nullable_to_non_nullable
               as PeamanChatType,
+      chatTitle: freezed == chatTitle
+          ? _value.chatTitle
+          : chatTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -365,6 +378,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
       {this.id,
       this.chatId,
       this.chatType = PeamanChatType.oneToOne,
+      this.chatTitle,
       this.text,
       final List<PeamanFileUrl> files = const <PeamanFileUrl>[],
       this.type = PeamanChatMessageType.text,
@@ -400,6 +414,8 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
   @override
   @JsonKey()
   final PeamanChatType chatType;
+  @override
+  final String? chatTitle;
   @override
   final String? text;
   final List<PeamanFileUrl> _files;
@@ -471,7 +487,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
 
   @override
   String toString() {
-    return 'PeamanChatMessage(id: $id, chatId: $chatId, chatType: $chatType, text: $text, files: $files, type: $type, senderId: $senderId, senderName: $senderName, receiverIds: $receiverIds, extraId: $extraId, parentId: $parentId, parentText: $parentText, parentFiles: $parentFiles, visibility: $visibility, isForwarded: $isForwarded, isTemp: $isTemp, forwardedFromChatId: $forwardedFromChatId, unsent: $unsent, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChatMessage(id: $id, chatId: $chatId, chatType: $chatType, chatTitle: $chatTitle, text: $text, files: $files, type: $type, senderId: $senderId, senderName: $senderName, receiverIds: $receiverIds, extraId: $extraId, parentId: $parentId, parentText: $parentText, parentFiles: $parentFiles, visibility: $visibility, isForwarded: $isForwarded, isTemp: $isTemp, forwardedFromChatId: $forwardedFromChatId, unsent: $unsent, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -483,6 +499,8 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
             (identical(other.chatId, chatId) || other.chatId == chatId) &&
             (identical(other.chatType, chatType) ||
                 other.chatType == chatType) &&
+            (identical(other.chatTitle, chatTitle) ||
+                other.chatTitle == chatTitle) &&
             (identical(other.text, text) || other.text == text) &&
             const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.type, type) || other.type == type) &&
@@ -522,6 +540,7 @@ class _$_PeamanChatMessage implements _PeamanChatMessage {
         id,
         chatId,
         chatType,
+        chatTitle,
         text,
         const DeepCollectionEquality().hash(_files),
         type,
@@ -562,6 +581,7 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
           {final String? id,
           final String? chatId,
           final PeamanChatType chatType,
+          final String? chatTitle,
           final String? text,
           final List<PeamanFileUrl> files,
           final PeamanChatMessageType type,
@@ -591,6 +611,8 @@ abstract class _PeamanChatMessage implements PeamanChatMessage {
   String? get chatId;
   @override
   PeamanChatType get chatType;
+  @override
+  String? get chatTitle;
   @override
   String? get text;
   @override

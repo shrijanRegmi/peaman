@@ -11,6 +11,7 @@ _$_PeamanChat _$$_PeamanChatFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       type: $enumDecodeNullable(_$PeamanChatTypeEnumMap, json['type']) ??
           PeamanChatType.oneToOne,
+      title: json['title'] as String?,
       lastMessageId: json['last_message_id'] as String?,
       lastMessageCreatedAt: json['last_message_created_at'] as int?,
       userIds: (json['user_ids'] as List<dynamic>?)
@@ -54,6 +55,7 @@ Map<String, dynamic> _$$_PeamanChatToJson(_$_PeamanChat instance) {
 
   writeNotNull('id', instance.id);
   val['type'] = _$PeamanChatTypeEnumMap[instance.type]!;
+  writeNotNull('title', instance.title);
   writeNotNull('last_message_id', instance.lastMessageId);
   writeNotNull('last_message_created_at', instance.lastMessageCreatedAt);
   val['user_ids'] = instance.userIds;
