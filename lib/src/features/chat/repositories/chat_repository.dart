@@ -751,15 +751,9 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        final currentDate = DateTime.now();
-        final requiredDate = DateTime(
-          currentDate.year,
-          currentDate.month,
-          currentDate.day,
-        );
         final fileRef = PeamanReferenceHelper.chatMediasLinksFilesCol(
           chatId: message.chatId!,
-        ).doc(requiredDate.millisecondsSinceEpoch.toString());
+        ).doc();
 
         var allFileUrls = message.files;
 
