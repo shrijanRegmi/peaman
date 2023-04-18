@@ -713,7 +713,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           id: _lastMsgRef.id,
           chatId: _chatRef.id,
           createdAt: message.createdAt ?? _millis,
-          updatedAt: message.updatedAt ?? _millis,
+          updatedAt: message.updatedAt,
         );
 
         final _futures = <Future>[];
@@ -751,9 +751,15 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        final _fileRef = PeamanReferenceHelper.chatMediasLinksFilesCol(
+        final currentDate = DateTime.now();
+        final requiredDate = DateTime(
+          currentDate.year,
+          currentDate.month,
+          currentDate.day,
+        );
+        final fileRef = PeamanReferenceHelper.chatMediasLinksFilesCol(
           chatId: message.chatId!,
-        ).doc();
+        ).doc(requiredDate.millisecondsSinceEpoch.toString());
 
         var allFileUrls = message.files;
 
@@ -772,12 +778,19 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
 
         if (allFileUrls.isNotEmpty) {
           final file = PeamanChatFile(
-            id: _fileRef.id,
+            id: fileRef.id,
+            ownerId: message.senderId,
             urls: allFileUrls,
             createdAt: message.createdAt,
-            updatedAt: message.updatedAt,
+            updatedAt: currentDate.millisecondsSinceEpoch,
           );
-          await _fileRef.set(file.toJson());
+          await fileRef.set(
+            file.toJson(),
+            SetOptions(
+              merge: true,
+              mergeFields: ['updated_at'],
+            ),
+          );
         }
 
         return const Success(true);

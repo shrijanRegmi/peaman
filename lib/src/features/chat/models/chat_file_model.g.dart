@@ -9,6 +9,7 @@ part of 'chat_file_model.dart';
 _$_PeamanChatFile _$$_PeamanChatFileFromJson(Map<String, dynamic> json) =>
     _$_PeamanChatFile(
       id: json['id'] as String?,
+      ownerId: json['owner_id'] as String?,
       urls: (json['urls'] as List<dynamic>?)
               ?.map((e) => PeamanFileUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -27,6 +28,7 @@ Map<String, dynamic> _$$_PeamanChatFileToJson(_$_PeamanChatFile instance) {
   }
 
   writeNotNull('id', instance.id);
+  writeNotNull('owner_id', instance.ownerId);
   val['urls'] = instance.urls.map((e) => e.toJson()).toList();
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);

@@ -21,6 +21,7 @@ PeamanChatFile _$PeamanChatFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PeamanChatFile {
   String? get id => throw _privateConstructorUsedError;
+  String? get ownerId => throw _privateConstructorUsedError;
   List<PeamanFileUrl> get urls => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
@@ -38,7 +39,11 @@ abstract class $PeamanChatFileCopyWith<$Res> {
       _$PeamanChatFileCopyWithImpl<$Res, PeamanChatFile>;
   @useResult
   $Res call(
-      {String? id, List<PeamanFileUrl> urls, int? createdAt, int? updatedAt});
+      {String? id,
+      String? ownerId,
+      List<PeamanFileUrl> urls,
+      int? createdAt,
+      int? updatedAt});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$PeamanChatFileCopyWithImpl<$Res, $Val extends PeamanChatFile>
   @override
   $Res call({
     Object? id = freezed,
+    Object? ownerId = freezed,
     Object? urls = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -63,6 +69,10 @@ class _$PeamanChatFileCopyWithImpl<$Res, $Val extends PeamanChatFile>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String?,
       urls: null == urls
           ? _value.urls
@@ -89,7 +99,11 @@ abstract class _$$_PeamanChatFileCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id, List<PeamanFileUrl> urls, int? createdAt, int? updatedAt});
+      {String? id,
+      String? ownerId,
+      List<PeamanFileUrl> urls,
+      int? createdAt,
+      int? updatedAt});
 }
 
 /// @nodoc
@@ -104,6 +118,7 @@ class __$$_PeamanChatFileCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? ownerId = freezed,
     Object? urls = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -112,6 +127,10 @@ class __$$_PeamanChatFileCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
               as String?,
       urls: null == urls
           ? _value._urls
@@ -134,6 +153,7 @@ class __$$_PeamanChatFileCopyWithImpl<$Res>
 class _$_PeamanChatFile implements _PeamanChatFile {
   const _$_PeamanChatFile(
       {this.id,
+      this.ownerId,
       final List<PeamanFileUrl> urls = const <PeamanFileUrl>[],
       this.createdAt,
       this.updatedAt})
@@ -144,6 +164,8 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 
   @override
   final String? id;
+  @override
+  final String? ownerId;
   final List<PeamanFileUrl> _urls;
   @override
   @JsonKey()
@@ -160,7 +182,7 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 
   @override
   String toString() {
-    return 'PeamanChatFile(id: $id, urls: $urls, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PeamanChatFile(id: $id, ownerId: $ownerId, urls: $urls, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -169,6 +191,7 @@ class _$_PeamanChatFile implements _PeamanChatFile {
         (other.runtimeType == runtimeType &&
             other is _$_PeamanChatFile &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
             const DeepCollectionEquality().equals(other._urls, _urls) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -178,7 +201,7 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id,
+  int get hashCode => Object.hash(runtimeType, id, ownerId,
       const DeepCollectionEquality().hash(_urls), createdAt, updatedAt);
 
   @JsonKey(ignore: true)
@@ -198,6 +221,7 @@ class _$_PeamanChatFile implements _PeamanChatFile {
 abstract class _PeamanChatFile implements PeamanChatFile {
   const factory _PeamanChatFile(
       {final String? id,
+      final String? ownerId,
       final List<PeamanFileUrl> urls,
       final int? createdAt,
       final int? updatedAt}) = _$_PeamanChatFile;
@@ -207,6 +231,8 @@ abstract class _PeamanChatFile implements PeamanChatFile {
 
   @override
   String? get id;
+  @override
+  String? get ownerId;
   @override
   List<PeamanFileUrl> get urls;
   @override

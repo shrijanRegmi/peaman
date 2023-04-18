@@ -9,6 +9,7 @@ part 'chat_file_model.g.dart';
 class PeamanChatFile with _$PeamanChatFile {
   const factory PeamanChatFile({
     final String? id,
+    final String? ownerId,
     @Default(<PeamanFileUrl>[]) final List<PeamanFileUrl> urls,
     final int? createdAt,
     final int? updatedAt,
