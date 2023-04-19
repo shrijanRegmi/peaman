@@ -32,7 +32,7 @@ mixin _$PeamanChat {
   List<String> get pinnedChatUserIds => throw _privateConstructorUsedError;
   PeamanChatRequestStatus get chatRequestStatus =>
       throw _privateConstructorUsedError;
-  String? get initiatorId => throw _privateConstructorUsedError;
+  String? get adminId => throw _privateConstructorUsedError;
   int get totalSentMessages => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   List<PeamanChatSentMessage> get sentMessages =>
@@ -81,7 +81,7 @@ abstract class $PeamanChatCopyWith<$Res> {
       List<String> typingUserIds,
       List<String> pinnedChatUserIds,
       PeamanChatRequestStatus chatRequestStatus,
-      String? initiatorId,
+      String? adminId,
       int totalSentMessages,
       @JsonKey(ignore: true) List<PeamanChatSentMessage> sentMessages,
       @JsonKey(ignore: true) List<PeamanChatUnreadMessage> unreadMessages,
@@ -119,7 +119,7 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
     Object? typingUserIds = null,
     Object? pinnedChatUserIds = null,
     Object? chatRequestStatus = null,
-    Object? initiatorId = freezed,
+    Object? adminId = freezed,
     Object? totalSentMessages = null,
     Object? sentMessages = null,
     Object? unreadMessages = null,
@@ -177,9 +177,9 @@ class _$PeamanChatCopyWithImpl<$Res, $Val extends PeamanChat>
           ? _value.chatRequestStatus
           : chatRequestStatus // ignore: cast_nullable_to_non_nullable
               as PeamanChatRequestStatus,
-      initiatorId: freezed == initiatorId
-          ? _value.initiatorId
-          : initiatorId // ignore: cast_nullable_to_non_nullable
+      adminId: freezed == adminId
+          ? _value.adminId
+          : adminId // ignore: cast_nullable_to_non_nullable
               as String?,
       totalSentMessages: null == totalSentMessages
           ? _value.totalSentMessages
@@ -249,7 +249,7 @@ abstract class _$$_PeamanChatCopyWith<$Res>
       List<String> typingUserIds,
       List<String> pinnedChatUserIds,
       PeamanChatRequestStatus chatRequestStatus,
-      String? initiatorId,
+      String? adminId,
       int totalSentMessages,
       @JsonKey(ignore: true) List<PeamanChatSentMessage> sentMessages,
       @JsonKey(ignore: true) List<PeamanChatUnreadMessage> unreadMessages,
@@ -285,7 +285,7 @@ class __$$_PeamanChatCopyWithImpl<$Res>
     Object? typingUserIds = null,
     Object? pinnedChatUserIds = null,
     Object? chatRequestStatus = null,
-    Object? initiatorId = freezed,
+    Object? adminId = freezed,
     Object? totalSentMessages = null,
     Object? sentMessages = null,
     Object? unreadMessages = null,
@@ -343,9 +343,9 @@ class __$$_PeamanChatCopyWithImpl<$Res>
           ? _value.chatRequestStatus
           : chatRequestStatus // ignore: cast_nullable_to_non_nullable
               as PeamanChatRequestStatus,
-      initiatorId: freezed == initiatorId
-          ? _value.initiatorId
-          : initiatorId // ignore: cast_nullable_to_non_nullable
+      adminId: freezed == adminId
+          ? _value.adminId
+          : adminId // ignore: cast_nullable_to_non_nullable
               as String?,
       totalSentMessages: null == totalSentMessages
           ? _value.totalSentMessages
@@ -410,7 +410,7 @@ class _$_PeamanChat implements _PeamanChat {
       final List<String> typingUserIds = const <String>[],
       final List<String> pinnedChatUserIds = const <String>[],
       this.chatRequestStatus = PeamanChatRequestStatus.idle,
-      this.initiatorId,
+      this.adminId,
       this.totalSentMessages = 0,
       @JsonKey(ignore: true)
           final List<PeamanChatSentMessage>
@@ -512,7 +512,7 @@ class _$_PeamanChat implements _PeamanChat {
   @JsonKey()
   final PeamanChatRequestStatus chatRequestStatus;
   @override
-  final String? initiatorId;
+  final String? adminId;
   @override
   @JsonKey()
   final int totalSentMessages;
@@ -588,7 +588,7 @@ class _$_PeamanChat implements _PeamanChat {
 
   @override
   String toString() {
-    return 'PeamanChat(id: $id, type: $type, title: $title, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, initiatorId: $initiatorId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, messagesCursors: $messagesCursors, mutedUntils: $mutedUntils, addedBys: $addedBys, removedBys: $removedBys, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
+    return 'PeamanChat(id: $id, type: $type, title: $title, lastMessageId: $lastMessageId, lastMessageCreatedAt: $lastMessageCreatedAt, userIds: $userIds, hiddenToUserIds: $hiddenToUserIds, archivedByUserIds: $archivedByUserIds, typingUserIds: $typingUserIds, pinnedChatUserIds: $pinnedChatUserIds, chatRequestStatus: $chatRequestStatus, adminId: $adminId, totalSentMessages: $totalSentMessages, sentMessages: $sentMessages, unreadMessages: $unreadMessages, messagesCursors: $messagesCursors, mutedUntils: $mutedUntils, addedBys: $addedBys, removedBys: $removedBys, visibility: $visibility, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -614,8 +614,7 @@ class _$_PeamanChat implements _PeamanChat {
                 .equals(other._pinnedChatUserIds, _pinnedChatUserIds) &&
             (identical(other.chatRequestStatus, chatRequestStatus) ||
                 other.chatRequestStatus == chatRequestStatus) &&
-            (identical(other.initiatorId, initiatorId) ||
-                other.initiatorId == initiatorId) &&
+            (identical(other.adminId, adminId) || other.adminId == adminId) &&
             (identical(other.totalSentMessages, totalSentMessages) ||
                 other.totalSentMessages == totalSentMessages) &&
             const DeepCollectionEquality()
@@ -654,7 +653,7 @@ class _$_PeamanChat implements _PeamanChat {
         const DeepCollectionEquality().hash(_typingUserIds),
         const DeepCollectionEquality().hash(_pinnedChatUserIds),
         chatRequestStatus,
-        initiatorId,
+        adminId,
         totalSentMessages,
         const DeepCollectionEquality().hash(_sentMessages),
         const DeepCollectionEquality().hash(_unreadMessages),
@@ -695,7 +694,7 @@ abstract class _PeamanChat implements PeamanChat {
       final List<String> typingUserIds,
       final List<String> pinnedChatUserIds,
       final PeamanChatRequestStatus chatRequestStatus,
-      final String? initiatorId,
+      final String? adminId,
       final int totalSentMessages,
       @JsonKey(ignore: true)
           final List<PeamanChatSentMessage> sentMessages,
@@ -741,7 +740,7 @@ abstract class _PeamanChat implements PeamanChat {
   @override
   PeamanChatRequestStatus get chatRequestStatus;
   @override
-  String? get initiatorId;
+  String? get adminId;
   @override
   int get totalSentMessages;
   @override

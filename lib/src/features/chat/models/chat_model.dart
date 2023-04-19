@@ -19,7 +19,7 @@ class PeamanChat with _$PeamanChat {
     @Default(<String>[]) final List<String> pinnedChatUserIds,
     @Default(PeamanChatRequestStatus.idle)
         final PeamanChatRequestStatus chatRequestStatus,
-    final String? initiatorId,
+    final String? adminId,
     @Default(0) final int totalSentMessages,
     @JsonKey(ignore: true)
     @Default(<PeamanChatSentMessage>[])

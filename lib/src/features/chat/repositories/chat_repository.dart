@@ -663,15 +663,15 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
   }) {
     return runAsyncCall(
       future: () async {
-        if (chat.initiatorId == null) {
-          throw Exception('initiatorId cannot be null');
+        if (chat.adminId == null) {
+          throw Exception('adminId cannot be null');
         }
 
         final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chat.id);
         final _chat = chat.copyWith(id: _chatRef.id);
 
         final receiverIds = List<String>.from(chat.userIds)
-          ..removeWhere((element) => element == chat.initiatorId);
+          ..removeWhere((element) => element == chat.adminId);
 
         final fields = [
           for (final receiverId in receiverIds)
@@ -680,7 +680,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
               useKeyAsItIs: true,
               value: PeamanChatAddedBy(
                 uid: receiverId,
-                addedBy: chat.initiatorId,
+                addedBy: chat.adminId,
                 addedAt: chat.createdAt,
               ).toJson(),
             ),
@@ -735,7 +735,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
           final newChat = PeamanChat(
             id: _chatRef.id,
             visibility: true,
-            initiatorId: message.senderId,
+            adminId: message.senderId,
             createdAt: message.createdAt ?? _millis,
           );
           final result = await createChat(chat: newChat);
