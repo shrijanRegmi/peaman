@@ -37,7 +37,7 @@ _$_PeamanChat _$$_PeamanChatFromJson(Map<String, dynamic> json) =>
       chatRequestStatus: $enumDecodeNullable(
               _$PeamanChatRequestStatusEnumMap, json['chat_request_status']) ??
           PeamanChatRequestStatus.idle,
-      chatRequestSenderId: json['chat_request_sender_id'] as String?,
+      initiatorId: json['initiator_id'] as String?,
       totalSentMessages: json['total_sent_messages'] as int? ?? 0,
       visibility: json['visibility'] as bool? ?? true,
       createdAt: json['created_at'] as int?,
@@ -65,7 +65,7 @@ Map<String, dynamic> _$$_PeamanChatToJson(_$_PeamanChat instance) {
   val['pinned_chat_user_ids'] = instance.pinnedChatUserIds;
   val['chat_request_status'] =
       _$PeamanChatRequestStatusEnumMap[instance.chatRequestStatus]!;
-  writeNotNull('chat_request_sender_id', instance.chatRequestSenderId);
+  writeNotNull('initiator_id', instance.initiatorId);
   val['total_sent_messages'] = instance.totalSentMessages;
   val['visibility'] = instance.visibility;
   writeNotNull('created_at', instance.createdAt);
