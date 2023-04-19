@@ -700,8 +700,8 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
         final _messagesRef =
             PeamanReferenceHelper.messagesCol(chatId: _chatRef.id);
 
-        final _messagesDocs = await _messagesRef.limit(2).get();
-        final isFirstMessage = _messagesDocs.docs.isEmpty;
+        final _chatSnap = await _chatRef.get();
+        final isFirstMessage = !_chatSnap.exists;
 
         if (isFirstMessage) {
           final newChat = PeamanChat(
