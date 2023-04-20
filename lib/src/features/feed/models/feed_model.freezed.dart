@@ -31,11 +31,15 @@ mixin _$PeamanFeed {
   int get savesCount => throw _privateConstructorUsedError;
   int get sharesCount => throw _privateConstructorUsedError;
   int get viewsCount => throw _privateConstructorUsedError;
+  String? get ytLink => throw _privateConstructorUsedError;
+  String? get pollQuestion => throw _privateConstructorUsedError;
+  List<PeamanPollOption> get pollOptions => throw _privateConstructorUsedError;
   bool get featured => throw _privateConstructorUsedError;
   List<String> get searchKeys => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
   bool get visibility => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,12 +66,15 @@ abstract class $PeamanFeedCopyWith<$Res> {
       int savesCount,
       int sharesCount,
       int viewsCount,
+      String? ytLink,
+      String? pollQuestion,
+      List<PeamanPollOption> pollOptions,
       bool featured,
       List<String> searchKeys,
       int? createdAt,
       int? updatedAt,
       bool visibility,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -94,6 +101,9 @@ class _$PeamanFeedCopyWithImpl<$Res, $Val extends PeamanFeed>
     Object? savesCount = null,
     Object? sharesCount = null,
     Object? viewsCount = null,
+    Object? ytLink = freezed,
+    Object? pollQuestion = freezed,
+    Object? pollOptions = null,
     Object? featured = null,
     Object? searchKeys = null,
     Object? createdAt = freezed,
@@ -146,6 +156,18 @@ class _$PeamanFeedCopyWithImpl<$Res, $Val extends PeamanFeed>
           ? _value.viewsCount
           : viewsCount // ignore: cast_nullable_to_non_nullable
               as int,
+      ytLink: freezed == ytLink
+          ? _value.ytLink
+          : ytLink // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pollQuestion: freezed == pollQuestion
+          ? _value.pollQuestion
+          : pollQuestion // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pollOptions: null == pollOptions
+          ? _value.pollOptions
+          : pollOptions // ignore: cast_nullable_to_non_nullable
+              as List<PeamanPollOption>,
       featured: null == featured
           ? _value.featured
           : featured // ignore: cast_nullable_to_non_nullable
@@ -194,12 +216,15 @@ abstract class _$$_PeamanFeedCopyWith<$Res>
       int savesCount,
       int sharesCount,
       int viewsCount,
+      String? ytLink,
+      String? pollQuestion,
+      List<PeamanPollOption> pollOptions,
       bool featured,
       List<String> searchKeys,
       int? createdAt,
       int? updatedAt,
       bool visibility,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -224,6 +249,9 @@ class __$$_PeamanFeedCopyWithImpl<$Res>
     Object? savesCount = null,
     Object? sharesCount = null,
     Object? viewsCount = null,
+    Object? ytLink = freezed,
+    Object? pollQuestion = freezed,
+    Object? pollOptions = null,
     Object? featured = null,
     Object? searchKeys = null,
     Object? createdAt = freezed,
@@ -276,6 +304,18 @@ class __$$_PeamanFeedCopyWithImpl<$Res>
           ? _value.viewsCount
           : viewsCount // ignore: cast_nullable_to_non_nullable
               as int,
+      ytLink: freezed == ytLink
+          ? _value.ytLink
+          : ytLink // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pollQuestion: freezed == pollQuestion
+          ? _value.pollQuestion
+          : pollQuestion // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pollOptions: null == pollOptions
+          ? _value._pollOptions
+          : pollOptions // ignore: cast_nullable_to_non_nullable
+              as List<PeamanPollOption>,
       featured: null == featured
           ? _value.featured
           : featured // ignore: cast_nullable_to_non_nullable
@@ -319,13 +359,18 @@ class _$_PeamanFeed implements _PeamanFeed {
       this.savesCount = 0,
       this.sharesCount = 0,
       this.viewsCount = 0,
+      this.ytLink,
+      this.pollQuestion,
+      final List<PeamanPollOption> pollOptions = const <PeamanPollOption>[],
       this.featured = false,
       final List<String> searchKeys = const <String>[],
       this.createdAt,
       this.updatedAt,
       this.visibility = true,
-      final Map<String, dynamic> extraData = const <String, dynamic>{}})
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData = const <String, dynamic>{}})
       : _files = files,
+        _pollOptions = pollOptions,
         _searchKeys = searchKeys,
         _extraData = extraData;
 
@@ -369,6 +414,19 @@ class _$_PeamanFeed implements _PeamanFeed {
   @JsonKey()
   final int viewsCount;
   @override
+  final String? ytLink;
+  @override
+  final String? pollQuestion;
+  final List<PeamanPollOption> _pollOptions;
+  @override
+  @JsonKey()
+  List<PeamanPollOption> get pollOptions {
+    if (_pollOptions is EqualUnmodifiableListView) return _pollOptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pollOptions);
+  }
+
+  @override
   @JsonKey()
   final bool featured;
   final List<String> _searchKeys;
@@ -389,7 +447,7 @@ class _$_PeamanFeed implements _PeamanFeed {
   final bool visibility;
   final Map<String, dynamic> _extraData;
   @override
-  @JsonKey()
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData {
     if (_extraData is EqualUnmodifiableMapView) return _extraData;
     // ignore: implicit_dynamic_type
@@ -398,7 +456,7 @@ class _$_PeamanFeed implements _PeamanFeed {
 
   @override
   String toString() {
-    return 'PeamanFeed(id: $id, ownerId: $ownerId, caption: $caption, files: $files, type: $type, reactionsCount: $reactionsCount, commentsCount: $commentsCount, repliesCount: $repliesCount, savesCount: $savesCount, sharesCount: $sharesCount, viewsCount: $viewsCount, featured: $featured, searchKeys: $searchKeys, createdAt: $createdAt, updatedAt: $updatedAt, visibility: $visibility, extraData: $extraData)';
+    return 'PeamanFeed(id: $id, ownerId: $ownerId, caption: $caption, files: $files, type: $type, reactionsCount: $reactionsCount, commentsCount: $commentsCount, repliesCount: $repliesCount, savesCount: $savesCount, sharesCount: $sharesCount, viewsCount: $viewsCount, ytLink: $ytLink, pollQuestion: $pollQuestion, pollOptions: $pollOptions, featured: $featured, searchKeys: $searchKeys, createdAt: $createdAt, updatedAt: $updatedAt, visibility: $visibility, extraData: $extraData)';
   }
 
   @override
@@ -423,6 +481,11 @@ class _$_PeamanFeed implements _PeamanFeed {
                 other.sharesCount == sharesCount) &&
             (identical(other.viewsCount, viewsCount) ||
                 other.viewsCount == viewsCount) &&
+            (identical(other.ytLink, ytLink) || other.ytLink == ytLink) &&
+            (identical(other.pollQuestion, pollQuestion) ||
+                other.pollQuestion == pollQuestion) &&
+            const DeepCollectionEquality()
+                .equals(other._pollOptions, _pollOptions) &&
             (identical(other.featured, featured) ||
                 other.featured == featured) &&
             const DeepCollectionEquality()
@@ -439,25 +502,29 @@ class _$_PeamanFeed implements _PeamanFeed {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      ownerId,
-      caption,
-      const DeepCollectionEquality().hash(_files),
-      type,
-      reactionsCount,
-      commentsCount,
-      repliesCount,
-      savesCount,
-      sharesCount,
-      viewsCount,
-      featured,
-      const DeepCollectionEquality().hash(_searchKeys),
-      createdAt,
-      updatedAt,
-      visibility,
-      const DeepCollectionEquality().hash(_extraData));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        ownerId,
+        caption,
+        const DeepCollectionEquality().hash(_files),
+        type,
+        reactionsCount,
+        commentsCount,
+        repliesCount,
+        savesCount,
+        sharesCount,
+        viewsCount,
+        ytLink,
+        pollQuestion,
+        const DeepCollectionEquality().hash(_pollOptions),
+        featured,
+        const DeepCollectionEquality().hash(_searchKeys),
+        createdAt,
+        updatedAt,
+        visibility,
+        const DeepCollectionEquality().hash(_extraData)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -475,23 +542,27 @@ class _$_PeamanFeed implements _PeamanFeed {
 
 abstract class _PeamanFeed implements PeamanFeed {
   const factory _PeamanFeed(
-      {final String? id,
-      final String? ownerId,
-      final String? caption,
-      final List<PeamanFileUrl> files,
-      final PeamanFeedType type,
-      final int reactionsCount,
-      final int commentsCount,
-      final int repliesCount,
-      final int savesCount,
-      final int sharesCount,
-      final int viewsCount,
-      final bool featured,
-      final List<String> searchKeys,
-      final int? createdAt,
-      final int? updatedAt,
-      final bool visibility,
-      final Map<String, dynamic> extraData}) = _$_PeamanFeed;
+          {final String? id,
+          final String? ownerId,
+          final String? caption,
+          final List<PeamanFileUrl> files,
+          final PeamanFeedType type,
+          final int reactionsCount,
+          final int commentsCount,
+          final int repliesCount,
+          final int savesCount,
+          final int sharesCount,
+          final int viewsCount,
+          final String? ytLink,
+          final String? pollQuestion,
+          final List<PeamanPollOption> pollOptions,
+          final bool featured,
+          final List<String> searchKeys,
+          final int? createdAt,
+          final int? updatedAt,
+          final bool visibility,
+          @JsonKey(ignore: true) final Map<String, dynamic> extraData}) =
+      _$_PeamanFeed;
 
   factory _PeamanFeed.fromJson(Map<String, dynamic> json) =
       _$_PeamanFeed.fromJson;
@@ -519,6 +590,12 @@ abstract class _PeamanFeed implements PeamanFeed {
   @override
   int get viewsCount;
   @override
+  String? get ytLink;
+  @override
+  String? get pollQuestion;
+  @override
+  List<PeamanPollOption> get pollOptions;
+  @override
   bool get featured;
   @override
   List<String> get searchKeys;
@@ -529,6 +606,7 @@ abstract class _PeamanFeed implements PeamanFeed {
   @override
   bool get visibility;
   @override
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData;
   @override
   @JsonKey(ignore: true)

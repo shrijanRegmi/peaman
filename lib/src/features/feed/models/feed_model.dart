@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../shared/models/file_url_model.dart';
-import '../enums/feed_type.dart';
+import 'package:peaman/peaman.dart';
 
 part 'feed_model.freezed.dart';
 part 'feed_model.g.dart';
@@ -20,14 +18,21 @@ class PeamanFeed with _$PeamanFeed {
     @Default(0) final int savesCount,
     @Default(0) final int sharesCount,
     @Default(0) final int viewsCount,
+    final String? ytLink,
+    final String? pollQuestion,
+    @Default(<PeamanPollOption>[]) final List<PeamanPollOption> pollOptions,
     @Default(false) final bool featured,
     @Default(<String>[]) final List<String> searchKeys,
     final int? createdAt,
     final int? updatedAt,
     @Default(true) final bool visibility,
-    @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,
+    @JsonKey(ignore: true)
+    @Default(<String, dynamic>{})
+        final Map<String, dynamic> extraData,
   }) = _PeamanFeed;
 
   factory PeamanFeed.fromJson(final Map<String, dynamic> data) =>
-      _$PeamanFeedFromJson(data);
+      _$PeamanFeedFromJson(data).copyWith(
+        extraData: data,
+      );
 }

@@ -23,6 +23,12 @@ _$_PeamanFeed _$$_PeamanFeedFromJson(Map<String, dynamic> json) =>
       savesCount: json['saves_count'] as int? ?? 0,
       sharesCount: json['shares_count'] as int? ?? 0,
       viewsCount: json['views_count'] as int? ?? 0,
+      ytLink: json['yt_link'] as String?,
+      pollQuestion: json['poll_question'] as String?,
+      pollOptions: (json['poll_options'] as List<dynamic>?)
+              ?.map((e) => PeamanPollOption.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <PeamanPollOption>[],
       featured: json['featured'] as bool? ?? false,
       searchKeys: (json['search_keys'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -31,8 +37,6 @@ _$_PeamanFeed _$$_PeamanFeedFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] as int?,
       updatedAt: json['updated_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
-      extraData: json['extra_data'] as Map<String, dynamic>? ??
-          const <String, dynamic>{},
     );
 
 Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) {
@@ -55,17 +59,21 @@ Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) {
   val['saves_count'] = instance.savesCount;
   val['shares_count'] = instance.sharesCount;
   val['views_count'] = instance.viewsCount;
+  writeNotNull('yt_link', instance.ytLink);
+  writeNotNull('poll_question', instance.pollQuestion);
+  val['poll_options'] = instance.pollOptions.map((e) => e.toJson()).toList();
   val['featured'] = instance.featured;
   val['search_keys'] = instance.searchKeys;
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);
   val['visibility'] = instance.visibility;
-  val['extra_data'] = instance.extraData;
   return val;
 }
 
 const _$PeamanFeedTypeEnumMap = {
   PeamanFeedType.text: 'text',
   PeamanFeedType.file: 'file',
+  PeamanFeedType.poll: 'poll',
+  PeamanFeedType.youTube: 'youTube',
   PeamanFeedType.other: 'other',
 };
