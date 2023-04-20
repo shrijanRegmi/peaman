@@ -92,6 +92,14 @@ abstract class PeamanFeedRepository {
     required final String parentOwnerId,
   });
 
+  Future<PeamanEither<PeamanFeed, PeamanError>> getSingleFeed({
+    required final String feedId,
+  });
+
+  Stream<PeamanFeed> getSingleFeedStream({
+    required final String feedId,
+  });
+
   Future<PeamanEither<List<PeamanFeed>, PeamanError>> getFeeds({
     final MyQuery Function(MyQuery)? query,
   });
@@ -2022,9 +2030,47 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     return snap.docs.map((e) => PeamanSubFeed.fromJson(e.data())).toList();
   }
 
+  PeamanFeed _feedFromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanFeed.fromJson(snap.data() ?? {});
+  }
+
   List<PeamanFeed> _feedsFromFirestore(
     QuerySnapshot<Map<String, dynamic>> snap,
   ) {
     return snap.docs.map((e) => PeamanFeed.fromJson(e.data())).toList();
+  }
+
+  @override
+  Future<PeamanEither<PeamanFeed, PeamanError>> getSingleFeed({
+    required String feedId,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final feedRef = PeamanReferenceHelper.feedDoc(feedId: feedId);
+        final feedSnap = await feedRef.get();
+        if (feedSnap.exists) {
+          final feedData = feedSnap.data();
+          if (feedData != null) {
+            final feed = PeamanFeed.fromJson(feedData);
+            return Success(feed);
+          }
+        }
+        throw Exception(
+          'feed with id $feedId not found',
+        );
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Stream<PeamanFeed> getSingleFeedStream({
+    required String feedId,
+  }) {
+    return PeamanReferenceHelper.feedDoc(feedId: feedId)
+        .snapshots()
+        .map(_feedFromFirestore);
   }
 }
