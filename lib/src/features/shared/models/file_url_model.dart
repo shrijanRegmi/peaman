@@ -9,6 +9,7 @@ part 'file_url_model.g.dart';
 class PeamanFileUrl with _$PeamanFileUrl {
   const factory PeamanFileUrl({
     final String? url,
+    final String? thumbnailUrl,
     @Default(PeamanFileType.unknown) final PeamanFileType type,
   }) = _PeamanChatFileUrl;
 

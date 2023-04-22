@@ -9,6 +9,7 @@ part of 'file_url_model.dart';
 _$_PeamanChatFileUrl _$$_PeamanChatFileUrlFromJson(Map<String, dynamic> json) =>
     _$_PeamanChatFileUrl(
       url: json['url'] as String?,
+      thumbnailUrl: json['thumbnail_url'] as String?,
       type: $enumDecodeNullable(_$PeamanFileTypeEnumMap, json['type']) ??
           PeamanFileType.unknown,
     );
@@ -24,6 +25,7 @@ Map<String, dynamic> _$$_PeamanChatFileUrlToJson(
   }
 
   writeNotNull('url', instance.url);
+  writeNotNull('thumbnail_url', instance.thumbnailUrl);
   val['type'] = _$PeamanFileTypeEnumMap[instance.type]!;
   return val;
 }
