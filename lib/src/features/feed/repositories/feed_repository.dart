@@ -386,7 +386,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           final hashtagModel = PeamanHashtag(
             id: hashtag,
             title: hashtag,
-            searchKeys: PeamanCoreCommonHelper.getSearchKeys(text: hashtag),
+            searchKeys: PeamanCommonHelper().getSearchKeys(text: hashtag),
             createdAt: _millis,
           );
 
@@ -545,7 +545,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
           uid: feed.ownerId!,
         ).doc(_feedRef.id);
 
-        final hashtags = PeamanCoreCommonHelper.getHashtagsFromText(
+        final hashtags = PeamanCommonHelper().getHashtagsFromText(
           text: feed.caption ?? '',
         );
 
@@ -1819,8 +1819,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         final _commentRef = PeamanReferenceHelper.commentsCol(
           feedId: feedId,
         ).doc(commentId);
-        final _data =
-            PeamanCoreCommonHelper.prepareDataToUpdate(fields: fields);
+        final _data = PeamanCommonHelper().prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
           await _commentRef.update({
             ..._data,
@@ -1842,8 +1841,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     return runAsyncCall(
       future: () async {
         final _feedRef = PeamanReferenceHelper.feedDoc(feedId: feedId);
-        final _data =
-            PeamanCoreCommonHelper.prepareDataToUpdate(fields: fields);
+        final _data = PeamanCommonHelper().prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
           await _feedRef.update({
             ..._data,

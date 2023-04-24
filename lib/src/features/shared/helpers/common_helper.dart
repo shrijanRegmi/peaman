@@ -1,15 +1,14 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peaman/src/features/shared/extensions/string_extension.dart';
-import 'package:peaman/src/features/shared/models/peaman_field_model.dart';
+import 'package:peaman/peaman.dart';
 
-class PeamanCoreCommonHelper {
-  static void printListening({required final String text}) {
+class PeamanCommonHelper {
+  void printListening({required final String text}) {
     log('Started getting $text');
   }
 
-  static Map<String, dynamic> prepareDataToUpdate({
+  Map<String, dynamic> prepareDataToUpdate({
     required final List<PeamanField> fields,
   }) {
     final _data = <String, dynamic>{};
@@ -51,7 +50,7 @@ class PeamanCoreCommonHelper {
     return _data;
   }
 
-  static List<String> getHashtagsFromText({
+  List<String> getHashtagsFromText({
     required final String text,
   }) {
     final result = <String>[];
@@ -77,7 +76,7 @@ class PeamanCoreCommonHelper {
     return result;
   }
 
-  static List<String> getSearchKeys({
+  List<String> getSearchKeys({
     required final String text,
   }) {
     final searchKeys = <String>[];
@@ -113,7 +112,7 @@ class PeamanCoreCommonHelper {
         .toList();
   }
 
-  static List<String> getUrlsFromText({
+  List<String> getUrlsFromText({
     required final String text,
   }) {
     RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');

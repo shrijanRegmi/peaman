@@ -620,8 +620,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
     return runAsyncCall(
       future: () async {
         final _chatRef = PeamanReferenceHelper.chatDoc(chatId: chatId);
-        final _data =
-            PeamanCoreCommonHelper.prepareDataToUpdate(fields: fields);
+        final _data = PeamanCommonHelper().prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
           await _chatRef.update({
             ..._data,
@@ -645,8 +644,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
       future: () async {
         final _messageRef =
             PeamanReferenceHelper.messagesCol(chatId: chatId).doc(messageId);
-        final _data =
-            PeamanCoreCommonHelper.prepareDataToUpdate(fields: fields);
+        final _data = PeamanCommonHelper().prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
           await _messageRef.update({
             ..._data,
@@ -687,7 +685,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
               ).toJson(),
             ),
         ];
-        final addedBysData = PeamanCoreCommonHelper.prepareDataToUpdate(
+        final addedBysData = PeamanCommonHelper().prepareDataToUpdate(
           fields: fields,
         );
 
@@ -793,7 +791,7 @@ class PeamanChatRepositoryImpl extends PeamanChatRepository {
 
         var allFileUrls = message.files;
 
-        final links = PeamanCoreCommonHelper.getUrlsFromText(
+        final links = PeamanCommonHelper().getUrlsFromText(
           text: message.text ?? '',
         );
         if (links.isNotEmpty) {
