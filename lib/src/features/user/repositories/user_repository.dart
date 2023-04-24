@@ -792,7 +792,8 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     return runAsyncCall(
       future: () async {
         final _userRef = PeamanReferenceHelper.userDoc(uid: uid);
-        final _data = PeamanCommonHelper.prepareDataToUpdate(fields: fields);
+        final _data =
+            PeamanCoreCommonHelper.prepareDataToUpdate(fields: fields);
         if (_data.isNotEmpty) {
           await _userRef.update({
             ..._data,

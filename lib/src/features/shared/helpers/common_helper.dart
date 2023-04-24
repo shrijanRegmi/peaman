@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:peaman/src/features/shared/extensions/string_extension.dart';
 import 'package:peaman/src/features/shared/models/peaman_field_model.dart';
 
-class PeamanCommonHelper {
+class PeamanCoreCommonHelper {
   static void printListening({required final String text}) {
     log('Started getting $text');
   }

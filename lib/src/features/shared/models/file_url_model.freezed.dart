@@ -20,6 +20,7 @@ PeamanFileUrl _$PeamanFileUrlFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PeamanFileUrl {
+  String? get id => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   String? get thumbnailUrl => throw _privateConstructorUsedError;
   PeamanFileType get type => throw _privateConstructorUsedError;
@@ -36,7 +37,8 @@ abstract class $PeamanFileUrlCopyWith<$Res> {
           PeamanFileUrl value, $Res Function(PeamanFileUrl) then) =
       _$PeamanFileUrlCopyWithImpl<$Res, PeamanFileUrl>;
   @useResult
-  $Res call({String? url, String? thumbnailUrl, PeamanFileType type});
+  $Res call(
+      {String? id, String? url, String? thumbnailUrl, PeamanFileType type});
 }
 
 /// @nodoc
@@ -52,11 +54,16 @@ class _$PeamanFileUrlCopyWithImpl<$Res, $Val extends PeamanFileUrl>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? url = freezed,
     Object? thumbnailUrl = freezed,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -81,7 +88,8 @@ abstract class _$$_PeamanChatFileUrlCopyWith<$Res>
       __$$_PeamanChatFileUrlCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? url, String? thumbnailUrl, PeamanFileType type});
+  $Res call(
+      {String? id, String? url, String? thumbnailUrl, PeamanFileType type});
 }
 
 /// @nodoc
@@ -95,11 +103,16 @@ class __$$_PeamanChatFileUrlCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? url = freezed,
     Object? thumbnailUrl = freezed,
     Object? type = null,
   }) {
     return _then(_$_PeamanChatFileUrl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -120,11 +133,16 @@ class __$$_PeamanChatFileUrlCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
   const _$_PeamanChatFileUrl(
-      {this.url, this.thumbnailUrl, this.type = PeamanFileType.unknown});
+      {this.id,
+      this.url,
+      this.thumbnailUrl,
+      this.type = PeamanFileType.unknown});
 
   factory _$_PeamanChatFileUrl.fromJson(Map<String, dynamic> json) =>
       _$$_PeamanChatFileUrlFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String? url;
   @override
@@ -135,7 +153,7 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
 
   @override
   String toString() {
-    return 'PeamanFileUrl(url: $url, thumbnailUrl: $thumbnailUrl, type: $type)';
+    return 'PeamanFileUrl(id: $id, url: $url, thumbnailUrl: $thumbnailUrl, type: $type)';
   }
 
   @override
@@ -143,6 +161,7 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PeamanChatFileUrl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.thumbnailUrl, thumbnailUrl) ||
                 other.thumbnailUrl == thumbnailUrl) &&
@@ -151,7 +170,7 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, url, thumbnailUrl, type);
+  int get hashCode => Object.hash(runtimeType, id, url, thumbnailUrl, type);
 
   @JsonKey(ignore: true)
   @override
@@ -170,13 +189,16 @@ class _$_PeamanChatFileUrl implements _PeamanChatFileUrl {
 
 abstract class _PeamanChatFileUrl implements PeamanFileUrl {
   const factory _PeamanChatFileUrl(
-      {final String? url,
+      {final String? id,
+      final String? url,
       final String? thumbnailUrl,
       final PeamanFileType type}) = _$_PeamanChatFileUrl;
 
   factory _PeamanChatFileUrl.fromJson(Map<String, dynamic> json) =
       _$_PeamanChatFileUrl.fromJson;
 
+  @override
+  String? get id;
   @override
   String? get url;
   @override
