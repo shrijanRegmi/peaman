@@ -27,119 +27,106 @@ class PeamanReferenceHelper {
   //
 
   // main docs
-  static DocRef userDoc({required final String? uid}) =>
-      _ref.collection(usersColName).doc(uid);
+  static DocRef userDoc({required final String? uid}) => usersCol.doc(uid);
   static DocRef feedDoc({required final String? feedId}) =>
-      _ref.collection(feedsColName).doc(feedId);
+      feedsCol.doc(feedId);
   static DocRef chatDoc({required final String? chatId}) =>
-      _ref.collection(chatsColName).doc(chatId);
+      chatsCol.doc(chatId);
   static DocRef momentDoc({required final String? momentId}) =>
-      _ref.collection(momentsColName).doc(momentId);
+      momentsCol.doc(momentId);
   static DocRef hashtagDoc({required final String? hashtag}) =>
-      _ref.collection(hashtagsColName).doc(hashtag);
+      hashtagsCol.doc(hashtag);
   //
 
   // users subcollections
-  static ColRef receivedFollowRequestsCol({required final String uid}) => _ref
-      .collection(usersColName)
-      .doc(uid)
-      .collection(receivedFollowRequestsColName);
+  static ColRef receivedFollowRequestsCol({required final String uid}) =>
+      usersCol.doc(uid).collection(receivedFollowRequestsColName);
 
-  static ColRef sentFollowRequestsCol({required final String uid}) => _ref
-      .collection(usersColName)
-      .doc(uid)
-      .collection(sentFollowRequestsColName);
+  static ColRef sentFollowRequestsCol({required final String uid}) =>
+      usersCol.doc(uid).collection(sentFollowRequestsColName);
 
   static ColRef userFollowersCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(userFollowersColName);
+      usersCol.doc(uid).collection(userFollowersColName);
 
   static ColRef userFollowingsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(userFollowingsColName);
+      usersCol.doc(uid).collection(userFollowingsColName);
 
   static ColRef notificationsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(notificationsColName);
+      usersCol.doc(uid).collection(notificationsColName);
 
   static ColRef myFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(myFeedsColName);
+      usersCol.doc(uid).collection(myFeedsColName);
 
   static ColRef reactedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(reactedFeedsColName);
+      usersCol.doc(uid).collection(reactedFeedsColName);
 
   static ColRef commentedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(commentedFeedsColName);
+      usersCol.doc(uid).collection(commentedFeedsColName);
 
   static ColRef repliedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(repliedFeedsColName);
+      usersCol.doc(uid).collection(repliedFeedsColName);
 
   static ColRef savedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(savedFeedsColName);
+      usersCol.doc(uid).collection(savedFeedsColName);
 
   static ColRef viewedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(viewedFeedsColName);
+      usersCol.doc(uid).collection(viewedFeedsColName);
 
   static ColRef followedFeedsCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(followedFeedsColName);
+      usersCol.doc(uid).collection(followedFeedsColName);
 
   static ColRef blockedUsersCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(blockedUsersColName);
+      usersCol.doc(uid).collection(blockedUsersColName);
 
   static ColRef blockedByUsersCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(blockedByUsersColName);
+      usersCol.doc(uid).collection(blockedByUsersColName);
 
   static ColRef devicesCol({required final String uid}) =>
-      _ref.collection(usersColName).doc(uid).collection(devicesColName);
+      usersCol.doc(uid).collection(devicesColName);
   //
 
   // feed subcollections
   static ColRef reactionsCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(reactionsColName);
+      feedsCol.doc(feedId).collection(reactionsColName);
 
   static ColRef commentsCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(commentsColName);
+      feedsCol.doc(feedId).collection(commentsColName);
 
   static ColRef feedReactorsCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(feedReactorsColName);
+      feedsCol.doc(feedId).collection(feedReactorsColName);
 
-  static ColRef feedCommentersCol({required final String feedId}) => _ref
-      .collection(feedsColName)
-      .doc(feedId)
-      .collection(feedCommentersColName);
+  static ColRef feedCommentersCol({required final String feedId}) =>
+      feedsCol.doc(feedId).collection(feedCommentersColName);
 
   static ColRef feedRepliersCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(feedRepliersColName);
+      feedsCol.doc(feedId).collection(feedRepliersColName);
 
   static ColRef feedSaversCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(feedSaversColName);
+      feedsCol.doc(feedId).collection(feedSaversColName);
 
   static ColRef feedViewersCol({required final String feedId}) =>
-      _ref.collection(feedsColName).doc(feedId).collection(feedViewersColName);
+      feedsCol.doc(feedId).collection(feedViewersColName);
 
-  static ColRef feedFollowersCol({required final String feedId}) => _ref
-      .collection(feedsColName)
-      .doc(feedId)
-      .collection(feedFollowersColName);
+  static ColRef feedFollowersCol({required final String feedId}) =>
+      feedsCol.doc(feedId).collection(feedFollowersColName);
 
   //
 
   // moments subcollections
-  static ColRef momentViewersCol({required final String momentId}) => _ref
-      .collection(momentsColName)
-      .doc(momentId)
-      .collection(momentViewersColName);
+  static ColRef momentViewersCol({required final String momentId}) =>
+      momentsCol.doc(momentId).collection(momentViewersColName);
   //
 
   // chats subcollections
   static ColRef messagesCol({required final String chatId}) =>
-      _ref.collection(chatsColName).doc(chatId).collection(messagesColName);
+      chatsCol.doc(chatId).collection(messagesColName);
 
-  static ColRef chatMediasLinksFilesCol({required final String chatId}) => _ref
-      .collection(chatsColName)
-      .doc(chatId)
-      .collection(mediasLinksFilesColName);
+  static ColRef chatMediasLinksFilesCol({required final String chatId}) =>
+      chatsCol.doc(chatId).collection(mediasLinksFilesColName);
   //
 
   // hastag subcollections
   static ColRef hashtagFeedsCol({required final String hashtag}) =>
-      _ref.collection(hashtagsColName).doc(hashtag).collection(feedsColName);
+      hashtagsCol.doc(hashtag).collection(feedsColName);
   //
 }
