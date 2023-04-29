@@ -10,12 +10,20 @@ class PeamanReferenceHelper {
 
   String get uniqueId => _ref.collection('random').doc().id;
 
+  static String mainCollectionPrefix = '';
+  static String mainCollectionSuffix = '';
+
   // main collections
-  static ColRef get usersCol => _ref.collection(usersColName);
-  static ColRef get feedsCol => _ref.collection(feedsColName);
-  static ColRef get chatsCol => _ref.collection(chatsColName);
-  static ColRef get momentsCol => _ref.collection(momentsColName);
-  static ColRef get hashtagsCol => _ref.collection(hashtagsColName);
+  static ColRef get usersCol => _ref
+      .collection('$mainCollectionPrefix$usersColName$mainCollectionSuffix');
+  static ColRef get feedsCol => _ref
+      .collection('$mainCollectionPrefix$feedsColName$mainCollectionSuffix');
+  static ColRef get chatsCol => _ref
+      .collection('$mainCollectionPrefix$chatsColName$mainCollectionSuffix');
+  static ColRef get momentsCol => _ref
+      .collection('$mainCollectionPrefix$momentsColName$mainCollectionSuffix');
+  static ColRef get hashtagsCol => _ref
+      .collection('$mainCollectionPrefix$hashtagsColName$mainCollectionSuffix');
   //
 
   // main docs
