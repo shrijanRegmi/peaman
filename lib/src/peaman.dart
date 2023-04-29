@@ -4,16 +4,18 @@ import '../peaman.dart';
 
 class Peaman {
   static Future<PeamanEither<bool, PeamanError>> initializeApp({
-    String? name,
-    PeamanOptions? options,
+    final String? name,
+    final String? mainCollectionPrefix,
+    final String? mainCollectionSuffix,
+    final PeamanOptions? options,
   }) {
     return runAsyncCall(
       future: () async {
-        if (options != null) {
-          PeamanReferenceHelper.mainCollectionPrefix =
-              options.mainCollectionsPrefix;
-          PeamanReferenceHelper.mainCollectionSuffix =
-              options.mainCollectionsSuffix;
+        if (mainCollectionPrefix != null) {
+          PeamanReferenceHelper.mainCollectionPrefix = mainCollectionPrefix;
+        }
+        if (mainCollectionSuffix != null) {
+          PeamanReferenceHelper.mainCollectionSuffix = mainCollectionSuffix;
         }
 
         await Firebase.initializeApp(
@@ -28,16 +30,11 @@ class Peaman {
 }
 
 class PeamanOptions extends FirebaseOptions {
-  final String mainCollectionsPrefix;
-  final String mainCollectionsSuffix;
-
   const PeamanOptions({
     required String apiKey,
     required String appId,
     required String messagingSenderId,
     required String projectId,
-    this.mainCollectionsSuffix = '',
-    this.mainCollectionsPrefix = '',
   }) : super(
           apiKey: apiKey,
           appId: appId,
