@@ -351,6 +351,16 @@ abstract class PeamanFeedRepository {
     required final PeamanCommentParent parent,
     required final String parentId,
   });
+
+  Future<PeamanEither<PeamanSubUser, PeamanError>> getSingleFeedSaver({
+    required final String feedId,
+    required final String uid,
+  });
+
+  Stream<PeamanSubUser> getSingleFeedSaverStream({
+    required final String feedId,
+    required final String uid,
+  });
 }
 
 class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
@@ -2018,6 +2028,12 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     return snap.docs.map((e) => PeamanReaction.fromJson(e.data())).toList();
   }
 
+  PeamanSubUser _subUserFromFirestore(
+    final DocumentSnapshot<Map<String, dynamic>> snap,
+  ) {
+    return PeamanSubUser.fromJson(snap.data() ?? {});
+  }
+
   List<PeamanSubUser> _subUsersFromFirestore(
     final QuerySnapshot<Map<String, dynamic>> snap,
   ) {
@@ -2072,5 +2088,39 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     return PeamanReferenceHelper.feedDoc(feedId: feedId)
         .snapshots()
         .map(_feedFromFirestore);
+  }
+
+  @override
+  Future<PeamanEither<PeamanSubUser, PeamanError>> getSingleFeedSaver({
+    required String feedId,
+    required String uid,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final _reactionRef = PeamanReferenceHelper.feedSaversCol(
+          feedId: feedId,
+        ).doc(uid);
+
+        final _feedSaverSnap = await _reactionRef.get();
+        if (!_feedSaverSnap.exists) throw Exception('Feed saver not found!');
+
+        final _feedSaverData = _feedSaverSnap.data();
+        if (_feedSaverData == null) throw Exception('Feed saver found!');
+
+        final _feedSaver = PeamanSubUser.fromJson(_feedSaverData);
+        return Success(_feedSaver);
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Stream<PeamanSubUser> getSingleFeedSaverStream({
+    required String feedId,
+    required String uid,
+  }) {
+    return PeamanReferenceHelper.feedSaversCol(
+      feedId: feedId,
+    ).doc(uid).snapshots().map(_subUserFromFirestore);
   }
 }
