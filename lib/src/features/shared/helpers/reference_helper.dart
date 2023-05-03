@@ -24,6 +24,8 @@ class PeamanReferenceHelper {
       .collection('$mainCollectionPrefix$momentsColName$mainCollectionSuffix');
   static ColRef get hashtagsCol => _ref
       .collection('$mainCollectionPrefix$hashtagsColName$mainCollectionSuffix');
+  static ColRef get reportsCol => _ref
+      .collection('$mainCollectionPrefix$reportsColName$mainCollectionSuffix');
   //
 
   // main docs
@@ -36,6 +38,8 @@ class PeamanReferenceHelper {
       momentsCol.doc(momentId);
   static DocRef hashtagDoc({required final String? hashtag}) =>
       hashtagsCol.doc(hashtag);
+  static DocRef reportDoc({required final String? reportId}) =>
+      reportsCol.doc(reportId);
   //
 
   // users subcollections

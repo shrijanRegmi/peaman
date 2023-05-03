@@ -10,6 +10,7 @@ export 'src/features/feed/feed.dart';
 export 'src/features/shared/shared.dart';
 export 'src/features/storage/storage.dart';
 export 'src/features/user/user.dart';
+export 'src/features/report/report.dart';
 
 // utils
 export 'src/utils/firestore_constants.dart';

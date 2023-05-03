@@ -4,6 +4,7 @@ const chatsColName = 'chats';
 const feedsColName = 'feeds';
 const momentsColName = 'moments';
 const hashtagsColName = 'hashtags';
+const reportsColName = 'reports';
 //
 
 // users subcollections
