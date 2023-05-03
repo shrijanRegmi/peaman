@@ -11,7 +11,10 @@ _$_PeamanReport _$$_PeamanReportFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       type: $enumDecodeNullable(_$PeamanReportTypeEnumMap, json['type']) ??
           PeamanReportType.unknown,
-      reportedBys: json['reported_bys'] ?? const <PeamanReportedBy>[],
+      reportedBys: (json['reported_bys'] as List<dynamic>?)
+              ?.map((e) => PeamanReportedBy.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <PeamanReportedBy>[],
       reportsCount: json['reports_count'] as int? ?? 0,
       createdAt: json['created_at'] as int?,
       updatedAt: json['updated_at'] as int?,
@@ -28,7 +31,7 @@ Map<String, dynamic> _$$_PeamanReportToJson(_$_PeamanReport instance) {
 
   writeNotNull('id', instance.id);
   val['type'] = _$PeamanReportTypeEnumMap[instance.type]!;
-  writeNotNull('reported_bys', instance.reportedBys);
+  val['reported_bys'] = instance.reportedBys.map((e) => e.toJson()).toList();
   val['reports_count'] = instance.reportsCount;
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);

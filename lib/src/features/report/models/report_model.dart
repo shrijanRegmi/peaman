@@ -9,7 +9,7 @@ class PeamanReport with _$PeamanReport {
   const factory PeamanReport({
     final String? id,
     @Default(PeamanReportType.unknown) final PeamanReportType type,
-    @Default(<PeamanReportedBy>[]) reportedBys,
+    @Default(<PeamanReportedBy>[]) final List<PeamanReportedBy> reportedBys,
     @Default(0) final int reportsCount,
     final int? createdAt,
     final int? updatedAt,

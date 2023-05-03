@@ -22,7 +22,7 @@ PeamanReport _$PeamanReportFromJson(Map<String, dynamic> json) {
 mixin _$PeamanReport {
   String? get id => throw _privateConstructorUsedError;
   PeamanReportType get type => throw _privateConstructorUsedError;
-  dynamic get reportedBys => throw _privateConstructorUsedError;
+  List<PeamanReportedBy> get reportedBys => throw _privateConstructorUsedError;
   int get reportsCount => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $PeamanReportCopyWith<$Res> {
   $Res call(
       {String? id,
       PeamanReportType type,
-      dynamic reportedBys,
+      List<PeamanReportedBy> reportedBys,
       int reportsCount,
       int? createdAt,
       int? updatedAt});
@@ -63,7 +63,7 @@ class _$PeamanReportCopyWithImpl<$Res, $Val extends PeamanReport>
   $Res call({
     Object? id = freezed,
     Object? type = null,
-    Object? reportedBys = freezed,
+    Object? reportedBys = null,
     Object? reportsCount = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -77,10 +77,10 @@ class _$PeamanReportCopyWithImpl<$Res, $Val extends PeamanReport>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PeamanReportType,
-      reportedBys: freezed == reportedBys
+      reportedBys: null == reportedBys
           ? _value.reportedBys
           : reportedBys // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as List<PeamanReportedBy>,
       reportsCount: null == reportsCount
           ? _value.reportsCount
           : reportsCount // ignore: cast_nullable_to_non_nullable
@@ -108,7 +108,7 @@ abstract class _$$_PeamanReportCopyWith<$Res>
   $Res call(
       {String? id,
       PeamanReportType type,
-      dynamic reportedBys,
+      List<PeamanReportedBy> reportedBys,
       int reportsCount,
       int? createdAt,
       int? updatedAt});
@@ -127,7 +127,7 @@ class __$$_PeamanReportCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? type = null,
-    Object? reportedBys = freezed,
+    Object? reportedBys = null,
     Object? reportsCount = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -141,7 +141,10 @@ class __$$_PeamanReportCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as PeamanReportType,
-      reportedBys: freezed == reportedBys ? _value.reportedBys! : reportedBys,
+      reportedBys: null == reportedBys
+          ? _value._reportedBys
+          : reportedBys // ignore: cast_nullable_to_non_nullable
+              as List<PeamanReportedBy>,
       reportsCount: null == reportsCount
           ? _value.reportsCount
           : reportsCount // ignore: cast_nullable_to_non_nullable
@@ -164,10 +167,11 @@ class _$_PeamanReport implements _PeamanReport {
   const _$_PeamanReport(
       {this.id,
       this.type = PeamanReportType.unknown,
-      this.reportedBys = const <PeamanReportedBy>[],
+      final List<PeamanReportedBy> reportedBys = const <PeamanReportedBy>[],
       this.reportsCount = 0,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : _reportedBys = reportedBys;
 
   factory _$_PeamanReport.fromJson(Map<String, dynamic> json) =>
       _$$_PeamanReportFromJson(json);
@@ -177,9 +181,15 @@ class _$_PeamanReport implements _PeamanReport {
   @override
   @JsonKey()
   final PeamanReportType type;
+  final List<PeamanReportedBy> _reportedBys;
   @override
   @JsonKey()
-  final dynamic reportedBys;
+  List<PeamanReportedBy> get reportedBys {
+    if (_reportedBys is EqualUnmodifiableListView) return _reportedBys;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reportedBys);
+  }
+
   @override
   @JsonKey()
   final int reportsCount;
@@ -201,7 +211,7 @@ class _$_PeamanReport implements _PeamanReport {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality()
-                .equals(other.reportedBys, reportedBys) &&
+                .equals(other._reportedBys, _reportedBys) &&
             (identical(other.reportsCount, reportsCount) ||
                 other.reportsCount == reportsCount) &&
             (identical(other.createdAt, createdAt) ||
@@ -216,7 +226,7 @@ class _$_PeamanReport implements _PeamanReport {
       runtimeType,
       id,
       type,
-      const DeepCollectionEquality().hash(reportedBys),
+      const DeepCollectionEquality().hash(_reportedBys),
       reportsCount,
       createdAt,
       updatedAt);
@@ -239,7 +249,7 @@ abstract class _PeamanReport implements PeamanReport {
   const factory _PeamanReport(
       {final String? id,
       final PeamanReportType type,
-      final dynamic reportedBys,
+      final List<PeamanReportedBy> reportedBys,
       final int reportsCount,
       final int? createdAt,
       final int? updatedAt}) = _$_PeamanReport;
@@ -252,7 +262,7 @@ abstract class _PeamanReport implements PeamanReport {
   @override
   PeamanReportType get type;
   @override
-  dynamic get reportedBys;
+  List<PeamanReportedBy> get reportedBys;
   @override
   int get reportsCount;
   @override
