@@ -18,6 +18,16 @@ abstract class PeamanFeedRepository {
     required final String ownerId,
   });
 
+  Future<PeamanEither<bool, PeamanError>> hideFeed({
+    required final String feedId,
+    required final String uid,
+  });
+
+  Future<PeamanEither<bool, PeamanError>> showFeed({
+    required final String feedId,
+    required final String uid,
+  });
+
   Future<PeamanEither<bool, PeamanError>> addFeedToHashtags({
     required final String feedId,
     required final List<String> hashtags,
@@ -2122,5 +2132,52 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
     return PeamanReferenceHelper.feedSaversCol(
       feedId: feedId,
     ).doc(uid).snapshots().map(_subUserFromFirestore);
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> hideFeed({
+    required String feedId,
+    required String uid,
+  }) {
+    final millis = DateTime.now().millisecondsSinceEpoch;
+    return runTransaction(
+      onTransaction: (transaction) async {
+        final hiddenFeedRef = PeamanReferenceHelper.hiddenFeedsCol(
+          uid: uid,
+        ).doc(feedId);
+
+        final hiddenFeed = PeamanSubFeed(
+          id: hiddenFeedRef.id,
+          createdAt: millis,
+        );
+
+        transaction.set(
+          hiddenFeedRef,
+          hiddenFeed.toJson(),
+        );
+        return const Success(true);
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> showFeed({
+    required String feedId,
+    required String uid,
+  }) {
+    return runTransaction(
+      onTransaction: (transaction) async {
+        final hiddenFeedRef = PeamanReferenceHelper.hiddenFeedsCol(
+          uid: uid,
+        ).doc(feedId);
+        final hiddenFeedSnap = await transaction.get(hiddenFeedRef);
+        if (hiddenFeedSnap.exists) {
+          transaction.delete(hiddenFeedRef);
+        }
+        return const Success(true);
+      },
+      onError: Failure.new,
+    );
   }
 }

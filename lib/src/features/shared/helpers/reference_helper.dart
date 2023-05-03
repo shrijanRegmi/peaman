@@ -61,6 +61,9 @@ class PeamanReferenceHelper {
   static ColRef myFeedsCol({required final String uid}) =>
       usersCol.doc(uid).collection(myFeedsColName);
 
+  static ColRef hiddenFeedsCol({required final String uid}) =>
+      usersCol.doc(uid).collection(hiddenFeedsColName);
+
   static ColRef reactedFeedsCol({required final String uid}) =>
       usersCol.doc(uid).collection(reactedFeedsColName);
 

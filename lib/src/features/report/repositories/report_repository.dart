@@ -49,54 +49,48 @@ class PeamanReportRepositoryImpl extends PeamanReportRepository {
     required PeamanReportedBy reportedBy,
   }) {
     final millis = DateTime.now().millisecondsSinceEpoch;
-    return runAsyncCall(
-      future: () async {
-        final report = await PeamanReferenceHelper.ref.runTransaction(
-          (transaction) async {
-            final reportRef = PeamanReferenceHelper.reportDoc(
-              reportId: id,
-            );
-            final reportSnap = await transaction.get(reportRef);
+    return runTransaction(
+      onTransaction: (transaction) async {
+        final reportRef = PeamanReferenceHelper.reportDoc(
+          reportId: id,
+        );
+        final reportSnap = await transaction.get(reportRef);
 
-            reportedBy = reportedBy.copyWith(
-              createdAt: reportedBy.createdAt ?? millis,
-            );
+        reportedBy = reportedBy.copyWith(
+          createdAt: reportedBy.createdAt ?? millis,
+        );
 
-            if (reportSnap.exists) {
-              final reportData = reportSnap.data();
-              if (reportData != null) {
-                final report = PeamanReport.fromJson(reportData);
+        if (reportSnap.exists) {
+          final reportData = reportSnap.data();
+          if (reportData != null) {
+            final report = PeamanReport.fromJson(reportData);
 
-                final newReport = report.copyWith(
-                  reportedBys: [...report.reportedBys, reportedBy],
-                  reportsCount: report.reportsCount + 1,
-                  updatedAt: millis,
-                );
-
-                transaction.set(
-                  reportRef,
-                  newReport.toJson(),
-                );
-
-                return newReport;
-              }
-            }
-
-            final report = PeamanReport(
-              id: id,
-              type: reportType,
-              reportedBys: [reportedBy],
-              reportsCount: 1,
-              createdAt: millis,
+            final newReport = report.copyWith(
+              reportedBys: [...report.reportedBys, reportedBy],
+              reportsCount: report.reportsCount + 1,
+              updatedAt: millis,
             );
 
             transaction.set(
               reportRef,
-              report.toJson(),
+              newReport.toJson(),
             );
 
-            return report;
-          },
+            return Success(newReport);
+          }
+        }
+
+        final report = PeamanReport(
+          id: id,
+          type: reportType,
+          reportedBys: [reportedBy],
+          reportsCount: 1,
+          createdAt: millis,
+        );
+
+        transaction.set(
+          reportRef,
+          report.toJson(),
         );
 
         return Success(report);
