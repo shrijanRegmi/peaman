@@ -128,6 +128,16 @@ abstract class PeamanFeedRepository {
     final MyQuery Function(MyQuery)? query,
   });
 
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserHiddenFeeds({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  });
+
+  Stream<List<PeamanSubFeed>> getUserHiddenFeedsStream({
+    required final String uid,
+    final MyQuery Function(MyQuery)? query,
+  });
+
   Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserReactedFeeds({
     required final String uid,
     final MyQuery Function(MyQuery)? query,
@@ -2179,5 +2189,33 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
       },
       onError: Failure.new,
     );
+  }
+
+  @override
+  Future<PeamanEither<List<PeamanSubFeed>, PeamanError>> getUserHiddenFeeds({
+    required String uid,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final ref = PeamanReferenceHelper.hiddenFeedsCol(uid: uid)
+            .orderBy('created_at', descending: true);
+        final newQuery = query?.call(ref) ?? ref;
+        final result = await newQuery.get().then(_subFeedsFromFirestore);
+        return Success(result);
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Stream<List<PeamanSubFeed>> getUserHiddenFeedsStream({
+    required String uid,
+    MyQuery Function(MyQuery p1)? query,
+  }) {
+    final ref = PeamanReferenceHelper.hiddenFeedsCol(uid: uid)
+        .orderBy('created_at', descending: true);
+    final newQuery = query?.call(ref) ?? ref;
+    return newQuery.snapshots().map(_subFeedsFromFirestore);
   }
 }
