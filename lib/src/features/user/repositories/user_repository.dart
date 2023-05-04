@@ -175,13 +175,13 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         final _futures = <Future>[];
 
         final _receivedFuture = _receivedRef.update({
-          'accepted': true,
+          'is_accepted': true,
           'updated_at': _millis,
         });
         _futures.add(_receivedFuture);
 
         final _sentFuture = _sentRef.update({
-          'accepted': true,
+          'is_accepted': true,
           'updated_at': _millis,
         });
         _futures.add(_sentFuture);
@@ -662,13 +662,13 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
         final _futures = <Future>[];
 
         final _receivedFuture = _receivedRef.update({
-          'ignored': true,
+          'is_ignored': true,
           'updated_at': _millis,
         });
         _futures.add(_receivedFuture);
 
         final _sentFuture = _sentRef.update({
-          'ignored': true,
+          'is_ignored': true,
           'updated_at': _millis,
         });
         _futures.add(_sentFuture);
