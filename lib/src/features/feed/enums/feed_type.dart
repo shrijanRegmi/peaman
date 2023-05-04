@@ -1,4 +1,5 @@
 enum PeamanFeedType {
+  unknown,
   text,
   file,
   poll,
@@ -7,6 +8,7 @@ enum PeamanFeedType {
 }
 
 const ksPeamanFeedTypeExt = {
+  PeamanFeedType.unknown: 'unknown',
   PeamanFeedType.text: 'text',
   PeamanFeedType.file: 'file',
   PeamanFeedType.poll: 'poll',
