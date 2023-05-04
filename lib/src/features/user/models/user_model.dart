@@ -36,6 +36,7 @@ class PeamanUser with _$PeamanUser {
     @Default(false) final bool isAdmin,
     @Default(false) final bool isEditor,
     @Default(false) final bool isTester,
+    @Default(false) final bool isVerified,
     @Default(0) final int onboardingStep,
     @Default(false) final bool isOnboardingCompleted,
     final double? latitude,

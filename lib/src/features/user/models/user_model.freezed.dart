@@ -47,6 +47,7 @@ mixin _$PeamanUser {
   bool get isAdmin => throw _privateConstructorUsedError;
   bool get isEditor => throw _privateConstructorUsedError;
   bool get isTester => throw _privateConstructorUsedError;
+  bool get isVerified => throw _privateConstructorUsedError;
   int get onboardingStep => throw _privateConstructorUsedError;
   bool get isOnboardingCompleted => throw _privateConstructorUsedError;
   double? get latitude => throw _privateConstructorUsedError;
@@ -95,6 +96,7 @@ abstract class $PeamanUserCopyWith<$Res> {
       bool isAdmin,
       bool isEditor,
       bool isTester,
+      bool isVerified,
       int onboardingStep,
       bool isOnboardingCompleted,
       double? latitude,
@@ -144,6 +146,7 @@ class _$PeamanUserCopyWithImpl<$Res, $Val extends PeamanUser>
     Object? isAdmin = null,
     Object? isEditor = null,
     Object? isTester = null,
+    Object? isVerified = null,
     Object? onboardingStep = null,
     Object? isOnboardingCompleted = null,
     Object? latitude = freezed,
@@ -261,6 +264,10 @@ class _$PeamanUserCopyWithImpl<$Res, $Val extends PeamanUser>
           ? _value.isTester
           : isTester // ignore: cast_nullable_to_non_nullable
               as bool,
+      isVerified: null == isVerified
+          ? _value.isVerified
+          : isVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
       onboardingStep: null == onboardingStep
           ? _value.onboardingStep
           : onboardingStep // ignore: cast_nullable_to_non_nullable
@@ -329,6 +336,7 @@ abstract class _$$_PeamanUserCopyWith<$Res>
       bool isAdmin,
       bool isEditor,
       bool isTester,
+      bool isVerified,
       int onboardingStep,
       bool isOnboardingCompleted,
       double? latitude,
@@ -376,6 +384,7 @@ class __$$_PeamanUserCopyWithImpl<$Res>
     Object? isAdmin = null,
     Object? isEditor = null,
     Object? isTester = null,
+    Object? isVerified = null,
     Object? onboardingStep = null,
     Object? isOnboardingCompleted = null,
     Object? latitude = freezed,
@@ -493,6 +502,10 @@ class __$$_PeamanUserCopyWithImpl<$Res>
           ? _value.isTester
           : isTester // ignore: cast_nullable_to_non_nullable
               as bool,
+      isVerified: null == isVerified
+          ? _value.isVerified
+          : isVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
       onboardingStep: null == onboardingStep
           ? _value.onboardingStep
           : onboardingStep // ignore: cast_nullable_to_non_nullable
@@ -556,6 +569,7 @@ class _$_PeamanUser implements _PeamanUser {
       this.isAdmin = false,
       this.isEditor = false,
       this.isTester = false,
+      this.isVerified = false,
       this.onboardingStep = 0,
       this.isOnboardingCompleted = false,
       this.latitude,
@@ -647,6 +661,9 @@ class _$_PeamanUser implements _PeamanUser {
   final bool isTester;
   @override
   @JsonKey()
+  final bool isVerified;
+  @override
+  @JsonKey()
   final int onboardingStep;
   @override
   @JsonKey()
@@ -671,7 +688,7 @@ class _$_PeamanUser implements _PeamanUser {
 
   @override
   String toString() {
-    return 'PeamanUser(uid: $uid, name: $name, userName: $userName, email: $email, photo: $photo, phone: $phone, country: $country, bio: $bio, profession: $profession, gender: $gender, dob: $dob, searchKeys: $searchKeys, onlineStatus: $onlineStatus, lastOnlineAt: $lastOnlineAt, feedsCount: $feedsCount, photosCount: $photosCount, videosCount: $videosCount, followersCount: $followersCount, followingCount: $followingCount, reactionsReceivedFromFeedsCount: $reactionsReceivedFromFeedsCount, commentsReceivedFromFeedsCount: $commentsReceivedFromFeedsCount, repliesReceivedFromFeedsCount: $repliesReceivedFromFeedsCount, sharesReceivedFromFeedsCount: $sharesReceivedFromFeedsCount, viewsReceivedFromFeedsCount: $viewsReceivedFromFeedsCount, isAdmin: $isAdmin, isEditor: $isEditor, isTester: $isTester, onboardingStep: $onboardingStep, isOnboardingCompleted: $isOnboardingCompleted, latitude: $latitude, longitude: $longitude, createdAt: $createdAt, visibility: $visibility, extraData: $extraData)';
+    return 'PeamanUser(uid: $uid, name: $name, userName: $userName, email: $email, photo: $photo, phone: $phone, country: $country, bio: $bio, profession: $profession, gender: $gender, dob: $dob, searchKeys: $searchKeys, onlineStatus: $onlineStatus, lastOnlineAt: $lastOnlineAt, feedsCount: $feedsCount, photosCount: $photosCount, videosCount: $videosCount, followersCount: $followersCount, followingCount: $followingCount, reactionsReceivedFromFeedsCount: $reactionsReceivedFromFeedsCount, commentsReceivedFromFeedsCount: $commentsReceivedFromFeedsCount, repliesReceivedFromFeedsCount: $repliesReceivedFromFeedsCount, sharesReceivedFromFeedsCount: $sharesReceivedFromFeedsCount, viewsReceivedFromFeedsCount: $viewsReceivedFromFeedsCount, isAdmin: $isAdmin, isEditor: $isEditor, isTester: $isTester, isVerified: $isVerified, onboardingStep: $onboardingStep, isOnboardingCompleted: $isOnboardingCompleted, latitude: $latitude, longitude: $longitude, createdAt: $createdAt, visibility: $visibility, extraData: $extraData)';
   }
 
   @override
@@ -730,12 +747,13 @@ class _$_PeamanUser implements _PeamanUser {
                 other.isEditor == isEditor) &&
             (identical(other.isTester, isTester) ||
                 other.isTester == isTester) &&
+            (identical(other.isVerified, isVerified) ||
+                other.isVerified == isVerified) &&
             (identical(other.onboardingStep, onboardingStep) ||
                 other.onboardingStep == onboardingStep) &&
             (identical(other.isOnboardingCompleted, isOnboardingCompleted) ||
                 other.isOnboardingCompleted == isOnboardingCompleted) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
+            (identical(other.latitude, latitude) || other.latitude == latitude) &&
             (identical(other.longitude, longitude) || other.longitude == longitude) &&
             (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
             (identical(other.visibility, visibility) || other.visibility == visibility) &&
@@ -773,6 +791,7 @@ class _$_PeamanUser implements _PeamanUser {
         isAdmin,
         isEditor,
         isTester,
+        isVerified,
         onboardingStep,
         isOnboardingCompleted,
         latitude,
@@ -825,6 +844,7 @@ abstract class _PeamanUser implements PeamanUser {
       final bool isAdmin,
       final bool isEditor,
       final bool isTester,
+      final bool isVerified,
       final int onboardingStep,
       final bool isOnboardingCompleted,
       final double? latitude,
@@ -890,6 +910,8 @@ abstract class _PeamanUser implements PeamanUser {
   bool get isEditor;
   @override
   bool get isTester;
+  @override
+  bool get isVerified;
   @override
   int get onboardingStep;
   @override

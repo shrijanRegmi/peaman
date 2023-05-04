@@ -46,6 +46,7 @@ _$_PeamanUser _$$_PeamanUserFromJson(Map<String, dynamic> json) =>
       isAdmin: json['is_admin'] as bool? ?? false,
       isEditor: json['is_editor'] as bool? ?? false,
       isTester: json['is_tester'] as bool? ?? false,
+      isVerified: json['is_verified'] as bool? ?? false,
       onboardingStep: json['onboarding_step'] as int? ?? 0,
       isOnboardingCompleted: json['is_onboarding_completed'] as bool? ?? false,
       latitude: (json['latitude'] as num?)?.toDouble(),
@@ -96,6 +97,7 @@ Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) {
   val['is_admin'] = instance.isAdmin;
   val['is_editor'] = instance.isEditor;
   val['is_tester'] = instance.isTester;
+  val['is_verified'] = instance.isVerified;
   val['onboarding_step'] = instance.onboardingStep;
   val['is_onboarding_completed'] = instance.isOnboardingCompleted;
   writeNotNull('latitude', instance.latitude);
