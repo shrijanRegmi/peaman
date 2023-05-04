@@ -758,7 +758,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           uid: uid,
           fields: [
             const PeamanField.negativePartial(
-              key: 'following',
+              key: 'following_count',
               value: 1,
             )
           ],
@@ -769,7 +769,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
           uid: friendId,
           fields: [
             const PeamanField.negativePartial(
-              key: 'followers',
+              key: 'followers_count',
               value: 1,
             )
           ],
@@ -841,7 +841,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
       uid: uid,
       fields: [
         const PeamanField.positivePartial(
-          key: 'followers',
+          key: 'followers_count',
           value: 1,
         ),
       ],
@@ -852,7 +852,7 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
       uid: friendId,
       fields: [
         const PeamanField.positivePartial(
-          key: 'following',
+          key: 'following_count',
           value: 1,
         ),
       ],
