@@ -43,9 +43,13 @@ class PeamanUser with _$PeamanUser {
     final double? longitude,
     final int? createdAt,
     @Default(true) final bool visibility,
-    @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,
+    @JsonKey(ignore: true)
+    @Default(<String, dynamic>{})
+        final Map<String, dynamic> extraData,
   }) = _PeamanUser;
 
   factory PeamanUser.fromJson(final Map<String, dynamic> data) =>
-      _$PeamanUserFromJson(data);
+      _$PeamanUserFromJson(data).copyWith(
+        extraData: data,
+      );
 }

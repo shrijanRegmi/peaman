@@ -273,7 +273,10 @@ class PeamanUserRepositoryImpl extends PeamanUserRepository {
     return runAsyncCall(
       future: () async {
         final _appUserRef = PeamanReferenceHelper.usersCol.doc(user.uid);
-        await _appUserRef.set(user.toJson());
+        await _appUserRef.set({
+          ...user.toJson(),
+          ...user.extraData,
+        });
         return const Success(true);
       },
       onError: Failure.new,
