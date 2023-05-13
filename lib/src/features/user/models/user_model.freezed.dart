@@ -54,6 +54,7 @@ mixin _$PeamanUser {
   double? get longitude => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   bool get visibility => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -103,7 +104,7 @@ abstract class $PeamanUserCopyWith<$Res> {
       double? longitude,
       int? createdAt,
       bool visibility,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -343,7 +344,7 @@ abstract class _$$_PeamanUserCopyWith<$Res>
       double? longitude,
       int? createdAt,
       bool visibility,
-      Map<String, dynamic> extraData});
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -576,7 +577,8 @@ class _$_PeamanUser implements _PeamanUser {
       this.longitude,
       this.createdAt,
       this.visibility = true,
-      final Map<String, dynamic> extraData = const <String, dynamic>{}})
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData = const <String, dynamic>{}})
       : _searchKeys = searchKeys,
         _extraData = extraData;
 
@@ -679,7 +681,7 @@ class _$_PeamanUser implements _PeamanUser {
   final bool visibility;
   final Map<String, dynamic> _extraData;
   @override
-  @JsonKey()
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData {
     if (_extraData is EqualUnmodifiableMapView) return _extraData;
     // ignore: implicit_dynamic_type
@@ -817,41 +819,42 @@ class _$_PeamanUser implements _PeamanUser {
 
 abstract class _PeamanUser implements PeamanUser {
   const factory _PeamanUser(
-      {final String? uid,
-      final String? name,
-      final String? userName,
-      final String? email,
-      final String? photo,
-      final String? phone,
-      final String? country,
-      final String? bio,
-      final String? profession,
-      final PeamanGender gender,
-      final int? dob,
-      final List<String> searchKeys,
-      final PeamanOnlineStatus onlineStatus,
-      final int? lastOnlineAt,
-      final int feedsCount,
-      final int photosCount,
-      final int videosCount,
-      final int followersCount,
-      final int followingCount,
-      final int reactionsReceivedFromFeedsCount,
-      final int commentsReceivedFromFeedsCount,
-      final int repliesReceivedFromFeedsCount,
-      final int sharesReceivedFromFeedsCount,
-      final int viewsReceivedFromFeedsCount,
-      final bool isAdmin,
-      final bool isEditor,
-      final bool isTester,
-      final bool isVerified,
-      final int onboardingStep,
-      final bool isOnboardingCompleted,
-      final double? latitude,
-      final double? longitude,
-      final int? createdAt,
-      final bool visibility,
-      final Map<String, dynamic> extraData}) = _$_PeamanUser;
+          {final String? uid,
+          final String? name,
+          final String? userName,
+          final String? email,
+          final String? photo,
+          final String? phone,
+          final String? country,
+          final String? bio,
+          final String? profession,
+          final PeamanGender gender,
+          final int? dob,
+          final List<String> searchKeys,
+          final PeamanOnlineStatus onlineStatus,
+          final int? lastOnlineAt,
+          final int feedsCount,
+          final int photosCount,
+          final int videosCount,
+          final int followersCount,
+          final int followingCount,
+          final int reactionsReceivedFromFeedsCount,
+          final int commentsReceivedFromFeedsCount,
+          final int repliesReceivedFromFeedsCount,
+          final int sharesReceivedFromFeedsCount,
+          final int viewsReceivedFromFeedsCount,
+          final bool isAdmin,
+          final bool isEditor,
+          final bool isTester,
+          final bool isVerified,
+          final int onboardingStep,
+          final bool isOnboardingCompleted,
+          final double? latitude,
+          final double? longitude,
+          final int? createdAt,
+          final bool visibility,
+          @JsonKey(ignore: true) final Map<String, dynamic> extraData}) =
+      _$_PeamanUser;
 
   factory _PeamanUser.fromJson(Map<String, dynamic> json) =
       _$_PeamanUser.fromJson;
@@ -925,6 +928,7 @@ abstract class _PeamanUser implements PeamanUser {
   @override
   bool get visibility;
   @override
+  @JsonKey(ignore: true)
   Map<String, dynamic> get extraData;
   @override
   @JsonKey(ignore: true)

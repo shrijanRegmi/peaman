@@ -71,6 +71,7 @@ Map<String, dynamic> _$$_PeamanFeedToJson(_$_PeamanFeed instance) {
 }
 
 const _$PeamanFeedTypeEnumMap = {
+  PeamanFeedType.unknown: 'unknown',
   PeamanFeedType.text: 'text',
   PeamanFeedType.file: 'file',
   PeamanFeedType.poll: 'poll',

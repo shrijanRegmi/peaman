@@ -53,8 +53,6 @@ _$_PeamanUser _$$_PeamanUserFromJson(Map<String, dynamic> json) =>
       longitude: (json['longitude'] as num?)?.toDouble(),
       createdAt: json['created_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
-      extraData: json['extra_data'] as Map<String, dynamic>? ??
-          const <String, dynamic>{},
     );
 
 Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) {
@@ -104,7 +102,6 @@ Map<String, dynamic> _$$_PeamanUserToJson(_$_PeamanUser instance) {
   writeNotNull('longitude', instance.longitude);
   writeNotNull('created_at', instance.createdAt);
   val['visibility'] = instance.visibility;
-  val['extra_data'] = instance.extraData;
   return val;
 }
 

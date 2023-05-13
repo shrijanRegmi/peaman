@@ -35,6 +35,7 @@ const feedRepliersColName = 'feed_repliers';
 const feedFollowersColName = 'followers';
 const feedSaversColName = 'feed_savers';
 const feedViewersColName = 'feed_viewers';
+const pollOptionChoosersColName = 'poll_option_choosers';
 //
 
 // moments subcollections

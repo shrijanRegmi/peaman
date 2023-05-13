@@ -70,6 +70,7 @@ abstract class PeamanFeedRepository {
 
   Future<PeamanEither<bool, PeamanError>> choosePollOption({
     required final String feedId,
+    required final String uid,
     required final String optionId,
   });
 
@@ -383,6 +384,16 @@ abstract class PeamanFeedRepository {
   });
 
   Stream<PeamanSubUser> getSingleFeedSaverStream({
+    required final String feedId,
+    required final String uid,
+  });
+
+  Future<PeamanEither<PeamanSubUser, PeamanError>> getSinglePollOptionChooser({
+    required final String feedId,
+    required final String uid,
+  });
+
+  Stream<PeamanSubUser> getSinglePollOptionChooserStream({
     required final String feedId,
     required final String uid,
   });
@@ -2130,7 +2141,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         if (!_feedSaverSnap.exists) throw Exception('Feed saver not found!');
 
         final _feedSaverData = _feedSaverSnap.data();
-        if (_feedSaverData == null) throw Exception('Feed saver found!');
+        if (_feedSaverData == null) throw Exception('Feed saver not found!');
 
         final _feedSaver = PeamanSubUser.fromJson(_feedSaverData);
         return Success(_feedSaver);
@@ -2227,11 +2238,20 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
   @override
   Future<PeamanEither<bool, PeamanError>> choosePollOption({
     required String feedId,
+    required String uid,
     required String optionId,
   }) {
+    final millis = DateTime.now().millisecondsSinceEpoch;
     return runTransaction(
       onTransaction: (transaction) async {
-        final feedRef = PeamanReferenceHelper.feedDoc(feedId: feedId);
+        final feedRef = PeamanReferenceHelper.feedDoc(
+          feedId: feedId,
+        );
+        final pollOptionChooserRef =
+            PeamanReferenceHelper.pollOptionChoosersCol(
+          feedId: feedId,
+        ).doc(uid);
+
         final feedSnap = await transaction.get(feedRef);
         if (feedSnap.exists) {
           final feedData = feedSnap.data();
@@ -2250,9 +2270,26 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
                 popularity: options[index].popularity + 1,
               );
 
+            final pollOptionChooser = PeamanSubUser(
+              uid: uid,
+              createdAt: millis,
+              extraData: {
+                'option_id': optionId,
+              },
+            );
+
             transaction.update(
               feedRef,
-              {'poll_options': options.map((e) => e.toJson()).toList()},
+              {
+                'poll_options': options.map((e) => e.toJson()).toList(),
+              },
+            );
+            transaction.set(
+              pollOptionChooserRef,
+              {
+                ...pollOptionChooser.toJson(),
+                ...pollOptionChooser.extraData,
+              },
             );
           }
         }
@@ -2261,5 +2298,46 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
       },
       onError: Failure.new,
     );
+  }
+
+  @override
+  Future<PeamanEither<PeamanSubUser, PeamanError>> getSinglePollOptionChooser({
+    required String feedId,
+    required String uid,
+  }) {
+    return runAsyncCall(
+      future: () async {
+        final pollOptionChooserRef =
+            PeamanReferenceHelper.pollOptionChoosersCol(
+          feedId: feedId,
+        ).doc(uid);
+        final pollOptionChooserSnap = await pollOptionChooserRef.get();
+        if (pollOptionChooserSnap.exists) {
+          final pollOptionChooserData = pollOptionChooserSnap.data();
+          if (pollOptionChooserData != null) {
+            final peamanPollOption = PeamanSubUser.fromJson(
+              pollOptionChooserData,
+            );
+
+            return Success(peamanPollOption);
+          }
+        }
+
+        throw Exception(
+          'pollOption with id $uid not found',
+        );
+      },
+      onError: Failure.new,
+    );
+  }
+
+  @override
+  Stream<PeamanSubUser> getSinglePollOptionChooserStream({
+    required String feedId,
+    required String uid,
+  }) {
+    return PeamanReferenceHelper.pollOptionChoosersCol(
+      feedId: feedId,
+    ).doc(uid).snapshots().map(_subUserFromFirestore);
   }
 }

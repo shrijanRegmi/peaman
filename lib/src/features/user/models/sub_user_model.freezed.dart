@@ -23,6 +23,8 @@ mixin _$PeamanSubUser {
   String? get uid => throw _privateConstructorUsedError;
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +38,11 @@ abstract class $PeamanSubUserCopyWith<$Res> {
           PeamanSubUser value, $Res Function(PeamanSubUser) then) =
       _$PeamanSubUserCopyWithImpl<$Res, PeamanSubUser>;
   @useResult
-  $Res call({String? uid, int? createdAt, int? updatedAt});
+  $Res call(
+      {String? uid,
+      int? createdAt,
+      int? updatedAt,
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -55,6 +61,7 @@ class _$PeamanSubUserCopyWithImpl<$Res, $Val extends PeamanSubUser>
     Object? uid = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? extraData = null,
   }) {
     return _then(_value.copyWith(
       uid: freezed == uid
@@ -69,6 +76,10 @@ class _$PeamanSubUserCopyWithImpl<$Res, $Val extends PeamanSubUser>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
+      extraData: null == extraData
+          ? _value.extraData
+          : extraData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ) as $Val);
   }
 }
@@ -81,7 +92,11 @@ abstract class _$$_PeamanSubUserCopyWith<$Res>
       __$$_PeamanSubUserCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? uid, int? createdAt, int? updatedAt});
+  $Res call(
+      {String? uid,
+      int? createdAt,
+      int? updatedAt,
+      @JsonKey(ignore: true) Map<String, dynamic> extraData});
 }
 
 /// @nodoc
@@ -98,6 +113,7 @@ class __$$_PeamanSubUserCopyWithImpl<$Res>
     Object? uid = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? extraData = null,
   }) {
     return _then(_$_PeamanSubUser(
       uid: freezed == uid
@@ -112,6 +128,10 @@ class __$$_PeamanSubUserCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as int?,
+      extraData: null == extraData
+          ? _value._extraData
+          : extraData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ));
   }
 }
@@ -119,7 +139,13 @@ class __$$_PeamanSubUserCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_PeamanSubUser implements _PeamanSubUser {
-  const _$_PeamanSubUser({this.uid, this.createdAt, this.updatedAt});
+  const _$_PeamanSubUser(
+      {this.uid,
+      this.createdAt,
+      this.updatedAt,
+      @JsonKey(ignore: true)
+          final Map<String, dynamic> extraData = const <String, dynamic>{}})
+      : _extraData = extraData;
 
   factory _$_PeamanSubUser.fromJson(Map<String, dynamic> json) =>
       _$$_PeamanSubUserFromJson(json);
@@ -130,10 +156,18 @@ class _$_PeamanSubUser implements _PeamanSubUser {
   final int? createdAt;
   @override
   final int? updatedAt;
+  final Map<String, dynamic> _extraData;
+  @override
+  @JsonKey(ignore: true)
+  Map<String, dynamic> get extraData {
+    if (_extraData is EqualUnmodifiableMapView) return _extraData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_extraData);
+  }
 
   @override
   String toString() {
-    return 'PeamanSubUser(uid: $uid, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PeamanSubUser(uid: $uid, createdAt: $createdAt, updatedAt: $updatedAt, extraData: $extraData)';
   }
 
   @override
@@ -145,12 +179,15 @@ class _$_PeamanSubUser implements _PeamanSubUser {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other._extraData, _extraData));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, uid, createdAt, updatedAt,
+      const DeepCollectionEquality().hash(_extraData));
 
   @JsonKey(ignore: true)
   @override
@@ -168,9 +205,11 @@ class _$_PeamanSubUser implements _PeamanSubUser {
 
 abstract class _PeamanSubUser implements PeamanSubUser {
   const factory _PeamanSubUser(
-      {final String? uid,
-      final int? createdAt,
-      final int? updatedAt}) = _$_PeamanSubUser;
+          {final String? uid,
+          final int? createdAt,
+          final int? updatedAt,
+          @JsonKey(ignore: true) final Map<String, dynamic> extraData}) =
+      _$_PeamanSubUser;
 
   factory _PeamanSubUser.fromJson(Map<String, dynamic> json) =
       _$_PeamanSubUser.fromJson;
@@ -181,6 +220,9 @@ abstract class _PeamanSubUser implements PeamanSubUser {
   int? get createdAt;
   @override
   int? get updatedAt;
+  @override
+  @JsonKey(ignore: true)
+  Map<String, dynamic> get extraData;
   @override
   @JsonKey(ignore: true)
   _$$_PeamanSubUserCopyWith<_$_PeamanSubUser> get copyWith =>

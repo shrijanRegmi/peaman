@@ -99,6 +99,9 @@ class PeamanReferenceHelper {
   static ColRef commentsCol({required final String feedId}) =>
       feedsCol.doc(feedId).collection(commentsColName);
 
+  static ColRef pollOptionChoosersCol({required final String feedId}) =>
+      feedsCol.doc(feedId).collection(pollOptionChoosersColName);
+
   static ColRef feedReactorsCol({required final String feedId}) =>
       feedsCol.doc(feedId).collection(feedReactorsColName);
 
@@ -116,7 +119,6 @@ class PeamanReferenceHelper {
 
   static ColRef feedFollowersCol({required final String feedId}) =>
       feedsCol.doc(feedId).collection(feedFollowersColName);
-
   //
 
   // moments subcollections
