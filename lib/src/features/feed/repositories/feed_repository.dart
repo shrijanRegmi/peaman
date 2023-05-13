@@ -2250,7 +2250,7 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
                 popularity: options[index].popularity + 1,
               );
 
-            transaction.set(
+            transaction.update(
               feedRef,
               {'poll_options': options.map((e) => e.toJson()).toList()},
             );
