@@ -68,6 +68,11 @@ abstract class PeamanFeedRepository {
     required final String uid,
   });
 
+  Future<PeamanEither<bool, PeamanError>> choosePollOption({
+    required final String feedId,
+    required final String optionId,
+  });
+
   Future<PeamanEither<PeamanReaction, PeamanError>> createReaction({
     required final PeamanReaction reaction,
     final bool updateParentReactionsCount = true,
@@ -2217,5 +2222,44 @@ class PeamanFeedRepositoryImpl extends PeamanFeedRepository {
         .orderBy('created_at', descending: true);
     final newQuery = query?.call(ref) ?? ref;
     return newQuery.snapshots().map(_subFeedsFromFirestore);
+  }
+
+  @override
+  Future<PeamanEither<bool, PeamanError>> choosePollOption({
+    required String feedId,
+    required String optionId,
+  }) {
+    return runTransaction(
+      onTransaction: (transaction) async {
+        final feedRef = PeamanReferenceHelper.feedDoc(feedId: feedId);
+        final feedSnap = await transaction.get(feedRef);
+        if (feedSnap.exists) {
+          final feedData = feedSnap.data();
+          if (feedData != null) {
+            final feed = PeamanFeed.fromJson(feedData);
+
+            var options = feed.pollOptions;
+            final index =
+                options.indexWhere((element) => element.id == optionId);
+            if (index == -1) {
+              throw Exception('invalid poll option id');
+            }
+
+            options = List<PeamanPollOption>.from(options)
+              ..[index] = options[index].copyWith(
+                popularity: options[index].popularity + 1,
+              );
+
+            transaction.set(
+              feedRef,
+              {'poll_options': options.map((e) => e.toJson()).toList()},
+            );
+          }
+        }
+
+        return const Success(true);
+      },
+      onError: Failure.new,
+    );
   }
 }
