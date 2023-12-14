@@ -616,9 +616,10 @@ class AppUserProvider {
   Stream<List<PeamanUser>> getUsersStream({
     final MyQuery Function(MyQuery)? query,
   }) {
-    final _ref = PeamanReferenceHelper.usersCol
-        .where('visibility', isEqualTo: true)
-        .orderBy('created_at', descending: true);
+    final _ref = PeamanReferenceHelper.usersCol.where(
+      'visibility',
+      isEqualTo: true,
+    );
     final _query = query?.call(_ref) ?? _ref;
     return _query.snapshots().map(_usersFromFirebase);
   }
