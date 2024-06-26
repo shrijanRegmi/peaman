@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:peaman/peaman.dart';
 
@@ -12,7 +11,7 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(),
+      future: Peaman.initializeApp(),
       builder: (context, snap) {
         if (snap.hasData) {
           return MaterialApp(
@@ -46,7 +45,7 @@ class HomeScreen extends StatelessWidget {
               ),
               MaterialButton(
                 onPressed: () async {
-                  final _message = PeamanMessage(
+                  final _message = PeamanChatMessage(
                     id: null,
                     chatId: 'test_chat_id',
                     text: 'new message more',
@@ -55,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     updatedAt: DateTime.now().millisecondsSinceEpoch,
                   );
 
-                  await PChatProvider.sendMessage(
+                  await PeamanChatRepositoryImpl().createChatMessage(
                     message: _message,
                   );
                 },
@@ -76,8 +75,10 @@ class HomeScreen extends StatelessWidget {
 
   Widget _messagesDisplay() {
     return Expanded(
-      child: StreamBuilder<List<PeamanMessage>>(
-        stream: PChatProvider.getMessagesStream(chatId: 'test_chat_id'),
+      child: StreamBuilder<List<PeamanChatMessage>>(
+        stream: PeamanChatRepositoryImpl().getChatMessagesStream(
+          chatId: 'test_chat_id',
+        ),
         builder: (context, snap) {
           if (snap.hasData) {
             final _messages = snap.data;

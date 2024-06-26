@@ -9,3 +9,7 @@
 ## 0.0.3
 
 * Complete refactor of code and a lot of improvements
+
+## 1.0.0
+
+* First stable version with repository style architecture
