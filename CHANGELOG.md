@@ -10,6 +10,6 @@
 
 * Complete refactor of code and a lot of improvements
 
-## 0.0.4
+## 1.0.0
 
-* Chat delete and message delete implemented
+* First stable version with repository style architecture

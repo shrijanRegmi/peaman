@@ -1,4 +1,0 @@
-enum PeamanOnlineStatus {
-  away,
-  active,
-}

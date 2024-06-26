@@ -1,4 +1,0 @@
-enum PeamanCommentParent {
-  feed,
-  comment,
-}
