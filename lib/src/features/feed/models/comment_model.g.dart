@@ -24,6 +24,8 @@ _$_PeamanComment _$$_PeamanCommentFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] as int?,
       updatedAt: json['updated_at'] as int?,
       visibility: json['visibility'] as bool? ?? true,
+      audioUrl: json['audio_url'] as String?,
+      isAudio: json['is_audio'] as bool? ?? false,
       extraData: json['extra_data'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
     );
@@ -51,6 +53,8 @@ Map<String, dynamic> _$$_PeamanCommentToJson(_$_PeamanComment instance) {
   writeNotNull('created_at', instance.createdAt);
   writeNotNull('updated_at', instance.updatedAt);
   val['visibility'] = instance.visibility;
+  writeNotNull('audio_url', instance.audioUrl);
+  val['is_audio'] = instance.isAudio;
   val['extra_data'] = instance.extraData;
   return val;
 }

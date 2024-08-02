@@ -34,6 +34,8 @@ mixin _$PeamanComment {
   int? get createdAt => throw _privateConstructorUsedError;
   int? get updatedAt => throw _privateConstructorUsedError;
   bool get visibility => throw _privateConstructorUsedError;
+  String? get audioUrl => throw _privateConstructorUsedError;
+  bool get isAudio => throw _privateConstructorUsedError;
   Map<String, dynamic> get extraData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -63,6 +65,8 @@ abstract class $PeamanCommentCopyWith<$Res> {
       int? createdAt,
       int? updatedAt,
       bool visibility,
+      String? audioUrl,
+      bool isAudio,
       Map<String, dynamic> extraData});
 }
 
@@ -93,6 +97,8 @@ class _$PeamanCommentCopyWithImpl<$Res, $Val extends PeamanComment>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? visibility = null,
+    Object? audioUrl = freezed,
+    Object? isAudio = null,
     Object? extraData = null,
   }) {
     return _then(_value.copyWith(
@@ -152,6 +158,14 @@ class _$PeamanCommentCopyWithImpl<$Res, $Val extends PeamanComment>
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
               as bool,
+      audioUrl: freezed == audioUrl
+          ? _value.audioUrl
+          : audioUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAudio: null == isAudio
+          ? _value.isAudio
+          : isAudio // ignore: cast_nullable_to_non_nullable
+              as bool,
       extraData: null == extraData
           ? _value.extraData
           : extraData // ignore: cast_nullable_to_non_nullable
@@ -183,6 +197,8 @@ abstract class _$$_PeamanCommentCopyWith<$Res>
       int? createdAt,
       int? updatedAt,
       bool visibility,
+      String? audioUrl,
+      bool isAudio,
       Map<String, dynamic> extraData});
 }
 
@@ -211,6 +227,8 @@ class __$$_PeamanCommentCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? visibility = null,
+    Object? audioUrl = freezed,
+    Object? isAudio = null,
     Object? extraData = null,
   }) {
     return _then(_$_PeamanComment(
@@ -270,6 +288,14 @@ class __$$_PeamanCommentCopyWithImpl<$Res>
           ? _value.visibility
           : visibility // ignore: cast_nullable_to_non_nullable
               as bool,
+      audioUrl: freezed == audioUrl
+          ? _value.audioUrl
+          : audioUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isAudio: null == isAudio
+          ? _value.isAudio
+          : isAudio // ignore: cast_nullable_to_non_nullable
+              as bool,
       extraData: null == extraData
           ? _value._extraData
           : extraData // ignore: cast_nullable_to_non_nullable
@@ -296,6 +322,8 @@ class _$_PeamanComment implements _PeamanComment {
       this.createdAt,
       this.updatedAt,
       this.visibility = true,
+      this.audioUrl,
+      this.isAudio = false,
       final Map<String, dynamic> extraData = const <String, dynamic>{}})
       : _extraData = extraData;
 
@@ -334,6 +362,11 @@ class _$_PeamanComment implements _PeamanComment {
   @override
   @JsonKey()
   final bool visibility;
+  @override
+  final String? audioUrl;
+  @override
+  @JsonKey()
+  final bool isAudio;
   final Map<String, dynamic> _extraData;
   @override
   @JsonKey()
@@ -345,7 +378,7 @@ class _$_PeamanComment implements _PeamanComment {
 
   @override
   String toString() {
-    return 'PeamanComment(id: $id, feedId: $feedId, ownerId: $ownerId, secondUserId: $secondUserId, secondUserName: $secondUserName, parent: $parent, parentId: $parentId, parentOwnerId: $parentOwnerId, comment: $comment, reactionsCount: $reactionsCount, repliesCount: $repliesCount, createdAt: $createdAt, updatedAt: $updatedAt, visibility: $visibility, extraData: $extraData)';
+    return 'PeamanComment(id: $id, feedId: $feedId, ownerId: $ownerId, secondUserId: $secondUserId, secondUserName: $secondUserName, parent: $parent, parentId: $parentId, parentOwnerId: $parentOwnerId, comment: $comment, reactionsCount: $reactionsCount, repliesCount: $repliesCount, createdAt: $createdAt, updatedAt: $updatedAt, visibility: $visibility, audioUrl: $audioUrl, isAudio: $isAudio, extraData: $extraData)';
   }
 
   @override
@@ -376,6 +409,9 @@ class _$_PeamanComment implements _PeamanComment {
                 other.updatedAt == updatedAt) &&
             (identical(other.visibility, visibility) ||
                 other.visibility == visibility) &&
+            (identical(other.audioUrl, audioUrl) ||
+                other.audioUrl == audioUrl) &&
+            (identical(other.isAudio, isAudio) || other.isAudio == isAudio) &&
             const DeepCollectionEquality()
                 .equals(other._extraData, _extraData));
   }
@@ -398,6 +434,8 @@ class _$_PeamanComment implements _PeamanComment {
       createdAt,
       updatedAt,
       visibility,
+      audioUrl,
+      isAudio,
       const DeepCollectionEquality().hash(_extraData));
 
   @JsonKey(ignore: true)
@@ -430,6 +468,8 @@ abstract class _PeamanComment implements PeamanComment {
       final int? createdAt,
       final int? updatedAt,
       final bool visibility,
+      final String? audioUrl,
+      final bool isAudio,
       final Map<String, dynamic> extraData}) = _$_PeamanComment;
 
   factory _PeamanComment.fromJson(Map<String, dynamic> json) =
@@ -463,6 +503,10 @@ abstract class _PeamanComment implements PeamanComment {
   int? get updatedAt;
   @override
   bool get visibility;
+  @override
+  String? get audioUrl;
+  @override
+  bool get isAudio;
   @override
   Map<String, dynamic> get extraData;
   @override

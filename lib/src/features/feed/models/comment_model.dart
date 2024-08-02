@@ -22,6 +22,8 @@ class PeamanComment with _$PeamanComment {
     final int? createdAt,
     final int? updatedAt,
     @Default(true) final bool visibility,
+    final String? audioUrl,
+    @Default(false) final bool isAudio,
     @Default(<String, dynamic>{}) final Map<String, dynamic> extraData,
   }) = _PeamanComment;
 
